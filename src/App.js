@@ -1,4 +1,5 @@
 import './App.css';
+import './componenet/NavBar.css'
 import NavBar from './componenet/NavBar';
 
 import axios from "axios";
