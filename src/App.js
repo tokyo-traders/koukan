@@ -1,4 +1,6 @@
 import './App.css';
+import NavBar from './componenet/NavBar';
+
 import axios from "axios";
 import { useEffect} from "react";
 
@@ -16,9 +18,11 @@ function App() {
 
   
   return (
-    <div className="App">
-    Hello! test
-    </div>
+   <>
+      <NavBar />
+
+    </>
+
   );
 }
 
