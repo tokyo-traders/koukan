@@ -24,5 +24,9 @@ yarn-error.log*
 
 #python environments
 venv
-backend/backend/.env
+./backend/backend/.env
+=======
+#python environments
+venv
+backend\backend\.env
 
