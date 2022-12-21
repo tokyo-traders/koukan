@@ -28,4 +28,4 @@ SECRET_KEY = 'django-insecure-bi(@j-9jl-e=$r0+z-!e5gbt(@%9@+4k8^=ls5upj*58h(@6z=
 
 #python environments
 venv
-backend/backend/.env
+./backend/backend/.env
