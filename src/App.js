@@ -1,10 +1,12 @@
 import './App.css';
+import NavBar from './componenet/NavBar';
 
 function App() {
   return (
-    <div className="App">
-    Hello!
-    </div>
+   <>
+      <NavBar />
+
+    </>
   );
 }
 
