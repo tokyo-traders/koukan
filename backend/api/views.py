@@ -12,4 +12,4 @@ def user_list(request):
     if request.method == "GET":
         # queryset = User.objects.all()
         # serializer_class = UserSerializer
-        return Response("hello")
+        return Response("hello from server")
