@@ -10,6 +10,14 @@ from .models import User
 def user_list(request):
     
     if request.method == "GET":
+        obj = User.objects.all()
+        serializer = UserSerializer(obj, many = True)
+        return Response(serializer.data)
+
+
+@api_view(['GET', 'POST'])
+def hello(request):
+    if request.method == "GET":
         # queryset = User.objects.all()
         # serializer_class = UserSerializer
-        return Response("hello from server")
+        return Response("Hello this is a test for fucntion based calls")
