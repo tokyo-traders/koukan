@@ -9,6 +9,7 @@ from .models import User
 @api_view(['GET', 'POST'])
 def user_list(request):
     
+    
     if request.method == "GET":
         obj = User.objects.all()
         serializer = UserSerializer(obj, many = True)
@@ -20,10 +21,10 @@ def user_list(request):
             return Response(serializer.data, status = status.HTTP_201_CREATED)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-def user_edit(request, id):
+def user_edit(request, name):
 
     try:
-        user = User.object.get(pk = id)
+        user = User.objects.get(first_name = name)
     except User.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
     
