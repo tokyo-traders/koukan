@@ -1,8 +1,10 @@
 import './App.css';
 import './componenet/NavBar.css'
+import './componenet/Registration/Registration.css'
 import NavBar from './componenet/NavBar';
 import Sidebar from './componenet/Sidebar';
 import Trades from './componenet/Trades';
+import Registration from './componenet/Registration/Registration';
 
 import axios from "axios";
 import { useEffect } from "react";
@@ -26,7 +28,7 @@ function App() {
     <>
       <NavBar />
       <Sidebar />
-      <Trades />
+      <Registration />
     </>
 
   );
