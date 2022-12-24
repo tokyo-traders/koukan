@@ -75,11 +75,11 @@ function AddItem() {
                     onChange={(e) => handleFileUpload(e)}
                 />
                 <img src={selectedFile.imgFile} width='100px'></img>
-                {formData.selectedFiles.map(img => (
+                {/* {formData.selectedFiles.map(img => (
                     <div>
                         <img src={img.imgFile} width='100px'></img>
                     </div>
-                ))}
+                ))} */}
                 <br />
                 <button onClick={submitForm}>Submit</button>
             </form>
