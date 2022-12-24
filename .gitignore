@@ -11,7 +11,7 @@
 # production
 /build
 
-# misc
+misc
 .DS_Store
 .env.local
 .env.development.local
@@ -24,9 +24,4 @@ yarn-error.log*
 
 #python environments
 venv
-./backend/backend/.env
-=======
-#python environments
-venv
-backend\backend\.env
-
+backend/backend/.env

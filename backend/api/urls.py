@@ -3,6 +3,7 @@ from .views import user_list
 from api import views
 
 urlpatterns = [
-    path('', views.user_list),
+    path('all', views.user_list),
+    path('', views.user_edit),
     path('hello', views.hello)
 ]
