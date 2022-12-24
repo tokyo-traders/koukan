@@ -8,11 +8,6 @@ import Sidebar from './componenet/Sidebar';
 import Trades from './componenet/Trades';
 import Registration from './componenet/Registration/Registration';
 import AddItem from './componenet/AddItem';
-
-
-import axios from "axios";
-import { useEffect } from "react";
-import Sidebar from './componenet/Sidebar';
 import LoginForm from './componenet/Registration/LoginForm';
 
 
@@ -35,9 +30,10 @@ function App() {
     <>
       <NavBar />
       {/* <Trades /> */}
-      <Sidebar />
+      {/* <Sidebar /> */}
       <LoginForm />
-      <AddItem />
+      {/* <AddItem /> */}
+      {/* <Registration /> */}
 
     </>
 

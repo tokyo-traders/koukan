@@ -61,6 +61,7 @@ def item_edit(request, name):
 def user_edit(request):
     password = request.data["password"]
     email = request.data["email"]
+    print(password, email)
     try:
         user = User.objects.get(email = email)
     except User.DoesNotExist:
