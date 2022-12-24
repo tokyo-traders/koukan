@@ -69,6 +69,15 @@ def user_edit(request, name):
     if request.method == "GET":
         serializer = UserSerializer(user)
         return Response(serializer.data)
+    elif request.method == "POST":
+        serializer = UserSerializer(user)
+        userPassword = serializer.data["password"]
+        userEmail = serializer.data["email"]
+        password = request.data["password"]
+        email = request.data["email"]
+        if userPassword == password and userEmail == email:
+            return Response(True, status=status.HTTP_200_OK)
+        return Response(False, status=status.HTTP_401_UNAUTHORIZED)
     elif request.method == "PUT":
         serializer = UserSerializer(user, data = request.data)
         if serializer.is_valid():
