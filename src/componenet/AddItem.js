@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
-import axios from "axios"
-
-
+import React, { useState, useEffect } from 'react';
+import axios from "axios";
 
 import './AddItem.css';
 
@@ -11,11 +9,14 @@ function AddItem() {
     const [selectedFile, setSelectedFile] = useState({ imgFile: '' });
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
+    const [desire, setDesire] = useState('');
     // const [expDate, setExpDate] = useState('');
     const formData = {
-        name: "",
-        description: "",
-        selectedFiles: []
+        item_name: '',
+        details: "",
+        desire: "",
+        user_id: 1,
+        // selectedFile: []
     }
     const convertToBase64 = (file) => {
         return new Promise((resolve, reject) => {
@@ -37,26 +38,33 @@ function AddItem() {
         formData.selectedFiles.push(selectedFile)
     };
 
-    const submitForm = () => {
+    const submitForm = async (e) => {
+        e.preventDefault();
+        const data = { item_name: name, details: description, desire: desire, user_id: 1 }
+        // formData["item_name"] = name;
+        // formData["details"] = description;
+        // formData["desire"] = desire;
+        // formData["user_id"] = 1;
 
-        console.log(name, description, formData.selectedFiles)
-        formData["name"] = name;
-        formData["description"] = description;
-        console.log(formData)
         // formData.append("file", selectedFile);
-
-        // axios
-        //     .post(UPLOAD_URL, formData)
-        //     .then((res) => {
-        //         alert("File Upload success");
-        //     })
-        //     .catch((err) => alert("File Upload Error"));
+        console.log(data)
+        axios.post('/api/item', JSON.stringify(data),
+            {
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
+            }
+        )
+            .then((res) => {
+                console.log(JSON.stringify(res.data))
+                alert("Form Upload success");
+            })
+            .catch((err) => alert(err));
     };
 
     return (
         <div>
             <br />
-            <form>
+            <form onSubmit={submitForm}>
                 <label>
                     Name:
                     <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
@@ -67,22 +75,27 @@ function AddItem() {
                     <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
                 </label>
                 <br />
-                <input
+                <label>
+                    Desire:
+                    <input type="text" value={desire} onChange={(e) => setDesire(e.target.value)} />
+                </label>
+                <br />
+                {/* <input
                     type="file"
                     label="Image"
                     name="myFile"
                     accept=".jpeg, .png, .jpg"
                     onChange={(e) => handleFileUpload(e)}
                 />
-                <img src={selectedFile.imgFile} width='100px'></img>
+                <img src={selectedFile.imgFile} width='100px'></img> */}
                 {/* {formData.selectedFiles.map(img => (
                     <div>
                         <img src={img.imgFile} width='100px'></img>
                     </div>
                 ))} */}
                 <br />
-                <button onClick={submitForm}>Submit</button>
-            </form>
+                <button>Submit</button>
+            </form >
         </div>
     )
 }

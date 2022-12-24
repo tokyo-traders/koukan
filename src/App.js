@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useEffect, useState} from "react";
 import './App.css';
 import './componenet/NavBar.css'
 import './componenet/Registration/Registration.css'
@@ -10,9 +9,7 @@ import Registration from './componenet/Registration/Registration';
 import AddItem from './componenet/AddItem';
 
 
-import axios from "axios";
 import { useEffect } from "react";
-import Sidebar from './componenet/Sidebar';
 import LoginForm from './componenet/Registration/LoginForm';
 
 
@@ -30,13 +27,13 @@ function App() {
   // const Logout =() => {
   //   console.log("Logout")
   // }
-  
+
   return (
     <>
       <NavBar />
       {/* <Trades /> */}
-      <Sidebar />
-      <LoginForm />
+      {/* <Sidebar /> */}
+      {/* <LoginForm /> */}
       <AddItem />
 
     </>
