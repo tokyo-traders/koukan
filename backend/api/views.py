@@ -58,24 +58,24 @@ def item_edit(request, name):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET', 'PUT', 'DELETE', 'POST'])
-def user_edit(request, name):
-
+def user_edit(request):
+    password = request.data["password"]
+    email = request.data["email"]
     try:
-        user = User.objects.get(first_name = name)
+        user = User.objects.get(email = email)
     except User.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
 
+    print(request.data["email"])
     
     if request.method == "GET":
         serializer = UserSerializer(user)
         return Response(serializer.data)
     elif request.method == "POST":
         serializer = UserSerializer(user)
-        userPassword = serializer.data["password"]
-        userEmail = serializer.data["email"]
-        password = request.data["password"]
-        email = request.data["email"]
-        if userPassword == password and userEmail == email:
+        user_password = serializer.data["password"]
+        user_email = serializer.data["email"]
+        if user_password == password and user_email == email:
             return Response(True, status=status.HTTP_200_OK)
         return Response(False, status=status.HTTP_401_UNAUTHORIZED)
     elif request.method == "PUT":
