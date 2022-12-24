@@ -27,9 +27,9 @@ function App() {
   return (
     <>
       <NavBar />
-      <Sidebar />
-      <Registration />
       <Trades />
+      <Sidebar />
+      {/* <Registration /> */}
     </>
 
   );
