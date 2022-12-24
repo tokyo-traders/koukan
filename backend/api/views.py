@@ -34,11 +34,11 @@ def user_edit(request, name):
         return Response(serializer.data)
     elif request.method == "POST":
         serializer = UserSerializer(user)
-        userPassword = serializer.data["password"]
-        userEmail = serializer.data["email"]
+        user_password = serializer.data["password"]
+        user_email = serializer.data["email"]
         password = request.data["password"]
         email = request.data["email"]
-        if userPassword == password and userEmail == email:
+        if user_password == password and user_email == email:
             return Response(True, status=status.HTTP_200_OK)
         return Response(False, status=status.HTTP_401_UNAUTHORIZED)
     elif request.method == "PUT":
