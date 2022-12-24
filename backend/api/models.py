@@ -14,8 +14,7 @@ class User(models.Model):
 
 class Item(models.Model):
     item_name = models.CharField(max_length=200, default="")
-    user_id = models.ForeignKey('User',
-        on_delete=models.CASCADE,)
+    user_id = models.ForeignKey('User',on_delete=models.CASCADE,)
     date_of_post = models.DateTimeField(auto_now_add=True)
     details = models.TextField()
     desire = models.CharField(max_length=200, default="")
