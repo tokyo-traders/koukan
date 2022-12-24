@@ -9,31 +9,30 @@ import Registration from './componenet/Registration/Registration';
 
 import Sidebar from './componenet/Sidebar';
 import LoginForm from './componenet/Registration/LoginForm';
-import { off } from "process";
 
 
 
 function App() {
 
-  const [user, setUser] = useState({name:"", email:""});
-  const [error, setError] = useState("");
+  // const [user, setUser] = useState({name:"", email:""});
+  // const [error, setError] = useState("");
 
-  const Login = details => {
-    console.log(details);
+  // const Login = details => {
+  //   console.log(details);
 
-    off(details.email == adminUser.email )
-  }
+  //   off(details.email == adminUser.email )
+  // }
 
-  const Logout =() => {
-    console.log("Logout")
-  }
+  // const Logout =() => {
+  //   console.log("Logout")
+  // }
   
   return (
    <>
       <NavBar />
       <Trades />
       <Sidebar />
-      <LoginForm Login={Login} error={error} />
+      <LoginForm />
     </>
 
   );
