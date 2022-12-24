@@ -4,19 +4,19 @@ import axios from "axios";
 function Trades() {
   const [tradeList, setTradeList] = useState([])
 
-  useEffect(()=>{
+  useEffect(() => {
     axios
-    .get(`/api`)
-    .then((response) => {
-       setTradeList(response.data)
-    })
+      .get(`/api/all`)
+      .then((response) => {
+        setTradeList(response.data)
+      })
   }, [])
 
   return (
     <>
-    {tradeList.map((trade, index) => (
+      {tradeList.map((trade, index) => (
         <div>{trade.first_name}</div>
-    ))}
+      ))}
     </>
   )
 }
