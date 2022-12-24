@@ -29,6 +29,7 @@ function App() {
       <NavBar />
       <Sidebar />
       <Registration />
+      <Trades />
     </>
 
   );
