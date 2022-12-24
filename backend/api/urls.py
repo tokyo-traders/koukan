@@ -5,7 +5,7 @@ from api import views
 urlpatterns = [
     path('user', views.user_list),
     path('item', views.item_list),
-    path('item/<str:name>', views.item_list),
+    path('item/<str:name>', views.item_edit),
     path('hello', views.hello),
     path('user/<str:name>', views.user_edit),
 ]
