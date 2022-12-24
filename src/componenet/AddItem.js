@@ -7,11 +7,16 @@ import './AddItem.css';
 
 
 function AddItem() {
+
     const [selectedFile, setSelectedFile] = useState({ imgFile: '' });
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    const [expDate, setExpDate] = useState('');
-
+    // const [expDate, setExpDate] = useState('');
+    const formData = {
+        name: "",
+        description: "",
+        selectedFiles: []
+    }
     const convertToBase64 = (file) => {
         return new Promise((resolve, reject) => {
             const fileReader = new FileReader();
@@ -29,20 +34,14 @@ function AddItem() {
         const file = e.target.files[0];
         const base64 = await convertToBase64(file);
         setSelectedFile({ ...selectedFile, imgFile: base64 });
+        formData.selectedFiles.push(selectedFile)
     };
 
     const submitForm = () => {
-        const formData = {
-            name: "",
-            description: "",
-            selectedFile: {},
-            expDate: ""
-        }
-        console.log(name, description, selectedFile, expDate)
+
+        console.log(name, description, formData.selectedFiles)
         formData["name"] = name;
         formData["description"] = description;
-        formData["selectedFile"] = selectedFile;
-        formData["expDate"] = expDate;
         console.log(formData)
         // formData.append("file", selectedFile);
 
@@ -68,11 +67,6 @@ function AddItem() {
                     <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
                 </label>
                 <br />
-                <label>
-                    Date:
-                    <input type="datetime-local" name="name" onChange={(e) => setExpDate(e.target.value)} />
-                </label>
-                <br />
                 <input
                     type="file"
                     label="Image"
@@ -80,6 +74,12 @@ function AddItem() {
                     accept=".jpeg, .png, .jpg"
                     onChange={(e) => handleFileUpload(e)}
                 />
+                <img src={selectedFile.imgFile} width='100px'></img>
+                {formData.selectedFiles.map(img => (
+                    <div>
+                        <img src={img.imgFile} width='100px'></img>
+                    </div>
+                ))}
                 <br />
                 <button onClick={submitForm}>Submit</button>
             </form>
