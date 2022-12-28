@@ -10,4 +10,4 @@ class UserSerializer(serializers.ModelSerializer):
 class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
-        fields = ['id', 'item_name', 'user_id', 'details', 'desire', 'offer_period', 'status', 'is_tradable']
+        fields = ['id', 'item_name', 'user_id', 'details', 'desire', 'offer_period', 'status', 'is_tradable', 'item_image']

@@ -1,6 +1,10 @@
 from django.db import models
 from django.utils import timezone
 
+# this to create the folders in the file. Note: will not use yet. need further research.
+def upload_path(instance, filename):
+    return '/'.join([])
+
 # Create your models here.
 class User(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -21,3 +25,4 @@ class Item(models.Model):
     offer_period = models.DateTimeField(default=timezone.now)
     status = models.IntegerField(default=0)
     is_tradable = models.BooleanField(default=True)
+    item_image = models.ImageField(blank=True, null=True, upload_to='images/')
