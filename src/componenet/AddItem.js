@@ -27,6 +27,11 @@ function AddItem() {
             .catch(error => console.log(error))
 
         console.log(newItem)
+        setItemImage();
+        setDesire('');
+        setDetails('');
+        setItemName('');
+
     }
 
     return (
