@@ -12,4 +12,4 @@ urlpatterns = [
     path('item/<str:name>', views.item_edit),
     path('hello', views.hello),
     path('user/<str:name>', views.user_edit),
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

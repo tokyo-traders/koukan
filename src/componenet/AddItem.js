@@ -1,90 +1,65 @@
-import React, { useState } from 'react';
-import axios from "axios"
-
-
+import React, { useState, useEffect } from 'react';
+import axios from "axios";
 
 import './AddItem.css';
+import { upload } from '@testing-library/user-event/dist/upload';
 
 
 function AddItem() {
 
-    const [selectedFile, setSelectedFile] = useState({ imgFile: '' });
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
-    // const [expDate, setExpDate] = useState('');
-    const formData = {
-        name: "",
-        description: "",
-        selectedFiles: []
+    const [itemName, setItemName] = useState("");
+    const [itemImage, setItemImage] = useState();
+    const [details, setDetails] = useState('');
+    const [desire, setDesire] = useState('');
+
+    const newItem = async () => {
+        const uploadData = new FormData();
+        uploadData.append('item_name', itemName);
+        uploadData.append('item_image', itemImage);
+        uploadData.append('details', details);
+        uploadData.append('user_id', 1);
+
+        let newItem = await fetch('/api/item', {
+            method: 'POST',
+            body: uploadData
+        })
+            .then(res => res.json())
+            .catch(error => console.log(error))
+
+        console.log(newItem)
+        setItemImage();
+        setDesire('');
+        setDetails('');
+        setItemName('');
+
     }
-    const convertToBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const fileReader = new FileReader();
-            fileReader.readAsDataURL(file);
-            fileReader.onload = () => {
-                resolve(fileReader.result);
-            };
-            fileReader.onerror = (error) => {
-                reject(error);
-            };
-        });
-    };
-
-    const handleFileUpload = async (e) => {
-        const file = e.target.files[0];
-        const base64 = await convertToBase64(file);
-        setSelectedFile({ ...selectedFile, imgFile: base64 });
-        formData.selectedFiles.push(selectedFile)
-    };
-
-    const submitForm = () => {
-
-        console.log(name, description, formData.selectedFiles)
-        formData["name"] = name;
-        formData["description"] = description;
-        console.log(formData)
-        // formData.append("file", selectedFile);
-
-        // axios
-        //     .post(UPLOAD_URL, formData)
-        //     .then((res) => {
-        //         alert("File Upload success");
-        //     })
-        //     .catch((err) => alert("File Upload Error"));
-    };
 
     return (
-        <div>
+        <div className="App">
+            <h3>Add an Item</h3>
+            <label>
+                Title
+                <input type="text" value={itemName} onChange={(e) => setItemName(e.target.value)} />
+            </label>
             <br />
-            <form>
-                <label>
-                    Name:
-                    <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
-                </label>
-                <br />
-                <label>
-                    Description:
-                    <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
-                </label>
-                <br />
-                <input
-                    type="file"
-                    label="Image"
-                    name="myFile"
-                    accept=".jpeg, .png, .jpg"
-                    onChange={(e) => handleFileUpload(e)}
-                />
-                <img src={selectedFile.imgFile} width='100px'></img>
-                {formData.selectedFiles.map(img => (
-                    <div>
-                        <img src={img.imgFile} width='100px'></img>
-                    </div>
-                ))}
-                <br />
-                <button onClick={submitForm}>Submit</button>
-            </form>
+            <label>
+                Description:
+                <input type="text" value={details} onChange={(e) => setDetails(e.target.value)} />
+            </label>
+            <br />
+            <label>
+                Desire:
+                <input type="text" value={desire} onChange={(e) => setDesire(e.target.value)} />
+            </label>
+            <br />
+            <label>
+                Image
+                <input type="file" onChange={(e) => setItemImage(e.target.files[0])} />
+            </label>
+            <br />
+            <button onClick={() => newItem()}>New item</button>
         </div>
-    )
+    );
 }
 
 export default AddItem
