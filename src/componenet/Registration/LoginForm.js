@@ -36,7 +36,7 @@ function LoginForm({ Login, error }) {
 
   return (
     <form onSubmit={submitHandler}>
-      {% csrf_token %}
+      {/* {% csrf_token %} */}
       <div className="form-inner">
         <h2>Login</h2> 
         {/*ERROR! */}
