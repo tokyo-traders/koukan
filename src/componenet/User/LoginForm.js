@@ -11,7 +11,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { styled, alpha } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 
 const RoundedButton = styled(Button)(() => ({
     borderRadius: 35,
@@ -24,6 +24,14 @@ const RoundedButton = styled(Button)(() => ({
 const theme = createTheme();
 
 function LoginForm({ Login, error }) {
+  // const useRef = useRef();
+  // const errRef = useRef();
+
+  // const [user, setUser] = useState('');
+  // const [pwd, setPwd] = useState('');
+  // const [errMsg, setErrMsg] = useState('');
+  // const [success, setSuccess] = useState(false)
+
   const [details, setDetails] = useState({email:"", password:""});
 
 
@@ -58,7 +66,8 @@ function LoginForm({ Login, error }) {
             variant="h4"
             fontFamily="Roboto Slab"
             padding={2}
-            color="#D904B5">
+            color="#D904B5"
+          >
             Welcome Back!
           </Typography>
           <Box component="form" onSubmit={handleSubmit}>
@@ -99,7 +108,7 @@ function LoginForm({ Login, error }) {
                 </Link>
               </Grid> */}
               <Grid item>
-                <Link component="button" href="#" variant="body2">
+                <Link href="/Signup" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

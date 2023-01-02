@@ -4,11 +4,10 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
-import { color } from '@mui/system';
+import Link from '@mui/material/Link';
 
 
 const RoundedButton = styled(Button)(() => ({
@@ -63,7 +62,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function NavBar() {
+function NavBar(props) {
+  
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar sx={{background:"#2E038C"}} position="static">
@@ -72,17 +72,17 @@ export default function NavBar() {
             justifyContent: "space-between"
           }}
         >
-          <Typography
+          <Link
             variant="h6"
-            noWrap
-            component="div"
             fontFamily="Roboto Slab"
             padding={2}
             color="#D904B5"
+            href="/"
+            underline='none'
           >
             <div>TOKYO</div>
             <div>TRADERS</div>
-          </Typography>
+          </Link>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
@@ -92,9 +92,12 @@ export default function NavBar() {
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
-          <RoundedButton variant='contained'>LOG IN</RoundedButton>
+          <RoundedButton variant='contained' href='/Login'>LOG IN</RoundedButton>
+          {/* <RoundedButton variant='contained'>ACCOUNT</RoundedButton> */}
         </Toolbar>
       </AppBar>
     </Box>
   );
 }
+
+export default NavBar;
