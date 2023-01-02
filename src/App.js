@@ -31,8 +31,6 @@ function App() {
       <NavBar />
       {/* <Trades /> */}
       {/* <Sidebar /> */}
-      {/* <LoginForm /> */}
-      <AddItem />
       <LoginForm />
       {/* <AddItem /> */}
       {/* <Registration /> */}
