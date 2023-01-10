@@ -8,8 +8,9 @@ function Trades() {
 
   useEffect(() => {
     axios
-      .get(`/api/all`)
+      .get(`/api/user/all`)
       .then((response) => {
+        // console.log(response)
         setTradeList(response.data)
       })
   }, [])
