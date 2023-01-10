@@ -1,56 +1,59 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, PureComponent } from 'react';
 import axios from "axios";
+import $ from 'jquery';
 import _ from "lodash";
 import './AddItem.css';
 import { upload } from '@testing-library/user-event/dist/upload';
 
 
+
+
 function AddItem() {
 
     const [itemName, setItemName] = useState("");
-    const [itemImageObj, setItemImageObj] = useState([]);
-    const [itemImageArr, setItemImageArr] = useState([]);
-
     const [details, setDetails] = useState('');
     const [desire, setDesire] = useState('');
 
-
     const uploadData = new FormData();
+    const uploadImages = new FormData()
     const newItem = async () => {
         uploadData.append('item_name', itemName);
-        uploadData.append('item_image', itemImageArr);
+
         uploadData.append('details', details);
         uploadData.append('user_id', 1);
-        let newItem = await fetch('/api/item', {
+
+        let newItem = fetch('/api/item', {
             method: 'POST',
-            body: uploadData
+            body: uploadData,
         })
-            .then(res => res.json())
+        const content = await newItem;
+
+        let newImages = axios.post(
+            '/api/image/multiple_upload/',
+            uploadImages,
+        )
+
+        Promise.all([newImages, newItem])
+            .then(res => console.log(res))
             .catch(error => console.log(error))
-        // for (let key in uploadData) {
-        //     console.log(key);
-        // }
-        // console.log(itemImageArr)
-        setItemImageArr([]);
         setDesire('');
         setDetails('');
         setItemName('');
-
     }
 
     const handleChange = (e) => {
-        // let imgs = []
+        // console.log(e.target.files)
         _.forEach(e.target.files, file => {
-            uploadData.append('item_image', file)
+            // console.log(file)
+            uploadImages.append('images', file)
+            // uploadImages.append("item_id", 1)
         })
-        setItemImageArr(itemImageArr)
     }
 
     return (
         <div className="App">
             <h3>Add an Item</h3>
             <label>
-
                 Title
                 <input type="text" value={itemName} onChange={(e) => setItemName(e.target.value)} />
             </label>
@@ -67,11 +70,11 @@ function AddItem() {
             <br />
             <label>
                 Image
-                <input type="file" onChange={handleChange} multiple />
+                <input type="file" accept="image/*" multiple onChange={handleChange} />
             </label>
-            <img src={itemImageArr?.url} />
+
             <br />
-            <button onClick={() => newItem()}>New item</button>
+            <button onClick={newItem}>New item</button>
         </div>
     );
 }
