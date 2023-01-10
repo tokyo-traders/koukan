@@ -31,9 +31,9 @@ function App() {
       {/* <Trades /> */}
       {/* <Sidebar /> */}
       {/* <LoginForm /> */}
-      <AddItem />
-      <LoginForm />
       {/* <AddItem /> */}
+      {/* <LoginForm /> */}
+      <AddItem />
       {/* <Registration /> */}
 
     </>
