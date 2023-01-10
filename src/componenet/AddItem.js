@@ -1,37 +1,53 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, PureComponent } from 'react';
 import axios from "axios";
-
+import $ from 'jquery';
+import _ from "lodash";
 import './AddItem.css';
 import { upload } from '@testing-library/user-event/dist/upload';
+
+
 
 
 function AddItem() {
 
     const [itemName, setItemName] = useState("");
-    const [itemImage, setItemImage] = useState();
     const [details, setDetails] = useState('');
     const [desire, setDesire] = useState('');
 
+    const uploadData = new FormData();
+    const uploadImages = new FormData()
     const newItem = async () => {
-        const uploadData = new FormData();
         uploadData.append('item_name', itemName);
-        uploadData.append('item_image', itemImage);
+
         uploadData.append('details', details);
         uploadData.append('user_id', 1);
 
-        let newItem = await fetch('/api/item', {
+        let newItem = fetch('/api/item', {
             method: 'POST',
-            body: uploadData
+            body: uploadData,
         })
-            .then(res => res.json())
-            .catch(error => console.log(error))
+        const content = await newItem;
 
-        console.log(newItem)
-        setItemImage();
+        let newImages = axios.post(
+            '/api/image/multiple_upload/',
+            uploadImages,
+        )
+
+        Promise.all([newImages, newItem])
+            .then(res => console.log(res))
+            .catch(error => console.log(error))
         setDesire('');
         setDetails('');
         setItemName('');
+    }
 
+    const handleChange = (e) => {
+        // console.log(e.target.files)
+        _.forEach(e.target.files, file => {
+            // console.log(file)
+            uploadImages.append('images', file)
+            // uploadImages.append("item_id", 1)
+        })
     }
 
     return (
@@ -54,10 +70,11 @@ function AddItem() {
             <br />
             <label>
                 Image
-                <input type="file" onChange={(e) => setItemImage(e.target.files[0])} />
+                <input type="file" accept="image/*" multiple onChange={handleChange} />
             </label>
+
             <br />
-            <button onClick={() => newItem()}>New item</button>
+            <button onClick={newItem}>New item</button>
         </div>
     );
 }
