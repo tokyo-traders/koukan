@@ -31,6 +31,7 @@ function App() {
   return (
     <>
       <NavBar />
+      {/* <Sidebar /> */}
       <Routes>
         <Route path='/' element={<Sidebar />} exact/>
         <Route path='/' element={<Trades />}/>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, PureComponent } from 'react';
 import axios from "axios";
-import $ from 'jquery';
+// import $ from 'jquery';
 import _ from "lodash";
 import './AddItem.css';
 import { upload } from '@testing-library/user-event/dist/upload';
