@@ -26,3 +26,10 @@ class MultipleImageSerializer(serializers.Serializer):  # no ModelSerializer
     images = serializers.ListField(
         child=serializers.ImageField()
     )
+    itemId = serializers.ListField(
+        child=serializers.IntegerField()
+    )
+
+# class MultipleImageSerializer(serializers.ListField):
+#     images = serializers.ImageField()
+#     item_id = serializers.IntegerField()

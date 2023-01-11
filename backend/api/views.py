@@ -59,14 +59,22 @@ class ImageView(viewsets.ModelViewSet):
     @action(detail=False, methods=["POST"])
     def multiple_upload(self, request, *args, **kwargs):
         serializer = MultipleImageSerializer(data=request.data)
-        # --> if serializer is valid and if it is an image
+        # itemId = int(request.POST.get('itemId'))
         if serializer.is_valid(raise_exception=True):
             images = serializer.validated_data.get('images')
-            print(images)
+            itemId = serializer.validated_data.get('itemId')
+            getItemInstance = Item.objects.get(pk=itemId[0])
+            print("this is getItemInstance", getItemInstance)
+            print("O-X-O-X-O-X-O-X-O-X-X-O-X-O")
+            print(serializer)
+            print("O-X-O-X-O-X-O-X-O-X-X-O-X-O")
+            print("this is id", id)
+            print("O-X-O-X-O-X-O-X-O-X-X-O-X-O")
             image_list = []
             for img in images:
+                print(img)
                 image_list.append(
-                    Image(image=img)
+                    Image(image=img, item_id=getItemInstance)
                 )
 
             if image_list:  # --> if imagelist exists

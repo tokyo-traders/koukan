@@ -1,6 +1,5 @@
 import React, { useState, useEffect, PureComponent } from 'react';
 import axios from "axios";
-import $ from 'jquery';
 import _ from "lodash";
 import './AddItem.css';
 import { upload } from '@testing-library/user-event/dist/upload';
@@ -16,26 +15,74 @@ function AddItem() {
 
     const uploadData = new FormData();
     const uploadImages = new FormData()
-    const newItem = async () => {
+    const newItem = async (e) => {
+        e.preventDefault()
         uploadData.append('item_name', itemName);
-
         uploadData.append('details', details);
         uploadData.append('user_id', 1);
+        uploadData.append("desire", desire)
+        // uploadImages.append("itemId", 85);
+        // try {
+        //     const sendItemInfo = await axios.post('/api/item', uploadData);
+        //     let info = await sendItemInfo.json()
+        //     localStorage.setItem("itemId", Number(info['id']))
+        //     const id = localStorage.getItem('itemId');
+        //     console.log(id)
+        // }
+        // catch (error) {
+        //     console.log(error)
+        // }
 
-        let newItem = fetch('/api/item', {
+        const asyncLocalStorage = {
+            setItem: async function (key, value) {
+                await Promise.resolve();
+                localStorage.setItem(key, value);
+            },
+            getItem: async function (key, value) {
+                await Promise.resolve();
+                localStorage.getItem(key, value);
+            },
+        }
+        fetch('/api/item', {
             method: 'POST',
             body: uploadData,
         })
-        const content = await newItem;
+            // .then(res => res.text())
+            .then(res => res.json())
+            // .then(res => {
+            //     // return setTimeout(() => {
+            //     asyncLocalStorage.setItem("itemId", Number(res['id']))
+            // })
+            // .then(() => {
 
-        let newImages = axios.post(
-            '/api/image/multiple_upload/',
-            uploadImages,
-        )
-
-        Promise.all([newImages, newItem])
-            .then(res => console.log(res))
+            //     console.log(localStorage.getItem('itemId'))
+            // })
+            // .then(() => {
+            //     return uploadImages.append("itemId", localStorage.getItem('itemId'))
+            // })
+            .then(data => {
+                console.log(data)
+                uploadImages.append("itemId", Number(data.id))
+            }
+            )
+            .then(() => {
+                for (const value of uploadImages.values()) {
+                    console.log(value)
+                }
+            })
+            .then(() => axios.post(
+                '/api/image/multiple_upload/',
+                uploadImages,
+            ))
             .catch(error => console.log(error))
+        // let newImages = axios.post(
+        //     '/api/image/multiple_upload/',
+        //     uploadImages,
+        // )
+
+        // Promise.all([newImages, newItem])
+
+        //     .catch(error => console.log(error))
         setDesire('');
         setDetails('');
         setItemName('');
@@ -46,6 +93,8 @@ function AddItem() {
         _.forEach(e.target.files, file => {
             // console.log(file)
             uploadImages.append('images', file)
+            // uploadImages.append('itemId', 85);
+
             // uploadImages.append("item_id", 1)
         })
     }
