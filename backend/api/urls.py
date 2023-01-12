@@ -12,6 +12,7 @@ router.register('image/multiple_upload', views.ImageView)
 
 urlpatterns = [
     path('user/all', views.user_list),
+
     path('user/login', views.user_edit),
     path('item/<int:userid>', views.item_list), # to GET and POST all the item objects
     path('item/<str:username>/<int:id>', views.item_edit), # to get the item with full CRUD

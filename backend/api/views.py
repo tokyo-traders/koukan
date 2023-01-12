@@ -29,18 +29,22 @@ def user_list(request):
         else:
             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
 
-@api_view(['GET', 'PUT', 'DELETE'])
-def user_edit(request, name):
 
+@api_view(['GET', 'PUT', 'DELETE', 'POST'])
+def user_edit(request):
+
+    password = request.data["password"]
+    email = request.data["email"]
+    
     try:
-        user = User.objects.get(first_name=name)
+        user = User.objects.get(email=email)
     except User.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-
+    print(user)
     if request.method == "GET":
         serializer = UserSerializer(user)
         return Response(serializer.data)
-    elif request.method == "PUT":
+    if request.method == "PUT":
         serializer = UserSerializer(user, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -49,6 +53,13 @@ def user_edit(request, name):
     elif request.method == 'DELETE':
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    elif request.method == "POST":
+        serializer = UserSerializer(user)
+        user_password = serializer.data["password"]
+        user_email = serializer.data["email"]
+        if user_password == password and user_email == email:
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(False, status=status.HTTP_401_UNAUTHORIZED)
 
 
 # --> this handles all the methods POST GET PUT DELETE

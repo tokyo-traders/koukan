@@ -1,4 +1,4 @@
-import {useRef, useState, useEffect } from "react";
+import {useRef, useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,6 +12,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
+import { useNavigate} from "react-router-dom";
 
 const RoundedButton = styled(Button)(() => ({
     borderRadius: 35,
@@ -34,18 +35,25 @@ function LoginForm({ Login, error }) {
 
   const [details, setDetails] = useState({email:"", password:""});
 
+  const navigate = useNavigate();
+  const signup = useCallback(()=> navigate('/signup', {replace: true}), [navigate]);
+
 
   const handleSubmit = e => {
     e.preventDefault();
 
-    console.log({email:details.email, password:details.password})
+    console.log(details)
 
     axios
-    .post('/api/user/login', 
-    JSON.stringify({email:details.email, password:details.password})
+    .post(`/api/user/login/`,
+    JSON.stringify(details),
+    {
+      headers: { 'Content-Type': 'application/json' },
+      withCredentials: true
+  }
     )
     .then((res) => {
-      console.log(res)
+      console.log(res.data)
      })
     .catch((err) => alert("error!"));
   }
@@ -77,7 +85,7 @@ function LoginForm({ Login, error }) {
               label="Email Address"
               name="email"
               autoComplete="email"
-              onChange={e => setDetails({...details, email:e.target.value})}
+              onChange={(e) => setDetails({ ...details, email: e.target.value })}
               value={details.email}
               />
             <TextField
@@ -108,8 +116,10 @@ function LoginForm({ Login, error }) {
                 </Link>
               </Grid> */}
               <Grid item>
-                <Link href="/Signup" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                <Link
+                  onClick={signup}
+                >
+                  Don't have an account? Sign Up
                 </Link>
               </Grid>
             </Grid>

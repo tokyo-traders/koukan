@@ -13,6 +13,7 @@ import SignupForm from "./componenet/User/SignupForm";
 import MyPage from "./componenet/MyPage";
 
 function App() {
+
 	// const [user, setUser] = useState({name:"", email:""});
 	// const [error, setError] = useState("");
 
