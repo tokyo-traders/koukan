@@ -1,13 +1,16 @@
 import axios from "axios";
 import './App.css';
-import './componenet/NavBar.css'
 import './componenet/Registration/Registration.css'
+import { Route, Routes} from "react-router-dom";
 import NavBar from './componenet/NavBar';
 import Sidebar from './componenet/Sidebar';
 import Trades from './componenet/Trades';
 import Registration from './componenet/Registration/Registration';
-import AddItem from './componenet/AddItem'; import { useEffect } from "react";
-import LoginForm from './componenet/Registration/LoginForm';
+import AddItem from './componenet/AddItem'; 
+import { Component, useEffect } from "react";
+import LoginForm from './componenet/User/LoginForm';
+import SignupForm from "./componenet/User/SignupForm";
+import MyPage from "./componenet/MyPage"; 
 
 
 
@@ -28,14 +31,13 @@ function App() {
   return (
     <>
       <NavBar />
-      {/* <Trades /> */}
-      {/* <Sidebar /> */}
-      {/* <LoginForm /> */}
-      {/* <AddItem /> */}
-      {/* <LoginForm /> */}
-      <AddItem />
-      {/* <Registration /> */}
-
+      <Routes>
+        <Route path='/' element={<Sidebar />} exact/>
+        <Route path='/' element={<Trades />}/>
+        <Route path='/Login' element={<LoginForm />}/>
+        <Route path='/Signup' element={<SignupForm />}/>
+        <Route path='/MyPage' element={<MyPage />}/>
+      </Routes>
     </>
 
   );

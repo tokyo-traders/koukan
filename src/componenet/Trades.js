@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import axios from "axios";
 
+
+
 function Trades() {
   const [tradeList, setTradeList] = useState([])
 
@@ -18,6 +20,7 @@ function Trades() {
       {tradeList.map((trade, index) => (
         <div>{trade.first_name}</div>
       ))}
+      <h1>Trades</h1>
     </>
   )
 }

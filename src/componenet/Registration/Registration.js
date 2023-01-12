@@ -40,7 +40,7 @@ const Registration = () => {
     useEffect(() => {
         userRef.current.focus();
     }, [])
-
+ 
     useEffect(() => {
         const result = USER_REGEX.test(user);
         console.log(result);
@@ -69,7 +69,7 @@ const Registration = () => {
             setErrMsg("Invalid Entry");
             return;
         }
-        // console.log({ username:user, password:pwd, first_name: firstName, last_name: lastName, email, address }) 
+        console.log({ username:user, password:pwd, first_name: firstName, last_name: lastName, email, address }) 
         try {
             const response = await axios.post(REGISTER_URL,
                 JSON.stringify({ username:user, password:pwd, first_name: firstName, last_name: lastName, email, address }),
@@ -109,45 +109,45 @@ const Registration = () => {
           <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p> 
           <h1>Register</h1>
           <form onSubmit={handleSubmit}>
-          <label htmlFor="username">
+            <label htmlFor="firstName">
                 First Name:
             </label>
             <input
                 type="text"
-                id="username"
+                id="firstname"
                 ref={firstNameRef}
                 autoComplete="off"
                 onChange={(e) => setFirstName(e.target.value)}
                 value={firstName}
             />
-            <label htmlFor="username">
+            <label htmlFor="lastName">
                 Last Name:
             </label>
             <input
                 type="text"
-                id="username"
+                id="lastname"
                 ref={lastNameRef}
                 autoComplete="off"
                 onChange={(e) => setLastName(e.target.value)}
                 value={lastName}
             />
-            <label htmlFor="username">
+            <label htmlFor="email">
                 email:
             </label>
             <input
                 type="text"
-                id="username"
+                id="email"
                 ref={emailRef}
                 autoComplete="off"
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
             />
-            <label htmlFor="username">
+            <label htmlFor="address">
                 Address:
             </label>
             <input
                 type="text"
-                id="username"
+                id="address"
                 ref={addressRef}
                 autoComplete="off"
                 onChange={(e) => setAddress(e.target.value)}
