@@ -65,6 +65,7 @@ class ImageView(viewsets.ModelViewSet):
             images = serializer.validated_data.get('images')
             itemId = serializer.validated_data.get('itemId')
             getItemInstance = Item.objects.get(pk=itemId[0])
+
             image_list = []
             for img in images:
                 print(img)
