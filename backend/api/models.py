@@ -22,7 +22,8 @@ class User(models.Model):
 
 class Image(models.Model):
     image = models.ImageField(blank=True, null=True, upload_to='%Y/%m/%d')
-    item_id = models.ForeignKey('Item', default=1, on_delete=models.CASCADE)
+    item_id = models.ForeignKey(
+        'Item', null=True, on_delete=models.CASCADE, related_name="item_model")
 
 
 class Item(models.Model):

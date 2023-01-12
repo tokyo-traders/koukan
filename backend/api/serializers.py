@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, Item, Image
+from .models import User, Item, Image, Post
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -26,3 +26,12 @@ class MultipleImageSerializer(serializers.Serializer):  # no ModelSerializer
     images = serializers.ListField(
         child=serializers.ImageField()
     )
+    itemId = serializers.ListField(
+        child=serializers.IntegerField()
+    )
+
+class PostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = "__all__"
+

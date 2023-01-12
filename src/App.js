@@ -1,47 +1,45 @@
 import axios from "axios";
-import './App.css';
-import './componenet/Registration/Registration.css'
-import { Route, Routes} from "react-router-dom";
-import NavBar from './componenet/NavBar';
-import Sidebar from './componenet/Sidebar';
-import Trades from './componenet/Trades';
-import Registration from './componenet/Registration/Registration';
-import AddItem from './componenet/AddItem'; 
+import "./App.css";
+import "./componenet/Registration/Registration.css";
+import { Route, Routes } from "react-router-dom";
+import NavBar from "./componenet/NavBar";
+import Sidebar from "./componenet/Sidebar";
+import Trades from "./componenet/Trades";
+import Registration from "./componenet/Registration/Registration";
+import AddItem from "./componenet/AddItem";
 import { Component, useEffect } from "react";
-import LoginForm from './componenet/User/LoginForm';
+import LoginForm from "./componenet/User/LoginForm";
 import SignupForm from "./componenet/User/SignupForm";
-import MyPage from "./componenet/MyPage"; 
-
-
+import MyPage from "./componenet/MyPage";
 
 function App() {
-  // const [user, setUser] = useState({name:"", email:""});
-  // const [error, setError] = useState("");
 
-  // const Login = details => {
-  //   console.log(details);
+	// const [user, setUser] = useState({name:"", email:""});
+	// const [error, setError] = useState("");
 
-  //   off(details.email == adminUser.email )
-  // }
+	// const Login = details => {
+	//   console.log(details);
 
-  // const Logout =() => {
-  //   console.log("Logout")
-  // }
+	//   off(details.email == adminUser.email )
+	// }
 
-  return (
-    <>
-      <NavBar />
-      {/* <Sidebar /> */}
-      <Routes>
-        <Route path='/' element={<Sidebar />} exact/>
-        <Route path='/' element={<Trades />}/>
-        <Route path='/Login' element={<LoginForm />}/>
-        <Route path='/Signup' element={<SignupForm />}/>
-        <Route path='/MyPage' element={<MyPage />}/>
-      </Routes>
-    </>
+	// const Logout =() => {
+	//   console.log("Logout")
+	// }
 
-  );
+	return (
+		<>
+			<NavBar />
+			<Routes>
+				<Route path="/" element={<Sidebar />} exact />
+				<Route path="/" element={<Trades />} />
+				<Route path="/Login" element={<LoginForm />} />
+				<Route path="/Signup" element={<SignupForm />} />
+				<Route path="/MyPage" element={<MyPage />} />
+				<Route path="/addItem" element={<AddItem />} />
+			</Routes>
+		</>
+	);
 }
 
 export default App;
