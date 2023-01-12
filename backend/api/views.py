@@ -3,13 +3,13 @@ from django.http import JsonResponse
 from rest_framework import generics, status, viewsets
 from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
-from .serializers import UserSerializer, ItemSerializer, ImageSerializer, MultipleImageSerializer
-from .models import User, Item, Image
+from .serializers import UserSerializer, ItemSerializer, ImageSerializer, MultipleImageSerializer, PostSerializer
+from .models import User, Item, Image, Post
 
-import io
+import io #delete
 
-from rest_framework.parsers import JSONParser
-from rest_framework.renderers import JSONRenderer
+from rest_framework.parsers import JSONParser #delete
+from rest_framework.renderers import JSONRenderer #delete
 
 
 @api_view(['GET', 'POST'])
@@ -26,9 +26,10 @@ def user_list(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
 
-
-@api_view(['GET', 'PUT', 'DELETE', 'POST'])
+@api_view(['GET', 'PUT', 'DELETE'])
 def user_edit(request, name):
 
     try:
@@ -64,12 +65,7 @@ class ImageView(viewsets.ModelViewSet):
             images = serializer.validated_data.get('images')
             itemId = serializer.validated_data.get('itemId')
             getItemInstance = Item.objects.get(pk=itemId[0])
-            print("this is getItemInstance", getItemInstance)
-            print("O-X-O-X-O-X-O-X-O-X-X-O-X-O")
-            print(serializer)
-            print("O-X-O-X-O-X-O-X-O-X-X-O-X-O")
-            print("this is id", id)
-            print("O-X-O-X-O-X-O-X-O-X-X-O-X-O")
+
             image_list = []
             for img in images:
                 print(img)
@@ -111,11 +107,12 @@ def item_list(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE', 'POST'])
-def item_edit(request, name):
+def item_edit(request, id, username):
 
     try:
-        item = Item.objects.get(item_name=name)
-    except User.DoesNotExist:
+        item = Item.objects.get(pk=id)
+        user = User.objects.filter(username=username).first() # maybe filter is better
+    except Item.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == "GET":
@@ -130,6 +127,57 @@ def item_edit(request, name):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == 'DELETE':
         item.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET', 'DELETE'])
+def image_list(request, itemId):
+    try:
+        image = Image.object.get(item_id=itemId)
+        print("we have successfully found these images", image)
+    except Image.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == "GET":
+        # Will check if need ImageSerializer or MultipleImageSerializer
+        serializer = ImageSerializer(image)
+        return Response(serializer.data)
+    elif request.method == "DELETE":
+        image.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET', 'POST'])
+def post_list(request):
+    if request.method == "GET":
+        post = Post.objects.all()
+        serializer = PostSerializer(post, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    elif request.method == "POST":
+        serializer = PostSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+
+@api_view(['GET', 'POST', 'PUT', 'DELETE'])
+def post_edit(request, postId, itemId, userId):
+    try:
+        post = Post.objects.get(pk=postId)
+    except Post.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == "GET":
+        serializer = PostSerializer(post)
+        return Response(serializer.data)
+    elif request.method == "PUT":
+        serializer = PostSerializer(post, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == "DELETE":
+        post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
