@@ -184,7 +184,7 @@ export default function UserSingleItem() {
                                     Desire Item
                                 </Typography>
                                 <Typography gutterBottom variant='body'>
-                                    {/* {itemList[1].desire} */}
+                                    {itemList[1].desire}
                                 </Typography>
                             </Box>
                             
