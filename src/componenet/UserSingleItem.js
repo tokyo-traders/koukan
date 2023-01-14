@@ -10,6 +10,8 @@ import Divider from '@mui/material/Divider';
 import { Stack } from '@mui/system';
 import Button from '@mui/material/Button';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 import axios from "axios";
 
@@ -126,7 +128,11 @@ export default function UserSingleItem() {
                 </Grid>
                 <Grid item xs={5} sx={{margin: '10px'}}>
                     <Container  sx={{height: 350 }}>
+                        <Box>
+                        <Button><NavigateBeforeIcon/></Button>
+                        </Box>
                         <Img alt="image1" src="https://m.media-amazon.com/images/I/71vHeoTBtiL._AC_SL1500_.jpg" />
+                        <Button><NavigateNextIcon/></Button>
                     </Container>
                 </Grid>
                 <Grid item xs={5} sm container>
@@ -178,7 +184,7 @@ export default function UserSingleItem() {
                                     Desire Item
                                 </Typography>
                                 <Typography gutterBottom variant='body'>
-                                    {itemList[1].desire}
+                                    {/* {itemList[1].desire} */}
                                 </Typography>
                             </Box>
                             
