@@ -24,7 +24,7 @@ export default function MyPage() {
   const [itemList, setItemList] = useState([]);
   const [snapshots, setSnapshots] = useState([])
 
-  const userid = 1;
+  const userid = 0;
 
   useEffect(() => {
     axios
@@ -35,7 +35,7 @@ export default function MyPage() {
         for (let item of response.data) {
           idArr.push(item.id)
         }
-        console.log(idArr)
+        // console.log(idArr)
         idArr.map(id => {
           axios.get(`api/item-image/${id}`)
             .then(image => {
