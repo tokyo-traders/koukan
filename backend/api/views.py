@@ -6,10 +6,10 @@ from rest_framework.response import Response
 from .serializers import UserSerializer, ItemSerializer, ImageSerializer, MultipleImageSerializer, PostSerializer
 from .models import User, Item, Image, Post
 
-import io #delete
+import io  # delete
 
-from rest_framework.parsers import JSONParser #delete
-from rest_framework.renderers import JSONRenderer #delete
+from rest_framework.parsers import JSONParser  # delete
+from rest_framework.renderers import JSONRenderer  # delete
 
 
 @api_view(['GET', 'POST'])
@@ -35,7 +35,7 @@ def user_edit(request):
 
     password = request.data["password"]
     email = request.data["email"]
-    
+
     try:
         user = User.objects.get(email=email)
     except User.DoesNotExist:
@@ -103,11 +103,15 @@ class ImageView(viewsets.ModelViewSet):
 
 
 @api_view(['GET', 'POST'])
-def item_list(request):
+def item_list(request, userid):
 
     if request.method == "GET":
-        item = Item.objects.all()
+        # item = Item.objects.all()
+        # id = request.query_params.get('userId')
+        item = Item.objects.filter(user_id=userid).all()
+        print("this is item", item)
         serializer = ItemSerializer(item, many=True)
+        print("this is serializers", serializer)
         return Response(serializer.data)
     if request.method == "POST":
         serializer = ItemSerializer(data=request.data)
@@ -122,7 +126,8 @@ def item_edit(request, id, username):
 
     try:
         item = Item.objects.get(pk=id)
-        user = User.objects.filter(username=username).first() # maybe filter is better
+        # maybe filter is better
+        user = User.objects.filter(username=username).first()
     except Item.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -140,21 +145,27 @@ def item_edit(request, id, username):
         item.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 @api_view(['GET', 'DELETE'])
 def image_list(request, itemId):
     try:
-        image = Image.object.get(item_id=itemId)
+        # image = Image.object.get(item_id=itemId)
+        image = Image.objects.filter(item_id=itemId).all()
+
         print("we have successfully found these images", image)
     except Image.DoesNotExist:
+
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == "GET":
         # Will check if need ImageSerializer or MultipleImageSerializer
+        # image = Image.object.filter(item_id=itemId).all()
         serializer = ImageSerializer(image)
         return Response(serializer.data)
     elif request.method == "DELETE":
         image.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 @api_view(['GET', 'POST'])
 def post_list(request):
@@ -169,6 +180,7 @@ def post_list(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def post_edit(request, postId, itemId, userId):

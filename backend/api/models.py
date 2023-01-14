@@ -25,6 +25,8 @@ class Image(models.Model):
     item_id = models.ForeignKey(
         'Item', null=True, on_delete=models.CASCADE, related_name="item_model")
 
+    # objects = models.Manager()
+
 
 class Item(models.Model):
     item_name = models.CharField(max_length=200, default="")
@@ -37,6 +39,7 @@ class Item(models.Model):
     is_tradable = models.BooleanField(default=True)
     # item_image = models.ImageField(blank=True, null=True, upload_to='images/')
 
+
 class Post(models.Model):
     user_id = models.ForeignKey('User', on_delete=models.CASCADE)
     item_id = models.ForeignKey('Item', on_delete=models.CASCADE)
@@ -44,6 +47,7 @@ class Post(models.Model):
     desire = models.TextField(max_length=255)
     delivery = models.BooleanField(default=False)
     expiration = models.DateTimeField(default=timezone.now)
+
 
 class Offers(models.Model):
     post_id = models.ForeignKey('Post', on_delete=models.CASCADE)
