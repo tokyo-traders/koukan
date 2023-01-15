@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from rest_framework import generics, status, viewsets
 from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
-from .serializers import UserSerializer, ItemSerializer, ImageSerializer, MultipleImageSerializer, PostSerializer
+from .serializers import UserSerializer, ItemSerializer, ImageSerializer, MultipleImageSerializer, PostSerializer, MultiModelSerializer
 from .models import User, Item, Image, Post
 
 import io  # delete
@@ -101,6 +101,39 @@ class ImageView(viewsets.ModelViewSet):
 #         if serializer.is_valid():
 #             serializer.save()
 
+@api_view(['GET'])
+def newall_item(request, userid):
+    try:
+        items = Item.objects.filter(user_id=userid).all()
+        images = Image.objects.all()
+    except Item.DoesNotExist or Image.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)\
+
+    if request.method == "GET":
+        imgUrl = []
+        data = []
+        for item in items:
+            singleItemSerializer = ItemSerializer(item)
+            for image in images:
+                singleImageSerializer = ImageSerializer(image)
+                if singleImageSerializer.data['item_id'] == singleItemSerializer.data['id']:
+                    imgUrl.append(singleImageSerializer.data['image'])
+            data.append({
+                'itemID': singleItemSerializer.data['id'],
+                'itemName': singleItemSerializer.data['item_name'],
+                'itemImages': imgUrl
+            })
+            imgUrl = []
+        return Response(data)
+
+        # Initialize final data to return
+        # data = []
+        # for item in items:
+        #     serializer1 = ItemSerializer(item)
+        #     print(serializer1.data['id'])
+        #     data.append(
+        #         {'itemID': serializer1.data['id'], 'itemName': serializer1.data['item_name'], 'itemImage': url})
+
 
 @api_view(['GET', 'POST'])
 def item_list(request, userid):
@@ -109,9 +142,7 @@ def item_list(request, userid):
         # item = Item.objects.all()
         # id = request.query_params.get('userId')
         item = Item.objects.filter(user_id=userid).all()
-        print("this is item", item)
         serializer = ItemSerializer(item, many=True)
-        print("this is serializers", serializer)
         return Response(serializer.data)
     if request.method == "POST":
         serializer = ItemSerializer(data=request.data)
@@ -146,13 +177,31 @@ def item_edit(request, id, username):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+@api_view(['GET'])
+def all_item(request, userid, itemid):
+    try:
+        items = Item.objects.filter(user_id=userid).all().values('item_name')
+        images = Image.objects.filter(item_id=itemid).all()
+    except Item.DoesNotExist or Image.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == "GET":
+        print("this is items", items)
+        print("this is images", images)
+        data = []
+        for item in items:
+            for info in images:
+                data.append({'itemName': item['item_name'],
+                            'image': info.image.url})
+                print("data", data)
+                return Response(data)
+
+
 @api_view(['GET', 'DELETE'])
 def image_list(request, itemId):
     try:
         # image = Image.object.get(item_id=itemId)
         image = Image.objects.filter(item_id=itemId).all()
-
-        print("we have successfully found these images", image)
     except Image.DoesNotExist:
 
         return Response(status=status.HTTP_404_NOT_FOUND)
@@ -160,7 +209,14 @@ def image_list(request, itemId):
     if request.method == "GET":
         # Will check if need ImageSerializer or MultipleImageSerializer
         # image = Image.object.filter(item_id=itemId).all()
-        serializer = ImageSerializer(image)
+        # count = 0
+        # for img in image:
+        #     serializer = ImageSerializer(img)
+        #     count += 1
+        #     print("this is image serializer", serializer)
+        #     print("this is the count", count)
+        #     return Response(serializer.data)
+        serializer = ImageSerializer(image, many=True)
         return Response(serializer.data)
     elif request.method == "DELETE":
         image.delete()
