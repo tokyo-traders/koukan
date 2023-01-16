@@ -170,26 +170,19 @@ export default function MyPage() {
 
       {itemInfo?.map(item => (
         <div key={item.id}>
-          {/* {console.log(item)} */}
-          {item.itemName}
-          {/* <img src='../../backend/api/backend/media/2023/01/14/natural_leaf.jpg'></img> */}
-          <img src={`http://127.0.0.1:8000/api${item.itemImages[0]}`} width="50px" />
+          <Card elevation={6} width="50px">
+            <CardMedia
+              style={{ height: 350 }}
+              image={`http://127.0.0.1:8000/api${item.itemImages[0]}`}
+            />
+            <CardContent >
+              <Typography gutterBottom variant="h5">{item.itemName}</Typography>
+              <Box display="flex" justify="space-between">
+                <Typography gutterBottom variant="subtitle1"></Typography>
+              </Box>
+            </CardContent>
+          </Card>
         </div>
-        // <Card elevation={6}>
-        //   <CardMedia
-        //     style={{ height: 350 }}
-        //     // image={snapshots} // need to check
-        //     title={item.itemName}
-
-        //   />
-        //   <CardContent >
-        //     <Typography gutterBottom variant="h5">{item.item_name}</Typography>
-        //     <Box display="flex" justify="space-between">
-        //       <Typography variant="subtitle1">{item.description}</Typography>
-        //       <Typography gutterBottom variant="subtitle1"></Typography>
-        //     </Box>
-        //   </CardContent>
-        // </Card>
       ))}
     </>
   );
