@@ -11,41 +11,37 @@ import { Stack } from '@mui/system';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import { adaptV4Theme, CardActions } from '@mui/material';
+import { adaptV4Theme, CardActions, IconButton } from '@mui/material';
 import Button from '@mui/material/Button';
 
+import Icon from '@mui/material/Icon';
+import AddItem from './AddItem';
+
 import axios from "axios";
+import { ContactlessOutlined } from '@mui/icons-material';
 
-
-
+const BASE_URL = 'http://127.0.0.1:8000/api'
 
 export default function MyPage() {
 
   const [itemList, setItemList] = useState([]);
-  const [snapshots, setSnapshots] = useState([])
+  const [itemNames, setitemNames] = useState([])
+  const [snapshots, setSnapshots] = useState('')
+
+  const [itemInfo, setItemInfo] = useState([{
+    "itemName": "",
+    "itemImages": "",
+    "itemID": ""
+  }])
+
 
   const userid = 1;
+  const itemid = 177;
 
   useEffect(() => {
-    axios
-      .get(`/api/item/${userid}`)
-      .then((response) => {
-        setItemList(response.data)
-        const idArr = [];
-        for (let item of response.data) {
-          idArr.push(item.id)
-        }
-        console.log(idArr)
-        idArr.map(id => {
-          axios.get(`api/item-image/${id}`)
-            .then(image => {
-              console.log(image)
-              // setSnapshots(...image[0], snapshots)
-            })
-        })
-      })
-      .then((response) => {
-
+    axios.get(`/api/all-info/${userid}`)
+      .then(response => {
+        setItemInfo([...response.data])
       })
   }, [])
 
@@ -99,24 +95,38 @@ export default function MyPage() {
       <Box sx={{ width: '50%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
         <Divider sx={{ borderBottomWidth: 1 }} variant="middle" />
       </Box>
+      <Grid
+        direction="row"
 
-      {itemList?.map(item => (
-        <Card elevation={6}>
-          <CardMedia
-            style={{ height: 350 }}
-            image={item.image} // need to check
-            title={item.item_name}
-
-          />
-          <CardContent >
-            <Typography gutterBottom variant="h5">{item.item_name}</Typography>
-            <Box display="flex" justify="space-between">
-              <Typography variant="subtitle1">{item.description}</Typography>
-              <Typography gutterBottom variant="subtitle1"></Typography>
-            </Box>
-          </CardContent>
-        </Card>
-      ))}
+        justifyContent="center"
+        alignItems="center" md={4}
+      // spacing={3}
+      >
+        {itemInfo?.map(item => (
+          <div key={item.id}>
+            <Card elevation={6} sx={{ maxWidth: 345, mt: 10, marginLeft: 4 }}>
+              <CardMedia
+                component="img"
+                style={{ width: 350 }}
+                image={BASE_URL + `${item.itemImages[0]}`}
+                height="140"
+              />
+              <CardContent >
+                <Typography gutterBottom variant="h5">{item.itemName}</Typography>
+                <Box display="flex" justify="space-between">
+                  <Typography gutterBottom variant="subtitle1"></Typography>
+                </Box>
+              </CardContent>
+            </Card>
+          </div>
+        ))}
+      </Grid>
+      <Link href='/addItem'>
+        <Button >
+          <Icon sx={{ fontSize: 90, marginLeft: 15, marginTop: 3 }}>add_circle</Icon>
+        </Button>
+      </Link>
+      {/* <IconButton variant='contained'>Add an Item</IconButton> */}
     </>
   );
 }
