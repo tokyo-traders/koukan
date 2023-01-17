@@ -8,10 +8,38 @@ import Container from '@mui/material/Container';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import Divider from '@mui/material/Divider';
 import { Stack } from '@mui/system';
+import { useState, useEffect } from 'react';
+import useAxiosPrivate from "./hooks/axiosPrivate"
+import { setUseProxies } from 'immer';
 
 
 export default function MyPage() {
+  const [user, setUser] = useState("")
+  const axiosPrivate = useAxiosPrivate();
 
+  useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
+
+    const getUsers = async () => {
+      try {
+        const response = await axiosPrivate.get('/api/user/login', {
+          signal : controller.signal
+        });
+        console.log("MyPage", response.data.username)
+        isMounted && setUser(response.data.username)
+      } catch (err) {
+        console.error("FUckYOU", err)
+      }
+    }
+
+    getUsers();
+
+    return () =>{
+      isMounted = false;
+      controller.abort();
+    }
+  },[]);
 
   return (
     <>
@@ -34,7 +62,7 @@ export default function MyPage() {
             padding={2}
             color="#D904B5"
           >
-            USER NAME 
+            {user}
           </Typography>
           <Box
            sx={{

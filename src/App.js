@@ -2,15 +2,17 @@ import axios from "axios";
 import "./App.css";
 import "./componenet/Registration/Registration.css";
 import { Route, Routes } from "react-router-dom";
-import NavBar from "./componenet/NavBar";
 import Sidebar from "./componenet/Sidebar";
 import Trades from "./componenet/Trades";
+import NavBar from "./componenet/NavBar"
 import Registration from "./componenet/Registration/Registration";
 import AddItem from "./componenet/AddItem";
 import { Component, useEffect } from "react";
 import LoginForm from "./componenet/User/LoginForm";
 import SignupForm from "./componenet/User/SignupForm";
 import MyPage from "./componenet/MyPage";
+import Layout from "./componenet/context/Layout";
+import RequireAuth from "./componenet/User/RequireAuth";
 
 function App() {
 
@@ -29,14 +31,19 @@ function App() {
 
 	return (
 		<>
-			<NavBar />
+		            <NavBar />
 			<Routes>
-				<Route path="/" element={<Sidebar />} exact />
-				<Route path="/" element={<Trades />} />
-				<Route path="/Login" element={<LoginForm />} />
-				<Route path="/Signup" element={<SignupForm />} />
-				<Route path="/MyPage" element={<MyPage />} />
-				<Route path="/addItem" element={<AddItem />} />
+				<Route path="/" element={<Layout />} exact>
+					<Route path="/" element={<Sidebar />} exact />
+					<Route path="/" element={<Trades />} />
+					<Route path="/Login" element={<LoginForm />} />
+					<Route path="/Signup" element={<SignupForm />} />
+
+					<Route element={<RequireAuth />}>
+						<Route path="/MyPage" element={<MyPage />} />
+						<Route path="/addItem" element={<AddItem />} />
+					</Route>
+				</Route>
 			</Routes>
 		</>
 	);
