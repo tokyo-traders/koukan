@@ -33,3 +33,5 @@ const ItemCard = ({ item }) => {
         </Card>
     );
 }
+
+export default ItemCard

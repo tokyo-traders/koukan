@@ -33,33 +33,22 @@ function AddItem() {
         //     console.log(error)
         // }
 
-        const asyncLocalStorage = {
-            setItem: async function (key, value) {
-                await Promise.resolve();
-                localStorage.setItem(key, value);
-            },
-            getItem: async function (key, value) {
-                await Promise.resolve();
-                localStorage.getItem(key, value);
-            },
-        }
+        // const asyncLocalStorage = {
+        //     setItem: async function (key, value) {
+        //         await Promise.resolve();
+        //         localStorage.setItem(key, value);
+        //     },
+        //     getItem: async function (key, value) {
+        //         await Promise.resolve();
+        //         localStorage.getItem(key, value);
+        //     },
+        // }
         fetch('/api/item', {
             method: 'POST',
             body: uploadData,
         })
             // .then(res => res.text())
             .then(res => res.json())
-            // .then(res => {
-            //     // return setTimeout(() => {
-            //     asyncLocalStorage.setItem("itemId", Number(res['id']))
-            // })
-            // .then(() => {
-
-            //     console.log(localStorage.getItem('itemId'))
-            // })
-            // .then(() => {
-            //     return uploadImages.append("itemId", localStorage.getItem('itemId'))
-            // })
             .then(data => {
                 console.log(data)
                 uploadImages.append("itemId", Number(data.id))

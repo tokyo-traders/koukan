@@ -13,6 +13,8 @@ import SignupForm from "./componenet/User/SignupForm";
 import MyPage from "./componenet/MyPage";
 import Layout from "./componenet/context/Layout";
 import RequireAuth from "./componenet/User/RequireAuth";
+import UserSingleItem from "./componenet/UserSingleItem"
+
 
 function App() {
 
@@ -44,6 +46,7 @@ function App() {
 						<Route path="/addItem" element={<AddItem />} />
 					</Route>
 				</Route>
+
 			</Routes>
 		</>
 	);
