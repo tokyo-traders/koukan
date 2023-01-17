@@ -11,6 +11,7 @@ import { Component, useEffect } from "react";
 import LoginForm from "./componenet/User/LoginForm";
 import SignupForm from "./componenet/User/SignupForm";
 import MyPage from "./componenet/MyPage";
+import UserSingleItem from "./componenet/UserSingleItem"
 
 function App() {
 
@@ -36,7 +37,10 @@ function App() {
 				<Route path="/Login" element={<LoginForm />} />
 				<Route path="/Signup" element={<SignupForm />} />
 				<Route path="/MyPage" element={<MyPage />} />
+
+				
 				<Route path="/addItem" element={<AddItem />} />
+				<Route path="/UserSingleItem" element={<UserSingleItem />} />
 			</Routes>
 		</>
 	);

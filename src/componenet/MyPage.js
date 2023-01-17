@@ -35,13 +35,29 @@ export default function MyPage() {
   }])
 
 
-  const userid = 1;
-  const itemid = 177;
+  const userid = 0;
 
   useEffect(() => {
-    axios.get(`/api/all-info/${userid}`)
-      .then(response => {
-        setItemInfo([...response.data])
+    axios
+      .get(`/api/item/${userid}`)
+      .then((response) => {
+        setItemList(response.data)
+        const idArr = [];
+        for (let item of response.data) {
+          idArr.push(item.id)
+        }
+        // console.log(idArr)
+        idArr.map(id => {
+          axios.get(`api/item-image/${id}`)
+            .then(image => {
+              console.log(image)
+              // setSnapshots(...image[0], snapshots)
+            })
+        })
+      })
+      .then((response) => {
+
+
       })
   }, [])
 
