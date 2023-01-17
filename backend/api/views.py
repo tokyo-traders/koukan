@@ -236,6 +236,29 @@ def post_edit(request, postId, itemId, userId):
 #         user.delete()
 #         return Response(status=status.HTTP_204_NO_CONTENT)
 
+@api_view(['GET'])
+def all_item(request, itemid):
+    try:
+        item = Item.objects.filter(id=itemid).first()
+        images = Image.objects.all()
+    except Item.DoesNotExist or Image.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == "GET":
+        itemSerializer = ItemSerializer(item)
+        print("this is serialized item", itemSerializer)
+        print("this is images", images)
+        data = []
+        imgUrl = []
+        for image in images:
+            imageSerializer = ImageSerializer(image)
+            if imageSerializer.data["item_id"] == itemSerializer.data["id"]:
+                imgUrl.append(imageSerializer.data['image'])
+        data.append({'itemName': itemSerializer.data['item_name'],
+                        'image': imgUrl})
+        print("data", data)
+        return Response(data)
+
 
 @api_view(['GET', 'POST'])
 def hello(request):

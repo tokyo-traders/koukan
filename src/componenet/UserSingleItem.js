@@ -108,12 +108,12 @@ export default function UserSingleItem() {
           </Box>
         </Box>
       </Container>
-      <Box sx={{ width: '60%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
+      <Box sx={{ width: '80%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
         <Divider sx={{ borderBottomWidth: 1 }} variant="middle" />
       </Box>
 
 
-      <Box sx={{ width: '60%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
+      <Box sx={{ width: '80%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
             <Grid container spacing={2} sx={{backgroundColor:"none", marginTop: 2}}>
                 <Grid  item xs={2} spacing={3}>
                     <Box sx={{marginBottom: 2}}>

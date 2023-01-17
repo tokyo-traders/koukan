@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import user_list, user_edit, item_list, image_list, hello
+from .views import all_item, user_list, user_edit, item_list, image_list, hello
 from api import views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -19,9 +19,12 @@ urlpatterns = [
     path('item-image/<int:itemId>', views.image_list), # to get the images path with GET and DELETE method only
     path('hello', views.hello),
     path('user/login/<str:name>', views.user_edit),
+    path('all-item/<int:itemid>', views.all_item),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 #
 # use the static or...
+
+
 
 # ...use this one
 urlpatterns += router.urls
