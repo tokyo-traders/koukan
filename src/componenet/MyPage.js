@@ -11,11 +11,16 @@ import { Stack } from '@mui/system';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import { adaptV4Theme, CardActions } from '@mui/material';
+import { adaptV4Theme, CardActions, IconButton } from '@mui/material';
 import Button from '@mui/material/Button';
+
+import Icon from '@mui/material/Icon';
+import AddItem from './AddItem';
 
 import axios from "axios";
 import { ContactlessOutlined } from '@mui/icons-material';
+
+const BASE_URL = 'http://127.0.0.1:8000/api'
 
 export default function MyPage() {
 
@@ -33,89 +38,12 @@ export default function MyPage() {
   const userid = 1;
   const itemid = 177;
 
-  // const updateItem = (name, image) => {
-  //   setItemInfo(prevItem => )
-  // }
-
-  // useEffect(() => {
-  //   axios
-  //     .get(`/api/item/${userid}`)
-  //     .then((response) => {
-  //       console.log(response.data)
-  //       setItemList(response.data)
-  //       // const idArr = [];
-  //       console.log(itemList)
-  //       for (let item of itemList) {
-  //         console.log(item)
-  //         axios.get(`/api/all-item/${userid}/${item.id}`)
-
-
-  //           .then(item => {
-  //             console.log(item.data[0].image)
-  //             console.log(item.data[0].itemName)
-  //             itemInfo.push({
-  //               "itemName": item.data[0].itemName,
-  //               "imageUrl": item.data[0].image
-  //             })
-  //           })
-  //         itemNames.push(item.item_name);
-  //       }
-  //       console.log(itemInfo)
-  //       // idArr.map(itemid => {
-
-  //       // })
-  //     })
-  // }, [])
-
-  // useEffect(() => {
-  //   axios
-  //     .get(`/api/item/${userid}`)
-  //     .then(response => {
-  //       setItemList(response.data)
-  //     })
-  //     .then(() => {
-  //       for (let item of itemList) {
-  //         itemNames.push(item.item_name)
-  //       }
-  //     })
-  // }, [])
-
   useEffect(() => {
     axios.get(`/api/all-info/${userid}`)
       .then(response => {
         setItemInfo([...response.data])
       })
   }, [])
-  console.log(itemInfo)
-  // useEffect(() => {
-  //   axios
-  //     .get(`/api/item/${userid}`)
-  //     .then((response) => {
-  //       console.log(response.data)
-  //     })
-  // }, [])
-
-  // useEffect(() => {
-  //   axios.get(`/api/all-info/${userid}/${itemid}`)
-  //     .then(res => {
-  //       console.log(res.data)
-  //       setItemInfo()
-  //     })
-  // }, [])
-
-  // const getSnapshot = async function (itemId) {
-  //   const data = await axios.get(`api/item-image/${itemId}`)
-  //   setSnapshot(data)
-  // }
-
-  // useEffect(() => {
-  //   axios
-  //     .get(`/api/item/${userid}`)
-  //     .then(response =>
-  //       console.log(response.data)
-  //     )
-  // })
-  console.log(itemList, itemNames)
 
   return (
     <>
@@ -167,23 +95,38 @@ export default function MyPage() {
       <Box sx={{ width: '50%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
         <Divider sx={{ borderBottomWidth: 1 }} variant="middle" />
       </Box>
+      <Grid
+        direction="row"
 
-      {itemInfo?.map(item => (
-        <div key={item.id}>
-          <Card elevation={6} width="50px">
-            <CardMedia
-              style={{ height: 350 }}
-              image={`http://127.0.0.1:8000/api${item.itemImages[0]}`}
-            />
-            <CardContent >
-              <Typography gutterBottom variant="h5">{item.itemName}</Typography>
-              <Box display="flex" justify="space-between">
-                <Typography gutterBottom variant="subtitle1"></Typography>
-              </Box>
-            </CardContent>
-          </Card>
-        </div>
-      ))}
+        justifyContent="center"
+        alignItems="center" md={4}
+      // spacing={3}
+      >
+        {itemInfo?.map(item => (
+          <div key={item.id}>
+            <Card elevation={6} sx={{ maxWidth: 345, mt: 10, marginLeft: 4 }}>
+              <CardMedia
+                component="img"
+                style={{ width: 350 }}
+                image={BASE_URL + `${item.itemImages[0]}`}
+                height="140"
+              />
+              <CardContent >
+                <Typography gutterBottom variant="h5">{item.itemName}</Typography>
+                <Box display="flex" justify="space-between">
+                  <Typography gutterBottom variant="subtitle1"></Typography>
+                </Box>
+              </CardContent>
+            </Card>
+          </div>
+        ))}
+      </Grid>
+      <Link href='/addItem'>
+        <Button >
+          <Icon sx={{ fontSize: 90, marginLeft: 15, marginTop: 3 }}>add_circle</Icon>
+        </Button>
+      </Link>
+      {/* <IconButton variant='contained'>Add an Item</IconButton> */}
     </>
   );
 }
