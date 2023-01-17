@@ -1,4 +1,5 @@
-import {useRef, useState, useEffect, useCallback } from "react";
+import {useRef, useState, useEffect, useCallback, useContext } from "react";
+import useAuth from "../hooks/useAuth";
 import axios from "axios";
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,7 +13,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
-import { useNavigate} from "react-router-dom";
+import { useNavigate, useLocation} from "react-router-dom";
+
+const REGISTER_URL = '/api/user/login';
 
 const RoundedButton = styled(Button)(() => ({
     borderRadius: 35,
@@ -25,37 +28,57 @@ const RoundedButton = styled(Button)(() => ({
 const theme = createTheme();
 
 function LoginForm({ Login, error }) {
-  // const useRef = useRef();
-  // const errRef = useRef();
 
-  // const [user, setUser] = useState('');
-  // const [pwd, setPwd] = useState('');
-  // const [errMsg, setErrMsg] = useState('');
-  // const [success, setSuccess] = useState(false)
-
+  const { setAuth } = useAuth();
   const [details, setDetails] = useState({email:"", password:""});
-
+  const [success, setSucess] = useState(false);
+  const [errMsg, setErrMsg] = useState('');
+  
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/MyPage"
   const signup = useCallback(()=> navigate('/signup', {replace: true}), [navigate]);
+  const myPage = useCallback(()=> {
+    if (from === "/signup") {
+      navigate('/MyPage', {replace: true})
+    } else {
+      navigate(from, {replace: true})
+    }
+    }, [navigate]);
 
 
-  const handleSubmit = e => {
+
+  useEffect(() => {
+    if (success) myPage();
+  },[success])
+  
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    try {
+      const response = await axios.post(REGISTER_URL,
+      JSON.stringify({email:details.email.toLowerCase(), password:details.password}),
+        {
+        headers: { 'Content-Type': 'application/json' },
+        withCredentials: true
+        }
+      )
+      const accessToken = response?.data.jwt
+      setAuth({user: details.email, password: details.password, accessToken});
+      setSucess(true);
 
-    console.log(details)
-
-    axios
-    .post(`/api/user/login/`,
-    JSON.stringify(details),
-    {
-      headers: { 'Content-Type': 'application/json' },
-      withCredentials: true
-  }
-    )
-    .then((res) => {
-      console.log(res.data)
-     })
-    .catch((err) => alert("error!"));
+    } catch (err) {
+      if (!err?.response) {
+        setErrMsg('No Server Response');
+    } else if (err.response?.status === 400) {
+        setErrMsg('Missing Username or Password');
+    } else if (err.response?.status === 401) {
+        setErrMsg('Unauthorized');
+    } else {
+        setErrMsg('Login Failed');
+    }
+    }
+  
   }
 
   return (

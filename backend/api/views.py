@@ -3,17 +3,21 @@ from django.http import JsonResponse
 from rest_framework import generics, status, viewsets
 from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
+from rest_framework.authentication import get_authorization_header
 from .serializers import UserSerializer, ItemSerializer, ImageSerializer, MultipleImageSerializer, PostSerializer, MultiModelSerializer
 from .models import User, Item, Image, Post
+from .authentication import create_access_token, create_refresh_token, decode_access_token, decode_refresh_token
 
-import io  # delete
+
+import jwt, datetime
+import io #delete
 
 from rest_framework.parsers import JSONParser  # delete
 from rest_framework.renderers import JSONRenderer  # delete
 
 
 @api_view(['GET', 'POST'])
-def user_list(request):
+def user_register(request):
 
     if request.method == "GET":
         obj = User.objects.all()
@@ -31,36 +35,80 @@ def user_list(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE', 'POST'])
-def user_edit(request):
-
-    password = request.data["password"]
-    email = request.data["email"]
-
-    try:
-        user = User.objects.get(email=email)
-    except User.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-    print(user)
+def user_login(request):
     if request.method == "GET":
-        serializer = UserSerializer(user)
-        return Response(serializer.data)
+        auth = get_authorization_header(request).split()
+        if auth and len(auth) == 2:
+            token = auth[1].decode("utf-8")
+            id = decode_access_token(token)
+            if id:
+                user = User.objects.get(pk=id)
+                return Response(UserSerializer(user).data)
+            return Response(False, status=status.HTTP_401_UNAUTHORIZED)
+
     if request.method == "PUT":
         serializer = UserSerializer(user, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     elif request.method == 'DELETE':
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
     elif request.method == "POST":
+        password = request.data["password"]
+        email = request.data["email"]
+        try:
+            user = User.objects.get(email=email)
+            print(user)
+        except User.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
         serializer = UserSerializer(user)
         user_password = serializer.data["password"]
         user_email = serializer.data["email"]
+        access_token = create_access_token(user.id)
+        refresh_token = create_refresh_token(user.id)
+
+        response = Response()
+        response.set_cookie(key="refreshToken", value= refresh_token, httponly=True)
+        response.data = {
+            "jwt": access_token
+        }
+        response.status_code = 200
+        print(response)
         if user_password == password and user_email == email:
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return response
         return Response(False, status=status.HTTP_401_UNAUTHORIZED)
 
+@api_view(['GET'])
+def user_refresh(request):
+    if request.method == "GET":
+        refresh_token=request.COOKIES.get("refreshToken")
+        id = decode_refresh_token(refresh_token)
+        if id:
+            access_token = create_access_token(id)
+            response = Response()
+            response.data = {
+                "jwt": access_token
+                }
+            response.status_code = 200
+            print(response)
+            return response
+        return Response(False, status=status.HTTP_401_UNAUTHORIZED)
+
+@api_view(['POST'])
+def user_logout(request):
+    if request.method == "POST":
+        response = Response()
+        response.delete_cookie(key="refreshToken")
+        response.data = {
+            "message":"Loged out"
+        }
+        response.status_code = 200
+        return response
 
 # --> this handles all the methods POST GET PUT DELETE
 class ImageView(viewsets.ModelViewSet):
@@ -260,38 +308,6 @@ def post_edit(request, postId, itemId, userId):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-# @api_view(['GET', 'PUT', 'DELETE', 'POST'])
-# def user_edit(request):
-#     password = request.data["password"]
-#     email = request.data["email"]
-#     print(password, email)
-#     try:
-#         user = User.objects.get(email=email)
-#     except User.DoesNotExist:
-#         return Response(status=status.HTTP_404_NOT_FOUND)
-
-#     print(request.data["email"])
-
-#     if request.method == "GET":
-#         serializer = UserSerializer(user)
-#         return Response(serializer.data)
-#     elif request.method == "POST":
-#         serializer = UserSerializer(user)
-#         user_password = serializer.data["password"]
-#         user_email = serializer.data["email"]
-#         if user_password == password and user_email == email:
-#             return Response(True, status=status.HTTP_200_OK)
-#         return Response(False, status=status.HTTP_401_UNAUTHORIZED)
-#     elif request.method == "PUT":
-#         serializer = UserSerializer(user, data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_200_OK)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-#     elif request.method == 'DELETE':
-#         user.delete()
-#         return Response(status=status.HTTP_204_NO_CONTENT)
-
 @api_view(['GET'])
 def all_item(request, itemid):
     try:
@@ -314,7 +330,6 @@ def all_item(request, itemid):
                         'image': imgUrl})
         print("data", data)
         return Response(data)
-
 
 @api_view(['GET', 'POST'])
 def hello(request):

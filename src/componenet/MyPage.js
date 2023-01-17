@@ -8,11 +8,14 @@ import Container from '@mui/material/Container';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import Divider from '@mui/material/Divider';
 import { Stack } from '@mui/system';
+import useAxiosPrivate from "./hooks/axiosPrivate"
+import { setUseProxies } from 'immer';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import { adaptV4Theme, CardActions, IconButton } from '@mui/material';
 import Button from '@mui/material/Button';
+
 
 import Icon from '@mui/material/Icon';
 import AddItem from './AddItem';
@@ -23,43 +26,33 @@ import { ContactlessOutlined } from '@mui/icons-material';
 const BASE_URL = 'http://127.0.0.1:8000/api'
 
 export default function MyPage() {
-
-  const [itemList, setItemList] = useState([]);
-  const [itemNames, setitemNames] = useState([])
-  const [snapshots, setSnapshots] = useState('')
-
-  const [itemInfo, setItemInfo] = useState([{
-    "itemName": "",
-    "itemImages": "",
-    "itemID": ""
-  }])
-
-
-  const userid = 0;
+  const [user, setUser] = useState("")
+  const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
-    axios
-      .get(`/api/item/${userid}`)
-      .then((response) => {
-        setItemList(response.data)
-        const idArr = [];
-        for (let item of response.data) {
-          idArr.push(item.id)
-        }
-        // console.log(idArr)
-        idArr.map(id => {
-          axios.get(`api/item-image/${id}`)
-            .then(image => {
-              console.log(image)
-              // setSnapshots(...image[0], snapshots)
-            })
-        })
-      })
-      .then((response) => {
+    let isMounted = true;
+    const controller = new AbortController();
 
+    const getUsers = async () => {
+      try {
+        const response = await axiosPrivate.get('/api/user/login', {
+          signal : controller.signal
+        });
+        console.log("MyPage", response.data.username)
+        isMounted && setUser(response.data.username)
+      } catch (err) {
+        console.error("FUckYOU", err)
+      }
+    }
 
-      })
-  }, [])
+    getUsers();
+
+    return () =>{
+      isMounted = false;
+      controller.abort();
+    }
+  },[]);
+
 
   return (
     <>
@@ -82,7 +75,8 @@ export default function MyPage() {
             padding={2}
             color="#D904B5"
           >
-            USER NAME
+            {user}
+
           </Typography>
           <Box
             sx={{

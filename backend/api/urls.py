@@ -13,9 +13,11 @@ router.register('image', views.ImageView)
 router.register('image/multiple_upload', views.ImageView)
 
 urlpatterns = [
-    path('user/all', views.user_list),
-
-    path('user/login', views.user_edit),
+    # to access registration
+    path('user/register', views.user_register),
+    path('user/login', views.user_login),
+    path('user/refresh', views.user_refresh),
+    path('user/logout', views.user_logout),
     # to GET and POST all the item objects
     path('item/<int:userid>', views.item_list),
     # to get the item with full CRUD
