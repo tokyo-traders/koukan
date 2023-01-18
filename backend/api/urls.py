@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import user_list, user_edit, item_list, image_list, all_item, newall_item, hello
+from .views import  item_list, image_list, all_item, newall_item, hello
 
 from api import views
 from django.conf import settings
@@ -27,7 +27,6 @@ urlpatterns = [
     path('hello', views.hello),
     path('all-item/<int:userid>/<int:itemid>', views.all_item),
     path('all-info/<int:userid>', views.newall_item),
-    path('user/login/<str:name>', views.user_edit),
     path('all-item/<int:itemid>', views.all_item),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 #
