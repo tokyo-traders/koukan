@@ -24,13 +24,13 @@ urlpatterns = [
     path('item-image/<int:itemId>', views.image_list),
     path('hello', views.hello),
     path('all-item/<int:userid>/<int:itemid>', views.all_item),
+
     path('all-info/<int:userid>', views.newall_item),
     path('user/login/<str:name>', views.user_edit),
     path('all-item/<int:itemid>', views.all_item),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 #
 # use the static or...
-
 
 
 # ...use this one
