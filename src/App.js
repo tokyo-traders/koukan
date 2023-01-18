@@ -46,7 +46,6 @@ function App() {
 						<Route path="/addItem" element={<AddItem />} />
 					</Route>
 				</Route>
-
 			</Routes>
 		</>
 	);

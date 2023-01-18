@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import user_register, user_login, item_list, image_list, all_item, newall_item, create_post, edit_post, create_offer, edit_offer, hello
+
 from api import views
 from django.conf import settings
 from django.conf.urls.static import static
