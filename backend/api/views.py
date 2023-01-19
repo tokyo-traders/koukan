@@ -9,7 +9,9 @@ from .models import User, Item, Image, Post, Offer
 from .authentication import create_access_token, create_refresh_token, decode_access_token, decode_refresh_token
 
 
-import jwt, datetime
+import jwt
+import datetime
+
 
 @api_view(['GET', 'POST'])
 def user_register(request):
@@ -68,7 +70,8 @@ def user_login(request):
         refresh_token = create_refresh_token(user.id)
 
         response = Response()
-        response.set_cookie(key="refreshToken", value= refresh_token, httponly=True)
+        response.set_cookie(key="refreshToken",
+                            value=refresh_token, httponly=True)
         response.data = {
             "jwt": access_token
         }
@@ -78,21 +81,23 @@ def user_login(request):
             return response
         return Response(False, status=status.HTTP_401_UNAUTHORIZED)
 
+
 @api_view(['GET'])
 def user_refresh(request):
     if request.method == "GET":
-        refresh_token=request.COOKIES.get("refreshToken")
+        refresh_token = request.COOKIES.get("refreshToken")
         id = decode_refresh_token(refresh_token)
         if id:
             access_token = create_access_token(id)
             response = Response()
             response.data = {
                 "jwt": access_token
-                }
+            }
             response.status_code = 200
             print(response)
             return response
         return Response(False, status=status.HTTP_401_UNAUTHORIZED)
+
 
 @api_view(['POST'])
 def user_logout(request):
@@ -100,12 +105,14 @@ def user_logout(request):
         response = Response()
         response.delete_cookie(key="refreshToken")
         response.data = {
-            "message":"Loged out"
+            "message": "Loged out"
         }
         response.status_code = 200
         return response
 
 # --> this handles all the methods POST GET PUT DELETE
+
+
 class ImageView(viewsets.ModelViewSet):
     queryset = Image.objects.all()
     serializer_class = ImageSerializer
@@ -250,15 +257,6 @@ def image_list(request, itemId):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == "GET":
-        # Will check if need ImageSerializer or MultipleImageSerializer
-        # image = Image.object.filter(item_id=itemId).all()
-        # count = 0
-        # for img in image:
-        #     serializer = ImageSerializer(img)
-        #     count += 1
-        #     print("this is image serializer", serializer)
-        #     print("this is the count", count)
-        #     return Response(serializer.data)
         serializer = ImageSerializer(image, many=True)
         return Response(serializer.data)
     elif request.method == "DELETE":
@@ -266,7 +264,35 @@ def image_list(request, itemId):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@api_view(['GET', 'POST'])
+@api_view(['GET'])  # to be refactored
+def homepage(request):
+    if request.method == "GET":
+        posts = Post.objects.all()
+        images = Image.objects.all()
+        data = []
+        imageUrl = []
+        for post in posts:
+            postSerializer = PostSerializer(post)
+            postID = postSerializer.data["item_id"]
+            print("this is postID", type(postID))
+            item = Item.objects.filter(pk=postID)
+            print("this is the item data without serializer", item)
+            itemSeralizer = ItemSerializer(
+                item, many=True)  # we need this "many=True"!)
+            print("this is the itemSerializer", itemSeralizer.data)
+            itemID = itemSeralizer.data[0]['id']
+            print("this is itemID", itemID)
+            for image in images:
+                imageSerializer = ImageSerializer(image)
+                if imageSerializer.data["item_id"] == itemID:
+                    imageUrl.append(imageSerializer.data["image"])
+            data.append({"post": postSerializer.data,
+                        "item": itemSeralizer.data, "images": imageUrl})
+            imageUrl = []
+        return Response(data, status=status.HTTP_200_OK)
+
+
+@ api_view(['GET', 'POST'])
 def create_post(request):
     if request.method == "GET":
         post = Post.objects.all()
@@ -278,11 +304,11 @@ def create_post(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            error = {"error":"You have failed to create a post properly"}
+            error = {"error": "You have failed to create a post properly"}
             return Response(error, status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
+@ api_view(['GET', 'PUT', 'DELETE'])
 def edit_post(request, postId):
     try:
         post = Post.objects.filter(pk=postId).first()
@@ -304,7 +330,7 @@ def edit_post(request, postId):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@api_view(['GET'])
+@ api_view(['GET'])
 def all_item(request, itemid):
     try:
         item = Item.objects.filter(id=itemid).first()
@@ -323,11 +349,12 @@ def all_item(request, itemid):
             if imageSerializer.data["item_id"] == itemSerializer.data["id"]:
                 imgUrl.append(imageSerializer.data['image'])
         data.append({'itemName': itemSerializer.data['item_name'],
-                        'image': imgUrl})
+                     'image': imgUrl})
         print("data", data)
         return Response(data)
 
-@api_view(['GET', 'POST'])
+
+@ api_view(['GET', 'POST'])
 def create_offer(request):
     if request.method == "GET":
         offer = Offer.objects.all()
@@ -339,15 +366,16 @@ def create_offer(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            error = {"error":"You have failed to create an offer properly"}
+            error = {"error": "You have failed to create an offer properly"}
             return Response(error, status=status.HTTP_406_NOT_ACCEPTABLE)
 
-@api_view(['GET', 'PUT', 'DELETE'])
+
+@ api_view(['GET', 'PUT', 'DELETE'])
 def edit_offer(request, offerId):
     try:
         offer = Offer.objects.filter(pk=offerId).first()
     except Offer.DoesNotExist:
-        error = {"error":"There is no offer found"}
+        error = {"error": "There is no offer found"}
         return Response(error, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == "GET":
@@ -367,7 +395,7 @@ def edit_offer(request, offerId):
         return Response(message, status=status.HTTP_204_NO_CONTENT)
 
 
-@api_view(['GET', 'POST'])
+@ api_view(['GET', 'POST'])
 def hello(request):
     if request.method == "GET":
         # queryset = User.objects.all()
