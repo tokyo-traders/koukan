@@ -64,9 +64,9 @@ function App() {
 					<Route element={<RequireAuth />}>
 						<Route path="/MyPage" element={<MyPage user={user}/>} >
 							<Route path="/MyPage" element={<UserItemsList user={user} />} />
-							<Route path="/MyPage/addItem" element={<AddItem />} />
-							<Route path="/MyPage/Items" element={<UserSingleItem user={user} />} />
-              <Route path="/listingform" element={<AddListingForm />} />
+							<Route path="/MyPage/addItem" element={<AddItem user={user} />} />
+							<Route path="/MyPage/Items/:itemId" element={<UserSingleItem user={user} />} />
+              				<Route path="/MyPage/makeListing/:itemId" element={<AddListingForm user={user} />} />
 						</Route>
 					</Route>
 				</Route>

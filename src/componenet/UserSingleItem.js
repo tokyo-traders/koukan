@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import CssBaseline from '@mui/material/CssBaseline';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
@@ -12,6 +12,7 @@ import Button from '@mui/material/Button';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import { useNavigate, useLocation, useParams  } from 'react-router-dom';
 
 import axios from "axios";
 
@@ -32,11 +33,26 @@ const RoundedButton = styled(Button)(() => ({
 }));
 
 export default function UserSingleItem(props) {
+  const {itemId} = useParams();
   const {user} = props
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/MyPage"
+  const makeListing = useCallback(()=> navigate(`/MyPage/makeListing/${itemId}`, {replace: true}), [navigate]);
+  const goBack = useCallback(()=> {
+      navigate(from, {replace: true})
+    }, [navigate]);
+
+
   const [itemList, setItemList] = useState([]);
   const [snapshots, setSnapshots] = useState([])
 
-
+ const display = () => {
+    if (user && itemId) {
+        makeListing();
+    }
+ }
 
   useEffect(() => {
     if (user) {
@@ -106,6 +122,7 @@ export default function UserSingleItem(props) {
                                     fullWidth
                                     variant="contained"
                                     sx={{ mt: 3, mb: 2 }}
+                                    onClick={display}
                                     >
                                    MAKE POST
                                     </RoundedButton>

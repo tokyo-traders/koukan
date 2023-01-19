@@ -1,16 +1,17 @@
 import React, { useState, useEffect, PureComponent } from 'react';
 import axios from "axios";
 import { ContentPasteSearchOutlined } from '@mui/icons-material';
+import { useNavigate, useLocation, useParams  } from 'react-router-dom';
 
-function AddListingForm() {
+function AddListingForm(props) {
+
+    const {itemId} = useParams();
+    const {user} = props
 
     const [desire, setDesire] = useState('')
     const [expirationDate, setExpirationDate] = useState('')
     const [priceFree, setPriceFree] = useState(false)
 
-
-    const userId = 1;
-    const itemId = 177;
 
     const uploadData = new FormData();
 
@@ -19,7 +20,7 @@ function AddListingForm() {
         uploadData.append("desire", desire);
         uploadData.append("expiration", expirationDate);
         uploadData.append("price", priceFree)
-        uploadData.append("user_id", userId)
+        uploadData.append("user_id", user.Id)
         uploadData.append("item_id", itemId)
 
         fetch("/api/create-post", {
