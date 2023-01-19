@@ -27,6 +27,13 @@ const BASE_URL = 'http://127.0.0.1:8000/api'
 
 export default function MyPage() {
   const [user, setUser] = useState("")
+
+  const [itemInfo, setItemInfo] = useState([{
+    "itemName": "",
+    "itemImages": "",
+    "itemID": ""
+  }])
+
   const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
@@ -36,7 +43,7 @@ export default function MyPage() {
     const getUsers = async () => {
       try {
         const response = await axiosPrivate.get('/api/user/login', {
-          signal : controller.signal
+          signal: controller.signal
         });
         console.log("MyPage", response.data.username)
         isMounted && setUser(response.data.username)
@@ -47,11 +54,11 @@ export default function MyPage() {
 
     getUsers();
 
-    return () =>{
+    return () => {
       isMounted = false;
       controller.abort();
     }
-  },[]);
+  }, []);
 
 
   return (

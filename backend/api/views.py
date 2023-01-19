@@ -9,8 +9,9 @@ from .models import User, Item, Image, Post
 from .authentication import create_access_token, create_refresh_token, decode_access_token, decode_refresh_token
 
 
-import jwt, datetime
-import io #delete
+import jwt
+import datetime
+import io  # delete
 
 from rest_framework.parsers import JSONParser  # delete
 from rest_framework.renderers import JSONRenderer  # delete
@@ -73,7 +74,8 @@ def user_login(request):
         refresh_token = create_refresh_token(user.id)
 
         response = Response()
-        response.set_cookie(key="refreshToken", value= refresh_token, httponly=True)
+        response.set_cookie(key="refreshToken",
+                            value=refresh_token, httponly=True)
         response.data = {
             "jwt": access_token
         }
@@ -83,21 +85,23 @@ def user_login(request):
             return response
         return Response(False, status=status.HTTP_401_UNAUTHORIZED)
 
+
 @api_view(['GET'])
 def user_refresh(request):
     if request.method == "GET":
-        refresh_token=request.COOKIES.get("refreshToken")
+        refresh_token = request.COOKIES.get("refreshToken")
         id = decode_refresh_token(refresh_token)
         if id:
             access_token = create_access_token(id)
             response = Response()
             response.data = {
                 "jwt": access_token
-                }
+            }
             response.status_code = 200
             print(response)
             return response
         return Response(False, status=status.HTTP_401_UNAUTHORIZED)
+
 
 @api_view(['POST'])
 def user_logout(request):
@@ -105,12 +109,14 @@ def user_logout(request):
         response = Response()
         response.delete_cookie(key="refreshToken")
         response.data = {
-            "message":"Loged out"
+            "message": "Loged out"
         }
         response.status_code = 200
         return response
 
 # --> this handles all the methods POST GET PUT DELETE
+
+
 class ImageView(viewsets.ModelViewSet):
     queryset = Image.objects.all()
     serializer_class = ImageSerializer
@@ -278,6 +284,7 @@ def post_list(request):
         serializer = PostSerializer(post, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     elif request.method == "POST":
+        print(request.data)
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -327,9 +334,10 @@ def all_item(request, itemid):
             if imageSerializer.data["item_id"] == itemSerializer.data["id"]:
                 imgUrl.append(imageSerializer.data['image'])
         data.append({'itemName': itemSerializer.data['item_name'],
-                        'image': imgUrl})
+                     'image': imgUrl})
         print("data", data)
         return Response(data)
+
 
 @api_view(['GET', 'POST'])
 def hello(request):
