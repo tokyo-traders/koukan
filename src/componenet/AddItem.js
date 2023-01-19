@@ -56,7 +56,7 @@ function AddItem() {
         e.preventDefault()
         uploadData.append('item_name', itemName);
         uploadData.append('details', details);
-        uploadData.append('user_id', 1);
+        uploadData.append('user_id', user.id);
         uploadData.append("desire", desire)
         // uploadImages.append("itemId", 85);
         // try {
@@ -80,10 +80,11 @@ function AddItem() {
         //         localStorage.getItem(key, value);
         //     },
         // }
-        console.log(user)
+        console.log(uploadData)
         fetch(`/api/item/${user.id}`, {
             method: 'POST',
             body: uploadData,
+            // headers: { 'Content-Type': 'application/json'}
         })
             .then(res => res.json())
             .then(data => {
