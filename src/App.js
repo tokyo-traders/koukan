@@ -14,6 +14,7 @@ import MyPage from "./componenet/MyPage";
 import Layout from "./componenet/context/Layout";
 import RequireAuth from "./componenet/User/RequireAuth";
 import UserSingleItem from "./componenet/UserSingleItem"
+import AddListingForm from "./componenet/ListingForm";
 
 
 function App() {
@@ -33,7 +34,7 @@ function App() {
 
 	return (
 		<>
-		            <NavBar />
+			<NavBar />
 			<Routes>
 				<Route path="/" element={<Layout />} exact>
 					<Route path="/" element={<Sidebar />} exact />
@@ -41,10 +42,11 @@ function App() {
 					<Route path="/Login" element={<LoginForm />} />
 					<Route path="/Signup" element={<SignupForm />} />
 
-					<Route element={<RequireAuth />}>
+					<Route path="/listingform" element={<AddListingForm />} />
+					<Route path="/addItem" element={<AddItem />} />
+					{/* <Route element={<RequireAuth />}>
 						<Route path="/MyPage" element={<MyPage />} />
-						<Route path="/addItem" element={<AddItem />} />
-					</Route>
+					</Route> */}
 				</Route>
 
 			</Routes>
