@@ -27,7 +27,9 @@ const RoundedButton = styled(Button)(() => ({
 
 const theme = createTheme();
 
-function LoginForm({ Login, error }) {
+function LoginForm(props) {
+
+  const {setUserState, userState} = props
 
   const { setAuth } = useAuth();
   const [details, setDetails] = useState({email:"", password:""});
@@ -65,6 +67,7 @@ function LoginForm({ Login, error }) {
       )
       const accessToken = response?.data.jwt
       setAuth({user: details.email, password: details.password, accessToken});
+      setUserState(true);
       setSucess(true);
 
     } catch (err) {

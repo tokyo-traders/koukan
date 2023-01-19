@@ -200,6 +200,7 @@ def item_list(request, userid):
         serializer = ItemSerializer(item, many=True)
         return Response(serializer.data)
     if request.method == "POST":
+        print(request.data)
         serializer = ItemSerializer(data=request.data)
         if serializer.is_valid():
             # itemId = serializer.validated_data.get('id', )
