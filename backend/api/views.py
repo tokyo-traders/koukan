@@ -4,8 +4,8 @@ from rest_framework import generics, status, viewsets
 from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
 from rest_framework.authentication import get_authorization_header
-from .serializers import UserSerializer, ItemSerializer, ImageSerializer, MultipleImageSerializer, PostSerializer, MultiModelSerializer
-from .models import User, Item, Image, Post
+from .serializers import UserSerializer, ItemSerializer, ImageSerializer, MultipleImageSerializer, PostSerializer, OfferSerializer
+from .models import User, Item, Image, Post, Offer
 from .authentication import create_access_token, create_refresh_token, decode_access_token, decode_refresh_token
 
 
@@ -15,6 +15,7 @@ import io  # delete
 
 from rest_framework.parsers import JSONParser  # delete
 from rest_framework.renderers import JSONRenderer  # delete
+
 
 
 @api_view(['GET', 'POST'])
@@ -278,7 +279,7 @@ def image_list(request, itemId):
 
 
 @api_view(['GET', 'POST'])
-def post_list(request):
+def create_post(request):
     if request.method == "GET":
         post = Post.objects.all()
         serializer = PostSerializer(post, many=True)
@@ -290,26 +291,27 @@ def post_list(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+            error = {"error":"You have failed to create a post properly"}
+            return Response(error, status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
-@api_view(['GET', 'POST', 'PUT', 'DELETE'])
-def post_edit(request, postId, itemId, userId):
+@api_view(['GET', 'PUT', 'DELETE'])
+def edit_post(request, postId):
     try:
-        post = Post.objects.get(pk=postId)
+        post = Post.objects.filter(pk=postId).first()
     except Post.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == "GET":
         serializer = PostSerializer(post)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     elif request.method == "PUT":
         serializer = PostSerializer(post, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_405_METHOD_NOT_ALLOWED)
     elif request.method == "DELETE":
         post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -337,6 +339,46 @@ def all_item(request, itemid):
                      'image': imgUrl})
         print("data", data)
         return Response(data)
+
+
+@api_view(['GET', 'POST'])
+def create_offer(request):
+    if request.method == "GET":
+        offer = Offer.objects.all()
+        serializer = OfferSerializer(offer, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    elif request.method == "POST":
+        serializer = OfferSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            error = {"error":"You have failed to create an offer properly"}
+            return Response(error, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def edit_offer(request, offerId):
+    try:
+        offer = Offer.objects.filter(pk=offerId).first()
+    except Offer.DoesNotExist:
+        error = {"error":"There is no offer found"}
+        return Response(error, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == "GET":
+        serializer = OfferSerializer(offer)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    elif request.method == "PUT":
+        serializer = OfferSerializer(offer, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+        else:
+            error = {"error": "You have failed to update the offer"}
+            return Response(error, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    elif request.method == "DELETE":
+        offer.delete()
+        message = {"message": "You have now deleted the offer"}
+        return Response(message, status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['GET', 'POST'])

@@ -48,7 +48,6 @@ function App() {
 						<Route path="/MyPage" element={<MyPage />} />
 					</Route> */}
 				</Route>
-
 			</Routes>
 		</>
 	);

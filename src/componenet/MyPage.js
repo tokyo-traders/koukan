@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
+import { useNavigate, useLocation} from "react-router-dom";
 import CssBaseline from '@mui/material/CssBaseline';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import useAuth from "./hooks/useAuth";
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
@@ -13,7 +15,7 @@ import { setUseProxies } from 'immer';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import { adaptV4Theme, CardActions, IconButton } from '@mui/material';
+import { CardActions, IconButton } from '@mui/material';
 import Button from '@mui/material/Button';
 
 
@@ -36,6 +38,23 @@ export default function MyPage() {
 
   const axiosPrivate = useAxiosPrivate();
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
+
+  const [itemList, setItemList] = useState([]);
+  const [itemNames, setitemNames] = useState([])
+  const [snapshots, setSnapshots] = useState('')
+
+  const [itemInfo, setItemInfo] = useState([{
+    "itemName": "",
+    "itemImages": "",
+    "itemID": ""
+  }])
+
+
+
+
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController();
@@ -45,8 +64,8 @@ export default function MyPage() {
         const response = await axiosPrivate.get('/api/user/login', {
           signal: controller.signal
         });
-        console.log("MyPage", response.data.username)
-        isMounted && setUser(response.data.username)
+        console.log("MyPage 🤑", response.data)
+        isMounted && setUser(response.data)
       } catch (err) {
         console.error("FUckYOU", err)
       }
@@ -59,6 +78,47 @@ export default function MyPage() {
       controller.abort();
     }
   }, []);
+
+  const userid = user.id;
+  console.log(userid)
+
+  useEffect(() => {
+    if (user.id) {
+      axios
+      .get(`/api/item/${user.id}`)
+      .then((response) => {
+        console.log(response.data)
+        setItemList(response.data)
+        const idArr = [];
+        for (let item of response.data) {
+          idArr.push(item.id)
+        }
+        // console.log(idArr)
+        idArr.map(id => {
+          axios.get(`api/item-image/${id}`)
+            .then(image => {
+              console.log(image)
+              // setSnapshots(...image[0], snapshots)
+            })
+        })
+      })
+      .then((response) => {
+
+      })
+    }
+  }, [user])
+
+
+
+  const from = location.state?.from?.pathname || "/MyPage"
+  const addItem = useCallback(()=> navigate('/addItem', {replace: true}), [navigate]);
+  const myPage = useCallback(()=> {
+    if (from === "/signup") {
+      navigate('/MyPage', {replace: true})
+    } else {
+      navigate(from, {replace: true})
+    }
+    }, [navigate]);
 
 
   return (
@@ -82,7 +142,7 @@ export default function MyPage() {
             padding={2}
             color="#D904B5"
           >
-            {user}
+            {user.username}
 
           </Typography>
           <Box
@@ -94,15 +154,15 @@ export default function MyPage() {
             }}>
 
             <Stack direction="row" spacing={8} justifyContent="center">
-              <Link href="/MyItems" variant="body1" underline="none" color="inherit">
+              <Link onClick={addItem} variant="body1" underline="none" color="#000000">
                 My Items
               </Link>
 
-              <Link href="/PendingOffer" variant="body1" underline='none'>
+              <Link href="/PendingOffer" variant="body1" underline='none' >
                 Pending Offer
               </Link>
 
-              <Link href="/TradedItem" variant="body1" underline='none'>
+              <Link href="/TradedItem" variant="body1" underline='none' >
                 Traded Items
               </Link>
             </Stack>
@@ -138,11 +198,9 @@ export default function MyPage() {
           </div>
         ))}
       </Grid>
-      <Link href='/addItem'>
-        <Button >
+        <Button onClick={addItem}>
           <Icon sx={{ fontSize: 90, marginLeft: 15, marginTop: 3 }}>add_circle</Icon>
         </Button>
-      </Link>
       {/* <IconButton variant='contained'>Add an Item</IconButton> */}
     </>
   );
