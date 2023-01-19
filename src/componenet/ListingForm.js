@@ -8,6 +8,10 @@ function AddListingForm() {
     const [expirationDate, setExpirationDate] = useState('')
     const [priceFree, setPriceFree] = useState(false)
 
+
+    const userId = 1;
+    const itemId = 177;
+
     const uploadData = new FormData();
 
     const newPost = async (e) => {
@@ -15,16 +19,12 @@ function AddListingForm() {
         uploadData.append("desire", desire);
         uploadData.append("expiration", expirationDate);
         uploadData.append("price", priceFree)
-        uploadData.append("user_id", 1)
-        uploadData.append("item_id", 177)
+        uploadData.append("user_id", userId)
+        uploadData.append("item_id", itemId)
 
         fetch("/api/create-post", {
             method: "POST",
             body: uploadData,
-            // headers: {
-            //     'Content-Type': 'application/json'
-            // },
-            // withCredentials: true
         })
             .then(res => res.json())
             .then(data => console.log(data))
@@ -35,9 +35,9 @@ function AddListingForm() {
 
 
             <div className="App">
-                <h3>Add Listing Form</h3>
+                <h3>Add Your Listing</h3>
                 <label>
-                    Title
+                    Listing details
                     <input type="text" value={desire} onChange={(e) => setDesire(e.target.value)} />
                 </label>
                 <br />
