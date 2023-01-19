@@ -16,6 +16,8 @@ import Layout from "./componenet/context/Layout";
 import RequireAuth from "./componenet/User/RequireAuth";
 import UserSingleItem from "./componenet/UserSingleItem"
 import UserItemsList from "./componenet/UserItemList";
+import AddListingForm from "./componenet/ListingForm";
+
 
 
 function App() {
@@ -58,11 +60,13 @@ function App() {
 					<Route path="/Login" element={<LoginForm userState={userState} setUserState={setUserState}/>} />
 					<Route path="/Signup" element={<SignupForm />} />
 
+
 					<Route element={<RequireAuth />}>
 						<Route path="/MyPage" element={<MyPage user={user}/>} >
 							<Route path="/MyPage" element={<UserItemsList user={user} />} />
 							<Route path="/MyPage/addItem" element={<AddItem />} />
 							<Route path="/MyPage/Items" element={<UserSingleItem user={user} />} />
+              <Route path="/listingform" element={<AddListingForm />} />
 						</Route>
 					</Route>
 				</Route>
