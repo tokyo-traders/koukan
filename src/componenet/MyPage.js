@@ -85,6 +85,7 @@ export default function MyPage(props) {
               </Link>
 
               <Link onClick={itemList} variant="body1" underline='none' >
+                home
               </Link>
 
               <Link onClick={itemList} variant="body1" underline='none' >
