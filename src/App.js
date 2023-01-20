@@ -54,7 +54,7 @@ function App() {
 
 	return (
 		<>
-			<NavBar />
+
 			<Routes>
 				<Route path="/" element={<NavBar user={user} setUser={setUser} setUserState={setUserState} />} exact>
 					<Route path="/" element={[<Sidebar />, <Trades />]} />
