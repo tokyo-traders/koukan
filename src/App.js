@@ -4,7 +4,6 @@ import "./componenet/Registration/Registration.css";
 import { Route, Routes } from "react-router-dom";
 import { useState, useEffect, useCallback, Component } from 'react'
 import Sidebar from "./componenet/Sidebar";
-import Trades from "./componenet/Trades";
 import NavBar from "./componenet/NavBar";
 import AllListings from "./componenet/AllListings";
 import useAxiosPrivate from "./componenet/hooks/axiosPrivate";

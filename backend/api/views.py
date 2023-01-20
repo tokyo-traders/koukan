@@ -380,7 +380,7 @@ def all_item(request, itemid):
             if imageSerializer.data["item_id"] == itemSerializer.data["id"]:
                 imgUrl.append(imageSerializer.data['image'])
         data.append({'itemName': itemSerializer.data['item_name'],
-                     'image': imgUrl})
+                     'image': imgUrl,'details': itemSerializer.data['details'],'desire': itemSerializer.data['desire'] })
         print("data", data)
         return Response(data)
 
