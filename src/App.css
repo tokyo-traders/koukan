@@ -36,3 +36,16 @@
     transform: rotate(360deg);
   }
 }
+
+.listing{
+  width: 75%;
+  float: Right;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+
+}
+.listingClass {
+  width: 220px;
+  flex: 0 1 20%;
+}

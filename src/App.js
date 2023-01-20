@@ -13,10 +13,13 @@ import LoginForm from "./componenet/User/LoginForm";
 import SignupForm from "./componenet/User/SignupForm";
 import MyPage from "./componenet/MyPage";
 import Layout from "./componenet/context/Layout";
+import UserPostList from "./componenet/UserPostList";
 import RequireAuth from "./componenet/User/RequireAuth";
 import UserSingleItem from "./componenet/UserSingleItem"
 import UserItemsList from "./componenet/UserItemList";
 import AddListingForm from "./componenet/ListingForm";
+import ListingSingleItem from "./componenet/ListingSingleItem";
+import OfferForm from "./componenet/OfferForm";
 
 
 
@@ -60,12 +63,16 @@ function App() {
 					<Route path="/" element={[<Sidebar />, <AllListings />]} />
 					<Route path="/Login" element={<LoginForm userState={userState} setUserState={setUserState} />} />
 					<Route path="/Signup" element={<SignupForm />} />
+					<Route path="/listing/:listingId" element={[<Sidebar />, <ListingSingleItem />]} />
+
 
 
 					<Route element={<RequireAuth />}>
+						<Route path="/listing/:listingId/offer" element={ <OfferForm user={user}/>} />
 						<Route path="/MyPage" element={<MyPage user={user} />} >
 							<Route path="/MyPage" element={<UserItemsList user={user} />} />
 							<Route path="/MyPage/addItem" element={<AddItem user={user} />} />
+							<Route path="/MyPage/postList" element={<UserPostList user={user} />} />
 							<Route path="/MyPage/Items/:itemId" element={<UserSingleItem user={user} />} />
 							<Route path="/MyPage/makeListing/:itemId" element={<AddListingForm user={user} />} />
 						</Route>

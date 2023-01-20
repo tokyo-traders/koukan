@@ -23,7 +23,6 @@ def user_register(request):
     if request.method == "GET":
         obj = User.objects.all()
         item = Item.objects.all()
-        # print(item)
         serializer = UserSerializer(obj, many=True)
         return Response(serializer.data)
     if request.method == "POST":
@@ -63,7 +62,6 @@ def user_login(request):
         email = request.data["email"]
         try:
             user = User.objects.get(email=email)
-            print(user)
         except User.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -80,7 +78,6 @@ def user_login(request):
             "jwt": access_token
         }
         response.status_code = 200
-        print(response)
         if user_password == password and user_email == email:
             return response
         return Response(False, status=status.HTTP_401_UNAUTHORIZED)
@@ -98,7 +95,6 @@ def user_refresh(request):
                 "jwt": access_token
             }
             response.status_code = 200
-            print(response)
             return response
         return Response(False, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -140,7 +136,6 @@ class ImageView(viewsets.ModelViewSet):
 
             if image_list:  # --> if imagelist exists
                 Image.objects.bulk_create(image_list)
-
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         print(serializer.errors)
 
@@ -199,7 +194,6 @@ def item_list(request, userid):
         serializer = ItemSerializer(item, many=True)
         return Response(serializer.data)
     if request.method == "POST":
-        print(request.data)
         serializer = ItemSerializer(data=request.data)
         if serializer.is_valid():
             # itemId = serializer.validated_data.get('id', )
@@ -262,8 +256,6 @@ def all_item(request, itemid):
 
     if request.method == "GET":
         itemSerializer = ItemSerializer(item)
-        print("this is serialized item", itemSerializer)
-        print("this is images", images)
         data = []
         imgUrl = []
         for image in images:
@@ -273,7 +265,6 @@ def all_item(request, itemid):
         data.append({'itemName': itemSerializer.data['item_name'],
                      'images': imgUrl,
                      'details': itemSerializer.data['details']})
-        print("data", data)
         return Response(data)
 
 
@@ -304,23 +295,39 @@ def homepage(request):
         for post in posts:
             postSerializer = PostSerializer(post)
             postID = postSerializer.data["item_id"]
-            print("this is postID", type(postID))
             item = Item.objects.filter(pk=postID)
-            print("this is the item data without serializer", item)
             itemSeralizer = ItemSerializer(
                 item, many=True)  # we need this "many=True"!)
-            print("this is the itemSerializer", itemSeralizer.data)
             itemID = itemSeralizer.data[0]['id']
-            print("this is itemID", itemID)
             for image in images:
                 imageSerializer = ImageSerializer(image)
                 if imageSerializer.data["item_id"] == itemID:
                     imageUrl.append(imageSerializer.data["image"])
             data.append({"post": postSerializer.data,
-                        "item": itemSeralizer.data, "images": imageUrl})
+                        "item": itemSeralizer.data[0], "images": imageUrl})
             imageUrl = []
         return Response(data, status=status.HTTP_200_OK)
 
+@api_view(['GET'])  # to be refactored
+def listingItem(request, postId):
+    if request.method == "GET":
+        post = Post.objects.get(pk=postId)
+        images = Image.objects.all()
+        imageUrl = []
+        postSerializer = PostSerializer(post)
+        postID = postSerializer.data["item_id"]
+        item = Item.objects.filter(pk=postID)
+        itemSeralizer = ItemSerializer(
+            item, many=True)  # we need this "many=True"!)
+        itemID = itemSeralizer.data[0]['id']
+        for image in images:
+            imageSerializer = ImageSerializer(image)
+            if imageSerializer.data["item_id"] == itemID:
+                imageUrl.append(imageSerializer.data["image"])
+        data = {"post": postSerializer.data,
+                    "item": itemSeralizer.data[0], "images": imageUrl}
+        imageUrl = []
+        return Response(data, status=status.HTTP_200_OK)
 
 @ api_view(['GET', 'POST'])
 def create_post(request):
@@ -329,7 +336,6 @@ def create_post(request):
         serializer = PostSerializer(post, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     elif request.method == "POST":
-        print(request.data)
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -371,8 +377,6 @@ def all_item(request, itemid):
 
     if request.method == "GET":
         itemSerializer = ItemSerializer(item)
-        print("this is serialized item", itemSerializer)
-        print("this is images", images)
         data = []
         imgUrl = []
         for image in images:
@@ -381,7 +385,6 @@ def all_item(request, itemid):
                 imgUrl.append(imageSerializer.data['image'])
         data.append({'itemName': itemSerializer.data['item_name'],
                      'image': imgUrl,'details': itemSerializer.data['details'],'desire': itemSerializer.data['desire'] })
-        print("data", data)
         return Response(data)
 
 

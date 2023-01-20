@@ -129,17 +129,10 @@ function NavBar(props) {
           </Search>
           {/* <RoundedButton variant='contained' onClick={login}>LOG IN</RoundedButton> */}
           {!user ? <RoundedButton variant='contained' onClick={login}>LOG IN</RoundedButton> :
-          <>
+          <div>
           <RoundedButton variant='contained' onClick={myPage}>My Page</RoundedButton>
           <RoundedButton variant='contained' onClick={logOut}>Log Out</RoundedButton>
-          </>
-}
-
-
-          
-          {/* <RoundedButton variant='contained' onClick={login}>ACCOUNT</RoundedButton>
-          <RoundedButton variant='contained' onClick={login}>LOG OUT</RoundedButton> */}
-          {/* <RoundedButton variant='contained'>ACCOUNT</RoundedButton> */}
+          </div>}
         </Toolbar>
       </AppBar>
     </Box>
