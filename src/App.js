@@ -6,6 +6,7 @@ import { useState, useEffect, useCallback, Component } from 'react'
 import Sidebar from "./componenet/Sidebar";
 import Trades from "./componenet/Trades";
 import NavBar from "./componenet/NavBar";
+import AllListings from "./componenet/AllListings";
 import useAxiosPrivate from "./componenet/hooks/axiosPrivate";
 import Registration from "./componenet/Registration/Registration";
 import AddItem from "./componenet/AddItem";
@@ -57,7 +58,7 @@ function App() {
 
 			<Routes>
 				<Route path="/" element={<NavBar user={user} setUser={setUser} setUserState={setUserState} />} exact>
-					<Route path="/" element={[<Sidebar />, <Trades />]} />
+					<Route path="/" element={[<Sidebar />, <AllListings />]} />
 					<Route path="/Login" element={<LoginForm userState={userState} setUserState={setUserState} />} />
 					<Route path="/Signup" element={<SignupForm />} />
 
