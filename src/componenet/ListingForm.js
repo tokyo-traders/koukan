@@ -20,7 +20,7 @@ function AddListingForm(props) {
         uploadData.append("desire", desire);
         uploadData.append("expiration", expirationDate);
         uploadData.append("price", priceFree)
-        uploadData.append("user_id", user.Id)
+        uploadData.append("user_id", user.id)
         uploadData.append("item_id", itemId)
 
         fetch("/api/create-post", {

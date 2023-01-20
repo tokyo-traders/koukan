@@ -14,16 +14,17 @@ router.register('image', views.ImageView)
 router.register('image/multiple_upload', views.ImageView)
 
 urlpatterns = [
-    path('user/all', views.user_register),
-
+  path('user/register', views.user_register),
     path('user/login', views.user_login),
+    path('user/refresh', views.user_refresh),
+    path('user/logout', views.user_logout),
     # to GET and POST all the item objects
     path('item/<int:userid>', views.item_list),
     # to get the item with full CRUD
     path('item/<str:username>/<int:id>', views.item_edit),
     # to get the images path with GET and DELETE method only
     path('item-image/<int:itemId>', views.image_list),
-    path('hello', views.hello),
+
     path('all-item/<int:userid>/<int:itemid>', views.all_item),
 
     path('all-info/<int:userid>', views.newall_item),
