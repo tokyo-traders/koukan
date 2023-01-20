@@ -10,9 +10,10 @@ export default function AllListings() {
     useEffect(() => {
         axios
             .get('api/homepage')
-            .then(response => console.log(response))
+            .then(response => console.log(response.data))
             .then(res => setListings(res.data))
     }, [])
+    console.log(listings)
     return (
         <>
             <h1>All listings</h1>

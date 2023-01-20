@@ -157,7 +157,7 @@ def newall_item(request, userid):
         items = Item.objects.filter(user_id=userid).all()
         images = Image.objects.all()
     except Item.DoesNotExist or Image.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)\
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == "GET":
         imgUrl = []
