@@ -9,8 +9,9 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 
 
-function AddItem() {
+function AddItem(props) {
 
+    const {user} = props
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/MyPage"
@@ -19,36 +20,11 @@ function AddItem() {
         navigate(from, {replace: true})
       }, [navigate]);
 
-    const [user, setUser] = useState("")
-    const axiosPrivate = useAxiosPrivate();
 
     const [itemName, setItemName] = useState("");
     const [details, setDetails] = useState('');
     const [desire, setDesire] = useState('');
 
-    useEffect(() => {
-        let isMounted = true;
-        const controller = new AbortController();
-    
-        const getUsers = async () => {
-          try {
-            const response = await axiosPrivate.get('/api/user/login', {
-              signal : controller.signal
-            });
-            console.log("addItem 😁", response.data)
-            isMounted && setUser(response.data)
-          } catch (err) {
-            console.error("FUckYOU", err)
-          }
-        }
-    
-        getUsers();
-    
-        return () =>{
-          isMounted = false;
-          controller.abort();
-        }
-      },[]);
 
     const uploadData = new FormData();
     const uploadImages = new FormData()
@@ -56,7 +32,7 @@ function AddItem() {
         e.preventDefault()
         uploadData.append('item_name', itemName);
         uploadData.append('details', details);
-        uploadData.append('user_id', 1);
+        uploadData.append('user_id', user.id);
         uploadData.append("desire", desire)
         // uploadImages.append("itemId", 85);
         // try {
@@ -80,10 +56,11 @@ function AddItem() {
         //         localStorage.getItem(key, value);
         //     },
         // }
-        console.log(user)
+        console.log(uploadData)
         fetch(`/api/item/${user.id}`, {
             method: 'POST',
             body: uploadData,
+            // headers: { 'Content-Type': 'application/json'}
         })
             .then(res => res.json())
             .then(data => {

@@ -11,6 +11,10 @@ from .authentication import create_access_token, create_refresh_token, decode_ac
 
 import jwt
 import datetime
+import io  # delete
+
+from rest_framework.parsers import JSONParser  # delete
+from rest_framework.renderers import JSONRenderer  # delete
 
 
 @api_view(['GET', 'POST'])
@@ -195,6 +199,7 @@ def item_list(request, userid):
         serializer = ItemSerializer(item, many=True)
         return Response(serializer.data)
     if request.method == "POST":
+        print(request.data)
         serializer = ItemSerializer(data=request.data)
         if serializer.is_valid():
             # itemId = serializer.validated_data.get('id', )
@@ -227,27 +232,52 @@ def item_edit(request, id, username):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+# @api_view(['GET'])
+# def all_item(request, itemid):
+#     try:
+#         item = Item.objects.filter(id=itemid).all()
+#         images = Image.objects.filter(item_id=itemid).all()
+#     except Item.DoesNotExist or Image.DoesNotExist:
+#         return Response(status=status.HTTP_404_NOT_FOUND)
+
+#     if request.method == "GET":
+#         print("this is items", item)
+#         print("this is images", images)
+#         # data = {"images": images, "item": item}
+#         data = []
+#         data.append(ItemSerializer(item))
+#         data.append(MultipleImageSerializer(images))
+#         # data['images'] = images
+#         # data['item'] = item
+#         print("DATA: ")
+#         return Response(data)
+
 @api_view(['GET'])
-def all_item(request, userid, itemid):
+def all_item(request, itemid):
     try:
-        items = Item.objects.filter(user_id=userid).all().values('item_name')
-        images = Image.objects.filter(item_id=itemid).all()
+        item = Item.objects.filter(id=itemid).first()
+        images = Image.objects.all()
     except Item.DoesNotExist or Image.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == "GET":
-        print("this is items", items)
+        itemSerializer = ItemSerializer(item)
+        print("this is serialized item", itemSerializer)
         print("this is images", images)
         data = []
-        for item in items:
-            for info in images:
-                data.append({'itemName': item['item_name'],
-                            'image': info.image.url})
-                print("data", data)
-                return Response(data)
+        imgUrl = []
+        for image in images:
+            imageSerializer = ImageSerializer(image)
+            if imageSerializer.data["item_id"] == itemSerializer.data["id"]:
+                imgUrl.append(imageSerializer.data['image'])
+        data.append({'itemName': itemSerializer.data['item_name'],
+                     'images': imgUrl,
+                     'details': itemSerializer.data['details']})
+        print("data", data)
+        return Response(data)
 
 
-@api_view(['GET', 'DELETE'])
+@ api_view(['GET', 'DELETE'])
 def image_list(request, itemId):
     try:
         # image = Image.object.get(item_id=itemId)
@@ -299,6 +329,7 @@ def create_post(request):
         serializer = PostSerializer(post, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     elif request.method == "POST":
+        print(request.data)
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -354,7 +385,7 @@ def all_item(request, itemid):
         return Response(data)
 
 
-@ api_view(['GET', 'POST'])
+@api_view(['GET', 'POST'])
 def create_offer(request):
     if request.method == "GET":
         offer = Offer.objects.all()

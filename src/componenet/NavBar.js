@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState, useEffect, useCallback, useContext } from 'react'
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -8,6 +9,10 @@ import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import Link from '@mui/material/Link';
+import { Menu } from '@mui/material';
+import useAxiosPrivate from "./hooks/axiosPrivate"
+import useAuth from './hooks/useAuth';
+import { useNavigate, useLocation, Outlet} from "react-router-dom";
 
 
 const RoundedButton = styled(Button)(() => ({
@@ -63,8 +68,38 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 function NavBar(props) {
+ 
+  const {user, setUser, setUserState} = props
+  const { setAuth } = useAuth();
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || "/MyPage"
+  const myPage = useCallback(()=> navigate('/MyPage', {replace: true}), [navigate]);
+  const login = useCallback(()=> navigate('/login', {replace: true}), [navigate]);
+  const home = useCallback(()=> navigate('/', {replace: true}), [navigate]);
+  const logup = useCallback(()=> {
+    if (from === "/signup") {
+      navigate('/MyPage', {replace: true})
+    } else {
+      navigate(from, {replace: true})
+    }
+    }, [navigate]);
+
+  const displayUser = () => {
+    console.log(user)
+  }
   
+  const logOut = () => {
+
+    setAuth({});
+    setUser(undefined);
+    setUserState(false);
+    home();
+  }
   return (
+    <>
     <Box sx={{ flexGrow: 1 }}>
       <AppBar sx={{background:"#2E038C"}} position="static">
         <Toolbar
@@ -77,7 +112,7 @@ function NavBar(props) {
             fontFamily="Roboto Slab"
             padding={2}
             color="#D904B5"
-            href="/"
+            onClick={home}
             underline='none'
           >
             <div>TOKYO</div>
@@ -92,11 +127,24 @@ function NavBar(props) {
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
-          <RoundedButton variant='contained' href='/Login'>LOG IN</RoundedButton>
+          {/* <RoundedButton variant='contained' onClick={login}>LOG IN</RoundedButton> */}
+          {!user ? <RoundedButton variant='contained' onClick={login}>LOG IN</RoundedButton> :
+          <>
+          <RoundedButton variant='contained' onClick={myPage}>My Page</RoundedButton>
+          <RoundedButton variant='contained' onClick={logOut}>Log Out</RoundedButton>
+          </>
+}
+
+
+          
+          {/* <RoundedButton variant='contained' onClick={login}>ACCOUNT</RoundedButton>
+          <RoundedButton variant='contained' onClick={login}>LOG OUT</RoundedButton> */}
           {/* <RoundedButton variant='contained'>ACCOUNT</RoundedButton> */}
         </Toolbar>
       </AppBar>
     </Box>
+  <Outlet/>
+  </>
   );
 }
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import CssBaseline from '@mui/material/CssBaseline';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
@@ -12,6 +12,7 @@ import Button from '@mui/material/Button';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import { useNavigate, useLocation, useParams  } from 'react-router-dom';
 
 import axios from "axios";
 
@@ -23,24 +24,42 @@ const Img = styled('img')({
 });
 
 const RoundedButton = styled(Button)(() => ({
-    borderRadius: 35,
-    backgroundColor: "#D904B5",
-    color: "#46C8F5",
-    fontSize: "1rem",
-    display: "block"
+  borderRadius: 35,
+  backgroundColor: "#D904B5",
+  color: "#46C8F5",
+  fontSize: "1rem",
+  display: "block"
 
 }));
 
-export default function UserSingleItem() {
+const BASE_URL = 'http://127.0.0.1:8000/api'
+
+export default function UserSingleItem(props) {
+  const {itemId} = useParams();
+  const {user} = props
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/MyPage"
+  const makeListing = useCallback(()=> navigate(`/MyPage/makeListing/${itemId}`, {replace: true}), [navigate]);
+  const goBack = useCallback(()=> {
+      navigate(from, {replace: true})
+    }, [navigate]);
+
 
   const [itemList, setItemList] = useState([]);
   const [snapshots, setSnapshots] = useState([])
 
-  const userid = 0;
+ const display = () => {
+    if (user && itemId) {
+        makeListing();
+    }
+ }
 
   useEffect(() => {
-    axios
-      .get(`/api/item/${userid}`)
+    if (user) {
+      axios
+      .get(`/api/item/${user.id}`)
       .then((response) => {
         setItemList(response.data)
         const idArr = [];
@@ -54,65 +73,16 @@ export default function UserSingleItem() {
             //   console.log(image)
               // setSnapshots(...image[0], snapshots)
             })
-        })
+          })
       })
       .then((response) => {
 
       })
-  }, [])
+    }
+    }, [user])
 
   return (
     <>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 5,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-
-          {/* get logged in user name and display */}
-
-          <Typography
-            variant="h4"
-            fontFamily="Roboto Slab"
-            padding={2}
-            color="#D904B5"
-          >
-            USER NAME
-          </Typography>
-          <Box
-            sx={{
-              marginTop: 3,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}>
-
-            <Stack direction="row" spacing={8} justifyContent="center">
-              <Typography href="/MyItems" variant="body1" underline="none" color="inherit">
-                My Items
-              </Typography>
-
-              <Typography href="/PendingOffer" variant="body1" underline='none'>
-                Pending Offer
-              </Typography>
-
-              <Typography href="/TradedItem" variant="body1" underline='none'>
-                Traded Items
-              </Typography>
-            </Stack>
-          </Box>
-        </Box>
-      </Container>
-      <Box sx={{ width: '80%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
-        <Divider sx={{ borderBottomWidth: 1 }} variant="middle" />
-      </Box>
-
-
       <Box sx={{ width: '80%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
             <Grid container spacing={2} sx={{backgroundColor:"none", marginTop: 2}}>
                 <Grid  item xs={2} spacing={3}>
@@ -145,19 +115,22 @@ export default function UserSingleItem() {
                             }}
                             >
                                 <Typography variant='h5'>
-                                     {itemList[1].item_name}
+                                     {itemList[1]?.item_name}
                                 </Typography>
 
-                                <Box sx={{marginLeft: 50}}><ModeEditIcon/></Box>
+                  <Box sx={{ marginLeft: 50 }}><ModeEditIcon /></Box>
+
 
                                  <RoundedButton
                                     fullWidth
                                     variant="contained"
                                     sx={{ mt: 3, mb: 2 }}
+                                    onClick={display}
                                     >
                                    MAKE POST
                                     </RoundedButton>
                             </Box>
+
 
                             <Box
                             sx={{
@@ -170,7 +143,7 @@ export default function UserSingleItem() {
                                     Description
                                 </Typography>
                                 <Typography gutterBottom variant='body'>
-                                    {itemList[1].details}
+                                    {itemList[1]?.details}
                                 </Typography>
                             </Box>
 
@@ -184,7 +157,7 @@ export default function UserSingleItem() {
                                     Desire Item
                                 </Typography>
                                 <Typography gutterBottom variant='body'>
-                                    {itemList[1].desire}
+                                    {itemList[1]?.desire}
                                 </Typography>
                             </Box>
                             
@@ -198,7 +171,7 @@ export default function UserSingleItem() {
                                     Expired By
                                 </Typography>
                                 <Typography gutterBottom variant='body'>
-                                    {itemList[1].offer_period}
+                                    {itemList[1]?.offer_period}
                                 </Typography>
                             </Box>
                         
@@ -207,7 +180,7 @@ export default function UserSingleItem() {
                 </Grid>
             </Grid>
       </Box>
- 
+
     </>
   );
 }

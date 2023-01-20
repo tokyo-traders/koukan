@@ -1,6 +1,6 @@
 // THIS FILE WILLL BE DELETED AS MERGED IN MyPage.js
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import axios from "axios";
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -10,74 +10,87 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import CardActions from '@mui/material/CardActions';
 import Grid from '@mui/material/Grid';
+import Icon from '@mui/material/Icon';
 import MyPage from './MyPage'
+import  Divider  from '@mui/material/Divider';
+import { useNavigate, useLocation} from "react-router-dom";
 
-//npm install react-material-ui-carousel to make the carousel for image gallery
+const BASE_URL = 'http://127.0.0.1:8000/api'
 
 
-const userid = 1;
+function UserItemsList(props) {
 
-function UserItemsList() {
-    const [itemList, setItemList] = useState([])
+    const {user} = props
 
-    const getItemsList = async (userid) => {
-        await axios.get(`/api/item/${userid}`)
-            .then((response) => {
-                console.log(response.data)
-                setItemList(response.data)
-            })
-            .catch(err =>
-                console.log(err)
-            )
-    }
+    const navigate = useNavigate();
+    const location = useLocation();
+  
+
+    const from = location.state?.from?.pathname || "/MyPage"
+    const addItem = useCallback(()=> navigate('/MyPage/addItem', {replace: true}), [navigate]);
+    const myPage = useCallback(()=> {
+      if (from === "/signup") {
+        navigate('/MyPage', {replace: true})
+      } else {
+        navigate(from, {replace: true})
+      }
+      }, [navigate]);
+
+   
+      const [itemInfo, setItemInfo] = useState([{
+        "itemName": "",
+        "itemImages": "",
+        "itemID": ""
+      }])
 
     useEffect(() => {
-        // Promise.all(
-        //     [
-        // axios.get(`/api/item/1`), // need the path for the images
-        // axios.get('/api/item/1') // need the path for the 
-        // ] 
-        // )
-        // .then((response) => {
-        //     console.log(response.data)
-        //     setItemList(response.data)
-        // })
-        getItemsList(userid)
-    }, [])
+        if (user) {
+        axios.get(`/api/all-info/${user.id}`)
+          .then(response => {
+            setItemInfo([...response.data])
+          })
+        }
+      }, [user])
 
     return (
         <>
+      <Grid
+        direction="row"
 
-            <div>ITEMS</div>
-            {/* <Grid container spacing={3}> */}
-            {itemList.map((item, index) => (
-                <div key={index}>
-                    {item.name}
-                </div>
-                //          <Card elevation={6}>
-                //     <CardMedia 
-                //         style={{ height: 350 }}
-                //         // image={item.image} // need to check
-                //         title={item.name}
-
-                //     />
-                //     <CardContent >
-                //         <Typography gutterBottom variant="h5">{item.name}</Typography>
-                //         <Box display="flex" justify="space-between">
-                //             <Typography variant="subtitle1">{item.description}</Typography>
-                //             <Typography gutterBottom variant="subtitle1"></Typography>
-                //         </Box>
-                //         <CardActions>
-                //             <Button size="small" color="primary" onClick={() => window.open(item.web_url, '_blank')}>
-                //                 WebSite
-                //             </Button>
-                //         </CardActions>
-                //     </CardContent>
-                // </Card>
-            ))}
-            <div>items</div>
-            <Button variant="contained">Create a trade offer</Button>
-            {/* </Grid> */}
+        justifyContent="center"
+        alignItems="center" md={4}
+      // spacing={3}
+      >
+        {user && itemInfo?.map(item => (
+          <div 
+            key={item.itemID}
+            onClick={() => {
+              if (item) {
+                navigate(`/MyPage/Items/${item.itemID}`, {replace: true})
+              }
+            }
+          }
+          >
+            <Card elevation={6} sx={{ maxWidth: 345, mt: 10, marginLeft: 4 }}>
+              <CardMedia
+                component="img"
+                style={{ width: 350 }}
+                image={BASE_URL + `${item.itemImages[0]}`}
+                height="140"
+              />
+              <CardContent >
+                <Typography gutterBottom variant="h5">{item.itemName}</Typography>
+                <Box display="flex" justify="space-between">
+                  <Typography gutterBottom variant="subtitle1"></Typography>
+                </Box>
+              </CardContent>
+            </Card>
+          </div>
+        ))}
+      </Grid>
+        <Button onClick={addItem}>
+          <Icon sx={{ fontSize: 90, marginLeft: 15, marginTop: 3 }}>add_circle</Icon>
+        </Button>
         </>
     )
 }

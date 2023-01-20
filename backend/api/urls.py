@@ -22,6 +22,11 @@ urlpatterns = [
     # to get the images path with GET and DELETE method only
     path('item-image/<int:itemId>', views.image_list),
     path('hello', views.hello),
+    path('all-item/<int:userid>/<int:itemid>', views.all_item),
+
+    path('all-info/<int:userid>', views.newall_item),
+    # path('create-post', views.post_list),  # added manually from Koji
+    # path('user/login/<str:name>', views.user_login),
     path('all-item/<int:itemid>', views.all_item),
     path('all-info/<int:userid>', views.newall_item),
     # this path only lets you create a post and get all the post created for reference.
@@ -36,6 +41,7 @@ urlpatterns = [
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 #
 # use the static or...
+
 
 # ...use this one
 urlpatterns += router.urls
