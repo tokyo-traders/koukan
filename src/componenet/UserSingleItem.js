@@ -24,13 +24,15 @@ const Img = styled('img')({
 });
 
 const RoundedButton = styled(Button)(() => ({
-    borderRadius: 35,
-    backgroundColor: "#D904B5",
-    color: "#46C8F5",
-    fontSize: "1rem",
-    display: "block"
+  borderRadius: 35,
+  backgroundColor: "#D904B5",
+  color: "#46C8F5",
+  fontSize: "1rem",
+  display: "block"
 
 }));
+
+const BASE_URL = 'http://127.0.0.1:8000/api'
 
 export default function UserSingleItem(props) {
   const {itemId} = useParams();
@@ -116,7 +118,8 @@ export default function UserSingleItem(props) {
                                      {itemList[1]?.item_name}
                                 </Typography>
 
-                                <Box sx={{marginLeft: 50}}><ModeEditIcon/></Box>
+                  <Box sx={{ marginLeft: 50 }}><ModeEditIcon /></Box>
+
 
                                  <RoundedButton
                                     fullWidth
@@ -127,6 +130,7 @@ export default function UserSingleItem(props) {
                                    MAKE POST
                                     </RoundedButton>
                             </Box>
+
 
                             <Box
                             sx={{
@@ -176,7 +180,7 @@ export default function UserSingleItem(props) {
                 </Grid>
             </Grid>
       </Box>
- 
+
     </>
   );
 }
