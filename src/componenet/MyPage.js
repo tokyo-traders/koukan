@@ -2,30 +2,11 @@ import { useState, useEffect, useCallback } from 'react'
 import { useNavigate, useLocation, Outlet} from "react-router-dom";
 import CssBaseline from '@mui/material/CssBaseline';
 import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import Divider from '@mui/material/Divider';
 import { Stack } from '@mui/system';
-import useAxiosPrivate from "./hooks/axiosPrivate"
-import { setUseProxies } from 'immer';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import { CardActions, IconButton } from '@mui/material';
-import Button from '@mui/material/Button';
-
-
-
-import Icon from '@mui/material/Icon';
-import AddItem from './AddItem';
-
-import axios from "axios";
-import { ContactlessOutlined } from '@mui/icons-material';
-
-const BASE_URL = 'http://127.0.0.1:8000/api'
 
 
 export default function MyPage(props) {
@@ -37,6 +18,7 @@ export default function MyPage(props) {
 
   const from = location.state?.from?.pathname || "/MyPage"
   const itemList = useCallback(()=> navigate("/MyPage", {replace: true}), [navigate]);
+  const postList = useCallback(()=> navigate("/MyPage/postList", {replace: true}), [navigate]);
   const myPage = useCallback(()=> {
     if (from === "/signup") {
       navigate('/MyPage', {replace: true})
@@ -84,8 +66,8 @@ export default function MyPage(props) {
                 My Items
               </Link>
 
-              <Link onClick={itemList} variant="body1" underline='none' >
-                home
+              <Link onClick={postList} variant="body1" underline='none' >
+                My Posts
               </Link>
 
               <Link onClick={itemList} variant="body1" underline='none' >

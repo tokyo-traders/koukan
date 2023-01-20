@@ -14,46 +14,40 @@ import  Divider  from '@mui/material/Divider';
 import { useNavigate, useLocation} from "react-router-dom";
 
 const BASE_URL = 'http://127.0.0.1:8000/api'
+const homepage = '/api/homepage'
 
 
-function UserItemsList(props) {
+function UserPostList(props) {
 
     const {user} = props
 
     const navigate = useNavigate();
     const location = useLocation();
+
+    const [listings, setListings] = useState(null);
+
+    useEffect(() => {
+        axios
+            .get(homepage)
+            .then(res => {
+                setListings(res.data.filter(item => item.item.user_id === user.id))
+            })
+    }, [])
   
 
     const from = location.state?.from?.pathname || "/MyPage"
     const addItem = useCallback(()=> navigate('/MyPage/addItem', {replace: true}), [navigate]);
-    const myPage = useCallback(()=> {
-      if (from === "/signup") {
-        navigate('/MyPage', {replace: true})
-      } else {
-        navigate(from, {replace: true})
-      }
-      }, [navigate]);
+
 
    
-      const [itemInfo, setItemInfo] = useState([{
-        "itemName": "",
-        "itemImages": "",
-        "itemID": ""
-      }])
+    
       const [offersMade, setOffersMade] = useState([]);
-    useEffect(() => {
-        if (user) {
-        axios.get(`/api/all-info/${user.id}`)
-          .then(response => {
-            setItemInfo([...response.data])
-          })
-        }
-      }, [user])
+
 
       useEffect(() => {
         axios.get(`/api/create-offer`)
           .then(response => {
-            const data = response.data
+             console.log(response.data)
           })
       }, [])
 
@@ -67,34 +61,34 @@ function UserItemsList(props) {
         lg={4}
         spacing={3}
       >
-        {user && itemInfo?.map(item => (
+        {listings && listings?.map(item => (
             <Card 
               elevation={6} 
               sx={{ maxWidth: 300, mt: 10, marginLeft: 4 }}
-              onClick={() => {
-                if (item) {
-                  navigate(`/MyPage/Items/${item.itemID}`, {replace: true})
-                }
-              }}
+            //   onClick={() => {
+            //     if (item) {
+            //       navigate(`/MyPage/Items/${item.itemID}`, {replace: true})
+            //     }
+            //   }}
               >
               <CardMedia
                 component="img"
                 style={{ Width: 300 }}
-                image={BASE_URL + `${item.itemImages[0]}`}
+                image={BASE_URL + `${item.images[0]}`}
                 height="140"
               />
               <CardContent >
                 <Box display="flex" justify="space-between">
-                <Typography gutterBottom variant="body">{item.itemName}</Typography>
+                <Typography gutterBottom variant="body">{item.item.item_name}</Typography>
                 </Box>
               </CardContent>
+              <Box display="flex" justify="space-between">
+                <Typography gutterBottom variant="body">Offers Made</Typography>
+                </Box>
             </Card>
         ))}
-        <Button onClick={addItem}>
-          <Icon sx={{ fontSize: 90, marginLeft: 15, marginTop: 3 }}>add_circle</Icon>
-        </Button>
       </Grid>
     )
 }
 
-export default UserItemsList
+export default UserPostList

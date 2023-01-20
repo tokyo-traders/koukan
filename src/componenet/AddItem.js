@@ -1,7 +1,6 @@
 import React, { useState, useEffect, PureComponent, useCallback } from 'react';
 import axios from "axios";
 import _ from "lodash";
-import './AddItem.css';
 import useAxiosPrivate from "./hooks/axiosPrivate"
 import { upload } from '@testing-library/user-event/dist/upload';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -97,7 +96,7 @@ function AddItem(props) {
     const handleChange = (e) => {
         // console.log(e.target.files)
         _.forEach(e.target.files, file => {
-            // console.log(file)
+            console.log(file)
             uploadImages.append('images', file)
             // uploadImages.append('itemId', 85);
 
