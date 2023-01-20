@@ -12,9 +12,8 @@ import Button from '@mui/material/Button';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import { useNavigate, useLocation, useParams  } from 'react-router-dom';
-
 import axios from "axios";
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 
 const Img = styled('img')({
   margin: 'auto',
@@ -35,150 +34,120 @@ const RoundedButton = styled(Button)(() => ({
 const BASE_URL = 'http://127.0.0.1:8000/api'
 
 export default function UserSingleItem(props) {
-  const {itemId} = useParams();
-  const {user} = props
 
-  const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from?.pathname || "/MyPage"
-  const makeListing = useCallback(()=> navigate(`/MyPage/makeListing/${itemId}`, {replace: true}), [navigate]);
-  const goBack = useCallback(()=> {
-      navigate(from, {replace: true})
-    }, [navigate]);
+    const {itemId} = useParams();
+    const {user} = props
 
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/MyPage"
+    const makeListing = useCallback(()=> navigate(`/MyPage/makeListing/${itemId}`, {replace: true}), [navigate]);
+    const goBack = useCallback(()=> {
+        navigate(from, {replace: true})
+      }, [navigate]);
 
-  const [itemList, setItemList] = useState([]);
-  const [snapshots, setSnapshots] = useState([])
+  const [itemData, setItemData] = useState(null);
 
- const display = () => {
+  const display = () => {
     if (user && itemId) {
         makeListing();
     }
  }
 
-  useEffect(() => {
-    if (user) {
-      axios
-      .get(`/api/item/${user.id}`)
-      .then((response) => {
-        setItemList(response.data)
-        const idArr = [];
-        for (let item of response.data) {
-          idArr.push(item.id)
-        }
-        console.log(idArr)
-        idArr.map(id => {
-          axios.get(`api/item-image/${id}`)
-            .then(image => {
-            //   console.log(image)
-              // setSnapshots(...image[0], snapshots)
-            })
-          })
-      })
-      .then((response) => {
 
-      })
+  useEffect(() => {
+    if (itemId) {
+        axios.get(`/api/all-item/${itemId}`)
+        // .then(response => setItemData(response.data))
+        .then(response => {
+            console.log("😂", response.data)
+            setItemData(response?.data[0])
+        })
     }
-    }, [user])
+  }, [])
+
 
   return (
     <>
       <Box sx={{ width: '80%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
-            <Grid container spacing={2} sx={{backgroundColor:"none", marginTop: 2}}>
-                <Grid  item xs={2} spacing={3}>
-                    <Box sx={{marginBottom: 2}}>
-                        <Img alt="image2" src="https://m.media-amazon.com/images/I/51l3-TEATkL._AC_.jpg" />
-                    </Box>
-                    <Box sx={{marginBottom: 2}}>
-                        <Img alt="image3" src="https://m.media-amazon.com/images/I/61fD7B8KaUL._AC_SL1056_.jpg" />
-                    </Box>
-                    <Box  sx={{marginBottom: 2}}>
-                        <Img alt="image4" src="https://m.media-amazon.com/images/I/31q3v4ynTaL._AC_.jpg" />
-                    </Box>
-                </Grid>
-                <Grid item xs={5} sx={{margin: '10px'}}>
-                    <Container  sx={{height: 350 }}>
-                        <Box>
-                        <Button><NavigateBeforeIcon/></Button>
-                        </Box>
-                        <Img alt="image1" src="https://m.media-amazon.com/images/I/71vHeoTBtiL._AC_SL1500_.jpg" />
-                        <Button><NavigateNextIcon/></Button>
-                    </Container>
-                </Grid>
-                <Grid item xs={5} sm container>
-                    <Grid item xs container direction="column" spacing={2}>
-                        <Grid item xs>
-                            <Box
-                            sx={{
-                                backgroundColor: "white",
-                                marginTop: 2,
-                            }}
-                            >
-                                <Typography variant='h5'>
-                                     {itemList[1]?.item_name}
-                                </Typography>
+        <Grid container spacing={2} sx={{ backgroundColor: "none", marginTop: 2 }}>
+          <Grid item xs={2} spacing={3}>
+            <Box sx={{ marginBottom: 2 }}>
+              <Img alt="image2" src="https://m.media-amazon.com/images/I/51l3-TEATkL._AC_.jpg" />
+            </Box>
+            <Box sx={{ marginBottom: 2 }}>
+              <Img alt="image3" src="https://m.media-amazon.com/images/I/61fD7B8KaUL._AC_SL1056_.jpg" />
+            </Box>
+            <Box sx={{ marginBottom: 2 }}>
+              <Img alt="image4" src="https://m.media-amazon.com/images/I/31q3v4ynTaL._AC_.jpg" />
+            </Box>
+          </Grid>
+          <Grid item xs={5} sx={{ margin: '10px' }}>
+            <Container sx={{ height: 350 }}>
+              <Box>
+                <Button><NavigateBeforeIcon /></Button>
+              </Box>
+              {itemData && <Img alt="image1" src={BASE_URL + `${itemData?.image[0]}`} />}
+              <Button><NavigateNextIcon /></Button>
+            </Container>
+          </Grid>
+          <Grid item xs={5} sm container>
+            <Grid item xs container direction="column" spacing={2}>
+              <Grid item xs>
+                <Box
+                  sx={{
+                    backgroundColor: "white",
+                    marginTop: 2,
+                  }}
+                >
+                  {itemData && <Typography variant='h5'>
+                    {itemData?.itemName}
+                  </Typography>}
 
                   <Box sx={{ marginLeft: 50 }}><ModeEditIcon /></Box>
 
+                  <RoundedButton
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                    onClick={display}
+                  >
+                    MAKE POST
+                  </RoundedButton>
+                </Box>
 
-                                 <RoundedButton
-                                    fullWidth
-                                    variant="contained"
-                                    sx={{ mt: 3, mb: 2 }}
-                                    onClick={display}
-                                    >
-                                   MAKE POST
-                                    </RoundedButton>
-                            </Box>
+                <Box
+                  sx={{
+                    backgroundColor: "white",
+                    marginTop: 4,
 
+                  }}
+                >
+                  <Typography gutterBottom variant='h5' component='div'>
+                    Description
+                  </Typography>
+                 {itemData && <Typography gutterBottom variant='body'>
+                    {itemData?.details}
+                  </Typography>}
+                </Box>
 
-                            <Box
-                            sx={{
-                                backgroundColor: "white",
-                                marginTop: 4,
-                               
-                            }}
-                            >
-                                <Typography gutterBottom variant='h5' component='div'>
-                                    Description
-                                </Typography>
-                                <Typography gutterBottom variant='body'>
-                                    {itemList[1]?.details}
-                                </Typography>
-                            </Box>
-
-                            <Box
-                            sx={{
-                                backgroundColor: "white",
-                                marginTop: 4,
-                            }}
-                            >
-                                <Typography gutterBottom variant='h5' component='div'>
-                                    Desire Item
-                                </Typography>
-                                <Typography gutterBottom variant='body'>
-                                    {itemList[1]?.desire}
-                                </Typography>
-                            </Box>
-                            
-                            <Box
-                            sx={{
-                                backgroundColor: "white",
-                                marginTop: 4,
-                            }}
-                            >
-                                <Typography gutterBottom variant='h5' component='div'>
-                                    Expired By
-                                </Typography>
-                                <Typography gutterBottom variant='body'>
-                                    {itemList[1]?.offer_period}
-                                </Typography>
-                            </Box>
-                        
-                        </Grid>
-                    </Grid>
-                </Grid>
+                <Box
+                  sx={{
+                    backgroundColor: "white",
+                    marginTop: 4,
+                  }}
+                >
+                  <Typography gutterBottom variant='h5' component='div'>
+                    Desire Item
+                  </Typography>
+                  {itemData && <Typography gutterBottom variant='body'>
+                    {itemData?.desire}
+                  </Typography>}
+                </Box>
+              </Grid>
             </Grid>
+          </Grid>
+        </Grid>
       </Box>
 
     </>
