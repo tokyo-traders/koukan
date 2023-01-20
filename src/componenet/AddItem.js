@@ -1,17 +1,54 @@
-import React, { useState, useEffect, PureComponent } from 'react';
+import React, { useState, useEffect, PureComponent, useCallback } from 'react';
 import axios from "axios";
 import _ from "lodash";
 import './AddItem.css';
+import useAxiosPrivate from "./hooks/axiosPrivate"
 import { upload } from '@testing-library/user-event/dist/upload';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 
 
 
 function AddItem() {
 
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/MyPage"
+    const mypage = useCallback(()=> navigate("/MyPage", {replace: true}), [navigate]);
+    const goBack = useCallback(()=> {
+        navigate(from, {replace: true})
+      }, [navigate]);
+
+    const [user, setUser] = useState("")
+    const axiosPrivate = useAxiosPrivate();
+
     const [itemName, setItemName] = useState("");
     const [details, setDetails] = useState('');
     const [desire, setDesire] = useState('');
+
+    useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
+    
+        const getUsers = async () => {
+          try {
+            const response = await axiosPrivate.get('/api/user/login', {
+              signal : controller.signal
+            });
+            console.log("addItem 😁", response.data)
+            isMounted && setUser(response.data)
+          } catch (err) {
+            console.error("FUckYOU", err)
+          }
+        }
+    
+        getUsers();
+    
+        return () =>{
+          isMounted = false;
+          controller.abort();
+        }
+      },[]);
 
     const uploadData = new FormData();
     const uploadImages = new FormData()
@@ -19,7 +56,7 @@ function AddItem() {
         e.preventDefault()
         uploadData.append('item_name', itemName);
         uploadData.append('details', details);
-        uploadData.append('user_id', 1);
+        uploadData.append('user_id', user.id);
         uploadData.append("desire", desire)
         // uploadImages.append("itemId", 85);
         // try {
@@ -43,11 +80,12 @@ function AddItem() {
         //         localStorage.getItem(key, value);
         //     },
         // }
-        fetch('/api/item', {
+        console.log(uploadData)
+        fetch(`/api/item/${user.id}`, {
             method: 'POST',
             body: uploadData,
+            // headers: { 'Content-Type': 'application/json'}
         })
-            // .then(res => res.text())
             .then(res => res.json())
             .then(data => {
                 console.log(data)
@@ -75,7 +113,10 @@ function AddItem() {
         setDesire('');
         setDetails('');
         setItemName('');
+        // mypage();
     }
+
+
 
     const handleChange = (e) => {
         // console.log(e.target.files)
@@ -113,6 +154,7 @@ function AddItem() {
 
             <br />
             <button onClick={newItem}>New item</button>
+            <button onClick={goBack}>Go Back</button>
         </div>
     );
 }

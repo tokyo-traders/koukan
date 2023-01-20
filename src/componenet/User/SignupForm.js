@@ -28,8 +28,8 @@ const theme = createTheme();
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
-const REGISTER_URL = '/api/user/all';
-
+const REGISTER_URL = '/api/user/register';
+ 
 export default function SignupForm() {
 
   const firstNameRef = useRef();
@@ -98,7 +98,7 @@ export default function SignupForm() {
       }
       try {
           const response = await axios.post(REGISTER_URL,
-              JSON.stringify({ username:user, password:pwd, first_name: firstName, last_name: lastName, email, address }),
+              JSON.stringify({ username:user, password:pwd, first_name: firstName, last_name: lastName, email:email.toLowerCase(), address }),
               {
                   headers: { 'Content-Type': 'application/json' },
                   withCredentials: true

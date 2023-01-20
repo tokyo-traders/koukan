@@ -1,14 +1,13 @@
 from django.db import models
 from django.utils import timezone
-
+import datetime
 # this to create the folders in the file. Note: will not use yet. need further research.
 
-
+date = timezone.now
 def upload_path(instance, filename):
     return '/'.join([])
 
 # Create your models here.
-
 
 class User(models.Model):
     first_name = models.CharField(max_length=20, default="")
@@ -37,7 +36,7 @@ class Item(models.Model):
     offer_period = models.DateTimeField(default=timezone.now)
     status = models.IntegerField(default=0)
     is_tradable = models.BooleanField(default=True)
-    # item_image = models.ImageField(blank=True, null=True, upload_to='images/')
+    
 
 
 class Post(models.Model):
@@ -46,9 +45,12 @@ class Post(models.Model):
     price = models.BooleanField(default=False)
     desire = models.TextField(max_length=255)
     delivery = models.BooleanField(default=False)
-    expiration = models.DateTimeField(default=timezone.now)
+    expiration = models.DateTimeField(default=timezone.now() + datetime.timedelta(weeks=+1))
+    date_posted = models.DateTimeField(auto_now_add=True)
 
 
-class Offers(models.Model):
+class Offer(models.Model):
     post_id = models.ForeignKey('Post', on_delete=models.CASCADE)
     offered_item = models.ForeignKey('Item', on_delete=models.CASCADE)
+    acceptance = models.BooleanField(default=False)
+    date_offered = models.DateTimeField(auto_now_add=True)

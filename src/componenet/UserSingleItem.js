@@ -33,106 +33,74 @@ const RoundedButton = styled(Button)(() => ({
 
 const BASE_URL = 'http://127.0.0.1:8000/api'
 
-export default function UserSingleItem() {
+export default function UserSingleItem(props) {
+  const {user} = props
+  const [itemList, setItemList] = useState([]);
+  const [snapshots, setSnapshots] = useState([])
 
-  const [itemData, setItemData] = useState([]);
-  // const [snapshots, setSnapshots] = useState([])
 
-  // const userid = 1;
-  const itemid = 178
 
   useEffect(() => {
-    axios.get(`/api/all-item/${itemid}`)
-      // .then(response => setItemData(response.data))
-      .then(response => setItemData(response.data[0]))
-  }, [])
-  console.log(itemData)
+    if (user) {
+      axios
+      .get(`/api/item/${user.id}`)
+      .then((response) => {
+        setItemList(response.data)
+        const idArr = [];
+        for (let item of response.data) {
+          idArr.push(item.id)
+        }
+        console.log(idArr)
+        idArr.map(id => {
+          axios.get(`api/item-image/${id}`)
+            .then(image => {
+            //   console.log(image)
+              // setSnapshots(...image[0], snapshots)
+            })
+          })
+      })
+      .then((response) => {
+
+      })
+    }
+    }, [user])
+
   return (
     <>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 5,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-
-          {/* get logged in user name and display */}
-
-          <Typography
-            variant="h4"
-            fontFamily="Roboto Slab"
-            padding={2}
-            color="#D904B5"
-          >
-            USER NAME
-          </Typography>
-          <Box
-            sx={{
-              marginTop: 3,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}>
-
-            <Stack direction="row" spacing={8} justifyContent="center">
-              <Typography href="/MyItems" variant="body1" underline="none" color="inherit">
-                My Items
-              </Typography>
-
-              <Typography href="/PendingOffer" variant="body1" underline='none'>
-                Pending Offer
-              </Typography>
-
-              <Typography href="/TradedItem" variant="body1" underline='none'>
-                Traded Items
-              </Typography>
-            </Stack>
-          </Box>
-        </Box>
-      </Container>
       <Box sx={{ width: '80%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
-        <Divider sx={{ borderBottomWidth: 1 }} variant="middle" />
-      </Box>
-
-
-      <Box sx={{ width: '80%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
-        <Grid container spacing={2} sx={{ backgroundColor: "none", marginTop: 2 }}>
-          <Grid item xs={2} spacing={3}>
-            <Box sx={{ marginBottom: 2 }}>
-              <Img alt="image2" src="https://m.media-amazon.com/images/I/51l3-TEATkL._AC_.jpg" />
-            </Box>
-            <Box sx={{ marginBottom: 2 }}>
-              <Img alt="image3" src="https://m.media-amazon.com/images/I/61fD7B8KaUL._AC_SL1056_.jpg" />
-            </Box>
-            <Box sx={{ marginBottom: 2 }}>
-              <Img alt="image4" src="https://m.media-amazon.com/images/I/31q3v4ynTaL._AC_.jpg" />
-            </Box>
-          </Grid>
-          <Grid item xs={5} sx={{ margin: '10px' }}>
-            <Container sx={{ height: 350 }}>
-              <Box>
-                <Button><NavigateBeforeIcon /></Button>
-              </Box>
-              <Img alt="image1" src={BASE_URL + `${itemData.images[0]}`} />
-              <Button><NavigateNextIcon /></Button>
-            </Container>
-          </Grid>
-          <Grid item xs={5} sm container>
-            <Grid item xs container direction="column" spacing={2}>
-              <Grid item xs>
-                <Box
-                  sx={{
-                    backgroundColor: "white",
-                    marginTop: 2,
-                  }}
-                >
-                  <Typography variant='h5'>
-                    {itemData.itemName}
-                  </Typography>
+            <Grid container spacing={2} sx={{backgroundColor:"none", marginTop: 2}}>
+                <Grid  item xs={2} spacing={3}>
+                    <Box sx={{marginBottom: 2}}>
+                        <Img alt="image2" src="https://m.media-amazon.com/images/I/51l3-TEATkL._AC_.jpg" />
+                    </Box>
+                    <Box sx={{marginBottom: 2}}>
+                        <Img alt="image3" src="https://m.media-amazon.com/images/I/61fD7B8KaUL._AC_SL1056_.jpg" />
+                    </Box>
+                    <Box  sx={{marginBottom: 2}}>
+                        <Img alt="image4" src="https://m.media-amazon.com/images/I/31q3v4ynTaL._AC_.jpg" />
+                    </Box>
+                </Grid>
+                <Grid item xs={5} sx={{margin: '10px'}}>
+                    <Container  sx={{height: 350 }}>
+                        <Box>
+                        <Button><NavigateBeforeIcon/></Button>
+                        </Box>
+                        <Img alt="image1" src="https://m.media-amazon.com/images/I/71vHeoTBtiL._AC_SL1500_.jpg" />
+                        <Button><NavigateNextIcon/></Button>
+                    </Container>
+                </Grid>
+                <Grid item xs={5} sm container>
+                    <Grid item xs container direction="column" spacing={2}>
+                        <Grid item xs>
+                            <Box
+                            sx={{
+                                backgroundColor: "white",
+                                marginTop: 2,
+                            }}
+                            >
+                                <Typography variant='h5'>
+                                     {itemList[1]?.item_name}
+                                </Typography>
 
                   <Box sx={{ marginLeft: 50 }}><ModeEditIcon /></Box>
 
@@ -145,53 +113,53 @@ export default function UserSingleItem() {
                   </RoundedButton>
                 </Box>
 
-                <Box
-                  sx={{
-                    backgroundColor: "white",
-                    marginTop: 4,
+                            <Box
+                            sx={{
+                                backgroundColor: "white",
+                                marginTop: 4,
+                               
+                            }}
+                            >
+                                <Typography gutterBottom variant='h5' component='div'>
+                                    Description
+                                </Typography>
+                                <Typography gutterBottom variant='body'>
+                                    {itemList[1]?.details}
+                                </Typography>
+                            </Box>
 
-                  }}
-                >
-                  <Typography gutterBottom variant='h5' component='div'>
-                    Description
-                  </Typography>
-                  <Typography gutterBottom variant='body'>
-                    {itemData.details}
-                  </Typography>
-                </Box>
-
-                <Box
-                  sx={{
-                    backgroundColor: "white",
-                    marginTop: 4,
-                  }}
-                >
-                  <Typography gutterBottom variant='h5' component='div'>
-                    Desire Item
-                  </Typography>
-                  <Typography gutterBottom variant='body'>
-                    {itemData.desire}
-                  </Typography>
-                </Box>
-
-                <Box
-                  sx={{
-                    backgroundColor: "white",
-                    marginTop: 4,
-                  }}
-                >
-                  <Typography gutterBottom variant='h5' component='div'>
-                    Expired By
-                  </Typography>
-                  <Typography gutterBottom variant='body'>
-                    {itemData.offer_period}
-                  </Typography>
-                </Box>
-
-              </Grid>
+                            <Box
+                            sx={{
+                                backgroundColor: "white",
+                                marginTop: 4,
+                            }}
+                            >
+                                <Typography gutterBottom variant='h5' component='div'>
+                                    Desire Item
+                                </Typography>
+                                <Typography gutterBottom variant='body'>
+                                    {itemList[1]?.desire}
+                                </Typography>
+                            </Box>
+                            
+                            <Box
+                            sx={{
+                                backgroundColor: "white",
+                                marginTop: 4,
+                            }}
+                            >
+                                <Typography gutterBottom variant='h5' component='div'>
+                                    Expired By
+                                </Typography>
+                                <Typography gutterBottom variant='body'>
+                                    {itemList[1]?.offer_period}
+                                </Typography>
+                            </Box>
+                        
+                        </Grid>
+                    </Grid>
+                </Grid>
             </Grid>
-          </Grid>
-        </Grid>
       </Box>
 
     </>

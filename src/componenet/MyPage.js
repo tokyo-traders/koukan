@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import { useNavigate, useLocation, Outlet} from "react-router-dom";
 import CssBaseline from '@mui/material/CssBaseline';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
@@ -8,11 +9,15 @@ import Container from '@mui/material/Container';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import Divider from '@mui/material/Divider';
 import { Stack } from '@mui/system';
+import useAxiosPrivate from "./hooks/axiosPrivate"
+import { setUseProxies } from 'immer';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import { adaptV4Theme, CardActions, IconButton } from '@mui/material';
+import { CardActions, IconButton } from '@mui/material';
 import Button from '@mui/material/Button';
+
+
 
 import Icon from '@mui/material/Icon';
 import AddItem from './AddItem';
@@ -22,44 +27,24 @@ import { ContactlessOutlined } from '@mui/icons-material';
 
 const BASE_URL = 'http://127.0.0.1:8000/api'
 
-export default function MyPage() {
 
-  const [itemList, setItemList] = useState([]);
-  const [itemNames, setitemNames] = useState([])
-  const [snapshots, setSnapshots] = useState('')
+export default function MyPage(props) {
+  const {user} = props
 
-  const [itemInfo, setItemInfo] = useState([{
-    "itemName": "",
-    "itemImages": "",
-    "itemID": ""
-  }])
+  const navigate = useNavigate();
+  const location = useLocation();
 
 
-  const userid = 0;
+  const from = location.state?.from?.pathname || "/MyPage"
+  const itemList = useCallback(()=> navigate("/MyPage", {replace: true}), [navigate]);
+  const myPage = useCallback(()=> {
+    if (from === "/signup") {
+      navigate('/MyPage', {replace: true})
+    } else {
+      navigate(from, {replace: true})
+    }
+    }, [navigate]);
 
-  useEffect(() => {
-    axios
-      .get(`/api/item/${userid}`)
-      .then((response) => {
-        setItemList(response.data)
-        const idArr = [];
-        for (let item of response.data) {
-          idArr.push(item.id)
-        }
-        // console.log(idArr)
-        idArr.map(id => {
-          axios.get(`api/item-image/${id}`)
-            .then(image => {
-              console.log(image)
-              // setSnapshots(...image[0], snapshots)
-            })
-        })
-      })
-      .then((response) => {
-
-
-      })
-  }, [])
 
   return (
     <>
@@ -76,14 +61,16 @@ export default function MyPage() {
 
           {/* get logged in user name and display */}
 
+         {user &&
           <Typography
             variant="h4"
             fontFamily="Roboto Slab"
             padding={2}
             color="#D904B5"
           >
-            USER NAME
-          </Typography>
+            {user.username}
+
+          </Typography>}
           <Box
             sx={{
               marginTop: 3,
@@ -93,56 +80,24 @@ export default function MyPage() {
             }}>
 
             <Stack direction="row" spacing={8} justifyContent="center">
-              <Link href="/MyItems" variant="body1" underline="none" color="inherit">
+              <Link onClick={itemList} variant="body1" underline="none" color="#000000">
                 My Items
               </Link>
 
-              <Link href="/PendingOffer" variant="body1" underline='none'>
-                Pending Offer
+              <Link onClick={itemList} variant="body1" underline='none' >
               </Link>
 
-              <Link href="/TradedItem" variant="body1" underline='none'>
+              <Link onClick={itemList} variant="body1" underline='none' >
                 Traded Items
               </Link>
             </Stack>
           </Box>
         </Box>
       </Container>
-      <Box sx={{ width: '50%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
+      <Box sx={{ width: '80%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
         <Divider sx={{ borderBottomWidth: 1 }} variant="middle" />
       </Box>
-      <Grid
-        direction="row"
-
-        justifyContent="center"
-        alignItems="center" md={4}
-      // spacing={3}
-      >
-        {itemInfo?.map(item => (
-          <div key={item.id}>
-            <Card elevation={6} sx={{ maxWidth: 345, mt: 10, marginLeft: 4 }}>
-              <CardMedia
-                component="img"
-                style={{ width: 350 }}
-                image={BASE_URL + `${item.itemImages[0]}`}
-                height="140"
-              />
-              <CardContent >
-                <Typography gutterBottom variant="h5">{item.itemName}</Typography>
-                <Box display="flex" justify="space-between">
-                  <Typography gutterBottom variant="subtitle1"></Typography>
-                </Box>
-              </CardContent>
-            </Card>
-          </div>
-        ))}
-      </Grid>
-      <Link href='/addItem'>
-        <Button >
-          <Icon sx={{ fontSize: 90, marginLeft: 15, marginTop: 3 }}>add_circle</Icon>
-        </Button>
-      </Link>
-      {/* <IconButton variant='contained'>Add an Item</IconButton> */}
+     <Outlet />
     </>
   );
 }

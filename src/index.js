@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import { AuthProvider } from './componenet/context/AuthProvider';
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux"
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 const store = configureStore({
   reducer: {}
@@ -14,7 +15,11 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <App />
+        <AuthProvider>
+          <Routes>
+            <Route path="/*" element={<App />} />
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </Provider>
   </React.StrictMode>
