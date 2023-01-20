@@ -24,10 +24,10 @@ function UserItemsList(props) {
 
     const navigate = useNavigate();
     const location = useLocation();
+  
 
     const from = location.state?.from?.pathname || "/MyPage"
     const addItem = useCallback(()=> navigate('/MyPage/addItem', {replace: true}), [navigate]);
-    const SingleItem = useCallback(()=> navigate('/MyPage/Items', {replace: true}), [navigate]);
     const myPage = useCallback(()=> {
       if (from === "/signup") {
         navigate('/MyPage', {replace: true})
@@ -36,6 +36,7 @@ function UserItemsList(props) {
       }
       }, [navigate]);
 
+   
       const [itemInfo, setItemInfo] = useState([{
         "itemName": "",
         "itemImages": "",
@@ -62,8 +63,13 @@ function UserItemsList(props) {
       >
         {user && itemInfo?.map(item => (
           <div 
-            key={item.id}
-            onClick={SingleItem}
+            key={item.itemID}
+            onClick={() => {
+              if (item) {
+                navigate(`/MyPage/Items/${item.itemID}`, {replace: true})
+              }
+            }
+          }
           >
             <Card elevation={6} sx={{ maxWidth: 345, mt: 10, marginLeft: 4 }}>
               <CardMedia
