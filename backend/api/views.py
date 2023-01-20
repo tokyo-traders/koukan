@@ -17,7 +17,6 @@ from rest_framework.parsers import JSONParser  # delete
 from rest_framework.renderers import JSONRenderer  # delete
 
 
-
 @api_view(['GET', 'POST'])
 def user_register(request):
 
@@ -162,7 +161,7 @@ def newall_item(request, userid):
         items = Item.objects.filter(user_id=userid).all()
         images = Image.objects.all()
     except Item.DoesNotExist or Image.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)\
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == "GET":
         imgUrl = []
@@ -295,7 +294,35 @@ def image_list(request, itemId):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@api_view(['GET', 'POST'])
+@api_view(['GET'])  # to be refactored
+def homepage(request):
+    if request.method == "GET":
+        posts = Post.objects.all()
+        images = Image.objects.all()
+        data = []
+        imageUrl = []
+        for post in posts:
+            postSerializer = PostSerializer(post)
+            postID = postSerializer.data["item_id"]
+            print("this is postID", type(postID))
+            item = Item.objects.filter(pk=postID)
+            print("this is the item data without serializer", item)
+            itemSeralizer = ItemSerializer(
+                item, many=True)  # we need this "many=True"!)
+            print("this is the itemSerializer", itemSeralizer.data)
+            itemID = itemSeralizer.data[0]['id']
+            print("this is itemID", itemID)
+            for image in images:
+                imageSerializer = ImageSerializer(image)
+                if imageSerializer.data["item_id"] == itemID:
+                    imageUrl.append(imageSerializer.data["image"])
+            data.append({"post": postSerializer.data,
+                        "item": itemSeralizer.data, "images": imageUrl})
+            imageUrl = []
+        return Response(data, status=status.HTTP_200_OK)
+
+
+@ api_view(['GET', 'POST'])
 def create_post(request):
     if request.method == "GET":
         post = Post.objects.all()
@@ -308,11 +335,11 @@ def create_post(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            error = {"error":"You have failed to create a post properly"}
+            error = {"error": "You have failed to create a post properly"}
             return Response(error, status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
+@ api_view(['GET', 'PUT', 'DELETE'])
 def edit_post(request, postId):
     try:
         post = Post.objects.filter(pk=postId).first()
@@ -334,7 +361,7 @@ def edit_post(request, postId):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@api_view(['GET'])
+@ api_view(['GET'])
 def all_item(request, itemid):
     try:
         item = Item.objects.filter(id=itemid).first()
@@ -370,15 +397,16 @@ def create_offer(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            error = {"error":"You have failed to create an offer properly"}
+            error = {"error": "You have failed to create an offer properly"}
             return Response(error, status=status.HTTP_406_NOT_ACCEPTABLE)
 
-@api_view(['GET', 'PUT', 'DELETE'])
+
+@ api_view(['GET', 'PUT', 'DELETE'])
 def edit_offer(request, offerId):
     try:
         offer = Offer.objects.filter(pk=offerId).first()
     except Offer.DoesNotExist:
-        error = {"error":"There is no offer found"}
+        error = {"error": "There is no offer found"}
         return Response(error, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == "GET":
@@ -398,7 +426,7 @@ def edit_offer(request, offerId):
         return Response(message, status=status.HTTP_204_NO_CONTENT)
 
 
-@api_view(['GET', 'POST'])
+@ api_view(['GET', 'POST'])
 def hello(request):
     if request.method == "GET":
         # queryset = User.objects.all()

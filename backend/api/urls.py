@@ -1,7 +1,5 @@
 from django.urls import path
-
-from .views import user_register, user_login, item_list, image_list, all_item, newall_item, create_post, edit_post, create_offer, edit_offer, hello
-
+from .views import user_register, user_login, item_list, image_list, all_item, newall_item, create_post, edit_post, create_offer, edit_offer, homepage, hello
 
 from api import views
 from django.conf import settings
@@ -32,10 +30,15 @@ urlpatterns = [
     # path('user/login/<str:name>', views.user_login),
     path('all-item/<int:itemid>', views.all_item),
     path('all-info/<int:userid>', views.newall_item),
-    path('create-post', views.create_post), # this path only lets you create a post and get all the post created for reference.
-    path('edit-post/<int:postId>', views.edit_post), # this path lets you get the specific post, edit it, and delete it.
-    path('create-offer', views.create_offer), # this path only lets you create an offer and get all the offer created for reference.
-    path('edit-offer/<int:offerId>', views.edit_offer), # this path lets you get the specific offer, edit it, and delete it.
+    # this path only lets you create a post and get all the post created for reference.
+    path('create-post', views.create_post),
+    # this path lets you get the specific post, edit it, and delete it.
+    path('edit-post/<int:postId>', views.edit_post),
+    # this path only lets you create an offer and get all the offer created for reference.
+    path('create-offer', views.create_offer),
+    # this path lets you get the specific offer, edit it, and delete it.
+    path('edit-offer/<int:offerId>', views.edit_offer),
+    path('homepage', views.homepage)
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 #
 # use the static or...
