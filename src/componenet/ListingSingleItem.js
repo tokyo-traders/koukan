@@ -33,7 +33,8 @@ const RoundedButton = styled(Button)(() => ({
 
 const BASE_URL = 'http://127.0.0.1:8000/api'
 
-export default function ListingSingleItem() {
+export default function ListingSingleItem(props) {
+    const {user} = props
 
     const {listingId} = useParams();
 
@@ -48,6 +49,8 @@ export default function ListingSingleItem() {
 
   const [listing, setListing] = useState(null);
   const [date, setDate] = useState('');
+  const [offersMade, setOffersMade] = useState(null);
+  const [offersItems, setOffersItems] = useState(null);
 
   const display = () => {
     if (listing) {
@@ -55,17 +58,45 @@ export default function ListingSingleItem() {
     }
  }
 
+ const acceptOffer = () => {
+  if (listing) {
+      makeOffer();
+  }
+}
+
   useEffect(() => {
     if (listingId) {
         axios.get(`/api/listing/${listingId}`)
         // .then(response => setItemData(response.data))
         .then(response => {
-            console.log("😂", response.data)
             setListing(response.data)
         })
     }
   }, [])
 
+
+  useEffect(() => {
+
+    const getOffers = async () => {
+      let response = await axios.get(`/api/create-offer`)
+      // let ItemResponse = await axios.get(`/api/all-item/`)
+      console.log(response.data.filter(item=>item.post_id == listingId)[0])
+      setOffersMade(response.data.filter(item=>item.post_id == listingId)[0])
+    
+    }
+    getOffers()
+
+  }, [])
+
+  useEffect(() => {
+    const getItem = async () => {
+      let response = await axios.get(`/api/all-item/${offersMade.offered_item}`)
+      setOffersItems(response.data[0])
+    }
+    if (offersMade) {
+      getItem();
+    }
+  }, [offersMade])
 
   return (
     <div >
@@ -86,7 +117,10 @@ export default function ListingSingleItem() {
                 <Button><NavigateBeforeIcon /></Button>
               </Box>
               {listing && <Img alt="image1" src={BASE_URL + `${listing.images[0]}`} />}
-              <Button><NavigateNextIcon /></Button>
+              <Button onClick={() => {
+                  console.log(offersItems)
+                }
+              }><NavigateNextIcon /></Button>
             </Container>
           </Grid>
           <Grid item xs={5} sm container>
@@ -102,16 +136,18 @@ export default function ListingSingleItem() {
                     {listing.item.item_name}
                   </Typography>}
 
+                  {user?.id !== listing?.item.user_id && 
+                  <>
                   <Box sx={{ marginLeft: 50 }}><ModeEditIcon /></Box>
-
                   <RoundedButton
                     fullWidth
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
-                    onClick={display}
+                    onClick={acceptOffer}
                   >
                     MAKE AN OFFER
                   </RoundedButton>
+                  </>}
                 </Box>
                 <Box
                   sx={{
@@ -173,6 +209,80 @@ export default function ListingSingleItem() {
         </Grid>
       </Box>
 
+{/* ____________________________________________________________________________________________________________________________       */}
+      {offersItems &&
+        <>
+          <Box sx={{ width: '80%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
+            <Divider sx={{ borderBottomWidth: 1 }} variant="middle" />
+          </Box>
+
+
+        <Box  sx={{ width: '80%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
+        <Grid container spacing={2} sx={{ backgroundColor: "none", marginTop: 2 }}>
+          <Grid item xs={5} sx={{ margin: '10px'}}>
+            <Container sx={{ height: 350 }}>
+              {listing && <Img alt="image1" src={BASE_URL + `${offersItems.image[0]}`} />}
+            </Container>
+          </Grid>
+          <Grid item xs={5} sm container>
+            <Grid item xs container direction="column" spacing={2}>
+              <Grid item xs>
+                <Box
+                  sx={{
+                    backgroundColor: "white",
+                    marginTop: 2,
+                  }}
+                >
+                  <Typography variant='h3'>
+                    {offersItems.itemName}
+                  </Typography>
+
+                  {user?.id === listing?.item.user_id && 
+                  <>
+                  <Box sx={{ marginLeft: 50 }}><ModeEditIcon /></Box>
+                  <RoundedButton
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                    onClick={display}
+                  >
+                    ACCEPT OFFER
+                  </RoundedButton>
+                  </>}
+                </Box>
+                <Box
+                  sx={{
+                    backgroundColor: "white",
+                    marginTop: 4,
+                  }}
+                >
+                  <Typography gutterBottom variant='h5' component='div'>
+                    Description
+                  </Typography>
+                 <Typography gutterBottom variant='body'>
+                    {offersItems.details}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    backgroundColor: "white",
+                    marginTop: 4,
+                  }}
+                >
+                  <Typography gutterBottom variant='h5' component='div'>
+                    Date Of Offer
+                  </Typography>
+                   <Typography gutterBottom variant='body'>
+                  {new Date(offersMade.date_offered).toDateString()}
+                  </Typography>
+                </Box>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Box>
+      </>
+      }
     </div>
   );
 }
