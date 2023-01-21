@@ -8,7 +8,6 @@ import { TextField, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
-import { spacing } from '@mui/system';
 
 const RoundedButton = styled(Button)(() => ({
   borderRadius: 35,
@@ -133,17 +132,6 @@ function AddItem(props) {
                       multiline
                       rows={4}
                       onChange={(e) => setDetails(e.target.value)}
-                />
-                </Box>
-
-                <Box sx={{ marginTop: 2}}>
-                <Typography>Desire</Typography>
-                <TextField 
-                    fullWidth
-                    value={desire}
-                    multiline
-                    rows={2}
-                    onChange={(e) => setDesire(e.target.value)}
                 />
                 </Box>
 

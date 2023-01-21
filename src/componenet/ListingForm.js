@@ -2,6 +2,24 @@ import React, { useState, useEffect, PureComponent } from 'react';
 import axios from "axios";
 import { ContentPasteSearchOutlined } from '@mui/icons-material';
 import { useNavigate, useLocation, useParams  } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import { TextField, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import Button from '@mui/material/Button';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+
+const RoundedButton = styled(Button)(() => ({
+  borderRadius: 35,
+  backgroundColor: "#D904B5",
+  color: "#46C8F5",
+  fontSize: "1rem",
+  display: "block"
+}));
+
+
+
 
 function AddListingForm(props) {
 
@@ -33,9 +51,69 @@ function AddListingForm(props) {
 
     return (
         <>
+                <Box sx={{ width: '30%', margin: 'auto', marginTop: 2,display: 'flex', flexDirection: 'column' }}>
+      
+
+                <Box sx={{ marginTop: 2}}>
+                <Typography >Desire Item</Typography>
+                <TextField
+                    fullWidth
+                    multiline
+                    rows={2}
+                    value={desire}
+                    onChange={(e) => setDesire(e.target.value)} 
+                />
+                </Box>
+
+                
+                {/* <Box sx={{ marginTop: 2}}>
+                <Typography >Note</Typography>
+                <TextField
+                    placeholder="Delivery/pickup details can be informed here"
+                    fullWidth
+                    multiline
+                    rows={2}
+                />
+                </Box> */}
 
 
-            <div className="App">
+                <Box sx={{ marginTop: 2}}>
+                {/* <Typography>Trading Option</Typography> */}
+                
+                <FormControlLabel
+                    control={<Checkbox />} 
+                    label="Giveaway for free" 
+                    value={priceFree}
+                    onChange={(e) => setPriceFree(true)} 
+                    />
+                <FormControlLabel 
+                    control={<Checkbox />}
+                    label="To trade" 
+                    value={priceFree}
+                    onChange={(e) => setPriceFree(false)}
+                    />
+                </Box>
+
+                <Box sx={{ marginTop: 2}}>
+                <Typography>Expiration Date</Typography>
+                <input 
+                type='datetime-local' 
+                value={expirationDate} 
+                onChange={(e) => setExpirationDate(e.target.value)}
+                />
+                </Box>    
+                 
+                <RoundedButton
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                    onClick={newPost}
+                  >
+                    CREATE NEW LISTING
+                  </RoundedButton>  
+
+            </Box>
+
+            {/* <div className="App">
                 <h3>Add Your Listing</h3>
                 <label>
                     Listing details
@@ -55,7 +133,7 @@ function AddListingForm(props) {
 
                 <br />
                 <button onClick={newPost}>New Listing</button>
-            </div>
+            </div> */}
         </>
     )
 }
