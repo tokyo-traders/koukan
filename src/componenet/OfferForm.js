@@ -95,11 +95,14 @@ function OfferForm(props) {
     console.log(offerObj)
     const response = await axios.post(
       REGISTER_URL,
+
       JSON.stringify(offerObj),
       {
         headers: { 'Content-Type': 'application/json' },
         withCredentials: true
+
       });
+
     console.log(JSON.stringify(response.data))
     myPage();
   }
