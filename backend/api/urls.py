@@ -12,14 +12,16 @@ router.register('image', views.ImageView)
 router.register('image/multiple_upload', views.ImageView)
 
 urlpatterns = [
-  path('user/register', views.user_register),
+    path('user/register', views.user_register),
     path('user/login', views.user_login),
     path('user/refresh', views.user_refresh),
     path('user/logout', views.user_logout),
     # to GET and POST all the item objects
     path('item/<int:userid>', views.item_list),
     # to get the item with full CRUD
+    # path('item/<int:userid>/<int:id>', views.item_edit),
     path('item/<str:username>/<int:id>', views.item_edit),
+    # path('item/<int:id>', views.item_edit),
     # to get the images path with GET and DELETE method only
     path('item-image/<int:itemId>', views.image_list),
 
@@ -39,9 +41,9 @@ urlpatterns = [
     path('create-offer', views.create_offer),
     # this path lets you get the specific offer, edit it, and delete it.
     path('edit-offer/<int:offerId>', views.edit_offer),
-    #to get all listings
+    # to get all listings
     path('homepage', views.homepage),
-    #to get a single listing
+    # to get a single listing
     path('listing/<int:postId>', views.listingItem)
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 #
