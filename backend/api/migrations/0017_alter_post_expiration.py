@@ -17,6 +17,7 @@ class Migration(migrations.Migration):
             model_name='post',
             name='expiration',
 
-            field=models.DateTimeField(default=datetime.datetime(2023, 1, 27, 20, 35, 46, 204008, tzinfo=datetime.timezone.utc)),
-
+            field=models.DateTimeField(default=datetime.datetime(
+                2023, 1, 27, 20, 35, 46, 204008, tzinfo=datetime.timezone.utc)),
+        )
     ]

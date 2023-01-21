@@ -223,7 +223,8 @@ def item_edit(request, id, username):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == 'DELETE':
         item.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        message = {"message": "You have now deleted the offer"}
+        return Response(message, status=status.HTTP_204_NO_CONTENT)
 
 
 # @api_view(['GET'])
@@ -308,6 +309,7 @@ def homepage(request):
             imageUrl = []
         return Response(data, status=status.HTTP_200_OK)
 
+
 @api_view(['GET'])  # to be refactored
 def listingItem(request, postId):
     if request.method == "GET":
@@ -325,9 +327,10 @@ def listingItem(request, postId):
             if imageSerializer.data["item_id"] == itemID:
                 imageUrl.append(imageSerializer.data["image"])
         data = {"post": postSerializer.data,
-                    "item": itemSeralizer.data[0], "images": imageUrl}
+                "item": itemSeralizer.data[0], "images": imageUrl}
         imageUrl = []
         return Response(data, status=status.HTTP_200_OK)
+
 
 @ api_view(['GET', 'POST'])
 def create_post(request):
@@ -384,7 +387,7 @@ def all_item(request, itemid):
             if imageSerializer.data["item_id"] == itemSerializer.data["id"]:
                 imgUrl.append(imageSerializer.data['image'])
         data.append({'itemName': itemSerializer.data['item_name'],
-                     'image': imgUrl,'details': itemSerializer.data['details'],'desire': itemSerializer.data['desire'] })
+                     'image': imgUrl, 'details': itemSerializer.data['details'], 'desire': itemSerializer.data['desire']})
         return Response(data)
 
 
