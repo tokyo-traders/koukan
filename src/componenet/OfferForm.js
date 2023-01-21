@@ -53,7 +53,7 @@ function OfferForm(props) {
   
 
     const from = location.state?.from?.pathname || "/MyPage"
-    const myPage = useCallback(()=> navigate('/MyPage', {replace: true}), [navigate]);
+    const myPage = useCallback(()=> navigate(`/Listing/${listingId}`, {replace: true}), [navigate]);
   
 
    
@@ -84,15 +84,11 @@ function OfferForm(props) {
 
 
     const makeOffer = async () => {
-      console.log(offer.itemID)
-      console.log(listing.post.id)
-      console.log(false)
       const offerObj = {
         post_id: listing.post.id,
         offered_item: offer.itemID,
         acceptance: false
       }
-      console.log(offerObj)
       const response = await axios.post(
         REGISTER_URL,
       JSON.stringify(offerObj),
@@ -100,7 +96,7 @@ function OfferForm(props) {
         headers: { 'Content-Type': 'application/json' },
         withCredentials: true
     });
-    console.log(JSON.stringify(response.data) )
+    console.log(JSON.stringify(response.data))
     myPage();
     }
 

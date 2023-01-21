@@ -47,7 +47,7 @@ function UserPostList(props) {
       useEffect(() => {
         axios.get(`/api/create-offer`)
           .then(response => {
-             console.log(response.data)
+             setOffersMade(response.data)
           })
       }, [])
 
@@ -58,7 +58,7 @@ function UserPostList(props) {
         direction="row"
         justifyContent="center"
         alignItems="center" 
-        lg={4}
+        xl={12}
         spacing={3}
       >
         {listings && listings?.map(item => (
@@ -82,9 +82,6 @@ function UserPostList(props) {
                 <Typography gutterBottom variant="body">{item.item.item_name}</Typography>
                 </Box>
               </CardContent>
-              <Box display="flex" justify="space-between">
-                <Typography gutterBottom variant="body">Offers Made</Typography>
-                </Box>
             </Card>
         ))}
       </Grid>
