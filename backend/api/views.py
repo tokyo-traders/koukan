@@ -170,7 +170,8 @@ def newall_item(request, userid):
             data.append({
                 'itemID': singleItemSerializer.data['id'],
                 'itemName': singleItemSerializer.data['item_name'],
-                'itemImages': imgUrl
+                'itemImages': imgUrl,
+                'userId': singleItemSerializer.data['user_id'],
             })
             imgUrl = []
         return Response(data)
@@ -257,6 +258,7 @@ def all_item(request, itemid):
 
     if request.method == "GET":
         itemSerializer = ItemSerializer(item)
+        print("😂", itemSerializer)
         data = []
         imgUrl = []
         for image in images:
@@ -387,7 +389,7 @@ def all_item(request, itemid):
             if imageSerializer.data["item_id"] == itemSerializer.data["id"]:
                 imgUrl.append(imageSerializer.data['image'])
         data.append({'itemName': itemSerializer.data['item_name'],
-                     'image': imgUrl, 'details': itemSerializer.data['details'], 'desire': itemSerializer.data['desire']})
+                     'image': imgUrl, 'details': itemSerializer.data['details'], 'user_id': itemSerializer.data['user_id']})
         return Response(data)
 
 
@@ -431,6 +433,26 @@ def edit_offer(request, offerId):
         message = {"message": "You have now deleted the offer"}
         return Response(message, status=status.HTTP_204_NO_CONTENT)
 
+
+@api_view(['PUT', 'POST'])
+def item_handover(request):
+
+    request.data
+
+    
+    # item = Item.objects.get(pk=itemId)
+  
+    if request.method == "PUT":
+        serializer = ItemSerializer( data=request.data, partial=True)
+        print(serializer)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("saved", status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'POST':
+        item.delete()
+        message = {"message": "You have now deleted the offer"}
+        return Response(message, status=status.HTTP_204_NO_CONTENT)
 
 @ api_view(['GET', 'POST'])
 def hello(request):
