@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import user_register, user_login, item_list, image_list, all_item, newall_item, create_post, edit_post, create_offer, edit_offer, homepage, listingItem
+from .views import user_register, user_login, item_list, image_list, all_item, newall_item, create_post, edit_post, create_offer, edit_offer, homepage, listingItem, search_item
 
 from api import views
 from django.conf import settings
@@ -42,7 +42,9 @@ urlpatterns = [
     #to get all listings
     path('homepage', views.homepage),
     #to get a single listing
-    path('listing/<int:postId>', views.listingItem)
+    path('listing/<int:postId>', views.listingItem),
+    # this path gives an array of item names for the search bar
+    path('search-item', views.search_item),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 #
 # use the static or...

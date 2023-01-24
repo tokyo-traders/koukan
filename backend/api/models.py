@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.core.validators import RegexValidator
 import datetime
 # this to create the folders in the file. Note: will not use yet. need further research.
 
@@ -13,10 +14,16 @@ class User(models.Model):
     first_name = models.CharField(max_length=20, default="")
     last_name = models.CharField(max_length=20, default="")
     address = models.CharField(max_length=50, default="")
-    username = models.CharField(max_length=20, default="")
-    email = models.CharField(max_length=50, default="")
+    username = models.CharField(max_length=20, default="", unique=True)
+    email = models.CharField(max_length=50, default="", unique=True)
     password = models.CharField(max_length=12, default="")
     created_at = models.DateTimeField(auto_now_add=True)
+    phone_regex = RegexValidator(
+        regex=r'^\+?1?\d{9,15}$',
+        message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed."
+    ) # This is for validation in phone details
+    phone_detail = models.CharField(validators=[phone_regex], default="", max_length=20, unique=True) 
+    reputation_rating = models.IntegerField(default=0)
 
 
 class Image(models.Model):
@@ -31,20 +38,16 @@ class Item(models.Model):
     item_name = models.CharField(max_length=200, default="")
     user_id = models.ForeignKey('User', on_delete=models.CASCADE,)
     date_of_post = models.DateTimeField(auto_now_add=True)
-    details = models.TextField()
-    desire = models.CharField(max_length=200, default="")
-    offer_period = models.DateTimeField(default=timezone.now)
-    status = models.IntegerField(default=0)
-    is_tradable = models.BooleanField(default=True)
+    details = models.TextField(default="")
+    category = models.CharField(max_length=100, default="")
     
-
 
 class Post(models.Model):
     user_id = models.ForeignKey('User', on_delete=models.CASCADE)
     item_id = models.ForeignKey('Item', on_delete=models.CASCADE)
     price = models.BooleanField(default=False)
-    desire = models.TextField(max_length=255)
     delivery = models.BooleanField(default=False)
+    desire = models.TextField(max_length=255, default="")
     expiration = models.DateTimeField(default=timezone.now() + datetime.timedelta(weeks=+1))
     date_posted = models.DateTimeField(auto_now_add=True)
 
@@ -54,3 +57,4 @@ class Offer(models.Model):
     offered_item = models.ForeignKey('Item', on_delete=models.CASCADE)
     acceptance = models.BooleanField(default=False)
     date_offered = models.DateTimeField(auto_now_add=True)
+
