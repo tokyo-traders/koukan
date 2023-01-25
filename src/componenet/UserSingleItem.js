@@ -35,33 +35,41 @@ const BASE_URL = 'http://127.0.0.1:8000/api'
 
 export default function UserSingleItem(props) {
 
-    const {itemId} = useParams();
-    const {user} = props
+  const { itemId } = useParams();
+  const { user } = props
 
-    const navigate = useNavigate();
-    const location = useLocation();
-    const from = location.state?.from?.pathname || "/MyPage"
-    const makeListing = useCallback(()=> navigate(`/MyPage/makeListing/${itemId}`, {replace: true}), [navigate]);
-    const goBack = useCallback(()=> {
-        navigate(from, {replace: true})
-      }, [navigate]);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/MyPage"
+  const makeListing = useCallback(() => navigate(`/MyPage/makeListing/${itemId}`, { replace: true }), [navigate]);
+  const goBack = useCallback(() => {
+    navigate(from, { replace: true })
+  }, [navigate]);
 
   const [itemData, setItemData] = useState(null);
 
   const display = () => {
     if (user && itemId) {
-        makeListing();
+      makeListing();
     }
- }
+  }
+
+  const deleteItem = (itemId) => {
+    console.log(typeof itemId)
+    console.log(typeof user.username)
+    axios.delete(`/api/item/${user.username}/${itemId}`)
+      .then(res => console.log(res))
+  }
 
 
   useEffect(() => {
     if (itemId) {
-        axios.get(`/api/all-item/${itemId}`)
+      axios.get(`/api/all-item/${itemId}`)
         // .then(response => setItemData(response.data))
         .then(response => {
-            console.log("😂", response.data)
-            setItemData(response?.data[0])
+          console.log("😂", response.data)
+          console.log(user, itemId)
+          setItemData(response?.data[0])
         })
     }
   }, [])
@@ -73,13 +81,13 @@ export default function UserSingleItem(props) {
         <Grid container spacing={2} sx={{ backgroundColor: "none", marginTop: 2 }}>
           <Grid item xs={2} spacing={3}>
             <Box sx={{ marginBottom: 2 }}>
-              <Img alt="image2" src="https://m.media-amazon.com/images/I/51l3-TEATkL._AC_.jpg" />
+              <Img alt="image2" src={BASE_URL + `${itemData?.image[1]}`} />
             </Box>
             <Box sx={{ marginBottom: 2 }}>
-              <Img alt="image3" src="https://m.media-amazon.com/images/I/61fD7B8KaUL._AC_SL1056_.jpg" />
+              <Img alt="image3" src={BASE_URL + `${itemData?.image[2]}`} />
             </Box>
             <Box sx={{ marginBottom: 2 }}>
-              <Img alt="image4" src="https://m.media-amazon.com/images/I/31q3v4ynTaL._AC_.jpg" />
+              <Img alt="image4" src={BASE_URL + `${itemData?.image[3]}`} />
             </Box>
           </Grid>
           <Grid item xs={5} sx={{ margin: '10px' }}>
@@ -114,6 +122,14 @@ export default function UserSingleItem(props) {
                   >
                     MAKE POST
                   </RoundedButton>
+                  <RoundedButton
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                    onClick={() => deleteItem(Number(itemId))}
+                  >
+                    DELETE ITEM
+                  </RoundedButton>
                 </Box>
 
                 <Box
@@ -126,7 +142,7 @@ export default function UserSingleItem(props) {
                   <Typography gutterBottom variant='h5' component='div'>
                     Description
                   </Typography>
-                 {itemData && <Typography gutterBottom variant='body'>
+                  {itemData && <Typography gutterBottom variant='body'>
                     {itemData?.details}
                   </Typography>}
                 </Box>

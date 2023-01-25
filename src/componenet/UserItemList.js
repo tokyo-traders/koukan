@@ -64,7 +64,7 @@ function UserItemsList(props) {
         direction="row"
         justifyContent="center"
         alignItems="center" 
-        lg={4}
+        xl={12}
         spacing={3}
       >
         {user && itemInfo?.map(item => (

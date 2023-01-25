@@ -8,14 +8,13 @@ import { TextField, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
-import { spacing } from '@mui/system';
 
 const RoundedButton = styled(Button)(() => ({
-  borderRadius: 35,
-  backgroundColor: "#D904B5",
-  color: "#46C8F5",
-  fontSize: "1rem",
-  display: "block"
+    borderRadius: 35,
+    backgroundColor: "#D904B5",
+    color: "#46C8F5",
+    fontSize: "1rem",
+    display: "block"
 }));
 
 
@@ -23,14 +22,14 @@ const RoundedButton = styled(Button)(() => ({
 
 function AddItem(props) {
 
-    const {user} = props
+    const { user } = props
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/MyPage"
-    const mypage = useCallback(()=> navigate("/MyPage", {replace: true}), [navigate]);
-    const goBack = useCallback(()=> {
-        navigate(from, {replace: true})
-      }, [navigate]);
+    const mypage = useCallback(() => navigate("/MyPage", { replace: true }), [navigate]);
+    const goBack = useCallback(() => {
+        navigate(from, { replace: true })
+    }, [navigate]);
 
 
     const [itemName, setItemName] = useState("");
@@ -116,66 +115,54 @@ function AddItem(props) {
             // uploadImages.append("item_id", 1)
         })
     }
-       return (
-            <Box sx={{ width: '30%', margin: 'auto', marginTop: 2,display: 'flex', flexDirection: 'column' }}>
-                <Typography>Item Name</Typography>
-                <TextField 
-                    fullWidth
-                    value={itemName}
-                    onChange={(e) => setItemName(e.target.value)}
-                />
+    return (
+        <Box sx={{ width: '30%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
+            <Typography>Item Name</Typography>
+            <TextField
+                fullWidth
+                value={itemName}
+                onChange={(e) => setItemName(e.target.value)}
+            />
 
-                <Box sx={{ marginTop: 2}}>
+            <Box sx={{ marginTop: 2 }}>
                 <Typography>Description</Typography>
-                <TextField 
-                      fullWidth
-                      value={details}
-                      multiline
-                      rows={4}
-                      onChange={(e) => setDetails(e.target.value)}
-                />
-                </Box>
-
-                <Box sx={{ marginTop: 2}}>
-                <Typography>Desire</Typography>
-                <TextField 
+                <TextField
                     fullWidth
-                    value={desire}
+                    value={details}
                     multiline
-                    rows={2}
-                    onChange={(e) => setDesire(e.target.value)}
+                    rows={4}
+                    onChange={(e) => setDetails(e.target.value)}
                 />
-                </Box>
-
-                <Box sx={{ marginTop: 2}}>
-                <Typography>Image</Typography>
-                    <input
-                        type="file"
-                        accept="image/*" 
-                        multiple 
-                        onChange={handleChange} 
-                    />
-                </Box>    
-                 
-                <RoundedButton
-                    variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
-                    onClick={newItem}
-                  >
-                    Add Item
-                  </RoundedButton>  
-
-                   <RoundedButton
-                    width="80%"
-                    variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
-                    onClick={goBack}
-                  >
-                    Go Back
-                  </RoundedButton>  
-
             </Box>
-       ) ;
+                <Box sx={{ marginTop: 2}}
+                <Typography>Image</Typography>
+                <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleChange}
+                />
+            </Box>
+
+            <RoundedButton
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                onClick={newItem}
+            >
+                Add Item
+            </RoundedButton>
+
+            <RoundedButton
+                width="80%"
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                onClick={goBack}
+            >
+                Go Back
+            </RoundedButton>
+
+        </Box>
+    );
 
     // return (
     //     <div className="App">
