@@ -66,11 +66,11 @@ export default function MyPage(props) {
                 My Items
               </Link>
 
-              <Link onClick={postList} variant="body1" underline='none' >
-                My Posts
+              <Link onClick={postList} variant="body1" underline='none' color="#000000">
+                My Listing
               </Link>
 
-              <Link onClick={itemList} variant="body1" underline='none' >
+              <Link onClick={itemList} variant="body1" underline='none' color="#000000" >
                 Traded Items
               </Link>
             </Stack>
