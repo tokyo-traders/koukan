@@ -14,25 +14,27 @@ export default function AllListings() {
         axios
             .get('api/homepage')
             .then(res => {
-                setListings( res.data)
+                console.log("this is the new data", res.data)
+                setListings(res.data)
             })
     }, [])
 
 
     const navigate = useNavigate();
     const makeOffer = (obj) => {
-        navigate(`/listing/${obj.post.id}`, {replace: true})
+        navigate(`/listing/${obj.post.id}`, { replace: true })
     }
     return (
         <div className='listing'>
             {listings && listings.map(listing => (
-                <div className='listingClass' 
-                        onClick={() => {
-                    if (listing) {
-                      makeOffer(listing)
-                    }}}>
-                <img alt="image1"  width="220px" src={BASE_URL + `${listing?.images[0]}` } />
-                < h3 > {listing.item.item_name}</h3>
+                <div className='listingClass'
+                    onClick={() => {
+                        if (listing) {
+                            makeOffer(listing)
+                        }
+                    }}>
+                    <img alt="image1" width="220px" src={BASE_URL + `${listing?.images[0]}`} />
+                    < h3 > {listing.item.item_name}</h3>
                 </div>
             ))
             }

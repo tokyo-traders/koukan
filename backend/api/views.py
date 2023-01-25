@@ -322,6 +322,9 @@ def listingItem(request, postId):
         itemSeralizer = ItemSerializer(
             item, many=True)  # we need this "many=True"!)
         itemID = itemSeralizer.data[0]['id']
+        # userID = itemSeralizer.data[0]['user_id']
+        # userUsername = User.objects.get(pk=userID).first()
+        # print("this is user", userUsername)
         for image in images:
             imageSerializer = ImageSerializer(image)
             if imageSerializer.data["item_id"] == itemID:
