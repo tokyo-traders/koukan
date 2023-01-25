@@ -17,7 +17,10 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 // import Carousel from 'react-material-ui-carousel'
 import EmailIcon from '@mui/icons-material/Email';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import { Carousel } from 'react-responsive-carousel';
+// import { Carousel } from 'react-responsive-carousel';
+import ImageGallery from 'react-image-gallery';
+import { Carousel } from 'react-carousel-minimal';
+
 
 
 import "./LisitingSingleItem.css"
@@ -60,6 +63,7 @@ export default function ListingSingleItem(props) {
   const [date, setDate] = useState('');
   const [offersMade, setOffersMade] = useState(null);
   const [offersItems, setOffersItems] = useState(null);
+  const [images, setImages] = useState()
 
   const display = () => {
     if (listing) {
@@ -77,10 +81,23 @@ export default function ListingSingleItem(props) {
     if (listingId) {
       axios.get(`/api/listing/${listingId}`)
         .then(response => {
+          // console.log(response.data)
           setListing(response.data)
         })
     }
   }, [])
+
+  useEffect(() => {
+    if (listingId) {
+      axios.get(`/api/listing/${listingId}`)
+        .then(response => {
+          console.log(response.data.images)
+          // images.push(response.data.images)
+          // setImages([...response.data.images])
+        })
+    }
+  }, [])
+
 
 
   useEffect(() => {
@@ -119,17 +136,7 @@ export default function ListingSingleItem(props) {
     fontSize: '20px',
     fontWeight: 'bold',
   }
-  // console.log(listing)
-  const data = async () => {
-    const arr = []
-    for (let i of listing.images) {
-      let img = { image: listing.images[i], caption: `pic N. ${i}` }
-      await img.json()
-      arr.push(img)
-    }
-    return arr
-  }
-  console.log(data)
+  console.log(images)
   return (
     <div >
       <Box sx={{ width: '80%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
@@ -152,7 +159,7 @@ export default function ListingSingleItem(props) {
               </Box>
 
               <Carousel
-                data={data}
+                data={images}
                 time={2000}
                 // width="850px"
                 // height="500px"
@@ -172,6 +179,9 @@ export default function ListingSingleItem(props) {
                 infiniteLoop={true}
 
               >
+
+                {/* <ImageGallery items={data()}> */}
+                {/* <Carousel> */}
                 {listing?.images.map((img, i) => (
                   <Img alt="image1" src={BASE_URL + `${listing.images[i]}`} />
                 ))}
