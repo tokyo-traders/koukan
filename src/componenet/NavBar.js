@@ -9,28 +9,39 @@ import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import Link from '@mui/material/Link';
-import { Menu } from '@mui/material';
-import useAxiosPrivate from "./hooks/axiosPrivate"
+import { createTheme, CssBaseline, Menu } from '@mui/material';
 import useAuth from './hooks/useAuth';
 import { useNavigate, useLocation, Outlet} from "react-router-dom";
+import { ThemeProvider } from 'styled-components';
 
 
-const RoundedButton = styled(Button)(() => ({
-    borderRadius: 35,
-    backgroundColor: "#D904B5",
-    color: "#46C8F5",
-    padding: "15px 36px",
-    fontSize: "18px"
-}));
+// const RoundedButton = styled(Button)(() => ({
+//     borderRadius: 35,
+//     backgroundColor: "#D904B5",
+//     color: "#46C8F5",
+//     padding: "15px 36px",
+//     fontSize: "18px"
+// }));
 
+const customTheme = createTheme({
+   palette: {
+    primary: {
+      main: '#3cd64b',
+      contrastText: 'white',
+    },
+    secondary: {
+      main: '#4d3e38'
+    },
+  },
+});
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   // borderRadius: theme.shape.borderRadius,
-  borderRadius: '23px',
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  borderRadius: '8px',
+  backgroundColor: alpha(theme.palette.common.black, 0.15),
   '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
+    backgroundColor: alpha(theme.palette.common.black, 0.25),
   },
   marginLeft: 0,
   width: '100%',
@@ -100,18 +111,20 @@ function NavBar(props) {
   }
   return (
     <>
+    <ThemeProvider theme={customTheme}>
+    <CssBaseline />
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar sx={{background:"#2E038C"}} position="static">
+      <AppBar position="static" sx={{background: "white"}}>
         <Toolbar
           sx={{
             justifyContent: "space-between"
           }}
         >
           <Link
-            variant="h6"
+            variant="body1"
             fontFamily="Roboto Slab"
             padding={2}
-            color="#D904B5"
+            color="secondary"
             onClick={home}
             underline='none'
           >
@@ -127,16 +140,16 @@ function NavBar(props) {
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
-          {/* <RoundedButton variant='contained' onClick={login}>LOG IN</RoundedButton> */}
-          {!user ? <RoundedButton variant='contained' onClick={login}>LOG IN</RoundedButton> :
+          {!user ? <Button color='secondary' variant='contained' onClick={login}>LOG IN</Button> :
           <div>
-          <RoundedButton variant='contained' onClick={myPage}>My Page</RoundedButton>
-          <RoundedButton variant='contained' onClick={logOut}>Log Out</RoundedButton>
+          <Button color='secondary' variant='contained' onClick={myPage}>My Page</Button>
+          <Button variant='contained' onClick={logOut}>Log Out</Button>
           </div>}
         </Toolbar>
       </AppBar>
     </Box>
   <Outlet/>
+  </ThemeProvider>
   </>
   );
 }
