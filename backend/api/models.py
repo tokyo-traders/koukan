@@ -15,14 +15,16 @@ class User(models.Model):
     last_name = models.CharField(max_length=20, default="")
     address = models.CharField(max_length=50, default="")
     username = models.CharField(max_length=20, default="", unique=True)
-    email = models.CharField(max_length=50, default="", unique=True)
+    email = models.EmailField(max_length=50, default="", unique=True)
     password = models.CharField(max_length=12, default="")
     created_at = models.DateTimeField(auto_now_add=True)
     phone_regex = RegexValidator(
         regex=r'^\+?1?\d{9,15}$',
         message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed."
     ) # This is for validation in phone details
-    phone_detail = models.CharField(validators=[phone_regex], default="", max_length=20, unique=True) 
+    phone_detail = models.CharField(validators=[phone_regex], default="", max_length=20, unique=True)
+    is_emailVerified = models.BooleanField(default=False)
+    is_phoneVerified = models.BooleanField(default=False) 
     reputation_rating = models.IntegerField(default=0)
 
 
