@@ -11,26 +11,23 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import axios from "axios";
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 
 const RoundedButton = styled(Button)(() => ({
-  borderRadius: 35,
-  backgroundColor: "#D904B5",
-  color: "#46C8F5",
-  padding: "15px 36px",
-  fontSize: "18px"
+	borderRadius: 35,
+	backgroundColor: "#D904B5",
+	color: "#46C8F5",
+	padding: "15px 36px",
+	fontSize: "18px",
 }));
-
-
 
 const theme = createTheme();
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
-// const PWD_REGEX = /^$/
 const REGISTER_URL = '/api/user/register';
-
+ 
 export default function SignupForm() {
 
   const firstNameRef = useRef();
@@ -38,89 +35,89 @@ export default function SignupForm() {
   const emailRef = useRef();
   const addressRef = useRef();
   const userRef = useRef();
-  const errRef = useRef();
+  const errRef = useRef();  
 
 
   const navigate = useNavigate();
-  const signup = useCallback(() => navigate('/signup', { replace: true }), [navigate]);
-  const login = useCallback(() => navigate('/login', { replace: true }), [navigate]);
-
+  const signup = useCallback(()=> navigate('/signup', {replace: true}), [navigate]);
+  const login = useCallback(()=> navigate('/login', {replace: true}), [navigate]);
+  
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [address, setAddress] = useState('');
 
-  const [user, setUser] = useState('');
-  const [validName, setValidName] = useState(false);
-  const [userFocus, setUserFocus] = useState(false);
+	const [user, setUser] = useState("");
+	const [validName, setValidName] = useState(false);
+	const [userFocus, setUserFocus] = useState(false);
 
-  const [pwd, setPwd] = useState('');
-  const [validPwd, setValidPwd] = useState(false);
-  const [pwdFocus, setPwdFocus] = useState(false);
+	const [pwd, setPwd] = useState("");
+	const [validPwd, setValidPwd] = useState(false);
+	const [pwdFocus, setPwdFocus] = useState(false);
 
-  const [matchPwd, setMatchPwd] = useState('');
-  const [validMatch, setValidMatch] = useState(false);
-  const [matchFocus, setMatchFocus] = useState(false);
+	const [matchPwd, setMatchPwd] = useState("");
+	const [validMatch, setValidMatch] = useState(false);
+	const [matchFocus, setMatchFocus] = useState(false);
 
-  const [errMsg, setErrMsg] = useState('');
-  const [success, setSuccess] = useState(false);
+	const [errMsg, setErrMsg] = useState("");
+	const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    userRef.current.focus();
+      userRef.current.focus();
   }, [])
 
   useEffect(() => {
-    const result = USER_REGEX.test(user);
-    console.log(result);
-    setValidName(result);
+      const result = USER_REGEX.test(user);
+      console.log(result);
+      setValidName(result);
   }, [user])
 
 
   useEffect(() => {
-    const result = PWD_REGEX.test(pwd);
-    console.log(result);
-    setValidPwd(result);
-    setValidMatch(pwd === matchPwd);
+      const result = PWD_REGEX.test(pwd);
+      console.log(result);
+      setValidPwd(result);
+      setValidMatch(pwd === matchPwd);
   }, [pwd, matchPwd])
 
   useEffect(() => {
-    setErrMsg('');
+      setErrMsg('');
   }, [user, pwd, matchPwd])
 
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    // if button enabled with JS hack
-    const v1 = USER_REGEX.test(user);
-    const v2 = PWD_REGEX.test(pwd);
-    if (!v1 || !v2) {
-      setErrMsg("Invalid Entry");
-      return;
-    }
-    try {
-      const response = await axios.post(REGISTER_URL,
-        JSON.stringify({ username: user, password: pwd, first_name: firstName, last_name: lastName, email: email.toLowerCase(), address }),
-        {
-          headers: { 'Content-Type': 'application/json' },
-          withCredentials: true
-        }
-      );
-      console.log(JSON.stringify(response.data))
-      setSuccess(true);
-      setUser('');
-      setPwd('');
-      setMatchPwd('');
-    } catch (err) {
-      if (!err?.response) {
-        setErrMsg('No Server Response');
-      } else if (err.response?.status === 409) {
-        setErrMsg('Username Taken');
-      } else {
-        setErrMsg('Registration Failed')
+      e.preventDefault();
+      // if button enabled with JS hack
+      const v1 = USER_REGEX.test(user);
+      const v2 = PWD_REGEX.test(pwd);
+      if (!v1 || !v2) {
+          setErrMsg("Invalid Entry");
+          return;
       }
-      errRef.current.focus();
-    }
-    login();
+      try {
+          const response = await axios.post(REGISTER_URL,
+              JSON.stringify({ username:user, password:pwd, first_name: firstName, last_name: lastName, email:email.toLowerCase(), address }),
+              {
+                  headers: { 'Content-Type': 'application/json' },
+                  withCredentials: true
+              }
+          );
+          console.log(JSON.stringify(response.data))
+          setSuccess(true);
+          setUser('');
+          setPwd('');
+          setMatchPwd('');
+      } catch (err) {
+          if (!err?.response) {
+              setErrMsg('No Server Response');
+          } else if (err.response?.status === 409) {
+              setErrMsg('Username Taken');
+          } else {
+              setErrMsg('Registration Failed')
+          }
+          errRef.current.focus();
+      }
+      login();
   }
 
   return (
@@ -135,7 +132,7 @@ export default function SignupForm() {
             alignItems: 'center',
           }}
         >
-          <Typography
+          <Typography 
             variant="h4"
             fontFamily="Roboto Slab"
             padding={4}
@@ -144,8 +141,8 @@ export default function SignupForm() {
             Join Us!
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-            <Grid
-              container spacing={5}
+            <Grid 
+            container spacing={5}
             >
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -184,7 +181,7 @@ export default function SignupForm() {
                   // autoComplete="email"
                   ref={userRef}
                   onChange={(e) => setUser(e.target.value)}
-                  value={user}
+                 value={user}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -243,14 +240,14 @@ export default function SignupForm() {
                   onBlur={() => setMatchFocus(false)}
                 />
               </Grid>
-
+      
             </Grid>
             <RoundedButton
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              disabled={!validName || !validPwd || !validMatch ? true : false}
+              disabled = {!validName || !validPwd || !validMatch ? true : false}
               // href='Login'
               link="login"
             >
@@ -258,7 +255,7 @@ export default function SignupForm() {
             </RoundedButton>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link
+                <Link 
                   variant="body2"
                   onClick={login}
                 >
