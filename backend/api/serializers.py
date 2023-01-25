@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .models import User, Item, Image, Post, Offer
 
-
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -37,3 +36,4 @@ class OfferSerializer(serializers.ModelSerializer):
     class Meta:
         model = Offer
         fields = "__all__"
+

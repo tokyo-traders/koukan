@@ -7,7 +7,10 @@ from rest_framework.authentication import get_authorization_header
 from .serializers import UserSerializer, ItemSerializer, ImageSerializer, MultipleImageSerializer, PostSerializer, OfferSerializer
 from .models import User, Item, Image, Post, Offer
 from .authentication import create_access_token, create_refresh_token, decode_access_token, decode_refresh_token
-
+from rest_framework_simplejwt.tokens import RefreshToken
+from .utils import Util
+from django.contrib.sites.shortcuts import get_current_site
+from django.urls import reverse
 
 import jwt
 import datetime
@@ -28,11 +31,33 @@ def user_register(request):
     if request.method == "POST":
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
+            print("!!!!!CHECK!!!!!", serializer)
             serializer.save()
+
+            # email verification trial
+            # get the user email 
+            getUser = User.objects.get(email=serializer.data['email'])
+            user = UserSerializer(getUser)
+            # produce a token
+            token = RefreshToken.for_user(getUser).access_token
+
+            current_site = get_current_site(request).domain
+            relativeLink = reverse('verify-email')
+            abstractURL = 'http://'+current_site+relativeLink+"?token="+str(token)
+
+            email_body = 'Hi '+str(user.data['username'])+ 'Click the link below to verify your email: \n'+ abstractURL
+            data={'email_subject': 'Email Verification','email_to':str(user.data['email']), 'email_body': email_body,}
+
+            # check util.py
+            Util.send_confirmation(data)
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
 
+class VerifyEmail(generics.GenericAPIView):
+    def get(self):
+        pass
 
 @api_view(['GET', 'PUT', 'DELETE', 'POST'])
 def user_login(request):
@@ -295,17 +320,21 @@ def homepage(request):
         imageUrl = []
         for post in posts:
             postSerializer = PostSerializer(post)
-            postID = postSerializer.data["item_id"]
+            postID = postSerializer.data['item_id']
             item = Item.objects.filter(pk=postID)
             itemSeralizer = ItemSerializer(
                 item, many=True)  # we need this "many=True"!)
             itemID = itemSeralizer.data[0]['id']
+            userID = postSerializer.data['user_id']
+            user = User.objects.filter(pk=userID)
+            userSerializer = UserSerializer(user, many=True)
             for image in images:
                 imageSerializer = ImageSerializer(image)
                 if imageSerializer.data["item_id"] == itemID:
                     imageUrl.append(imageSerializer.data["image"])
             data.append({"post": postSerializer.data,
-                        "item": itemSeralizer.data[0], "images": imageUrl})
+                        "item": itemSeralizer.data[0], "images": imageUrl,
+                        "username": userSerializer.data[0]["username"], "phoneDetail": userSerializer.data[0]["phone_detail"]})
             imageUrl = []
         return Response(data, status=status.HTTP_200_OK)
 
@@ -369,7 +398,6 @@ def edit_post(request, postId):
         post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
 @ api_view(['GET'])
 def all_item(request, itemid):
     try:
@@ -405,7 +433,7 @@ def create_offer(request):
         else:
             error = {"error": "You have failed to create an offer properly"}
             return Response(error, status=status.HTTP_406_NOT_ACCEPTABLE)
-
+        
 
 @ api_view(['GET', 'PUT', 'DELETE'])
 def edit_offer(request, offerId):
@@ -431,7 +459,22 @@ def edit_offer(request, offerId):
         message = {"message": "You have now deleted the offer"}
         return Response(message, status=status.HTTP_204_NO_CONTENT)
 
-
+@api_view(['GET'])
+def search_item(request):
+    if request.method == "GET":
+        posts = Post.objects.all()
+        data = []
+        for post in posts:
+            postSerializer = PostSerializer(post)
+            itemID = postSerializer.data['item_id']
+            item = Item.objects.get(pk=itemID)
+            itemSerializer = ItemSerializer(item)
+            data.append(itemSerializer.data['item_name'])
+            print("this is item serializer", itemSerializer.data)
+            print("this is the data", data)
+        return Response(data, status=status.HTTP_200_OK)
+  
+ 
 @ api_view(['GET', 'POST'])
 def hello(request):
     if request.method == "GET":
