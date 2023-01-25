@@ -14,12 +14,14 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import axios from "axios";
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import MailIcon from '@mui/icons-material/Mail';
-import AlternateEmailSharpIcon from '@mui/icons-material/AlternateEmailSharp';
-import LocalPostOfficeSharpIcon from '@mui/icons-material/LocalPostOfficeSharp';
+// import Carousel from 'react-material-ui-carousel'
 import EmailIcon from '@mui/icons-material/Email';
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from 'react-responsive-carousel';
+
 
 import "./LisitingSingleItem.css"
+import { CollectionsBookmarkOutlined } from '@mui/icons-material';
 
 const Img = styled('img')({
   margin: 'auto',
@@ -105,16 +107,35 @@ export default function ListingSingleItem(props) {
 
   const Mailto = () => {
     return (
-
       <a href={`mailto:flavioripa@hotmail.com`}> <EmailIcon sx={{ fontSize: "35px" }} /> </a>
     );
   };
 
+  const captionStyle = {
+    fontSize: '2em',
+    fontWeight: 'bold',
+  }
+  const slideNumberStyle = {
+    fontSize: '20px',
+    fontWeight: 'bold',
+  }
+  // console.log(listing)
+  const data = async () => {
+    const arr = []
+    for (let i of listing.images) {
+      let img = { image: listing.images[i], caption: `pic N. ${i}` }
+      await img.json()
+      arr.push(img)
+    }
+    return arr
+  }
+  console.log(data)
   return (
     <div >
       <Box sx={{ width: '80%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
         <Grid container spacing={2} sx={{ backgroundColor: "none", marginTop: 2 }}>
-          {listing?.images.length > 1 && <Grid item xs={2} spacing={3}>
+          {/* {listing?.images.length > 1 && 
+          <Grid item xs={2} spacing={3}>
             {listing.images.filter((x, index) => !!index).map((img) => {
               return (
                 <Box sx={{ marginBottom: 2 }}>
@@ -123,13 +144,39 @@ export default function ListingSingleItem(props) {
               )
             })
             }
-          </Grid>}
+          </Grid>} */}
           <Grid item xs={5} sx={{ margin: '10px' }}>
             <Container sx={{ height: 350 }}>
               <Box>
                 <Button><NavigateBeforeIcon /></Button>
               </Box>
-              {listing && <Img alt="image1" src={BASE_URL + `${listing.images[0]}`} />}
+
+              <Carousel
+                data={data}
+                time={2000}
+                // width="850px"
+                // height="500px"
+                captionStyle={captionStyle}
+                radius="10px"
+                slideNumber={true}
+                slideNumberStyle={slideNumberStyle}
+                captionPosition="bottom"
+                automatic={true}
+                dots={true}
+                pauseIconColor="green"
+                pauseIconSize="40px"
+                slideBackgroundColor="green"
+                slideImageFit="cover"
+                thumbnails={true}
+                thumbnailWidth="100px"
+                infiniteLoop={true}
+
+              >
+                {listing?.images.map((img, i) => (
+                  <Img alt="image1" src={BASE_URL + `${listing.images[i]}`} />
+                ))}
+              </Carousel>
+
               <Button onClick={() => {
                 console.log(offersItems)
               }
