@@ -437,9 +437,19 @@ def edit_offer(request, offerId):
 @api_view(['PUT', 'POST'])
 def item_handover(request):
 
-    request.data
 
+    try:
+        listedItem = Item.objects.filter(id=request.data["post_id"]).first()
+    except Item.DoesNotExist or Image.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
     
+    try:
+        offeredItem = Item.objects.filter(id=request.data['offered_item']).first()
+    except Item.DoesNotExist or Image.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    print("🥵",ItemSerializer(listedItem))
+    print("🤑",ItemSerializer(offeredItem))
     # item = Item.objects.get(pk=itemId)
   
     if request.method == "PUT":

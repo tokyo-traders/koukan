@@ -60,8 +60,8 @@ export default function ListingSingleItem(props) {
  }
 
  const acceptOffer =  async (obj) => {
-  console.log(obj)
-  const response = await axios.get(
+  // console.log(obj)
+  const response = await axios.put(
     `/api/itemHandover`, 
     JSON.stringify(obj),
     {
@@ -69,6 +69,7 @@ export default function ListingSingleItem(props) {
       withCredentials: true
       }
     )
+    console.log(response.data)
 }
 
 
@@ -232,7 +233,7 @@ export default function ListingSingleItem(props) {
       </Box>
 
 {/* ____________________________________________________________________________________________________________________________       */}
-      {offersItems && offersItems.map((items)=>{
+      {offersItems && offersItems.map((items, index)=>{
           return(
             <>
             <Box sx={{ width: '80%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
@@ -267,7 +268,7 @@ export default function ListingSingleItem(props) {
                       variant="contained"
                       sx={{ mt: 3, mb: 2 }}
                       onClick={()=>{
-                        acceptOffer(items)
+                        acceptOffer(offersMade[index])
                       }}
                     >
                       ACCEPT OFFER
