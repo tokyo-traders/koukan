@@ -144,13 +144,12 @@ export default function ListingSingleItem(props) {
             <Container sx={{ height: 350 }}>
               {images &&
                 <Carousel
-                  showThumbs={true}>
-
+                  autoPlay={true}
+                  infiniteLoop={true}>
                   {listing?.images.map((img, i) => (
                     <div>
                       <img alt="image1" src={BASE_URL + `${listing.images[i]}`} />
                     </div>
-
                   ))}
                 </Carousel>}
 
