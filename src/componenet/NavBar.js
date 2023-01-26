@@ -23,7 +23,7 @@ import { ThemeProvider } from 'styled-components';
 //     fontSize: "18px"
 // }));
 
-const customTheme = createTheme({
+let customTheme = createTheme({
    palette: {
     primary: {
       main: '#3cd64b',
@@ -33,26 +33,36 @@ const customTheme = createTheme({
       main: '#4d3e38'
     },
   },
+
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#def4f6'
+        }
+      }
+    }
+  }
 });
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
-  // borderRadius: theme.shape.borderRadius,
-  borderRadius: '8px',
-  backgroundColor: alpha(theme.palette.common.black, 0.15),
+  borderRadius: '5px',
+  borderStyle: 'solid',
+  borderWidth: 0.5,
+  borderColor: '#3cd64b',
+  backgroundColor: alpha(theme.palette.common.black, 0.05),
   '&:hover': {
-    backgroundColor: alpha(theme.palette.common.black, 0.25),
+    backgroundColor: alpha(theme.palette.common.black, 0.1),
   },
   marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(1),
-    width: 'auto',
-  },
+  width: '30%',
+
 }));
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 2),
+  color: '#4d3e38',
   height: '100%',
   position: 'absolute',
   pointerEvents: 'none',
@@ -62,9 +72,10 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
+
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
+    color: '#4d3e38',
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
@@ -110,21 +121,21 @@ function NavBar(props) {
     home();
   }
   return (
-    <>
     <ThemeProvider theme={customTheme}>
     <CssBaseline />
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{background: "white"}}>
+ 
         <Toolbar
           sx={{
             justifyContent: "space-between"
           }}
         >
           <Link
-            variant="body1"
+            marginLeft={5}
+            variant="h6"
             fontFamily="Roboto Slab"
-            padding={2}
-            color="secondary"
+            padding={1}
+            color="#3cd64b"
             onClick={home}
             underline='none'
           >
@@ -140,17 +151,16 @@ function NavBar(props) {
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
-          {!user ? <Button color='secondary' variant='contained' onClick={login}>LOG IN</Button> :
+          {!user ? <Button variant='contained' onClick={login}>LOG IN</Button> :
           <div>
-          <Button color='secondary' variant='contained' onClick={myPage}>My Page</Button>
+          <Button variant='contained' onClick={myPage}>My Page</Button>
           <Button variant='contained' onClick={logOut}>Log Out</Button>
           </div>}
         </Toolbar>
-      </AppBar>
+   
     </Box>
   <Outlet/>
   </ThemeProvider>
-  </>
   );
 }
 

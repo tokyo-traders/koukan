@@ -7,10 +7,10 @@ from rest_framework.authentication import get_authorization_header
 from .serializers import UserSerializer, ItemSerializer, ImageSerializer, MultipleImageSerializer, PostSerializer, OfferSerializer
 from .models import User, Item, Image, Post, Offer
 from .authentication import create_access_token, create_refresh_token, decode_access_token, decode_refresh_token
-from rest_framework_simplejwt.tokens import RefreshToken
-from .utils import Util
-from django.contrib.sites.shortcuts import get_current_site
-from django.urls import reverse
+# from rest_framework_simplejwt.tokens import RefreshToken
+# from .utils import Util
+# from django.contrib.sites.shortcuts import get_current_site
+# from django.urls import reverse
 
 import jwt
 import datetime
@@ -20,44 +20,44 @@ from rest_framework.parsers import JSONParser  # delete
 from rest_framework.renderers import JSONRenderer  # delete
 
 
-@api_view(['GET', 'POST'])
-def user_register(request):
+# @api_view(['GET', 'POST'])
+# def user_register(request):
 
-    if request.method == "GET":
-        obj = User.objects.all()
-        item = Item.objects.all()
-        serializer = UserSerializer(obj, many=True)
-        return Response(serializer.data)
-    if request.method == "POST":
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            print("!!!!!CHECK!!!!!", serializer)
-            serializer.save()
+#     if request.method == "GET":
+#         obj = User.objects.all()
+#         item = Item.objects.all()
+#         serializer = UserSerializer(obj, many=True)
+#         return Response(serializer.data)
+#     if request.method == "POST":
+#         serializer = UserSerializer(data=request.data)
+#         if serializer.is_valid():
+#             print("!!!!!CHECK!!!!!", serializer)
+#             serializer.save()
 
-            # email verification trial
-            # get the user email 
-            getUser = User.objects.get(email=serializer.data['email'])
-            user = UserSerializer(getUser)
-            # produce a token
-            token = RefreshToken.for_user(getUser).access_token
+#             # email verification trial
+#             # get the user email 
+#             getUser = User.objects.get(email=serializer.data['email'])
+#             user = UserSerializer(getUser)
+#             # produce a token
+#             token = RefreshToken.for_user(getUser).access_token
 
-            current_site = get_current_site(request).domain
-            relativeLink = reverse('verify-email')
-            abstractURL = 'http://'+current_site+relativeLink+"?token="+str(token)
+#             current_site = get_current_site(request).domain
+#             relativeLink = reverse('verify-email')
+#             abstractURL = 'http://'+current_site+relativeLink+"?token="+str(token)
 
-            email_body = 'Hi '+str(user.data['username'])+ 'Click the link below to verify your email: \n'+ abstractURL
-            data={'email_subject': 'Email Verification','email_to':str(user.data['email']), 'email_body': email_body,}
+#             email_body = 'Hi '+str(user.data['username'])+ 'Click the link below to verify your email: \n'+ abstractURL
+#             data={'email_subject': 'Email Verification','email_to':str(user.data['email']), 'email_body': email_body,}
 
-            # check util.py
-            Util.send_confirmation(data)
+#             # check util.py
+#             Util.send_confirmation(data)
 
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         else:
+#             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
 
-class VerifyEmail(generics.GenericAPIView):
-    def get(self):
-        pass
+# class VerifyEmail(generics.GenericAPIView):
+#     def get(self):
+#         pass
 
 @api_view(['GET', 'PUT', 'DELETE', 'POST'])
 def user_login(request):

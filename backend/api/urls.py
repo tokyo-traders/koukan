@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import user_register, user_login, item_list, image_list, all_item, newall_item, create_post, edit_post, create_offer, edit_offer, homepage, listingItem, search_item, VerifyEmail
+from .views import user_login, item_list, image_list, all_item, newall_item, create_post, edit_post, create_offer, edit_offer, homepage, listingItem, search_item
 
 from api import views
 from django.conf import settings
@@ -12,7 +12,7 @@ router.register('image', views.ImageView)
 router.register('image/multiple_upload', views.ImageView)
 
 urlpatterns = [
-  path('user/register', views.user_register),
+  # path('user/register', views.user_register),
   path('user/login', views.user_login),
   path('user/refresh', views.user_refresh),
   path('user/logout', views.user_logout),
@@ -47,7 +47,7 @@ urlpatterns = [
   path('search-item', views.search_item),
 
   # this path is for email verification
-  path('verify-email', VerifyEmail.as_view(), name='verify-email')
+  # path('verify-email', VerifyEmail.as_view(), name='verify-email')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 #
 # use the static or...
