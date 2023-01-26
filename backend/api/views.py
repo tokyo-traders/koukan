@@ -1,16 +1,17 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from rest_framework import generics, status, viewsets
 from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
 from rest_framework.authentication import get_authorization_header
-from .serializers import UserSerializer, ItemSerializer, ImageSerializer, MultipleImageSerializer, PostSerializer, OfferSerializer
-from .models import User, Item, Image, Post, Offer
+from .serializers import UserSerializer, ItemSerializer, ImageSerializer, MultipleImageSerializer, PostSerializer, OfferSerializer, CategoriesSerializer, ReportedUserSerializer
+from .models import User, Item, Image, Post, Offer, Categories, ReportedUser
 from .authentication import create_access_token, create_refresh_token, decode_access_token, decode_refresh_token
 from rest_framework_simplejwt.tokens import RefreshToken
 from .utils import Util
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
+from django.conf import settings
 
 import jwt
 import datetime
@@ -31,7 +32,7 @@ def user_register(request):
     if request.method == "POST":
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
-            print("!!!!!CHECK!!!!!", serializer)
+            # serializer.is_active = False # make the accounte deactivated check if this works
             serializer.save()
 
             # email verification trial
@@ -50,14 +51,32 @@ def user_register(request):
 
             # check util.py
             Util.send_confirmation(data)
-
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
+            return redirect('/')
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    else:
             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
 
 class VerifyEmail(generics.GenericAPIView):
-    def get(self):
-        pass
+    def get(self, request):
+        activate_token = request.GET.get('token')
+        try:
+            getUser = jwt.decode(activate_token, settings.SECRET_KEY)
+            user = User.objects.get(pk=getUser['user_id'])
+            if not user.is_emailVerified:
+                user.is_emailVerified = True
+
+                user.save()
+
+            message = {"message": "You have successfully activated your account"}
+            return Response(message, status=status.HTTP_200_OK)
+
+        except jwt.ExpiredSignatureError as identifier:
+            error = {"error": "Your activation link is expired."}
+            return Response(error, status=status.HTTP_408_REQUEST_TIMEOUT)
+        except jwt.exceptions.DecodeError as identifier:
+            error = {"error": "Invalid token"}
+            return Response(error, status=status.HTTP_401_UNAUTHORIZED)
+  
 
 @api_view(['GET', 'PUT', 'DELETE', 'POST'])
 def user_login(request):
@@ -342,6 +361,7 @@ def homepage(request):
 @api_view(['GET'])  # to be refactored
 def listingItem(request, postId):
     if request.method == "GET":
+        data = []
         post = Post.objects.get(pk=postId)
         images = Image.objects.all()
         imageUrl = []
@@ -351,15 +371,16 @@ def listingItem(request, postId):
         itemSeralizer = ItemSerializer(
             item, many=True)  # we need this "many=True"!)
         itemID = itemSeralizer.data[0]['id']
-        # userID = itemSeralizer.data[0]['user_id']
-        # userUsername = User.objects.get(pk=userID).first()
-        # print("this is user", userUsername)
+        userID = postSerializer.data['user_id']
+        user = User.objects.filter(pk=userID)
+        userSerializer = UserSerializer(user, many=True)
         for image in images:
             imageSerializer = ImageSerializer(image)
             if imageSerializer.data["item_id"] == itemID:
                 imageUrl.append(imageSerializer.data["image"])
-        data = {"post": postSerializer.data,
-                "item": itemSeralizer.data[0], "images": imageUrl}
+        data.append({"post": postSerializer.data,
+                        "item": itemSeralizer.data[0], "images": imageUrl,
+                        "username": userSerializer.data[0]["username"], "phoneDetail": userSerializer.data[0]["phone_detail"], "email": userSerializer.data[0]["email"]})
         imageUrl = []
         return Response(data, status=status.HTTP_200_OK)
 
@@ -476,9 +497,23 @@ def search_item(request):
             print("this is item serializer", itemSerializer.data)
             print("this is the data", data)
         return Response(data, status=status.HTTP_200_OK)
-  
- 
-@ api_view(['GET', 'POST'])
+
+# category_name = ["Furniture", "Storage", "Home Accessories", "Travel", "Electronics", "Health & Beauty", "Sporting Goods", "Clothing", "Shoes"]
+# designated_points = [1,0.202,0.100,0.093,0.850,0.372,0.157,0.050,0.050] 
+@api_view(['GET'])
+def category_list(request):
+    try:
+        categories = Categories.objects.all()
+    except Categories.DoesNotExist:
+        error = {"error": "You have failed to get the categories"}
+        return Response(error, status=status.HTTP_404_NOT_FOUND)
+    
+    if request.method == "GET":
+        catergorySerializer = CategoriesSerializer(categories, many=True)
+        return Response(catergorySerializer.data, status=status.HTTP_200_OK)
+        
+
+@api_view(['GET', 'POST'])
 def hello(request):
     if request.method == "GET":
         # queryset = User.objects.all()
