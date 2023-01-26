@@ -12,7 +12,7 @@ router.register('image', views.ImageView)
 router.register('image/multiple_upload', views.ImageView)
 
 urlpatterns = [
-    # path('user/register', views.user_register),
+    path('user/register', views.user_register),
     path('user/login', views.user_login),
     path('user/refresh', views.user_refresh),
     path('user/logout', views.user_logout),

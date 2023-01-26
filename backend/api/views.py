@@ -34,26 +34,26 @@ def user_register(request):
             print("!!!!!CHECK!!!!!", serializer)
             serializer.save()
 
-            # email verification trial
-            # get the user email
-            getUser = User.objects.get(email=serializer.data['email'])
-            user = UserSerializer(getUser)
-            # produce a token
-            token = RefreshToken.for_user(getUser).access_token
+            # # email verification trial
+            # # get the user email
+            # getUser = User.objects.get(email=serializer.data['email'])
+            # user = UserSerializer(getUser)
+            # # produce a token
+            # token = RefreshToken.for_user(getUser).access_token
 
-            current_site = get_current_site(request).domain
-            relativeLink = reverse('verify-email')
-            abstractURL = 'http://'+current_site + \
-                relativeLink+"?token="+str(token)
+            # current_site = get_current_site(request).domain
+            # relativeLink = reverse('verify-email')
+            # abstractURL = 'http://'+current_site + \
+            #     relativeLink+"?token="+str(token)
 
-            email_body = 'Hi ' + \
-                str(user.data['username']) + \
-                'Click the link below to verify your email: \n' + abstractURL
-            data = {'email_subject': 'Email Verification', 'email_to': str(
-                user.data['email']), 'email_body': email_body, }
+            # email_body = 'Hi ' + \
+            #     str(user.data['username']) + \
+            #     'Click the link below to verify your email: \n' + abstractURL
+            # data = {'email_subject': 'Email Verification', 'email_to': str(
+            #     user.data['email']), 'email_body': email_body, }
 
-            # check util.py
-            Util.send_confirmation(data)
+            # # check util.py
+            # Util.send_confirmation(data)
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
