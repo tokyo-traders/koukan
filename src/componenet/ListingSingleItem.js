@@ -18,6 +18,9 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import EmailIcon from '@mui/icons-material/Email';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
+import ImageGallery from 'react-image-gallery';
+// import { Carousel } from 'react-carousel-minimal';
+
 
 
 import "./LisitingSingleItem.css"
@@ -63,6 +66,7 @@ r
   const [date, setDate] = useState('');
   const [offersMade, setOffersMade] = useState(null);
   const [offersItems, setOffersItems] = useState(null);
+  const [images, setImages] = useState([])
 
   const display = () => {
     if (listing) {
@@ -88,19 +92,29 @@ r
     if (listingId) {
       axios.get(`/api/listing/${listingId}`)
         .then(response => {
-          setListing(response.data)
+          console.log(response.data)
+          setListing(response.data[0])
         })
     }
   }, [])
 
+  useEffect(() => {
+    if (listingId) {
+      axios.get(`/api/listing/${listingId}`)
+        .then(response => {
+          console.log(response.data[0].images)
+          images.concat(response.data[0].images)
+        })
+    }
+  }, [])
 
   useEffect(() => {
 
     const getOffers = async () => {
       let response = await axios.get(`/api/create-offer`)
+      // console.log(response.data.filter(item => item.post_id == listingId)[0])
+      setOffersMade(response.data.filter(item => item.post_id == listingId)[0])
 
-      console.log(response.data.filter(item=>item.post_id == listingId)[0])
-      setOffersMade(response.data.filter(item=>item.post_id == listingId))
 
     }
     getOffers()
@@ -132,7 +146,7 @@ r
 
   const Mailto = () => {
     return (
-      <a href={`mailto:flavioripa@hotmail.com`}> <EmailIcon sx={{ fontSize: "35px" }} /> </a>
+      <a href={`mailto:${listing.email}`}> <EmailIcon sx={{ fontSize: "35px" }} /> </a>
     );
   };
 
@@ -144,70 +158,33 @@ r
     fontSize: '20px',
     fontWeight: 'bold',
   }
+
   // console.log(listing)
-  const data = async () => {
-    const arr = []
-    for (let i of listing.images) {
-      let img = { image: listing.images[i], caption: `pic N. ${i}` }
-      await img.json()
-      arr.push(img)
-    }
-    return arr
-  }
-  console.log(data)
+  // console.log(typeof listing.phoneDetail)
+  // const phoneNumber = listing?.phoneDetail.splice(0, 2, '')
+  // console.log(phoneNumber)
   return (
     <div >
       <Box sx={{ width: '80%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
         <Grid container spacing={2} sx={{ backgroundColor: "none", marginTop: 2 }}>
-          {/* {listing?.images.length > 1 && 
-          <Grid item xs={2} spacing={3}>
-            {listing.images.filter((x, index) => !!index).map((img) => {
-              return (
-                <Box sx={{ marginBottom: 2 }}>
-                  <Img alt="image2" src={BASE_URL + `${img}`} />
-                </Box>
-              )
-            })
-            }
-          </Grid>} */}
           <Grid item xs={5} sx={{ margin: '10px' }}>
             <Container sx={{ height: 350 }}>
-              <Box>
-                <Button
-                onClick={display}
-                ><NavigateBeforeIcon /></Button>
-              </Box>
+              {images &&
+                <Carousel
+                  autoPlay={true}
+                  infiniteLoop={true}>
+                  {listing?.images.map((img, i) => (
+                    <div>
+                      <img alt="image1" src={BASE_URL + `${listing.images[i]}`} />
+                    </div>
+                  ))}
+                </Carousel>}
 
-              <Carousel
-                data={data}
-                time={2000}
-                // width="850px"
-                // height="500px"
-                captionStyle={captionStyle}
-                radius="10px"
-                slideNumber={true}
-                slideNumberStyle={slideNumberStyle}
-                captionPosition="bottom"
-                automatic={true}
-                dots={true}
-                pauseIconColor="green"
-                pauseIconSize="40px"
-                slideBackgroundColor="green"
-                slideImageFit="cover"
-                thumbnails={true}
-                thumbnailWidth="100px"
-                infiniteLoop={true}
-
-              >
-                {listing?.images.map((img, i) => (
-                  <Img alt="image1" src={BASE_URL + `${listing.images[i]}`} />
-                ))}
-              </Carousel>
 
               <Button onClick={() => {
                 console.log(offersItems)
               }
-              }><NavigateNextIcon /></Button>
+              }></Button>
             </Container>
           </Grid>
           <Grid item xs={5} sm container>
@@ -237,7 +214,7 @@ r
                       </RoundedButton>
                       <Typography >
                         <a
-                          href="https://wa.me/8107039783864"
+                          href={`https://wa.me/${listing.phoneDetail}`}
                           class="whatsapp_float"
                           target="_blank"
                           rel="noopener noreferrer"

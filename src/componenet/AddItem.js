@@ -40,6 +40,7 @@ function AddItem(props) {
     const uploadData = new FormData();
     const uploadImages = new FormData()
     const newItem = async (e) => {
+        console.log(user)
         e.preventDefault()
         uploadData.append('item_name', itemName);
         uploadData.append('details', details);
