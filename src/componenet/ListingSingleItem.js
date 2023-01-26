@@ -81,22 +81,20 @@ export default function ListingSingleItem(props) {
     if (listingId) {
       axios.get(`/api/listing/${listingId}`)
         .then(response => {
-          // console.log(response.data)
-          setListing(response.data)
+          console.log(response.data)
+          setListing(response.data[0])
         })
     }
   }, [])
 
   useEffect(() => {
-    const getImages = async () => {
-      if (listingId) {
-        const data = await axios.get(`/api/listing/${listingId}`)
-        const imagesArr = data.data.images
-        console.log(imagesArr)
-        images.concat(imagesArr)
-      }
+    if (listingId) {
+      axios.get(`/api/listing/${listingId}`)
+        .then(response => {
+          console.log(response.data[0].images)
+          images.concat(response.data[0].images)
+        })
     }
-    getImages()
   }, [])
 
   useEffect(() => {
@@ -123,7 +121,7 @@ export default function ListingSingleItem(props) {
 
   const Mailto = () => {
     return (
-      <a href={`mailto:flavioripa@hotmail.com`}> <EmailIcon sx={{ fontSize: "35px" }} /> </a>
+      <a href={`mailto:${listing.email}`}> <EmailIcon sx={{ fontSize: "35px" }} /> </a>
     );
   };
 
@@ -135,7 +133,11 @@ export default function ListingSingleItem(props) {
     fontSize: '20px',
     fontWeight: 'bold',
   }
-  console.log(images)
+
+  // console.log(listing)
+  // console.log(typeof listing.phoneDetail)
+  // const phoneNumber = listing?.phoneDetail.splice(0, 2, '')
+  // console.log(phoneNumber)
   return (
     <div >
       <Box sx={{ width: '80%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
@@ -185,7 +187,7 @@ export default function ListingSingleItem(props) {
                       </RoundedButton>
                       <Typography >
                         <a
-                          href="https://wa.me/8107039783864"
+                          href={`https://wa.me/${listing.phoneDetail}`}
                           class="whatsapp_float"
                           target="_blank"
                           rel="noopener noreferrer"
