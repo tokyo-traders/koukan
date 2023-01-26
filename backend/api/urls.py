@@ -1,5 +1,7 @@
 from django.urls import path
-from .views import user_register, user_login, item_list, image_list, all_item, newall_item, create_post, edit_post, create_offer, edit_offer, homepage, listingItem, search_item, VerifyEmail
+
+from .views import user_register, user_login, item_list, image_list, all_item, newall_item, create_post, edit_post, create_offer, edit_offer, homepage, listingItem, search_item, VerifyEmail, item_handover
+
 
 from api import views
 from django.conf import settings
@@ -22,6 +24,8 @@ urlpatterns = [
   path('item/<str:username>/<int:id>', views.item_edit),
   # to get the images path with GET and DELETE method only
   path('item-image/<int:itemId>', views.image_list),
+   #HandOver
+  path('itemHandover', views.item_handover),
 
 
   path('all-item/<int:userid>/<int:itemid>', views.all_item),
@@ -48,6 +52,7 @@ urlpatterns = [
 
   # this path is for email verification
   path('verify-email', VerifyEmail.as_view(), name='verify-email')
+  
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 #
 # use the static or...

@@ -116,52 +116,65 @@ function AddItem(props) {
         })
     }
     return (
-        <Box sx={{ width: '30%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
-            <Typography>Item Name</Typography>
-            <TextField
-                fullWidth
-                value={itemName}
-                onChange={(e) => setItemName(e.target.value)}
-            />
-
-            <Box sx={{ marginTop: 2 }}>
-                <Typography>Description</Typography>
+        <>
+            <Box sx={{ width: '30%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
+                <Typography>Item Name</Typography>
                 <TextField
                     fullWidth
-                    value={details}
-                    multiline
-                    rows={4}
-                    onChange={(e) => setDetails(e.target.value)}
+                    value={itemName}
+                    onChange={(e) => setItemName(e.target.value)}
                 />
+                </Box>
+                    <Box sx={{ marginTop: 2}}>
+                    <Typography>Image</Typography>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        onChange={handleChange}
+                    />
+                </Box>
+
+
+                <Box sx={{ marginTop: 2 }}>
+                    <Typography>Description</Typography>
+                    <TextField
+                        fullWidth
+                        value={details}
+                        multiline
+                        rows={4}
+                        onChange={(e) => setDetails(e.target.value)}
+                    />
+                </Box>
+                    <Box sx={{ marginTop: 2}}>
+                       <Typography> Image </Typography> 
+                        <input
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            onChange={handleChange}
+                        />
+                    </Box>
+
+                <RoundedButton
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                    onClick={newItem}
+                >
+                    Add Item
+                </RoundedButton>
+
+                <RoundedButton
+                    width="80%"
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                    onClick={goBack}
+                >
+                    Go Back
+                </RoundedButton>
+
             </Box>
-                <Box sx={{ marginTop: 2}}>
-                <Typography>Image</Typography>
-                <input
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    onChange={handleChange}
-                />
-            </Box>
-
-            <RoundedButton
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-                onClick={newItem}
-            >
-                Add Item
-            </RoundedButton>
-
-            <RoundedButton
-                width="80%"
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-                onClick={goBack}
-            >
-                Go Back
-            </RoundedButton>
-
-        </Box>
+        </>
     );
 
     // return (
