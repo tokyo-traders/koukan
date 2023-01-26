@@ -1,5 +1,11 @@
-.App {
+/* .App {
   text-align: center;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .App-logo {
@@ -32,12 +38,13 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
 
-.listing{
+.listing {
   width: 75%;
   float: Right;
   display: flex;
@@ -45,7 +52,8 @@
   justify-content: space-around;
 
 }
+
 .listingClass {
   width: 220px;
   flex: 0 1 20%;
-}
+} */

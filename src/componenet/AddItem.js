@@ -124,6 +124,17 @@ function AddItem(props) {
                     value={itemName}
                     onChange={(e) => setItemName(e.target.value)}
                 />
+                </Box>
+                    <Box sx={{ marginTop: 2}}>
+                    <Typography>Image</Typography>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        onChange={handleChange}
+                    />
+                </Box>
+
 
                 <Box sx={{ marginTop: 2 }}>
                     <Typography>Description</Typography>

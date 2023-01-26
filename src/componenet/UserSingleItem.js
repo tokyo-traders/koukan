@@ -81,13 +81,22 @@ export default function UserSingleItem(props) {
         <Grid container spacing={2} sx={{ backgroundColor: "none", marginTop: 2 }}>
           <Grid item xs={2} spacing={3}>
             <Box sx={{ marginBottom: 2 }}>
-              <Img alt="image2" src={BASE_URL + `${itemData?.image[1]}`} />
+              {
+                itemData?.image[1] &&
+                <Img alt="image2" src={BASE_URL + `${itemData?.image[1]}`} />
+              }
             </Box>
             <Box sx={{ marginBottom: 2 }}>
-              <Img alt="image3" src={BASE_URL + `${itemData?.image[2]}`} />
+              {
+                itemData?.image[2] &&
+                <Img alt="image3" src={BASE_URL + `${itemData?.image[2]}`} />
+              }
             </Box>
             <Box sx={{ marginBottom: 2 }}>
-              <Img alt="image4" src={BASE_URL + `${itemData?.image[3]}`} />
+              {
+                itemData?.image[3] &&
+                <Img alt="image4" src={BASE_URL + `${itemData?.image[3]}`} />
+              }
             </Box>
           </Grid>
           <Grid item xs={5} sx={{ margin: '10px' }}>
