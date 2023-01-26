@@ -17,9 +17,9 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 // import Carousel from 'react-material-ui-carousel'
 import EmailIcon from '@mui/icons-material/Email';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-// import { Carousel } from 'react-responsive-carousel';
+import { Carousel } from 'react-responsive-carousel';
 import ImageGallery from 'react-image-gallery';
-import { Carousel } from 'react-carousel-minimal';
+// import { Carousel } from 'react-carousel-minimal';
 
 
 
@@ -63,7 +63,7 @@ export default function ListingSingleItem(props) {
   const [date, setDate] = useState('');
   const [offersMade, setOffersMade] = useState(null);
   const [offersItems, setOffersItems] = useState(null);
-  const [images, setImages] = useState()
+  const [images, setImages] = useState([])
 
   const display = () => {
     if (listing) {
@@ -88,23 +88,22 @@ export default function ListingSingleItem(props) {
   }, [])
 
   useEffect(() => {
-    if (listingId) {
-      axios.get(`/api/listing/${listingId}`)
-        .then(response => {
-          console.log(response.data.images)
-          // images.push(response.data.images)
-          // setImages([...response.data.images])
-        })
+    const getImages = async () => {
+      if (listingId) {
+        const data = await axios.get(`/api/listing/${listingId}`)
+        const imagesArr = data.data.images
+        console.log(imagesArr)
+        images.concat(imagesArr)
+      }
     }
+    getImages()
   }, [])
-
-
 
   useEffect(() => {
 
     const getOffers = async () => {
       let response = await axios.get(`/api/create-offer`)
-      console.log(response.data.filter(item => item.post_id == listingId)[0])
+      // console.log(response.data.filter(item => item.post_id == listingId)[0])
       setOffersMade(response.data.filter(item => item.post_id == listingId)[0])
 
     }
@@ -141,56 +140,24 @@ export default function ListingSingleItem(props) {
     <div >
       <Box sx={{ width: '80%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
         <Grid container spacing={2} sx={{ backgroundColor: "none", marginTop: 2 }}>
-          {/* {listing?.images.length > 1 && 
-          <Grid item xs={2} spacing={3}>
-            {listing.images.filter((x, index) => !!index).map((img) => {
-              return (
-                <Box sx={{ marginBottom: 2 }}>
-                  <Img alt="image2" src={BASE_URL + `${img}`} />
-                </Box>
-              )
-            })
-            }
-          </Grid>} */}
           <Grid item xs={5} sx={{ margin: '10px' }}>
             <Container sx={{ height: 350 }}>
-              <Box>
-                <Button><NavigateBeforeIcon /></Button>
-              </Box>
+              {images &&
+                <Carousel
+                  showThumbs={true}>
 
-              <Carousel
-                data={images}
-                time={2000}
-                // width="850px"
-                // height="500px"
-                captionStyle={captionStyle}
-                radius="10px"
-                slideNumber={true}
-                slideNumberStyle={slideNumberStyle}
-                captionPosition="bottom"
-                automatic={true}
-                dots={true}
-                pauseIconColor="green"
-                pauseIconSize="40px"
-                slideBackgroundColor="green"
-                slideImageFit="cover"
-                thumbnails={true}
-                thumbnailWidth="100px"
-                infiniteLoop={true}
+                  {listing?.images.map((img, i) => (
+                    <div>
+                      <img alt="image1" src={BASE_URL + `${listing.images[i]}`} />
+                    </div>
 
-              >
-
-                {/* <ImageGallery items={data()}> */}
-                {/* <Carousel> */}
-                {listing?.images.map((img, i) => (
-                  <Img alt="image1" src={BASE_URL + `${listing.images[i]}`} />
-                ))}
-              </Carousel>
+                  ))}
+                </Carousel>}
 
               <Button onClick={() => {
                 console.log(offersItems)
               }
-              }><NavigateNextIcon /></Button>
+              }></Button>
             </Container>
           </Grid>
           <Grid item xs={5} sm container>
