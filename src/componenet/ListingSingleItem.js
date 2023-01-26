@@ -41,6 +41,7 @@ export default function ListingSingleItem(props) {
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/MyPage"
+    
     const makeOffer = useCallback(()=> navigate(`/listing/${listingId}/offer`, {replace: true}), [navigate]);
     const login = useCallback(()=> navigate(`/login`, {replace: true}), [navigate]);
     const goBack = useCallback(()=> {
@@ -60,7 +61,6 @@ export default function ListingSingleItem(props) {
  }
 
  const acceptOffer =  async (obj) => {
-  // console.log(obj)
   const response = await axios.put(
     `/api/itemHandover`, 
     JSON.stringify(obj),
