@@ -47,6 +47,7 @@ export default function SignupForm() {
     [navigate]
   );
 
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -64,6 +65,7 @@ export default function SignupForm() {
   const [matchPwd, setMatchPwd] = useState("");
   const [validMatch, setValidMatch] = useState(false);
   const [matchFocus, setMatchFocus] = useState(false);
+
 
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
