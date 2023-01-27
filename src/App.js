@@ -69,7 +69,7 @@ function App() {
 
 			<Routes>
 				<Route path="/" element={<NavBar user={user} setUser={setUser} handleSearchChange={handleSearchChange} searchValue={searchValue} />} exact>
-					<Route path="/" element={[<Sidebar />, <AllListings handleSearchChange={handleSearchChange} searchValue={searchValue} />]} />
+					<Route path="/" element={[<Sidebar />, <AllListings searchValue={searchValue} />]} />
 					<Route path="/Login" element={<LoginForm userState={userState} setUserState={setUserState} />} />
 					<Route path="/Signup" element={<SignupForm />} />
 					<Route path="/listing/:listingId" element={[<Sidebar />, <ListingSingleItem user={user} />]} />

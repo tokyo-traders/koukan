@@ -86,10 +86,6 @@ function NavBar(props) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // const [searchValue, setSearchValue] = useState('');
-  console.log(searchValue)
-
-
   const from = location.state?.from?.pathname || "/MyPage"
   const myPage = useCallback(() => navigate('/MyPage', { replace: true }), [navigate]);
   const login = useCallback(() => navigate('/login', { replace: true }), [navigate]);
