@@ -66,7 +66,7 @@ class VerifyEmail(generics.GenericAPIView):
                 user.is_emailVerified = True
 
                 user.save()
-
+            
             message = {"message": "You have successfully activated your account"}
             return Response(message, status=status.HTTP_200_OK)
 
