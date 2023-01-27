@@ -31,8 +31,13 @@ function App() {
 
 	const [userState, setUserState] = useState(false)
 	const [user, setUser] = useState(undefined)
+	const [searchValue, setSearchValue] = useState('');
+
 	const axiosPrivate = useAxiosPrivate();
 
+	const handleSearchChange = (event) => {
+		setSearchValue(event.target.value);
+	}
 
 	useEffect(() => {
 		if (userState) {
@@ -63,8 +68,8 @@ function App() {
 		<>
 
 			<Routes>
-				<Route path="/" element={<NavBar user={user} setUser={setUser} setUserState={setUserState} />} exact>
-					<Route path="/" element={[<Sidebar />, <AllListings />]} />
+				<Route path="/" element={<NavBar user={user} setUser={setUser} handleSearchChange={handleSearchChange} searchValue={searchValue} />} exact>
+					<Route path="/" element={[<Sidebar />, <AllListings handleSearchChange={handleSearchChange} searchValue={searchValue} />]} />
 					<Route path="/Login" element={<LoginForm userState={userState} setUserState={setUserState} />} />
 					<Route path="/Signup" element={<SignupForm />} />
 					<Route path="/listing/:listingId" element={[<Sidebar />, <ListingSingleItem user={user} />]} />

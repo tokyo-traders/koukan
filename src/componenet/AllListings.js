@@ -6,7 +6,9 @@ import { useNavigate } from 'react-router-dom';
 const BASE_URL = 'http://127.0.0.1:8000/api';
 
 
-export default function AllListings() {
+export default function AllListings(props) {
+
+    const { handleSearchChange, searchValue } = props;
 
     const [listings, setListings] = useState([]);
     useEffect(() => {
@@ -18,7 +20,7 @@ export default function AllListings() {
             })
     }, [])
 
-
+    console.log(searchValue)
     const navigate = useNavigate();
     const makeOffer = (obj) => {
         navigate(`/listing/${obj.post.id}`, { replace: true })
