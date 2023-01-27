@@ -8,6 +8,7 @@ import AllListings from "./componenet/AllListings";
 import useAxiosPrivate from "./componenet/hooks/axiosPrivate";
 import AddItem from "./componenet/AddItem";
 import LoginForm from "./componenet/User/LoginForm";
+import PendingTrade from "./componenet/PendingTrade";
 import SignupForm from "./componenet/User/SignupForm";
 import MyPage from "./componenet/MyPage";
 import Layout from "./componenet/context/Layout";
@@ -71,6 +72,7 @@ function App() {
 							<Route path="/MyPage" element={<UserItemsList user={user} />} />
 							<Route path="/MyPage/addItem" element={<AddItem user={user} />} />
 							<Route path="/MyPage/postList" element={<UserPostList user={user} />} />
+							<Route path="/MyPage/PendingTrade" element={<PendingTrade user={user} />} />
 							<Route path="/MyPage/Items/:itemId" element={<UserSingleItem user={user} />} />
 							<Route path="/MyPage/makeListing/:itemId" element={<AddListingForm user={user} />} />
 						</Route>

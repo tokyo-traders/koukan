@@ -42,7 +42,7 @@ class Item(models.Model):
     date_of_post = models.DateTimeField(auto_now_add=True)
     details = models.TextField(default="")
     category = models.CharField(max_length=100, default="")
-    
+
 
 class Post(models.Model):
     user_id = models.ForeignKey('User', on_delete=models.CASCADE)

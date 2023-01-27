@@ -20,7 +20,7 @@ export default function MyPage(props) {
   const itemList = useCallback(()=> navigate("/MyPage", {replace: true}), [navigate]);
   const postList = useCallback(()=> navigate("/MyPage/postList", {replace: true}), [navigate]);
   const postHistory = useCallback(()=> navigate("/MyPage/postHistory", {replace: true}), [navigate]);
-  const pendingTrade = useCallback(()=> navigate("/MyPage/pendingTrade", {replace: true}), [navigate]);
+  const pendingTrade = useCallback(()=> navigate("/MyPage/PendingTrade", {replace: true}), [navigate]);
   const myPage = useCallback(()=> {
     if (from === "/signup") {
       navigate('/MyPage', {replace: true})

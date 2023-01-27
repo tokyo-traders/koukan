@@ -16,8 +16,8 @@ import axios from "axios";
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 // import Carousel from 'react-material-ui-carousel'
 import EmailIcon from '@mui/icons-material/Email';
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import { Carousel } from 'react-responsive-carousel';
+// import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+// import { Carousel } from 'react-responsive-carousel';
 
 
 import "./LisitingSingleItem.css"
@@ -57,7 +57,7 @@ export default function ListingSingleItem(props) {
     const goBack = useCallback(()=> {
         navigate(from, {replace: true})
       }, [navigate]);
-r
+
 
   const [listing, setListing] = useState(null);
   const [date, setDate] = useState('');
@@ -72,8 +72,9 @@ r
 
 
  const acceptOffer =  async (obj) => {
+  obj.acceptance = true
   const response = await axios.put(
-    `/api/itemHandover`, 
+    `/api/SetPending`, 
     JSON.stringify(obj),
     {
       headers: { 'Content-Type': 'application/json' },
@@ -154,7 +155,6 @@ r
     }
     return arr
   }
-  console.log(data)
   return (
     <div >
       <Box sx={{ width: '80%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
@@ -178,7 +178,7 @@ r
                 ><NavigateBeforeIcon /></Button>
               </Box>
 
-              <Carousel
+              {/* <Carousel
                 data={data}
                 time={2000}
                 // width="850px"
@@ -202,7 +202,7 @@ r
                 {listing?.images.map((img, i) => (
                   <Img alt="image1" src={BASE_URL + `${listing.images[i]}`} />
                 ))}
-              </Carousel>
+              </Carousel> */}
 
               <Button onClick={() => {
                 console.log(offersItems)

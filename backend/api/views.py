@@ -508,8 +508,58 @@ def search_item(request):
             print("this is item serializer", itemSerializer.data)
             print("this is the data", data)
         return Response(data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def accepted_trade(request, userId):
+
+    try:
+        posts = Post.objects.filter(user_id=userId)
+    except Post.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    postData = []
+    for post in posts:
+        postSerializer = PostSerializer(post)
+        print("post",postSerializer.data)
+        try:
+            item = Item.objects.filter(id=postSerializer.data["item_id"]).first()
+        except Post.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        itemSerializer = ItemSerializer(item)
+        print("item",itemSerializer.data)
+        try:
+            offers = Offer.objects.filter(post_id=postSerializer.data["id"]).filter(acceptance = True)
+        except Post.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        post_offers = []
+        for offer in offers:
+            offerSerializer = OfferSerializer(offer)
+            print("offers",offerSerializer.data)
+            try:
+                Offeritem = Item.objects.filter(id=offerSerializer.data["offered_item"]).first()
+            except Post.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            itemOfferSerializer = ItemSerializer(Offeritem)
+            print("offered item",itemOfferSerializer.data)
+            post_offers.append({"offer": offerSerializer.data, "item": itemOfferSerializer.data})
+        if post_offers:
+            postData.append({"post": postSerializer.data, "post_item": itemSerializer.data, "offers": post_offers})
+        
+
+    if request.method == "GET":
+        return Response(postData, status=status.HTTP_200_OK)
   
-@ api_view(['GET', 'POST'])
+@api_view(['GET', 'PUT'])
+def set_pending(request):
+    if request.method == "PUT":
+        serializer = OfferSerializer(data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("saved", status=status.HTTP_200_OK)
+        return Response("did not save")
+
+
+@api_view(['GET', 'POST'])
 def hello(request):
     if request.method == "GET":
         # queryset = User.objects.all()

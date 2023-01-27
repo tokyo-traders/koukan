@@ -118,6 +118,7 @@ function AddItem(props) {
     return (
         <>
             <Box sx={{ width: '30%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
+                <Box sx={{ marginTop: 2}}>
                 <Typography>Item Name</Typography>
                 <TextField
                     fullWidth
@@ -125,7 +126,7 @@ function AddItem(props) {
                     onChange={(e) => setItemName(e.target.value)}
                 />
                 </Box>
-                    <Box sx={{ marginTop: 2}}>
+                <Box sx={{ marginTop: 2}}>
                     <Typography>Image</Typography>
                     <input
                         type="file"
@@ -146,15 +147,15 @@ function AddItem(props) {
                         onChange={(e) => setDetails(e.target.value)}
                     />
                 </Box>
-                    <Box sx={{ marginTop: 2}}>
-                       <Typography> Image </Typography> 
-                        <input
-                            type="file"
-                            accept="image/*"
-                            multiple
-                            onChange={handleChange}
-                        />
-                    </Box>
+                <Box sx={{ marginTop: 2}}>
+                    <Typography> Image </Typography> 
+                    <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        onChange={handleChange}
+                    />
+                </Box>
 
                 <RoundedButton
                     variant="contained"
@@ -172,7 +173,6 @@ function AddItem(props) {
                 >
                     Go Back
                 </RoundedButton>
-
             </Box>
         </>
     );

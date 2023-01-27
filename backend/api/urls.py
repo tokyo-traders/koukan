@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import user_register, user_login, item_list, image_list, all_item, newall_item, create_post, edit_post, create_offer, edit_offer, homepage, listingItem, search_item, VerifyEmail, item_handover
+from .views import user_register, user_login, item_list, image_list, all_item, newall_item, create_post, edit_post, create_offer, edit_offer, homepage, listingItem, search_item, VerifyEmail, item_handover,accepted_trade,set_pending,accepted_trade
 
 
 from api import views
@@ -25,6 +25,8 @@ urlpatterns = [
   # to get the images path with GET and DELETE method only
   path('item-image/<int:itemId>', views.image_list),
    #HandOver
+  path('SetPending', views.set_pending),
+  path('acceptedTrade/<int:userId>', views.accepted_trade),
   path('itemHandover', views.item_handover),
 
 
@@ -46,6 +48,7 @@ urlpatterns = [
   #to get all listings
   path('homepage', views.homepage),
   #to get a single listing
+  path('trades/<int:userId>', views.accepted_trade),
   path('listing/<int:postId>', views.listingItem),
   # this path gives an array of item names for the search bar
   path('search-item', views.search_item),
