@@ -11,7 +11,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import Link from '@mui/material/Link';
 import { createTheme, CssBaseline, Menu } from '@mui/material';
 import useAuth from './hooks/useAuth';
-import { useNavigate, useLocation, Outlet} from "react-router-dom";
+import { useNavigate, useLocation, Outlet } from "react-router-dom";
 import { ThemeProvider } from 'styled-components';
 
 
@@ -24,7 +24,7 @@ import { ThemeProvider } from 'styled-components';
 // }));
 
 const customTheme = createTheme({
-   palette: {
+  palette: {
     primary: {
       main: '#3cd64b',
       contrastText: 'white',
@@ -79,29 +79,29 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 function NavBar(props) {
- 
-  const {user, setUser, setUserState} = props
+
+  const { user, setUser, setUserState, handleSearchChange, searchValue } = props
   const { setAuth } = useAuth();
 
   const navigate = useNavigate();
   const location = useLocation();
 
   const from = location.state?.from?.pathname || "/MyPage"
-  const myPage = useCallback(()=> navigate('/MyPage', {replace: true}), [navigate]);
-  const login = useCallback(()=> navigate('/login', {replace: true}), [navigate]);
-  const home = useCallback(()=> navigate('/', {replace: true}), [navigate]);
-  const logup = useCallback(()=> {
+  const myPage = useCallback(() => navigate('/MyPage', { replace: true }), [navigate]);
+  const login = useCallback(() => navigate('/login', { replace: true }), [navigate]);
+  const home = useCallback(() => navigate('/', { replace: true }), [navigate]);
+  const logup = useCallback(() => {
     if (from === "/signup") {
-      navigate('/MyPage', {replace: true})
+      navigate('/MyPage', { replace: true })
     } else {
-      navigate(from, {replace: true})
+      navigate(from, { replace: true })
     }
-    }, [navigate]);
+  }, [navigate]);
 
   const displayUser = () => {
     console.log(user)
   }
-  
+
   const logOut = () => {
 
     setAuth({});
@@ -109,48 +109,59 @@ function NavBar(props) {
     setUserState(false);
     home();
   }
+
+  // const handleSearchChange = (event) => {
+  //   setSearchValue(event.target.value);
+  // }
+
+  // const handleSearchSubmit = (event) => {
+  //   event.preventDefault();
+  //   props.onSearch(searchValue);
+  // }
+
+
   return (
     <>
-    <ThemeProvider theme={customTheme}>
-    <CssBaseline />
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{background: "white"}}>
-        <Toolbar
-          sx={{
-            justifyContent: "space-between"
-          }}
-        >
-          <Link
-            variant="body1"
-            fontFamily="Roboto Slab"
-            padding={2}
-            color="secondary"
-            onClick={home}
-            underline='none'
-          >
-            <div>TOKYO</div>
-            <div>TRADERS</div>
-          </Link>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Looking for something?"
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search>
-          {!user ? <Button color='secondary' variant='contained' onClick={login}>LOG IN</Button> :
-          <div>
-          <Button color='secondary' variant='contained' onClick={myPage}>My Page</Button>
-          <Button variant='contained' onClick={logOut}>Log Out</Button>
-          </div>}
-        </Toolbar>
-      </AppBar>
-    </Box>
-  <Outlet/>
-  </ThemeProvider>
-  </>
+      <ThemeProvider theme={customTheme}>
+        <CssBaseline />
+        <Box sx={{ flexGrow: 1 }}>
+          <AppBar position="static" sx={{ background: "white" }}>
+            <Toolbar
+              sx={{
+                justifyContent: "space-between"
+              }}
+            >
+              <Link
+                variant="body1"
+                fontFamily="Roboto Slab"
+                padding={2}
+                color="secondary"
+                onClick={home}
+                underline='none'
+              >
+                <div>TOKYO</div>
+                <div>TRADERS</div>
+              </Link>
+              <Search onChange={handleSearchChange}>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  placeholder="Looking for something?"
+                  inputProps={{ 'aria-label': 'search' }}
+                />
+              </Search>
+              {!user ? <Button color='secondary' variant='contained' onClick={login}>LOG IN</Button> :
+                <div>
+                  <Button color='secondary' variant='contained' onClick={myPage}>My Page</Button>
+                  <Button variant='contained' onClick={logOut}>Log Out</Button>
+                </div>}
+            </Toolbar>
+          </AppBar>
+        </Box>
+        <Outlet />
+      </ThemeProvider>
+    </>
   );
 }
 

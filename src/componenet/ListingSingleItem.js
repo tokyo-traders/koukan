@@ -51,16 +51,16 @@ export default function ListingSingleItem(props) {
   const { listingId } = useParams();
 
 
-    const navigate = useNavigate();
-    const location = useLocation();
-    const from = location.state?.from?.pathname || "/MyPage"
-    
-    const makeOffer = useCallback(()=> navigate(`/listing/${listingId}/offer`, {replace: true}), [navigate]);
-    const login = useCallback(()=> navigate(`/login`, {replace: true}), [navigate]);
-    const goBack = useCallback(()=> {
-        navigate(from, {replace: true})
-      }, [navigate]);
-r
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/MyPage"
+
+  const makeOffer = useCallback(() => navigate(`/listing/${listingId}/offer`, { replace: true }), [navigate]);
+  const login = useCallback(() => navigate(`/login`, { replace: true }), [navigate]);
+  const goBack = useCallback(() => {
+    navigate(from, { replace: true })
+  }, [navigate]);
+
 
   const [listing, setListing] = useState(null);
   const [date, setDate] = useState('');
@@ -75,17 +75,17 @@ r
   }
 
 
- const acceptOffer =  async (obj) => {
-  const response = await axios.put(
-    `/api/itemHandover`, 
-    JSON.stringify(obj),
-    {
-      headers: { 'Content-Type': 'application/json' },
-      withCredentials: true
+  const acceptOffer = async (obj) => {
+    const response = await axios.put(
+      `/api/itemHandover`,
+      JSON.stringify(obj),
+      {
+        headers: { 'Content-Type': 'application/json' },
+        withCredentials: true
       }
     )
     console.log(response.data)
-}
+  }
 
 
   useEffect(() => {
@@ -124,21 +124,21 @@ r
   useEffect(() => {
 
     const getItem = async () => {
-      let responseArray = offersMade.map((offer)=>{
-        return  axios.get(`/api/all-item/${offer.offered_item}`)
+      let responseArray = offersMade.map((offer) => {
+        return axios.get(`/api/all-item/${offer.offered_item}`)
       })
 
-    Promise.all(responseArray).then((res)=>{
-      console.log(res)
-     return res.map((item)=>{
-      return item.data[0]
-     })
-    })
-     .then((res)=> setOffersItems(res))
+      Promise.all(responseArray).then((res) => {
+        console.log(res)
+        return res.map((item) => {
+          return item.data[0]
+        })
+      })
+        .then((res) => setOffersItems(res))
 
       return responseArray
-  }
- 
+    }
+
     if (offersMade) {
       getItem()
     }
@@ -288,85 +288,85 @@ r
         </Grid>
       </Box>
 
-{/* ____________________________________________________________________________________________________________________________       */}
-      {offersItems && offersItems.map((items, index)=>{
-          return(
-            <>
+      {/* ____________________________________________________________________________________________________________________________       */}
+      {offersItems && offersItems.map((items, index) => {
+        return (
+          <>
             <Box sx={{ width: '80%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
               <Divider sx={{ borderBottomWidth: 1 }} variant="middle" />
             </Box>
-  
-          <Box  sx={{ width: '80%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
-          <Grid container spacing={2} sx={{ backgroundColor: "none", marginTop: 2 }}>
-            <Grid item xs={5} sx={{ margin: '10px'}}>
-              <Container sx={{ height: 350 }}>
-                {listing && <Img alt="image1" src={BASE_URL + `${items?.image[0]}`} />}
-              </Container>
-            </Grid>
-            <Grid item xs={5} sm container>
-              <Grid item xs container direction="column" spacing={2}>
-                <Grid item xs>
-                  <Box
-                    sx={{
-                      backgroundColor: "white",
-                      marginTop: 2,
-                    }}
-                  >
-                    <Typography variant='h3'>
-                      {items?.itemName}
-                    </Typography>
-  
-                    {user?.id === listing?.item.user_id && 
-                    <>
-                    <Box sx={{ marginLeft: 50 }}><ModeEditIcon /></Box>
-                    <RoundedButton
-                      fullWidth
-                      variant="contained"
-                      sx={{ mt: 3, mb: 2 }}
-                      onClick={()=>{
-                        acceptOffer(offersMade[index])
-                      }}
-                    >
-                      ACCEPT OFFER
-                    </RoundedButton>
-                    </>
-                     }
-                  </Box>
-                  <Box
-                    sx={{
-                      backgroundColor: "white",
-                      marginTop: 4,
-                    }}
-                  >
-                    <Typography gutterBottom variant='h5' component='div'>
-                      Description
-                    </Typography>
-                   <Typography gutterBottom variant='body'>
-                      {items.details}
-                    </Typography>
-                  </Box>
-                  <Box
-                    sx={{
-                      backgroundColor: "white",
-                      marginTop: 4,
-                    }}
-                  >
-                    <Typography gutterBottom variant='h5' component='div'>
-                      Date Of Offer
-                    </Typography>
-                     <Typography gutterBottom variant='body'>
-                    {new Date(items.date_offered).toDateString()}
-                    </Typography>
-                  </Box>
+
+            <Box sx={{ width: '80%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
+              <Grid container spacing={2} sx={{ backgroundColor: "none", marginTop: 2 }}>
+                <Grid item xs={5} sx={{ margin: '10px' }}>
+                  <Container sx={{ height: 350 }}>
+                    {listing && <Img alt="image1" src={BASE_URL + `${items?.image[0]}`} />}
+                  </Container>
+                </Grid>
+                <Grid item xs={5} sm container>
+                  <Grid item xs container direction="column" spacing={2}>
+                    <Grid item xs>
+                      <Box
+                        sx={{
+                          backgroundColor: "white",
+                          marginTop: 2,
+                        }}
+                      >
+                        <Typography variant='h3'>
+                          {items?.itemName}
+                        </Typography>
+
+                        {user?.id === listing?.item.user_id &&
+                          <>
+                            <Box sx={{ marginLeft: 50 }}><ModeEditIcon /></Box>
+                            <RoundedButton
+                              fullWidth
+                              variant="contained"
+                              sx={{ mt: 3, mb: 2 }}
+                              onClick={() => {
+                                acceptOffer(offersMade[index])
+                              }}
+                            >
+                              ACCEPT OFFER
+                            </RoundedButton>
+                          </>
+                        }
+                      </Box>
+                      <Box
+                        sx={{
+                          backgroundColor: "white",
+                          marginTop: 4,
+                        }}
+                      >
+                        <Typography gutterBottom variant='h5' component='div'>
+                          Description
+                        </Typography>
+                        <Typography gutterBottom variant='body'>
+                          {items.details}
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          backgroundColor: "white",
+                          marginTop: 4,
+                        }}
+                      >
+                        <Typography gutterBottom variant='h5' component='div'>
+                          Date Of Offer
+                        </Typography>
+                        <Typography gutterBottom variant='body'>
+                          {new Date(items.date_offered).toDateString()}
+                        </Typography>
+                      </Box>
+                    </Grid>
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
-          </Grid>
-        </Box>
-        </>
-          )
+            </Box>
+          </>
+        )
       })}
-    </div>   
+    </div>
   );
 
 }
