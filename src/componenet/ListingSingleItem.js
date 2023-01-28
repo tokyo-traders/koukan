@@ -17,9 +17,13 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 // import Carousel from 'react-material-ui-carousel'
 import EmailIcon from '@mui/icons-material/Email';
 // import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+<<<<<<< HEAD
+// import { Carousel } from 'react-responsive-carousel';
+=======
 import { Carousel } from 'react-responsive-carousel';
 import ImageGallery from 'react-image-gallery';
 
+>>>>>>> master
 
 
 import "./LisitingSingleItem.css"
@@ -53,6 +57,17 @@ export default function ListingSingleItem(props) {
   const { listingId } = useParams();
 
 
+<<<<<<< HEAD
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/MyPage"
+    
+    const makeOffer = useCallback(()=> navigate(`/listing/${listingId}/offer`, {replace: true}), [navigate]);
+    const login = useCallback(()=> navigate(`/login`, {replace: true}), [navigate]);
+    const goBack = useCallback(()=> {
+        navigate(from, {replace: true})
+      }, [navigate]);
+=======
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/MyPage"
@@ -62,6 +77,7 @@ export default function ListingSingleItem(props) {
   const goBack = useCallback(() => {
     navigate(from, { replace: true })
   }, [navigate]);
+>>>>>>> master
 
 
   const [listing, setListing] = useState(null);
@@ -77,6 +93,16 @@ export default function ListingSingleItem(props) {
   }
 
 
+<<<<<<< HEAD
+ const acceptOffer =  async (obj) => {
+  obj.acceptance = true
+  const response = await axios.put(
+    `/api/SetPending`, 
+    JSON.stringify(obj),
+    {
+      headers: { 'Content-Type': 'application/json' },
+      withCredentials: true
+=======
   const acceptOffer = async (obj) => {
     const response = await axios.put(
       `/api/itemHandover`,
@@ -84,6 +110,7 @@ export default function ListingSingleItem(props) {
       {
         headers: { 'Content-Type': 'application/json' },
         withCredentials: true
+>>>>>>> master
       }
     )
     console.log(response.data)
@@ -162,9 +189,21 @@ export default function ListingSingleItem(props) {
   }
 
   // console.log(listing)
+<<<<<<< HEAD
+  const data = async () => {
+    const arr = []
+    for (let i of listing.images) {
+      let img = { image: listing.images[i], caption: `pic N. ${i}` }
+      await img.json()
+      arr.push(img)
+    }
+    return arr
+  }
+=======
   // console.log(typeof listing.phoneDetail)
   // const phoneNumber = listing?.phoneDetail.splice(0, 2, '')
   // console.log(phoneNumber)
+>>>>>>> master
   return (
     <div >
       <Box sx={{ width: '80%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
@@ -182,6 +221,34 @@ export default function ListingSingleItem(props) {
                   ))}
                 </Carousel>}
 
+<<<<<<< HEAD
+              {/* <Carousel
+                data={data}
+                time={2000}
+                // width="850px"
+                // height="500px"
+                captionStyle={captionStyle}
+                radius="10px"
+                slideNumber={true}
+                slideNumberStyle={slideNumberStyle}
+                captionPosition="bottom"
+                automatic={true}
+                dots={true}
+                pauseIconColor="green"
+                pauseIconSize="40px"
+                slideBackgroundColor="green"
+                slideImageFit="cover"
+                thumbnails={true}
+                thumbnailWidth="100px"
+                infiniteLoop={true}
+
+              >
+                {listing?.images.map((img, i) => (
+                  <Img alt="image1" src={BASE_URL + `${listing.images[i]}`} />
+                ))}
+              </Carousel> */}
+=======
+>>>>>>> master
 
               <Button onClick={() => {
                 console.log(offersItems)
