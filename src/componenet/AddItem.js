@@ -134,62 +134,62 @@ function AddItem(props) {
 		});
 	};
 
-	return (
-		<Box
-			sx={{
-				width: "30%",
-				margin: "auto",
-				marginTop: 2,
-				display: "flex",
-				flexDirection: "column",
-			}}
-		>
-			<Typography>Item Name</Typography>
-			<TextField
-				fullWidth
-				value={itemName}
-				onChange={(e) => setItemName(e.target.value)}
-			/>
+	// return (
+	// 	<Box
+	// 		sx={{
+	// 			width: "30%",
+	// 			margin: "auto",
+	// 			marginTop: 2,
+	// 			display: "flex",
+	// 			flexDirection: "column",
+	// 		}}
+	// 	>
+	// 		<Typography>Item Name</Typography>
+	// 		<TextField
+	// 			fullWidth
+	// 			value={itemName}
+	// 			onChange={(e) => setItemName(e.target.value)}
+	// 		/>
 
-			<Box sx={{ marginTop: 2 }}>
-				<Typography>Description</Typography>
-				<TextField
-					fullWidth
-					value={details}
-					multiline
-					rows={4}
-					onChange={(e) => setDetails(e.target.value)}
-				/>
-			</Box>
-			<Box sx={{ minWidth: 120 }}>
-				<FormControl fullWidth>
-					<InputLabel id="demo-simple-select-label">Category</InputLabel>
-					<Select
-						labelId="category"
-						id="category-dropdown"
-						value={category}
-						label="Choose category"
-						onChange={(e) => setCategory(e.target.value)}
-					>
-						{
-							categoriesArray.map((x) => {
-								return <MenuItem value={x["id"]}>
-								{x["category_name"]}
-							</MenuItem>
-							})
-						}
-					</Select>
-				</FormControl>
-			</Box>
-			<Box sx={{ marginTop: 2 }}>
-				<Typography>Image</Typography>
-				<input type="file" accept="image/*" multiple onChange={handleChange} />
-			</Box>
+	// 		<Box sx={{ marginTop: 2 }}>
+	// 			<Typography>Description</Typography>
+	// 			<TextField
+	// 				fullWidth
+	// 				value={details}
+	// 				multiline
+	// 				rows={4}
+	// 				onChange={(e) => setDetails(e.target.value)}
+	// 			/>
+	// 		</Box>
+	// 		<Box sx={{ minWidth: 120 }}>
+	// 			<FormControl fullWidth>
+	// 				<InputLabel id="demo-simple-select-label">Category</InputLabel>
+	// 				<Select
+	// 					labelId="category"
+	// 					id="category-dropdown"
+	// 					value={category}
+	// 					label="Choose category"
+	// 					onChange={(e) => setCategory(e.target.value)}
+	// 				>
+	// 					{
+	// 						categoriesArray.map((x) => {
+	// 							return <MenuItem value={x["id"]}>
+	// 							{x["category_name"]}
+	// 						</MenuItem>
+	// 						})
+	// 					}
+	// 				</Select>
+	// 			</FormControl>
+	// 		</Box>
+	// 		<Box sx={{ marginTop: 2 }}>
+	// 			<Typography>Image</Typography>
+	// 			<input type="file" accept="image/*" multiple onChange={handleChange} />
+	// 		</Box>
 
-			<BrownButton
-            // uploadImages.append("item_id", 1)
-        })
-    }
+	// 		<BrownButton
+    //         // uploadImages.append("item_id", 1)
+    //     })
+    // }
     return (
         <>
             <Box sx={{ width: '30%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
@@ -210,7 +210,7 @@ function AddItem(props) {
                         onChange={handleChange}
                     />
                 </Box>
-
+			<BrownButton
 				variant="contained"
 				sx={{ mt: 3, mb: 2 }}
 				onClick={newItem}
@@ -228,9 +228,10 @@ function AddItem(props) {
 				Go Back
 			</BrownButton>
 		</Box>
+		</>
 	);
 };
-
+{/* 
                 <Box sx={{ marginTop: 2 }}>
                     <Typography>Description</Typography>
                     <TextField
@@ -269,9 +270,9 @@ function AddItem(props) {
                 </RoundedButton>
             </Box>
         </>
-    );
+    ); */}
 
-    // return (
+    {/* // return (
     //     <div className="App">
     //         <h3>Add an Item</h3>
     //         <label>
@@ -298,8 +299,8 @@ function AddItem(props) {
     //         <button onClick={newItem}>New item</button>
     //         <button onClick={goBack}>Go Back</button>
     //     </div>
-    // );
-}
+    // ); */}
+
 
 export default AddItem
 
