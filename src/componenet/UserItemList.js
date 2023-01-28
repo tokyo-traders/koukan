@@ -40,7 +40,7 @@ function UserItemsList(props) {
         "itemImages": "",
         "itemID": ""
       }])
-      const [offersMade, setOffersMade] = useState([]);
+
     useEffect(() => {
         if (user) {
         axios.get(`/api/all-info/${user.id}`)

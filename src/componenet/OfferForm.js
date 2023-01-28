@@ -73,7 +73,7 @@ function OfferForm(props) {
       axios.get(`/api/listing/${listingId}`)
         // .then(response => setItemData(response.data))
         .then(response => {
-          setListing(response.data)
+          setListing(response.data[0])
         })
     }
   }, [user])
@@ -149,7 +149,7 @@ function OfferForm(props) {
               height="140"
             />
             <CardContent >
-              <Typography gutterBottom variant="body">{item.itemName}</Typography>
+              <Typography gutterBottom variant="body">{item?.itemName}</Typography>
               <Box display="flex" justify="space-between">
                 <Typography gutterBottom variant="subtitle1"></Typography>
               </Box>
@@ -173,9 +173,9 @@ function OfferForm(props) {
                 {listing && <Typography variant='h3'>
                   {listing.item.item_name}
                 </Typography>} */}
-                <Img alt="image1" src={BASE_URL + `${listing.images[0]}`}/>
+                {listing && <Img alt="image1" src={BASE_URL + `${listing.images[0]}`}/>}
                 <Typography variant='h3'>
-                  {listing.item.item_name}
+                  {listing && listing.item.item_name}
                 </Typography>
               </Container>
             </Grid>
@@ -194,7 +194,7 @@ function OfferForm(props) {
           <Grid container spacing={1} sx={{ backgroundColor: "none", marginTop: 2 }}>
             <Grid item xs={5} sx={{ margin: '10px' }}>
               <Container sx={{ height: 350, width: 350 }}>
-                {offer && <img alt="image1" width="100%" src={BASE_URL + `${offer.itemImages[0]}`} />}
+                {offer && <img alt="image1" width="100%" src={BASE_URL + `${offer?.itemImages[0]}`} />}
                 {offer && <Typography variant='h3'>
                   {offer.itemName}
                 </Typography>}

@@ -1,7 +1,10 @@
 body {
-  /* background-image: url('../public/logo192.png'); */
-  /* background-size: cover */ 
-  background-blend-mode:  difference/* background-color: aquamarine; */
+  /* background-image: url(https://allstar.de/thumbnail/47/ca/18/1600946178/7_1920x1920.jpg); */
+   background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+   font-family: sans-serif;
+  z-index: 0;
 }
 
 /* .App {

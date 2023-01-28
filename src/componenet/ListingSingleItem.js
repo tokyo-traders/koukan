@@ -231,7 +231,7 @@ export default function ListingSingleItem(props) {
                         </a>
                       </Typography>
                       <Typography color="secondary" variant="h4">
-                        <Mailto > </Mailto>
+                        {listing && <Mailto > </Mailto>}
                       </Typography>
 
                     </>}
