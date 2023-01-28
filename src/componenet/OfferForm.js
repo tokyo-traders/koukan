@@ -14,7 +14,6 @@ import Container from '@mui/material/Container';
 import { styled, } from '@mui/material/styles';
 
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { height } from '@mui/system';
 
 const BASE_URL = 'http://127.0.0.1:8000/api'
 
@@ -70,9 +69,6 @@ function OfferForm(props) {
           setItemInfo([...response.data])
         })
     }
-  }, [user])
-
-  useEffect(() => {
     if (listingId) {
       axios.get(`/api/listing/${listingId}`)
         // .then(response => setItemData(response.data))
@@ -80,9 +76,20 @@ function OfferForm(props) {
           setListing(response.data)
         })
     }
-  }, [])
+  }, [user])
+// console.log(listing)
+  // useEffect(() => {
+  //   if (listingId) {
+  //     axios.get(`/api/listing/${listingId}`)
+  //       // .then(response => setItemData(response.data))
+  //       .then(response => {
+  //         setListing(response.data)
+  //       })
+  //   }
+  // }, [listingId])
 
-
+  console.log("LISTING", listing)
+  console.log("ITEM INFO", itemInfo)
   const makeOffer = async () => {
     console.log(offer.itemID)
     console.log(listing.post.id)
@@ -109,7 +116,12 @@ function OfferForm(props) {
 
   return (
     <>
-      <Typography gutterBottom variant='h3' component='div'>
+      <Typography 
+        variant="h4"
+        fontFamily="Roboto Slab"
+        padding={2}
+        color="#4d3e38"
+      >
         Would you like to make an Offer?
       </Typography>
       <Grid
@@ -157,10 +169,14 @@ function OfferForm(props) {
           <Grid container spacing={1} sx={{ backgroundColor: "none", marginTop: 2 }}>
             <Grid item xs={5} sx={{ margin: '10px' }}>
               <Container sx={{ height: 350, width: 350 }}>
-                {listing && <Img alt="image1" src={BASE_URL + `${listing.images[0]}`} />}
+                {/* {listing && <Img alt="image1" src={BASE_URL + `${listing.images[0]}`} />}
                 {listing && <Typography variant='h3'>
                   {listing.item.item_name}
-                </Typography>}
+                </Typography>} */}
+                <Img alt="image1" src={BASE_URL + `${listing.images[0]}`}/>
+                <Typography variant='h3'>
+                  {listing.item.item_name}
+                </Typography>
               </Container>
             </Grid>
           </Grid>

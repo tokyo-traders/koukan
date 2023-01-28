@@ -1,6 +1,7 @@
 body {
-  /* background-image: url('../public/'); */
-  background-color: aquamarine;
+  /* background-image: url('../public/logo192.png'); */
+  /* background-size: cover */ 
+  background-blend-mode:  difference/* background-color: aquamarine; */
 }
 
 /* .App {

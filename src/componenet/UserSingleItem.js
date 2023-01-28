@@ -66,17 +66,16 @@ export default function UserSingleItem(props) {
 
 
   useEffect(() => {
-    (async () => {
-			const rawData = await fetch(`/api/all-item/${itemId}`, {
-				method: "GET",
-			});
-			const data = await rawData.json();
-			console.log(data)
-			// const list = [];
-			// data.map((category) => list.push(category)); //console.log(category)
-			// setCategoriesArray(data);
-			// console.log("heyheyhey", categoriesArray);
-		})();
+    if (itemId) {
+      axios.get(`/api/all-item/${itemId}`)
+        .then(response => {
+          console.log(response.data[0])
+          return setItemData(response.data[0]), setImages(response.data[0].image)
+        })
+        .then(res => {
+          console.log("2nd", res)
+        })
+      }
     // // if (itemId) {
     //   axios.get(`/api/all-item/${itemId}`)
     //     // .then(response => setItemData(response.data))
@@ -90,8 +89,9 @@ export default function UserSingleItem(props) {
     //     })
     // // }
     
-  }, [])
-
+  }, [itemId])
+  console.log("heyhey", itemData)
+  console.log("heyheyhey", images)
   return (
     <>
 
@@ -103,11 +103,11 @@ export default function UserSingleItem(props) {
                 <Carousel
                   autoPlay={true}
                   infiniteLoop={true}>
-                  {/* {images.map((img, i) => (
+                  {images.map((x) => (
                     <div>
-                      <img alt="image1" src={BASE_URL + `${itemData.images[i]}`} />
+                      <img alt="image1" src={BASE_URL + `${x}`} />
                     </div>
-                  ))} */}
+                  ))}
                 </Carousel>}
             </Container>
           </Grid>

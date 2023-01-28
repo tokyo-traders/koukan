@@ -28,17 +28,20 @@ import { CollectionsBookmarkOutlined } from '@mui/icons-material';
 const Img = styled('img')({
   margin: 'auto',
   display: 'block',
-  maxWidth: '100%',
-  maxHeight: '100%',
+  maxWidth: '50%',
+  maxHeight: '50%',
 });
 
-const RoundedButton = styled(Button)(() => ({
-  borderRadius: 35,
-  backgroundColor: "#D904B5",
-  color: "#46C8F5",
-  fontSize: "1rem",
-  display: "block",
-  width: "250px"
+const BrownButton = styled(Button)(() => ({
+    backgroundColor: "#4d3e38",
+    borderRadius: "8px",
+    color: "#def4f6",
+    width: '60%',
+    "&:hover": {
+      background: "#332925"
+    },
+    // padding: "15px 36px",
+    fontSize: "16px"
 }));
 
 const BASE_URL = 'http://127.0.0.1:8000/api'
@@ -202,18 +205,19 @@ export default function ListingSingleItem(props) {
 
                   {user?.id !== listing?.item.user_id &&
                     <>
-                      <Box sx={{ marginLeft: 50 }}><ModeEditIcon /></Box>
-                      <RoundedButton
-                        fullWidth
+                      {/* <Box sx={{ marginLeft: 50 }}>
+                        <ModeEditIcon /></Box> */}
+                      <BrownButton
+                 
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                         onClick={display}
                       >
                         MAKE AN OFFER
-                      </RoundedButton>
+                      </BrownButton>
                       <Typography >
                         <a
-                          href={`https://wa.me/${listing.phoneDetail}`}
+                          href={`https://wa.me/${listing?.phoneDetail}`}
                           class="whatsapp_float"
                           target="_blank"
                           rel="noopener noreferrer"
@@ -227,7 +231,7 @@ export default function ListingSingleItem(props) {
 
                     </>}
                 </Box>
-                <Box
+                {/* <Box
                   sx={{
                     backgroundColor: "white",
                     marginTop: 4,
@@ -239,7 +243,7 @@ export default function ListingSingleItem(props) {
                   {listing && <Typography gutterBottom variant='body'>
                     {listing.post.desire}
                   </Typography>}
-                </Box>
+                </Box> */}
                 <Box
                   sx={{
                     backgroundColor: "white",
@@ -318,8 +322,8 @@ export default function ListingSingleItem(props) {
                         {user?.id === listing?.item.user_id &&
                           <>
                             <Box sx={{ marginLeft: 50 }}><ModeEditIcon /></Box>
-                            <RoundedButton
-                              fullWidth
+                            <BrownButton
+                             
                               variant="contained"
                               sx={{ mt: 3, mb: 2 }}
                               onClick={() => {
@@ -327,7 +331,7 @@ export default function ListingSingleItem(props) {
                               }}
                             >
                               ACCEPT OFFER
-                            </RoundedButton>
+                            </BrownButton>
                           </>
                         }
                       </Box>

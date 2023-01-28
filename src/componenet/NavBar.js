@@ -107,7 +107,6 @@ function NavBar(props) {
   }
 
   const logOut = () => {
-
     setAuth({});
     setUser(undefined);
     setUserState(false);
