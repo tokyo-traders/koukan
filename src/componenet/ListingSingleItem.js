@@ -16,10 +16,9 @@ import axios from "axios";
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 // import Carousel from 'react-material-ui-carousel'
 import EmailIcon from '@mui/icons-material/Email';
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+// import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
 import ImageGallery from 'react-image-gallery';
-// import { Carousel } from 'react-carousel-minimal';
 
 
 

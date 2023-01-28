@@ -7,7 +7,6 @@ from rest_framework.authentication import get_authorization_header
 from .serializers import UserSerializer, ItemSerializer, ImageSerializer, MultipleImageSerializer, PostSerializer, OfferSerializer, CategoriesSerializer, ReportedUserSerializer
 from .models import User, Item, Image, Post, Offer, Categories, ReportedUser
 from .authentication import create_access_token, create_refresh_token, decode_access_token, decode_refresh_token
-<<<<<<< HEAD
 from rest_framework_simplejwt.tokens import RefreshToken
 from .utils import Util
 from django.contrib.sites.shortcuts import get_current_site
@@ -23,26 +22,8 @@ from rest_framework.parsers import JSONParser  # delete
 from rest_framework.renderers import JSONRenderer  # delete
 
 
-# @api_view(['GET', 'POST'])
-# def user_register(request):
-
-#     if request.method == "GET":
-#         obj = User.objects.all()
-#         item = Item.objects.all()
-#         serializer = UserSerializer(obj, many=True)
-#         return Response(serializer.data)
-#     if request.method == "POST":
-#         serializer = UserSerializer(data=request.data)
-#         if serializer.is_valid():
-#             print("!!!!!CHECK!!!!!", serializer)
-#             serializer.save()
-
-            # # email verification trial
-            # # get the user email
-            # getUser = User.objects.get(email=serializer.data['email'])
-            # user = UserSerializer(getUser)
-            # # produce a token
-            # token = RefreshToken.for_user(getUser).access_token
+@api_view(['GET', 'POST'])
+def user_register(request):
 
     if request.method == "GET":
         obj = User.objects.all()

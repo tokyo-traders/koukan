@@ -77,7 +77,6 @@ function AddItem(props) {
 		//     console.log(error)
 		// }
 
-<<<<<<< HEAD
 		// const asyncLocalStorage = {
 		//     setItem: async function (key, value) {
 		//         await Promise.resolve();
@@ -110,28 +109,6 @@ function AddItem(props) {
 		//     '/api/image/multiple_upload/',
 		//     uploadImages,
 		// )
-=======
-    const uploadData = new FormData();
-    const uploadImages = new FormData()
-    const newItem = async (e) => {
-        console.log(user)
-        e.preventDefault()
-        uploadData.append('item_name', itemName);
-        uploadData.append('details', details);
-        uploadData.append('user_id', user.id);
-        uploadData.append("desire", desire)
-        // uploadImages.append("itemId", 85);
-        // try {
-        //     const sendItemInfo = await axios.post('/api/item', uploadData);
-        //     let info = await sendItemInfo.json()
-        //     localStorage.setItem("itemId", Number(info['id']))
-        //     const id = localStorage.getItem('itemId');
-        //     console.log(id)
-        // }
-        // catch (error) {
-        //     console.log(error)
-        // }
->>>>>>> master
 
 		// Promise.all([newImages, newItem])
 
@@ -225,7 +202,6 @@ function AddItem(props) {
 				<input type="file" accept="image/*" multiple onChange={handleChange} />
 			</Box>
 
-<<<<<<< HEAD
 			<RoundedButton
 				variant="contained"
 				sx={{ mt: 3, mb: 2 }}
@@ -244,122 +220,6 @@ function AddItem(props) {
 			</RoundedButton>
 		</Box>
 	);
-
-	// return (
-	//     <div className="App">
-	//         <h3>Add an Item</h3>
-	//         <label>
-	//             Title
-	//             <input type="text" value={itemName} onChange={(e) => setItemName(e.target.value)} />
-	//         </label>
-	//         <br />
-	//         <label>
-	//             Description:
-	//             <input type="text" value={details} onChange={(e) => setDetails(e.target.value)} />
-	//         </label>
-	//         <br />
-	//         <label>
-	//             Desire:
-	//             <input type="text" value={desire} onChange={(e) => setDesire(e.target.value)} />
-	//         </label>
-	//         <br />
-	//         <label>
-	//             Image
-	//             <input type="file" accept="image/*" multiple onChange={handleChange} />
-	//         </label>
-
-	//         <br />
-	//         <button onClick={newItem}>New item</button>
-	//         <button onClick={goBack}>Go Back</button>
-	//     </div>
-	// );
-=======
-            // uploadImages.append("item_id", 1)
-        })
-    }
-    return (
-        <>
-            <Box sx={{ width: '30%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
-                <Box sx={{ marginTop: 2 }}>
-                    <Typography>Item Name</Typography>
-                    <TextField
-                        fullWidth
-                        value={itemName}
-                        onChange={(e) => setItemName(e.target.value)}
-                    />
-                </Box>
-
-                <Box sx={{ marginTop: 2 }}>
-                    <Typography>Description</Typography>
-                    <TextField
-                        fullWidth
-                        value={details}
-                        multiline
-                        rows={4}
-                        onChange={(e) => setDetails(e.target.value)}
-                    />
-                </Box>
-
-                <Box sx={{ marginTop: 2 }}>
-                    <Typography> Image </Typography>
-                    <input
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        onChange={handleChange}
-                    />
-                </Box>
-
-                <RoundedButton
-                    variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
-                    onClick={newItem}
-                >
-                    Add Item
-                </RoundedButton>
-
-                <RoundedButton
-                    width="80%"
-                    variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
-                    onClick={goBack}
-                >
-                    Go Back
-                </RoundedButton>
-
-            </Box>
-        </>
-    );
-
-    // return (
-    //     <div className="App">
-    //         <h3>Add an Item</h3>
-    //         <label>
-    //             Title
-    //             <input type="text" value={itemName} onChange={(e) => setItemName(e.target.value)} />
-    //         </label>
-    //         <br />
-    //         <label>
-    //             Description:
-    //             <input type="text" value={details} onChange={(e) => setDetails(e.target.value)} />
-    //         </label>
-    //         <br />
-    //         <label>
-    //             Desire:
-    //             <input type="text" value={desire} onChange={(e) => setDesire(e.target.value)} />
-    //         </label>
-    //         <br />
-    //         <label>
-    //             Image
-    //             <input type="file" accept="image/*" multiple onChange={handleChange} />
-    //         </label>
-
-    //         <br />
-    //         <button onClick={newItem}>New item</button>
-    //         <button onClick={goBack}>Go Back</button>
-    //     </div>
-    // );
->>>>>>> master
-}
+};
 
 export default AddItem;

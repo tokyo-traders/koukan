@@ -1,11 +1,8 @@
 import axios from "axios";
 
 import "./App.css";
-<<<<<<< HEAD
-=======
 // import "./componenet/Registration/Registration.css";
 
->>>>>>> master
 import { Route, Routes } from "react-router-dom";
 import { useState, useEffect, useCallback, Component } from "react";
 import Sidebar from "./componenet/Sidebar";
@@ -29,12 +26,6 @@ import ListingSingleItem from "./componenet/ListingSingleItem";
 import OfferForm from "./componenet/OfferForm";
 
 function App() {
-<<<<<<< HEAD
-	const [userState, setUserState] = useState(false);
-	const [user, setUser] = useState(undefined);
-	const axiosPrivate = useAxiosPrivate();
-
-=======
 
 	const [userState, setUserState] = useState(false)
 	const [user, setUser] = useState(undefined)
@@ -46,7 +37,6 @@ function App() {
 		setSearchValue(event.target.value);
 	}
 
->>>>>>> master
 	useEffect(() => {
 		if (userState) {
 			let isMounted = true;
@@ -75,34 +65,6 @@ function App() {
 	return (
 		<>
 			<Routes>
-<<<<<<< HEAD
-				<Route
-					path="/"
-					element={
-						<NavBar user={user} setUser={setUser} setUserState={setUserState} />
-					}
-					exact
-				>
-					<Route path="/" element={[<Sidebar />, <AllListings />]} />
-					<Route
-						path="/Login"
-						element={
-							<LoginForm userState={userState} setUserState={setUserState} />
-						}
-					/>
-					<Route path="/Signup" element={<SignupForm />} />
-					<Route
-						path="/listing/:listingId"
-						element={[<Sidebar />, <ListingSingleItem user={user} />]}
-					/>
-
-					<Route element={<RequireAuth />}>
-						<Route
-							path="/listing/:listingId/offer"
-							element={<OfferForm user={user} />}
-						/>
-						<Route path="/MyPage" element={<MyPage user={user} />}>
-=======
 				<Route path="/" element={<NavBar user={user} setUser={setUser} handleSearchChange={handleSearchChange} searchValue={searchValue} />} exact>
 					<Route path="/" element={[<Sidebar />, <AllListings searchValue={searchValue} />]} />
 					<Route path="/Login" element={<LoginForm userState={userState} setUserState={setUserState} />} />
@@ -114,7 +76,6 @@ function App() {
 					<Route element={<RequireAuth />}>
 						<Route path="/listing/:listingId/offer" element={<OfferForm user={user} />} />
 						<Route path="/MyPage" element={<MyPage user={user} />} >
->>>>>>> master
 							<Route path="/MyPage" element={<UserItemsList user={user} />} />
 							<Route path="/MyPage/addItem" element={<AddItem user={user} />} />
 							<Route
