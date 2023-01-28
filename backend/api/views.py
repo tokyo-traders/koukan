@@ -468,31 +468,41 @@ def edit_offer(request, offerId):
 def item_handover(request):
 
 
-    try:
-        listedItem = Item.objects.filter(id=request.data["post_id"]).first()
-    except Item.DoesNotExist or Image.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-    
+    listedPost = Post.objects.filter(id=request.data["post_id"]).first()
+    postSerializer = PostSerializer(listedPost)
+
+    listedItem = Item.objects.filter(id=postSerializer.data["item_id"]).first()
+
     try:
         offeredItem = Item.objects.filter(id=request.data['offered_item']).first()
     except Item.DoesNotExist or Image.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+    
 
-    print("🥵",ItemSerializer(listedItem))
-    print("🤑",ItemSerializer(offeredItem))
-    # item = Item.objects.get(pk=itemId)
+
+    itemSerializer = ItemSerializer(listedItem)
+    offeredSerializer = ItemSerializer(offeredItem)
+    print(itemSerializer.data["id"])
+    print(offeredSerializer.data["id"])
   
     if request.method == "PUT":
-        serializer = ItemSerializer( data=request.data, partial=True)
-        print(serializer)
-        if serializer.is_valid():
-            serializer.save()
-            return Response("saved", status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    elif request.method == 'POST':
-        item.delete()
-        message = {"message": "You have now deleted the offer"}
-        return Response(message, status=status.HTTP_204_NO_CONTENT)
+
+        item_Serializer = ItemSerializer(listedItem, data={"user_id":offeredSerializer.data["user_id"]}, partial=True)
+
+        offered_Serializer = ItemSerializer(offeredItem, data= {"user_id":itemSerializer.data["user_id"]}, partial=True)
+        if item_Serializer.is_valid():
+            item_Serializer.save()
+            if offered_Serializer.is_valid():
+                offered_Serializer.save()
+                print(item_Serializer.data)
+                print(offered_Serializer.data)
+        return Response("saved", status=status.HTTP_200_OK)  
+    return Response(item_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # return Response("at least you see it")
+    # elif request.method == 'POST':
+    #     item.delete()
+    #     message = {"message": "You have now deleted the offer"}
+    #     return Response(message, status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET'])
 def search_item(request):
@@ -517,6 +527,7 @@ def accepted_trade(request, userId):
         posts = Post.objects.filter(user_id=userId)
     except Post.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+
     postData = []
     for post in posts:
         postSerializer = PostSerializer(post)
@@ -526,24 +537,32 @@ def accepted_trade(request, userId):
         except Post.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
         itemSerializer = ItemSerializer(item)
-        print("item",itemSerializer.data)
+        itemImage_list = []
+        post_offer = {}
+        itemImages = Image.objects.filter(item_id=itemSerializer.data["id"])
+        for itemImage in itemImages:
+            itemImageSerializer = ImageSerializer(itemImage)
+            itemImage_list.append(itemImageSerializer.data)
         try:
-            offers = Offer.objects.filter(post_id=postSerializer.data["id"]).filter(acceptance = True)
+            offer = Offer.objects.filter(post_id=postSerializer.data["id"]).filter(acceptance = True).first()
         except Post.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        post_offers = []
-        for offer in offers:
-            offerSerializer = OfferSerializer(offer)
-            print("offers",offerSerializer.data)
-            try:
-                Offeritem = Item.objects.filter(id=offerSerializer.data["offered_item"]).first()
-            except Post.DoesNotExist:
-                return Response(status=status.HTTP_404_NOT_FOUND)
+        offerSerializer = OfferSerializer(offer)
+        try:
+            Offeritem = Item.objects.filter(id=offerSerializer.data["offered_item"]).first()
+        except Item.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        if Offeritem:
             itemOfferSerializer = ItemSerializer(Offeritem)
-            print("offered item",itemOfferSerializer.data)
-            post_offers.append({"offer": offerSerializer.data, "item": itemOfferSerializer.data})
-        if post_offers:
-            postData.append({"post": postSerializer.data, "post_item": itemSerializer.data, "offers": post_offers})
+            # print("offered item",itemOfferSerializer.data)
+            offerImage_list = []
+            offerImages = Image.objects.filter(item_id=itemOfferSerializer.data["id"])
+            for offerImage in offerImages:
+                offerImageSerializer = ImageSerializer(offerImage)
+                offerImage_list.append(offerImageSerializer.data)
+            post_offer = {"offer": offerSerializer.data, "item": itemOfferSerializer.data, "image": offerImage_list}
+        if post_offer:
+            postData.append({"post": postSerializer.data, "post_item": itemSerializer.data, "offers": post_offer, "image": itemImage_list})
         
 
     if request.method == "GET":
