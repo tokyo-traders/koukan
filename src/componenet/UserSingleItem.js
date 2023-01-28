@@ -22,13 +22,15 @@ const Img = styled('img')({
   maxHeight: '100%',
 });
 
-const RoundedButton = styled(Button)(() => ({
-  borderRadius: 35,
-  backgroundColor: "#D904B5",
-  color: "#46C8F5",
-  fontSize: "1rem",
-  display: "block"
-
+const BrownButton = styled(Button)(() => ({
+    backgroundColor: "#4d3e38",
+    borderRadius: "8px",
+    color: "#def4f6",
+    "&:hover": {
+      background: "#332925"
+    },
+    // padding: "15px 36px",
+    fontSize: "16px"
 }));
 
 const BASE_URL = 'http://127.0.0.1:8000/api'
@@ -123,22 +125,22 @@ export default function UserSingleItem(props) {
 
                   <Box sx={{ marginLeft: 50 }}><ModeEditIcon /></Box>
 
-                  <RoundedButton
+                  <BrownButton
                     fullWidth
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
                     onClick={display}
                   >
                     MAKE POST
-                  </RoundedButton>
-                  <RoundedButton
+                  </BrownButton>
+                  <BrownButton
                     fullWidth
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
                     onClick={() => deleteItem(Number(itemId))}
                   >
                     DELETE ITEM
-                  </RoundedButton>
+                  </BrownButton>
                 </Box>
 
                 <Box

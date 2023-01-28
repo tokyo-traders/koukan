@@ -13,56 +13,45 @@ import { createTheme, CssBaseline, Menu } from '@mui/material';
 import useAuth from './hooks/useAuth';
 import { useNavigate, useLocation, Outlet} from "react-router-dom";
 import { ThemeProvider } from 'styled-components';
+import { hover } from '@testing-library/user-event/dist/hover';
 
 
-// const RoundedButton = styled(Button)(() => ({
-//     borderRadius: 35,
-//     backgroundColor: "#D904B5",
-//     color: "#46C8F5",
-//     padding: "15px 36px",
-//     fontSize: "18px"
-// }));
-
-let customTheme = createTheme({
-   palette: {
-    primary: {
-      main: '#3cd64b',
-      contrastText: 'white',
-    },
-    secondary: {
-      main: '#4d3e38'
-    },
-  },
-
-  components: {
-    MuiCssBaseline: {
-      styleOverrides: {
-        root: {
-          backgroundColor: '#def4f6'
-        }
-      }
+const GreenButton = styled(Button)(() => ({
+    // borderRadius: 8,
+    backgroundColor: "#3cd64b",
+    color: "#def4f6",
+    "&:hover": {
+      background: "#32B13E"
     }
+    // padding: "15px 36px",
+    // fontSize: "14px"
+}));
+
+const customTheme = createTheme({
+  root: {
+    backgroundColor: "#def4f6",
   }
 });
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
-  borderRadius: '5px',
-  borderStyle: 'solid',
-  borderWidth: 0.5,
-  borderColor: '#3cd64b',
-  backgroundColor: alpha(theme.palette.common.black, 0.05),
+  // borderRadius: theme.shape.borderRadius,
+  borderRadius: '4px',
+  backgroundColor: alpha(theme.palette.common.black, 0.15),
   '&:hover': {
-    backgroundColor: alpha(theme.palette.common.black, 0.1),
+    backgroundColor: alpha(theme.palette.common.black, 0.25),
   },
   marginLeft: 0,
-  width: '30%',
-
+  width: '100%',
+  [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(1),
+    width: 'auto',
+  },
 }));
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
   color: '#4d3e38',
+  padding: theme.spacing(0, 2),
   height: '100%',
   position: 'absolute',
   pointerEvents: 'none',
@@ -72,7 +61,7 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-
+  color: 'inherit',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
     color: '#4d3e38',
@@ -81,9 +70,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-      width: '20ch',
+      width: '40ch',
       '&:focus': {
-        width: '25ch',
+        width: '45ch',
       },
     },
   },
@@ -121,20 +110,21 @@ function NavBar(props) {
     home();
   }
   return (
-    <ThemeProvider theme={customTheme}>
+    <>
+    {/* <ThemeProvider theme={customTheme}> */}
     <CssBaseline />
-    <Box sx={{ flexGrow: 1 }}>
- 
+    <Box sx={{ flexGrow: 1,}} bgcolor={'blue'}>
+      <AppBar position="static" sx={{background: "#def4f6"}}>
         <Toolbar
           sx={{
             justifyContent: "space-between"
           }}
         >
           <Link
-            marginLeft={5}
-            variant="h6"
+            variant="body1"
             fontFamily="Roboto Slab"
-            padding={1}
+            padding={2}
+            paddingLeft={3}
             color="#3cd64b"
             onClick={home}
             underline='none'
@@ -151,16 +141,17 @@ function NavBar(props) {
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
-          {!user ? <Button variant='contained' onClick={login}>LOG IN</Button> :
+          {!user ? <GreenButton variant='contained' onClick={login}>LOG IN</GreenButton> :
           <div>
-          <Button variant='contained' onClick={myPage}>My Page</Button>
-          <Button variant='contained' onClick={logOut}>Log Out</Button>
+          <GreenButton variant='contained' onClick={myPage}>My Page</GreenButton>
+          <GreenButton variant='contained' onClick={logOut}>Log Out</GreenButton>
           </div>}
         </Toolbar>
-   
+      </AppBar>
     </Box>
   <Outlet/>
-  </ThemeProvider>
+  {/* </ThemeProvider> */}
+  </>
   );
 }
 
