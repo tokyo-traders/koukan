@@ -115,8 +115,8 @@ export default function ListingSingleItem(props) {
 
     const getOffers = async () => {
       let response = await axios.get(`/api/create-offer`)
-      // console.log(response.data.filter(item => item.post_id == listingId)[0])
-      setOffersMade(response.data.filter(item => item.post_id == listingId)[0])
+      console.log(response.data.filter(item => item.post_id == listingId))
+      setOffersMade(response.data.filter(item => item.post_id == listingId))
 
 
     }

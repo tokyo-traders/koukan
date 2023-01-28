@@ -93,7 +93,6 @@ function OfferForm(props) {
   const makeOffer = async () => {
     console.log(offer.itemID)
     console.log(listing.post.id)
-    // console.log(false)
     const offerObj = {
       post_id: listing.post.id,
       offered_item: offer.itemID,
