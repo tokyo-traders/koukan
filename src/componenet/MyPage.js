@@ -19,6 +19,8 @@ export default function MyPage(props) {
   const from = location.state?.from?.pathname || "/MyPage"
   const itemList = useCallback(()=> navigate("/MyPage", {replace: true}), [navigate]);
   const postList = useCallback(()=> navigate("/MyPage/postList", {replace: true}), [navigate]);
+  const postHistory = useCallback(()=> navigate("/MyPage/postHistory", {replace: true}), [navigate]);
+  const pendingTrade = useCallback(()=> navigate("/MyPage/pendingTrade", {replace: true}), [navigate]);
   const myPage = useCallback(()=> {
     if (from === "/signup") {
       navigate('/MyPage', {replace: true})
@@ -48,7 +50,7 @@ export default function MyPage(props) {
             variant="h4"
             fontFamily="Roboto Slab"
             padding={2}
-            color="#D904B5"
+            color="#4d3e38"
           >
             {user.username}
 
@@ -61,7 +63,7 @@ export default function MyPage(props) {
               alignItems: 'center',
             }}>
 
-            <Stack direction="row" spacing={8} justifyContent="center">
+            <Stack direction="row" spacing={12} justifyContent="center">
               <Link onClick={itemList} variant="body1" underline="none" color="#000000">
                 My Items
               </Link>
@@ -70,8 +72,12 @@ export default function MyPage(props) {
                 My Listing
               </Link>
 
-              <Link onClick={itemList} variant="body1" underline='none' color="#000000" >
+              <Link onClick={postHistory} variant="body1" underline='none' color="#000000" >
                 Traded Items
+              </Link>
+
+              <Link onClick={pendingTrade} variant="body1" underline='none' color="#000000" >
+                Pending trades
               </Link>
             </Stack>
           </Box>

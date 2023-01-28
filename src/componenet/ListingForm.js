@@ -10,15 +10,16 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 
-const RoundedButton = styled(Button)(() => ({
-  borderRadius: 35,
-  backgroundColor: "#D904B5",
-  color: "#46C8F5",
-  fontSize: "1rem",
-  display: "block"
+const BrownButton = styled(Button)(() => ({
+    backgroundColor: "#4d3e38",
+    borderRadius: "8px",
+    color: "#def4f6",
+    "&:hover": {
+      background: "#332925"
+    },
+    // padding: "15px 36px",
+    fontSize: "16px"
 }));
-
-
 
 
 function AddListingForm(props) {
@@ -103,13 +104,13 @@ function AddListingForm(props) {
                 />
                 </Box>    
                  
-                <RoundedButton
+                <BrownButton
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
                     onClick={newPost}
                   >
                     CREATE NEW LISTING
-                  </RoundedButton>  
+                  </BrownButton>  
 
             </Box>
 
