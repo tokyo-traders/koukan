@@ -2,7 +2,6 @@ from django.urls import path
 
 from .views import user_register, user_login, item_list, image_list, all_item, newall_item, create_post, edit_post, create_offer, edit_offer, homepage, listingItem, search_item, VerifyEmail, item_handover,accepted_trade,set_pending,accepted_trade
 
-
 from api import views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -30,7 +29,7 @@ urlpatterns = [
   path('itemHandover', views.item_handover),
 
 
-  path('all-item/<int:userid>/<int:itemid>', views.all_item),
+    path('all-item/<int:userid>/<int:itemid>', views.all_item),
 
   path('all-info/<int:userid>', views.newall_item),
   # path('create-post', views.post_list),  # added manually from Koji
@@ -55,7 +54,6 @@ urlpatterns = [
 
   # this path is for email verification
   path('verify-email', VerifyEmail.as_view(), name='verify-email')
-  
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 #
 # use the static or...

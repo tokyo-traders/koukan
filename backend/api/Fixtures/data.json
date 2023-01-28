@@ -1,0 +1,74 @@
+[
+	{
+		"model": "api.Categories",
+		"pk": 1,
+		"fields": {
+			"category_name": "Furniture",
+			"reputation_point": 1
+		}
+	},
+	{
+		"model": "api.Categories",
+		"pk": 2,
+		"fields": {
+			"category_name": "Storage",
+			"reputation_point": 0.202
+		}
+	},
+	{
+		"model": "api.Categories",
+		"pk": 3,
+		"fields": {
+			"category_name": "Home Accessories",
+			"reputation_point": 0.1
+		}
+	},
+	{
+		"model": "api.Categories",
+		"pk": 4,
+		"fields": {
+			"category_name": "Travel",
+			"reputation_point": 0.093
+		}
+	},
+	{
+		"model": "api.Categories",
+		"pk": 5,
+		"fields": {
+			"category_name": "Electronics",
+			"reputation_point": 0.85
+		}
+	},
+	{
+		"model": "api.Categories",
+		"pk": 6,
+		"fields": {
+			"category_name": "Health & Beauty",
+			"reputation_point": 0.372
+		}
+	},
+	{
+		"model": "api.Categories",
+		"pk": 7,
+		"fields": {
+			"category_name": "Sporting Goods",
+			"reputation_point": 0.157
+		}
+	},
+	{
+		"model": "api.Categories",
+		"pk": 8,
+		"fields": {
+			"category_name": "Clothing",
+			"reputation_point": 0.05
+		}
+	},
+	{
+		"model": "api.Categories",
+		"pk": 9,
+		"fields": {
+			"category_name": "Shoes",
+			"reputation_point": 0.05
+		}
+	}
+]

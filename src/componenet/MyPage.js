@@ -50,7 +50,7 @@ export default function MyPage(props) {
             variant="h4"
             fontFamily="Roboto Slab"
             padding={2}
-            color="#D904B5"
+            color="#4d3e38"
           >
             {user.username}
 

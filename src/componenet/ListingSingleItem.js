@@ -17,7 +17,13 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 // import Carousel from 'react-material-ui-carousel'
 import EmailIcon from '@mui/icons-material/Email';
 // import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+<<<<<<< HEAD
 // import { Carousel } from 'react-responsive-carousel';
+=======
+import { Carousel } from 'react-responsive-carousel';
+import ImageGallery from 'react-image-gallery';
+
+>>>>>>> master
 
 
 import "./LisitingSingleItem.css"
@@ -48,6 +54,7 @@ export default function ListingSingleItem(props) {
   const { listingId } = useParams();
 
 
+<<<<<<< HEAD
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/MyPage"
@@ -57,12 +64,24 @@ export default function ListingSingleItem(props) {
     const goBack = useCallback(()=> {
         navigate(from, {replace: true})
       }, [navigate]);
+=======
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/MyPage"
+
+  const makeOffer = useCallback(() => navigate(`/listing/${listingId}/offer`, { replace: true }), [navigate]);
+  const login = useCallback(() => navigate(`/login`, { replace: true }), [navigate]);
+  const goBack = useCallback(() => {
+    navigate(from, { replace: true })
+  }, [navigate]);
+>>>>>>> master
 
 
   const [listing, setListing] = useState(null);
   const [date, setDate] = useState('');
   const [offersMade, setOffersMade] = useState(null);
   const [offersItems, setOffersItems] = useState(null);
+  const [images, setImages] = useState([])
 
   const display = () => {
     if (listing) {
@@ -71,6 +90,7 @@ export default function ListingSingleItem(props) {
   }
 
 
+<<<<<<< HEAD
  const acceptOffer =  async (obj) => {
   obj.acceptance = true
   const response = await axios.put(
@@ -79,29 +99,48 @@ export default function ListingSingleItem(props) {
     {
       headers: { 'Content-Type': 'application/json' },
       withCredentials: true
+=======
+  const acceptOffer = async (obj) => {
+    const response = await axios.put(
+      `/api/itemHandover`,
+      JSON.stringify(obj),
+      {
+        headers: { 'Content-Type': 'application/json' },
+        withCredentials: true
+>>>>>>> master
       }
     )
     console.log(response.data)
-}
+  }
 
 
   useEffect(() => {
     if (listingId) {
       axios.get(`/api/listing/${listingId}`)
         .then(response => {
-          setListing(response.data)
+          console.log(response.data)
+          setListing(response.data[0])
         })
     }
   }, [])
 
+  useEffect(() => {
+    if (listingId) {
+      axios.get(`/api/listing/${listingId}`)
+        .then(response => {
+          console.log(response.data[0].images)
+          images.concat(response.data[0].images)
+        })
+    }
+  }, [])
 
   useEffect(() => {
 
     const getOffers = async () => {
       let response = await axios.get(`/api/create-offer`)
+      // console.log(response.data.filter(item => item.post_id == listingId)[0])
+      setOffersMade(response.data.filter(item => item.post_id == listingId)[0])
 
-      console.log(response.data.filter(item=>item.post_id == listingId)[0])
-      setOffersMade(response.data.filter(item=>item.post_id == listingId))
 
     }
     getOffers()
@@ -111,21 +150,21 @@ export default function ListingSingleItem(props) {
   useEffect(() => {
 
     const getItem = async () => {
-      let responseArray = offersMade.map((offer)=>{
-        return  axios.get(`/api/all-item/${offer.offered_item}`)
+      let responseArray = offersMade.map((offer) => {
+        return axios.get(`/api/all-item/${offer.offered_item}`)
       })
 
-    Promise.all(responseArray).then((res)=>{
-      console.log(res)
-     return res.map((item)=>{
-      return item.data[0]
-     })
-    })
-     .then((res)=> setOffersItems(res))
+      Promise.all(responseArray).then((res) => {
+        console.log(res)
+        return res.map((item) => {
+          return item.data[0]
+        })
+      })
+        .then((res) => setOffersItems(res))
 
       return responseArray
-  }
- 
+    }
+
     if (offersMade) {
       getItem()
     }
@@ -133,7 +172,7 @@ export default function ListingSingleItem(props) {
 
   const Mailto = () => {
     return (
-      <a href={`mailto:flavioripa@hotmail.com`}> <EmailIcon sx={{ fontSize: "35px" }} /> </a>
+      <a href={`mailto:${listing.email}`}> <EmailIcon sx={{ fontSize: "35px" }} /> </a>
     );
   };
 
@@ -145,7 +184,9 @@ export default function ListingSingleItem(props) {
     fontSize: '20px',
     fontWeight: 'bold',
   }
+
   // console.log(listing)
+<<<<<<< HEAD
   const data = async () => {
     const arr = []
     for (let i of listing.images) {
@@ -155,29 +196,29 @@ export default function ListingSingleItem(props) {
     }
     return arr
   }
+=======
+  // console.log(typeof listing.phoneDetail)
+  // const phoneNumber = listing?.phoneDetail.splice(0, 2, '')
+  // console.log(phoneNumber)
+>>>>>>> master
   return (
     <div >
       <Box sx={{ width: '80%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
         <Grid container spacing={2} sx={{ backgroundColor: "none", marginTop: 2 }}>
-          {/* {listing?.images.length > 1 && 
-          <Grid item xs={2} spacing={3}>
-            {listing.images.filter((x, index) => !!index).map((img) => {
-              return (
-                <Box sx={{ marginBottom: 2 }}>
-                  <Img alt="image2" src={BASE_URL + `${img}`} />
-                </Box>
-              )
-            })
-            }
-          </Grid>} */}
           <Grid item xs={5} sx={{ margin: '10px' }}>
             <Container sx={{ height: 350 }}>
-              <Box>
-                <Button
-                onClick={display}
-                ><NavigateBeforeIcon /></Button>
-              </Box>
+              {images &&
+                <Carousel
+                  autoPlay={true}
+                  infiniteLoop={true}>
+                  {listing?.images.map((img, i) => (
+                    <div>
+                      <img alt="image1" src={BASE_URL + `${listing.images[i]}`} />
+                    </div>
+                  ))}
+                </Carousel>}
 
+<<<<<<< HEAD
               {/* <Carousel
                 data={data}
                 time={2000}
@@ -203,11 +244,13 @@ export default function ListingSingleItem(props) {
                   <Img alt="image1" src={BASE_URL + `${listing.images[i]}`} />
                 ))}
               </Carousel> */}
+=======
+>>>>>>> master
 
               <Button onClick={() => {
                 console.log(offersItems)
               }
-              }><NavigateNextIcon /></Button>
+              }></Button>
             </Container>
           </Grid>
           <Grid item xs={5} sm container>
@@ -237,7 +280,7 @@ export default function ListingSingleItem(props) {
                       </RoundedButton>
                       <Typography >
                         <a
-                          href="https://wa.me/8107039783864"
+                          href={`https://wa.me/${listing.phoneDetail}`}
                           class="whatsapp_float"
                           target="_blank"
                           rel="noopener noreferrer"
@@ -311,85 +354,85 @@ export default function ListingSingleItem(props) {
         </Grid>
       </Box>
 
-{/* ____________________________________________________________________________________________________________________________       */}
-      {offersItems && offersItems.map((items, index)=>{
-          return(
-            <>
+      {/* ____________________________________________________________________________________________________________________________       */}
+      {offersItems && offersItems.map((items, index) => {
+        return (
+          <>
             <Box sx={{ width: '80%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
               <Divider sx={{ borderBottomWidth: 1 }} variant="middle" />
             </Box>
-  
-          <Box  sx={{ width: '80%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
-          <Grid container spacing={2} sx={{ backgroundColor: "none", marginTop: 2 }}>
-            <Grid item xs={5} sx={{ margin: '10px'}}>
-              <Container sx={{ height: 350 }}>
-                {listing && <Img alt="image1" src={BASE_URL + `${items?.image[0]}`} />}
-              </Container>
-            </Grid>
-            <Grid item xs={5} sm container>
-              <Grid item xs container direction="column" spacing={2}>
-                <Grid item xs>
-                  <Box
-                    sx={{
-                      backgroundColor: "white",
-                      marginTop: 2,
-                    }}
-                  >
-                    <Typography variant='h3'>
-                      {items?.itemName}
-                    </Typography>
-  
-                    {user?.id === listing?.item.user_id && 
-                    <>
-                    <Box sx={{ marginLeft: 50 }}><ModeEditIcon /></Box>
-                    <RoundedButton
-                      fullWidth
-                      variant="contained"
-                      sx={{ mt: 3, mb: 2 }}
-                      onClick={()=>{
-                        acceptOffer(offersMade[index])
-                      }}
-                    >
-                      ACCEPT OFFER
-                    </RoundedButton>
-                    </>
-                     }
-                  </Box>
-                  <Box
-                    sx={{
-                      backgroundColor: "white",
-                      marginTop: 4,
-                    }}
-                  >
-                    <Typography gutterBottom variant='h5' component='div'>
-                      Description
-                    </Typography>
-                   <Typography gutterBottom variant='body'>
-                      {items.details}
-                    </Typography>
-                  </Box>
-                  <Box
-                    sx={{
-                      backgroundColor: "white",
-                      marginTop: 4,
-                    }}
-                  >
-                    <Typography gutterBottom variant='h5' component='div'>
-                      Date Of Offer
-                    </Typography>
-                     <Typography gutterBottom variant='body'>
-                    {new Date(items.date_offered).toDateString()}
-                    </Typography>
-                  </Box>
+
+            <Box sx={{ width: '80%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
+              <Grid container spacing={2} sx={{ backgroundColor: "none", marginTop: 2 }}>
+                <Grid item xs={5} sx={{ margin: '10px' }}>
+                  <Container sx={{ height: 350 }}>
+                    {listing && <Img alt="image1" src={BASE_URL + `${items?.image[0]}`} />}
+                  </Container>
+                </Grid>
+                <Grid item xs={5} sm container>
+                  <Grid item xs container direction="column" spacing={2}>
+                    <Grid item xs>
+                      <Box
+                        sx={{
+                          backgroundColor: "white",
+                          marginTop: 2,
+                        }}
+                      >
+                        <Typography variant='h3'>
+                          {items?.itemName}
+                        </Typography>
+
+                        {user?.id === listing?.item.user_id &&
+                          <>
+                            <Box sx={{ marginLeft: 50 }}><ModeEditIcon /></Box>
+                            <RoundedButton
+                              fullWidth
+                              variant="contained"
+                              sx={{ mt: 3, mb: 2 }}
+                              onClick={() => {
+                                acceptOffer(offersMade[index])
+                              }}
+                            >
+                              ACCEPT OFFER
+                            </RoundedButton>
+                          </>
+                        }
+                      </Box>
+                      <Box
+                        sx={{
+                          backgroundColor: "white",
+                          marginTop: 4,
+                        }}
+                      >
+                        <Typography gutterBottom variant='h5' component='div'>
+                          Description
+                        </Typography>
+                        <Typography gutterBottom variant='body'>
+                          {items.details}
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          backgroundColor: "white",
+                          marginTop: 4,
+                        }}
+                      >
+                        <Typography gutterBottom variant='h5' component='div'>
+                          Date Of Offer
+                        </Typography>
+                        <Typography gutterBottom variant='body'>
+                          {new Date(items.date_offered).toDateString()}
+                        </Typography>
+                      </Box>
+                    </Grid>
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
-          </Grid>
-        </Box>
-        </>
-          )
+            </Box>
+          </>
+        )
       })}
-    </div>   
+    </div>
   );
 
 }
