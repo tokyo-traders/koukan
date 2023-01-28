@@ -1,11 +1,17 @@
 import axios from "axios";
-// import "./App.css";
+
+import "./App.css";
+// import "./componenet/Registration/Registration.css";
+
 import { Route, Routes } from "react-router-dom";
 import { useState, useEffect, useCallback, Component } from 'react'
 import Sidebar from "./componenet/Sidebar";
 import NavBar from "./componenet/NavBar";
 import AllListings from "./componenet/AllListings";
 import useAxiosPrivate from "./componenet/hooks/axiosPrivate";
+
+// import Registration from "./componenet/Registration/Registration";
+
 import AddItem from "./componenet/AddItem";
 import LoginForm from "./componenet/User/LoginForm";
 import SignupForm from "./componenet/User/SignupForm";
@@ -25,8 +31,13 @@ function App() {
 
 	const [userState, setUserState] = useState(false)
 	const [user, setUser] = useState(undefined)
+	const [searchValue, setSearchValue] = useState('');
+
 	const axiosPrivate = useAxiosPrivate();
 
+	const handleSearchChange = (event) => {
+		setSearchValue(event.target.value);
+	}
 
 	useEffect(() => {
 		if (userState) {
@@ -57,16 +68,16 @@ function App() {
 		<>
 
 			<Routes>
-				<Route path="/" element={<NavBar user={user} setUser={setUser} setUserState={setUserState} />} exact>
-					<Route path="/" element={[<Sidebar />, <AllListings />]} />
+				<Route path="/" element={<NavBar user={user} setUser={setUser} handleSearchChange={handleSearchChange} searchValue={searchValue} />} exact>
+					<Route path="/" element={[<Sidebar />, <AllListings searchValue={searchValue} />]} />
 					<Route path="/Login" element={<LoginForm userState={userState} setUserState={setUserState} />} />
 					<Route path="/Signup" element={<SignupForm />} />
-					<Route path="/listing/:listingId" element={[<Sidebar />, <ListingSingleItem user={user}/>]} />
+					<Route path="/listing/:listingId" element={[<Sidebar />, <ListingSingleItem user={user} />]} />
 
 
 
 					<Route element={<RequireAuth />}>
-						<Route path="/listing/:listingId/offer" element={ <OfferForm user={user}/>} />
+						<Route path="/listing/:listingId/offer" element={<OfferForm user={user} />} />
 						<Route path="/MyPage" element={<MyPage user={user} />} >
 							<Route path="/MyPage" element={<UserItemsList user={user} />} />
 							<Route path="/MyPage/addItem" element={<AddItem user={user} />} />

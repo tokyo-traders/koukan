@@ -154,10 +154,12 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
 # these are needed for us to able to setup google mail to send our confirmation email
-# EMAIL_USE_TLS = True
-# EMAIL_HOST = 'smtp.gmail.com' # this will use gmail for confirmation
-# EMAIL_PORT = 587
 
-# these are the email and password of the account that will send the confirmation to new users.
-# EMAIL_HOST_USER = env("EMAIL_HOST_USER")
-# EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'  # this will use gmail for confirmation
+EMAIL_PORT = 587
+
+# # these are the email and password of the account that will send the confirmation to new users.
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+

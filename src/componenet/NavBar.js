@@ -11,7 +11,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import Link from '@mui/material/Link';
 import { createTheme, CssBaseline, Menu } from '@mui/material';
 import useAuth from './hooks/useAuth';
-import { useNavigate, useLocation, Outlet} from "react-router-dom";
+import { useNavigate, useLocation, Outlet } from "react-router-dom";
 import { ThemeProvider } from 'styled-components';
 import { hover } from '@testing-library/user-event/dist/hover';
 
@@ -31,6 +31,7 @@ const customTheme = createTheme({
   root: {
     backgroundColor: "#def4f6",
   }
+
 });
 
 const Search = styled('div')(({ theme }) => ({
@@ -79,29 +80,29 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 function NavBar(props) {
- 
-  const {user, setUser, setUserState} = props
+
+  const { user, setUser, setUserState, handleSearchChange, searchValue } = props
   const { setAuth } = useAuth();
 
   const navigate = useNavigate();
   const location = useLocation();
 
   const from = location.state?.from?.pathname || "/MyPage"
-  const myPage = useCallback(()=> navigate('/MyPage', {replace: true}), [navigate]);
-  const login = useCallback(()=> navigate('/login', {replace: true}), [navigate]);
-  const home = useCallback(()=> navigate('/', {replace: true}), [navigate]);
-  const logup = useCallback(()=> {
+  const myPage = useCallback(() => navigate('/MyPage', { replace: true }), [navigate]);
+  const login = useCallback(() => navigate('/login', { replace: true }), [navigate]);
+  const home = useCallback(() => navigate('/', { replace: true }), [navigate]);
+  const logup = useCallback(() => {
     if (from === "/signup") {
-      navigate('/MyPage', {replace: true})
+      navigate('/MyPage', { replace: true })
     } else {
-      navigate(from, {replace: true})
+      navigate(from, { replace: true })
     }
-    }, [navigate]);
+  }, [navigate]);
 
   const displayUser = () => {
     console.log(user)
   }
-  
+
   const logOut = () => {
 
     setAuth({});
@@ -109,6 +110,17 @@ function NavBar(props) {
     setUserState(false);
     home();
   }
+
+  // const handleSearchChange = (event) => {
+  //   setSearchValue(event.target.value);
+  // }
+
+  // const handleSearchSubmit = (event) => {
+  //   event.preventDefault();
+  //   props.onSearch(searchValue);
+  // }
+
+
   return (
     <>
     {/* <ThemeProvider theme={customTheme}> */}
