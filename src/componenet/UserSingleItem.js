@@ -50,7 +50,7 @@ export default function UserSingleItem(props) {
     navigate(from, { replace: true })
   }, [navigate]);
 
-  const [itemData, setItemData] = useState(null);
+  const [itemData, setItemData] = useState({itemName: '', image: [], details: '', user_id: 0});
   const [images, setImages] = useState([])
 
   const display = () => {
@@ -66,15 +66,30 @@ export default function UserSingleItem(props) {
 
 
   useEffect(() => {
-    if (itemId) {
-      axios.get(`/api/all-item/${itemId}`)
-        // .then(response => setItemData(response.data))
-        .then(response => {
-          // console.log("😂", response.data)
-          // console.log(user, itemId)
-          setItemData(response?.data[0])
-        })
-    }
+    (async () => {
+			const rawData = await fetch(`/api/all-item/${itemId}`, {
+				method: "GET",
+			});
+			const data = await rawData.json();
+			console.log(data)
+			// const list = [];
+			// data.map((category) => list.push(category)); //console.log(category)
+			// setCategoriesArray(data);
+			// console.log("heyheyhey", categoriesArray);
+		})();
+    // // if (itemId) {
+    //   axios.get(`/api/all-item/${itemId}`)
+    //     // .then(response => setItemData(response.data))
+    //     .then(response => {
+    //       // console.log("😂", response.data)
+    //       // console.log(user, itemId)
+    //       setItemData(response.data[0])
+    //       console.log("heyheyhey", itemData)
+    //       setImages(response.data[0].image)
+    //       console.log("this is the image", images)
+    //     })
+    // // }
+    
   }, [])
 
   return (
@@ -88,11 +103,11 @@ export default function UserSingleItem(props) {
                 <Carousel
                   autoPlay={true}
                   infiniteLoop={true}>
-                  {itemData?.images.map((img, i) => (
+                  {/* {images.map((img, i) => (
                     <div>
                       <img alt="image1" src={BASE_URL + `${itemData.images[i]}`} />
                     </div>
-                  ))}
+                  ))} */}
                 </Carousel>}
             </Container>
           </Grid>

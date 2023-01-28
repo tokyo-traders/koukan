@@ -1,6 +1,12 @@
+body {
+  /* background-image: url('../public/'); */
+  background-color: aquamarine;
+}
+
 /* .App {
   text-align: center;
 }
+
 
 * {
   margin: 0;

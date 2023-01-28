@@ -500,6 +500,17 @@ def search_item(request):
             print("this is the data", data)
         return Response(data, status=status.HTTP_200_OK)
 
+@api_view(['GET'])
+def category_list(request):
+    try:
+        categories = Categories.objects.all()
+    except Categories.DoesNotExist:
+        error = {"error": "You have failed to get the categories"}
+        return Response(error, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == "GET":
+        catergorySerializer = CategoriesSerializer(categories, many=True)
+        return Response(catergorySerializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def accepted_trade(request, userId):

@@ -64,6 +64,7 @@ function App() {
 
 	return (
 		<>
+		<div className="App">
 			<Routes>
 				<Route path="/" element={<NavBar user={user} setUser={setUser} handleSearchChange={handleSearchChange} searchValue={searchValue} />} exact>
 					<Route path="/" element={[<Sidebar />, <AllListings searchValue={searchValue} />]} />
@@ -81,19 +82,20 @@ function App() {
 							<Route
 								path="/MyPage/postList"
 								element={<UserPostList user={user} />}
-							/>
+								/>
 							<Route
 								path="/MyPage/Items/:itemId"
 								element={<UserSingleItem user={user} />}
-							/>
+								/>
 							<Route
 								path="/MyPage/makeListing/:itemId"
 								element={<AddListingForm user={user} />}
-							/>
+								/>
 						</Route>
 					</Route>
 				</Route>
 			</Routes>
+		</div>
 		</>
 	);
 }

@@ -13,12 +13,15 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
-const RoundedButton = styled(Button)(() => ({
-	borderRadius: 35,
-	backgroundColor: "#D904B5",
-	color: "#46C8F5",
-	fontSize: "1rem",
-	display: "block",
+const BrownButton = styled(Button)(() => ({
+    backgroundColor: "#4d3e38",
+    borderRadius: "8px",
+    color: "#def4f6",
+    "&:hover": {
+      background: "#332925"
+    },
+    // padding: "15px 36px",
+    fontSize: "16px"
 }));
 
 function AddItem(props) {
@@ -44,9 +47,10 @@ function AddItem(props) {
 				method: "GET",
 			});
 			const data = await rawData.json();
-			const list = [];
-			data.map((category) => list.push(category)); //console.log(category)
-			setCategoriesArray(list);
+			// console.log(data)
+			// const list = [];
+			// data.map((category) => list.push(category)); //console.log(category)
+			setCategoriesArray(data);
 			console.log("heyheyhey", categoriesArray);
 		})();
 	}, []);
@@ -167,33 +171,13 @@ function AddItem(props) {
 						label="Choose category"
 						onChange={(e) => setCategory(e.target.value)}
 					>
-						<MenuItem value={categoriesArray[0]["id"]}>
-							{categoriesArray[0]["category_name"]}
-						</MenuItem>
-						<MenuItem value={categoriesArray[1]["id"]}>
-							{categoriesArray[1]["category_name"]}
-						</MenuItem>
-						<MenuItem value={categoriesArray[2]["id"]}>
-							{categoriesArray[2]["category_name"]}
-						</MenuItem>
-						<MenuItem value={categoriesArray[3]["id"]}>
-							{categoriesArray[3]["category_name"]}
-						</MenuItem>
-						<MenuItem value={categoriesArray[4]["id"]}>
-							{categoriesArray[4]["category_name"]}
-						</MenuItem>
-						<MenuItem value={categoriesArray[5]["id"]}>
-							{categoriesArray[5]["category_name"]}
-						</MenuItem>
-						<MenuItem value={categoriesArray[6]["id"]}>
-							{categoriesArray[6]["category_name"]}
-						</MenuItem>
-						<MenuItem value={categoriesArray[7]["id"]}>
-							{categoriesArray[7]["category_name"]}
-						</MenuItem>
-						<MenuItem value={categoriesArray[8]["id"]}>
-							{categoriesArray[8]["category_name"]}
-						</MenuItem>
+						{
+							categoriesArray.map((x) => {
+								return <MenuItem value={x["id"]}>
+								{x["category_name"]}
+							</MenuItem>
+							})
+						}
 					</Select>
 				</FormControl>
 			</Box>
@@ -202,22 +186,22 @@ function AddItem(props) {
 				<input type="file" accept="image/*" multiple onChange={handleChange} />
 			</Box>
 
-			<RoundedButton
+			<BrownButton
 				variant="contained"
 				sx={{ mt: 3, mb: 2 }}
 				onClick={newItem}
 			>
 				Add Item
-			</RoundedButton>
+			</BrownButton>
 
-			<RoundedButton
+			<BrownButton
 				width="80%"
 				variant="contained"
 				sx={{ mt: 3, mb: 2 }}
 				onClick={goBack}
 			>
 				Go Back
-			</RoundedButton>
+			</BrownButton>
 		</Box>
 	);
 };
