@@ -52,6 +52,7 @@ export default function AllListings(props) {
 
     return (
         <div className='listing'>
+        
             {listings?.map(listing => (
                 searchValue
                     ?
@@ -60,6 +61,7 @@ export default function AllListings(props) {
                     showListing(listing)
             ))
             }
+       
         </div>
     )
 } 

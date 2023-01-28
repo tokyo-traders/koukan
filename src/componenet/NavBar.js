@@ -9,12 +9,13 @@ import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import Link from '@mui/material/Link';
-import { createTheme, CssBaseline, Menu } from '@mui/material';
+import { createTheme, CssBaseline, IconButton, Menu } from '@mui/material';
 import useAuth from './hooks/useAuth';
 import { useNavigate, useLocation, Outlet } from "react-router-dom";
 import { ThemeProvider } from 'styled-components';
 import { hover } from '@testing-library/user-event/dist/hover';
-
+import MenuItem from '@mui/material/MenuItem';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 
 const GreenButton = styled(Button)(() => ({
     // borderRadius: 8,
@@ -84,6 +85,8 @@ function NavBar(props) {
   const { user, setUser, setUserState, handleSearchChange, searchValue } = props
   const { setAuth } = useAuth();
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -104,12 +107,23 @@ function NavBar(props) {
   }
 
   const logOut = () => {
-
     setAuth({});
     setUser(undefined);
     setUserState(false);
     home();
   }
+
+    const handleChange = (event) => {
+    setAuth(event.target.checked);
+  };
+
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   // const handleSearchChange = (event) => {
   //   setSearchValue(event.target.value);
@@ -155,8 +169,37 @@ function NavBar(props) {
           </Search>
           {!user ? <GreenButton variant='contained' onClick={login}>LOG IN</GreenButton> :
           <div>
-          <GreenButton variant='contained' onClick={myPage}>My Page</GreenButton>
-          <GreenButton variant='contained' onClick={logOut}>Log Out</GreenButton>
+           <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="#3CD64B" 
+           >
+            <AccountCircle />
+            </IconButton> 
+
+           <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+
+          <MenuItem variant='contained' onClick={myPage}>My Page</MenuItem>
+          <MenuItem variant='contained' onClick={logOut}>Log Out</MenuItem>
+
+          </Menu>       
           </div>}
         </Toolbar>
       </AppBar>

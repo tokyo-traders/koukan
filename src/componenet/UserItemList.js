@@ -71,7 +71,7 @@ function UserItemsList(props) {
         {user && itemInfo?.map(item => (
             <Card 
               elevation={6} 
-              sx={{ maxWidth: 200, mt: 10, marginLeft: 3}}
+              sx={{ maxWidth: 300, mt: 10, marginLeft: 3}}
               onClick={() => {
                 if (item) {
                   navigate(`/MyPage/Items/${item.itemID}`, {replace: true})
@@ -82,7 +82,8 @@ function UserItemsList(props) {
                 component="img"
                 image={BASE_URL + `${item.itemImages[0]}`}
                 height="140"
-                width="200"
+                sx={{ padding: "1em 1em 0 1em", objectFit: "contain" }}
+                
               />
               <CardContent >
                 <Box display="flex" justify="space-between">

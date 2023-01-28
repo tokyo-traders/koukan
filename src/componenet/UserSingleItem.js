@@ -50,7 +50,7 @@ export default function UserSingleItem(props) {
     navigate(from, { replace: true })
   }, [navigate]);
 
-  const [itemData, setItemData] = useState(null);
+  const [itemData, setItemData] = useState({itemName: '', image: [], details: '', user_id: 0});
   const [images, setImages] = useState([])
 
   const display = () => {
@@ -68,15 +68,30 @@ export default function UserSingleItem(props) {
   useEffect(() => {
     if (itemId) {
       axios.get(`/api/all-item/${itemId}`)
-        // .then(response => setItemData(response.data))
         .then(response => {
-          // console.log("😂", response.data)
-          // console.log(user, itemId)
-          setItemData(response?.data[0])
+          console.log(response.data[0])
+          return setItemData(response.data[0]), setImages(response.data[0].image)
         })
-    }
-  }, [])
-
+        .then(res => {
+          console.log("2nd", res)
+        })
+      }
+    // // if (itemId) {
+    //   axios.get(`/api/all-item/${itemId}`)
+    //     // .then(response => setItemData(response.data))
+    //     .then(response => {
+    //       // console.log("😂", response.data)
+    //       // console.log(user, itemId)
+    //       setItemData(response.data[0])
+    //       console.log("heyheyhey", itemData)
+    //       setImages(response.data[0].image)
+    //       console.log("this is the image", images)
+    //     })
+    // // }
+    
+  }, [itemId])
+  console.log("heyhey", itemData)
+  console.log("heyheyhey", images)
   return (
     <>
 
@@ -88,9 +103,9 @@ export default function UserSingleItem(props) {
                 <Carousel
                   autoPlay={true}
                   infiniteLoop={true}>
-                  {itemData?.images.map((img, i) => (
+                  {images.map((x) => (
                     <div>
-                      <img alt="image1" src={BASE_URL + `${itemData.images[i]}`} />
+                      <img alt="image1" src={BASE_URL + `${x}`} />
                     </div>
                   ))}
                 </Carousel>}

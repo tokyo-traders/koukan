@@ -12,8 +12,9 @@ import React from "react";
 
 function Sidebar() {
   return (
-    <Box flex={1} p={2} sx={{ display: { xs: "none", sm: "block" } }}>
-      <Box position="fixed" boxShadow={2} borderRadius={2}>
+    <div>
+    <Box flex={1} p={2} sx={{ display: { xs: "block", sm: "block" } }}>
+      <Box position="fixed" boxShadow={3} borderRadius={2} bgcolor={"white"}>
         <List>
           <ListItem disablePadding>
             <ListItem>
@@ -84,6 +85,7 @@ function Sidebar() {
         </List>
       </Box>
     </Box>
+    </div>
   );
 };
 

@@ -1,6 +1,6 @@
 from django.urls import path
+from .views import user_register, user_login, item_list, image_list, all_item, newall_item, create_post, edit_post, create_offer, edit_offer, homepage, listingItem, search_item, VerifyEmail, item_handover,accepted_trade,set_pending,accepted_trade, category_list 
 
-from .views import user_register, user_login, item_list, image_list, all_item, newall_item, create_post, edit_post, create_offer, edit_offer, homepage, listingItem, search_item, VerifyEmail, item_handover,accepted_trade,set_pending,accepted_trade
 
 from api import views
 from django.conf import settings
@@ -53,7 +53,8 @@ urlpatterns = [
   path('search-item', views.search_item),
 
   # this path is for email verification
-  path('verify-email', VerifyEmail.as_view(), name='verify-email')
+  path('verify-email', VerifyEmail.as_view(), name='verify-email'),
+  path('categories-list', views.category_list)
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 #
 # use the static or...
