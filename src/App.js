@@ -1,10 +1,13 @@
 import axios from "axios";
 
 import "./App.css";
+<<<<<<< HEAD
+=======
 // import "./componenet/Registration/Registration.css";
 
+>>>>>>> master
 import { Route, Routes } from "react-router-dom";
-import { useState, useEffect, useCallback, Component } from 'react'
+import { useState, useEffect, useCallback, Component } from "react";
 import Sidebar from "./componenet/Sidebar";
 import NavBar from "./componenet/NavBar";
 import AllListings from "./componenet/AllListings";
@@ -19,15 +22,19 @@ import MyPage from "./componenet/MyPage";
 import Layout from "./componenet/context/Layout";
 import UserPostList from "./componenet/UserPostList";
 import RequireAuth from "./componenet/User/RequireAuth";
-import UserSingleItem from "./componenet/UserSingleItem"
+import UserSingleItem from "./componenet/UserSingleItem";
 import UserItemsList from "./componenet/UserItemList";
 import AddListingForm from "./componenet/ListingForm";
 import ListingSingleItem from "./componenet/ListingSingleItem";
 import OfferForm from "./componenet/OfferForm";
 
-
-
 function App() {
+<<<<<<< HEAD
+	const [userState, setUserState] = useState(false);
+	const [user, setUser] = useState(undefined);
+	const axiosPrivate = useAxiosPrivate();
+
+=======
 
 	const [userState, setUserState] = useState(false)
 	const [user, setUser] = useState(undefined)
@@ -39,6 +46,7 @@ function App() {
 		setSearchValue(event.target.value);
 	}
 
+>>>>>>> master
 	useEffect(() => {
 		if (userState) {
 			let isMounted = true;
@@ -46,28 +54,55 @@ function App() {
 
 			const getUsers = async () => {
 				try {
-					const response = await axiosPrivate.get('/api/user/login', {
-						signal: controller.signal
+					const response = await axiosPrivate.get("/api/user/login", {
+						signal: controller.signal,
 					});
-					isMounted && setUser(response.data)
+					isMounted && setUser(response.data);
 				} catch (err) {
-					console.error("FUckYOU FROM APP", err)
+					console.error("FUckYOU FROM APP", err);
 				}
-			}
+			};
 
 			getUsers();
 
 			return () => {
 				isMounted = false;
 				controller.abort();
-			}
+			};
 		}
 	}, [userState]);
 
 	return (
 		<>
-
 			<Routes>
+<<<<<<< HEAD
+				<Route
+					path="/"
+					element={
+						<NavBar user={user} setUser={setUser} setUserState={setUserState} />
+					}
+					exact
+				>
+					<Route path="/" element={[<Sidebar />, <AllListings />]} />
+					<Route
+						path="/Login"
+						element={
+							<LoginForm userState={userState} setUserState={setUserState} />
+						}
+					/>
+					<Route path="/Signup" element={<SignupForm />} />
+					<Route
+						path="/listing/:listingId"
+						element={[<Sidebar />, <ListingSingleItem user={user} />]}
+					/>
+
+					<Route element={<RequireAuth />}>
+						<Route
+							path="/listing/:listingId/offer"
+							element={<OfferForm user={user} />}
+						/>
+						<Route path="/MyPage" element={<MyPage user={user} />}>
+=======
 				<Route path="/" element={<NavBar user={user} setUser={setUser} handleSearchChange={handleSearchChange} searchValue={searchValue} />} exact>
 					<Route path="/" element={[<Sidebar />, <AllListings searchValue={searchValue} />]} />
 					<Route path="/Login" element={<LoginForm userState={userState} setUserState={setUserState} />} />
@@ -79,15 +114,24 @@ function App() {
 					<Route element={<RequireAuth />}>
 						<Route path="/listing/:listingId/offer" element={<OfferForm user={user} />} />
 						<Route path="/MyPage" element={<MyPage user={user} />} >
+>>>>>>> master
 							<Route path="/MyPage" element={<UserItemsList user={user} />} />
 							<Route path="/MyPage/addItem" element={<AddItem user={user} />} />
-							<Route path="/MyPage/postList" element={<UserPostList user={user} />} />
-							<Route path="/MyPage/Items/:itemId" element={<UserSingleItem user={user} />} />
-							<Route path="/MyPage/makeListing/:itemId" element={<AddListingForm user={user} />} />
+							<Route
+								path="/MyPage/postList"
+								element={<UserPostList user={user} />}
+							/>
+							<Route
+								path="/MyPage/Items/:itemId"
+								element={<UserSingleItem user={user} />}
+							/>
+							<Route
+								path="/MyPage/makeListing/:itemId"
+								element={<AddListingForm user={user} />}
+							/>
 						</Route>
 					</Route>
 				</Route>
-
 			</Routes>
 		</>
 	);

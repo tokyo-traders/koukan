@@ -25,7 +25,7 @@ class User(models.Model):
     phone_detail = models.CharField(validators=[phone_regex], default="", max_length=20, unique=True)
     is_emailVerified = models.BooleanField(default=False)
     is_phoneVerified = models.BooleanField(default=False) 
-    reputation_rating = models.IntegerField(default=0)
+    reputation_rating = models.DecimalField(max_digits=1000, decimal_places=4,default=0)
 
 
 class Image(models.Model):
@@ -41,7 +41,7 @@ class Item(models.Model):
     user_id = models.ForeignKey('User', on_delete=models.CASCADE,)
     date_of_post = models.DateTimeField(auto_now_add=True)
     details = models.TextField(default="")
-    category = models.CharField(max_length=100, default="")
+    category = models.ForeignKey('Categories', on_delete=models.CASCADE)
     
 
 class Post(models.Model):
@@ -60,3 +60,11 @@ class Offer(models.Model):
     acceptance = models.BooleanField(default=False)
     date_offered = models.DateTimeField(auto_now_add=True)
 
+class Categories(models.Model):
+    category_name = models.CharField(max_length=50, default="")
+    reputation_point = models.DecimalField(max_digits=10, decimal_places=4 ,default=0)
+
+class ReportedUser(models.Model):
+    user_id = models.ForeignKey('User', on_delete=models.CASCADE)
+    subject = models.CharField(max_length=100, default="")
+    reason = models.TextField(default="")

@@ -1,16 +1,19 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from rest_framework import generics, status, viewsets
 from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
 from rest_framework.authentication import get_authorization_header
-from .serializers import UserSerializer, ItemSerializer, ImageSerializer, MultipleImageSerializer, PostSerializer, OfferSerializer
-from .models import User, Item, Image, Post, Offer
+from .serializers import UserSerializer, ItemSerializer, ImageSerializer, MultipleImageSerializer, PostSerializer, OfferSerializer, CategoriesSerializer, ReportedUserSerializer
+from .models import User, Item, Image, Post, Offer, Categories, ReportedUser
 from .authentication import create_access_token, create_refresh_token, decode_access_token, decode_refresh_token
-# from rest_framework_simplejwt.tokens import RefreshToken
-# from .utils import Util
-# from django.contrib.sites.shortcuts import get_current_site
-# from django.urls import reverse
+<<<<<<< HEAD
+from rest_framework_simplejwt.tokens import RefreshToken
+from .utils import Util
+from django.contrib.sites.shortcuts import get_current_site
+from django.urls import reverse
+from django.conf import settings
+
 
 import jwt
 import datetime
@@ -41,10 +44,16 @@ from rest_framework.renderers import JSONRenderer  # delete
             # # produce a token
             # token = RefreshToken.for_user(getUser).access_token
 
-            # current_site = get_current_site(request).domain
-            # relativeLink = reverse('verify-email')
-            # abstractURL = 'http://'+current_site + \
-            #     relativeLink+"?token="+str(token)
+    if request.method == "GET":
+        obj = User.objects.all()
+        item = Item.objects.all()
+        serializer = UserSerializer(obj, many=True)
+        return Response(serializer.data)
+    if request.method == "POST":
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            # serializer.is_active = False # make the accounte deactivated check if this works
+            serializer.save()
 
             # email_body = 'Hi ' + \
             #     str(user.data['username']) + \
@@ -52,20 +61,41 @@ from rest_framework.renderers import JSONRenderer  # delete
             # data = {'email_subject': 'Email Verification', 'email_to': str(
             #     user.data['email']), 'email_body': email_body, }
 
-            # # check util.py
-            # Util.send_confirmation(data)
+            current_site = get_current_site(request).domain
+            relativeLink = reverse('verify-email')
+            abstractURL = 'http://'+current_site+relativeLink+"?token="+str(token)
 
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         else:
-#             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+            email_body = 'Hi '+str(user.data['username'])+ 'Click the link below to verify your email: \n'+ abstractURL
+            data={'email_subject': 'Email Verification','email_to':str(user.data['email']), 'email_body': email_body,}
 
-
+            # check util.py
+            Util.send_confirmation(data)
+            return redirect('/')
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    else:
+            return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
 
 class VerifyEmail(generics.GenericAPIView):
-    def get(self):
-        pass
+    def get(self, request):
+        activate_token = request.GET.get('token')
+        try:
+            getUser = jwt.decode(activate_token, settings.SECRET_KEY)
+            user = User.objects.get(pk=getUser['user_id'])
+            if not user.is_emailVerified:
+                user.is_emailVerified = True
 
+                user.save()
+            
+            message = {"message": "You have successfully activated your account"}
+            return Response(message, status=status.HTTP_200_OK)
 
+        except jwt.ExpiredSignatureError as identifier:
+            error = {"error": "Your activation link is expired."}
+            return Response(error, status=status.HTTP_408_REQUEST_TIMEOUT)
+        except jwt.exceptions.DecodeError as identifier:
+            error = {"error": "Invalid token"}
+            return Response(error, status=status.HTTP_401_UNAUTHORIZED)
+  
 
 @api_view(['GET', 'PUT', 'DELETE', 'POST'])
 def user_login(request):
@@ -253,7 +283,6 @@ def item_edit(request, id, username):
 
 @api_view(['GET'])
 def all_item(request, itemid):
-    print('here IT IS')
     try:
         item = Item.objects.filter(id=itemid).first()
         images = Image.objects.all()
@@ -315,7 +344,7 @@ def homepage(request):
                     imageUrl.append(imageSerializer.data["image"])
             data.append({"post": postSerializer.data,
                         "item": itemSeralizer.data[0], "images": imageUrl,
-                         "username": userSerializer.data[0]["username"], "phoneDetail": userSerializer.data[0]["phone_detail"]})
+                        "username": userSerializer.data[0]["username"], "phoneDetail": userSerializer.data[0]["phone_detail"]})
             imageUrl = []
         return Response(data, status=status.HTTP_200_OK)
 
@@ -341,8 +370,8 @@ def listingItem(request, postId):
             if imageSerializer.data["item_id"] == itemID:
                 imageUrl.append(imageSerializer.data["image"])
         data.append({"post": postSerializer.data,
-                     "item": itemSeralizer.data[0], "images": imageUrl,
-                     "username": userSerializer.data[0]["username"], "phoneDetail": userSerializer.data[0]["phone_detail"], "email": userSerializer.data[0]["email"]})
+                        "item": itemSeralizer.data[0], "images": imageUrl,
+                        "username": userSerializer.data[0]["username"], "phoneDetail": userSerializer.data[0]["phone_detail"], "email": userSerializer.data[0]["email"]})
         imageUrl = []
         return Response(data, status=status.HTTP_200_OK)
 
@@ -384,6 +413,26 @@ def edit_post(request, postId):
         post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+@ api_view(['GET'])
+def all_item(request, itemid):
+    try:
+        item = Item.objects.filter(id=itemid).first()
+        images = Image.objects.all()
+    except Item.DoesNotExist or Image.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == "GET":
+        itemSerializer = ItemSerializer(item)
+        data = []
+        imgUrl = []
+        for image in images:
+            imageSerializer = ImageSerializer(image)
+            if imageSerializer.data["item_id"] == itemSerializer.data["id"]:
+                imgUrl.append(imageSerializer.data['image'])
+        data.append({'itemName': itemSerializer.data['item_name'],
+                     'image': imgUrl, 'details': itemSerializer.data['details'], 'user_id': itemSerializer.data['user_id']})
+        return Response(data)
+
 
 @api_view(['GET', 'POST'])
 def create_offer(request):
@@ -399,7 +448,7 @@ def create_offer(request):
         else:
             error = {"error": "You have failed to create an offer properly"}
             return Response(error, status=status.HTTP_406_NOT_ACCEPTABLE)
-
+        
 
 @ api_view(['GET', 'PUT', 'DELETE'])
 def edit_offer(request, offerId):
@@ -424,7 +473,6 @@ def edit_offer(request, offerId):
         offer.delete()
         message = {"message": "You have now deleted the offer"}
         return Response(message, status=status.HTTP_204_NO_CONTENT)
-
 
 @api_view(['PUT', 'POST'])
 def item_handover(request):
@@ -456,7 +504,6 @@ def item_handover(request):
         message = {"message": "You have now deleted the offer"}
         return Response(message, status=status.HTTP_204_NO_CONTENT)
 
-
 @api_view(['GET'])
 def search_item(request):
     if request.method == "GET":
@@ -472,7 +519,58 @@ def search_item(request):
             print("this is the data", data)
         return Response(data, status=status.HTTP_200_OK)
 
-@ api_view(['GET', 'POST'])
+
+@api_view(['GET'])
+def accepted_trade(request, userId):
+
+    try:
+        posts = Post.objects.filter(user_id=userId)
+    except Post.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    postData = []
+    for post in posts:
+        postSerializer = PostSerializer(post)
+        print("post",postSerializer.data)
+        try:
+            item = Item.objects.filter(id=postSerializer.data["item_id"]).first()
+            images = Image.objects.all()
+        except Post.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        itemSerializer = ItemSerializer(item)
+        print("item",itemSerializer.data)
+        try:
+            offers = Offer.objects.filter(post_id=postSerializer.data["id"]).filter(acceptance = True)
+        except Post.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        post_offers = []
+        for offer in offers:
+            offerSerializer = OfferSerializer(offer)
+            print("offers",offerSerializer.data)
+            try:
+                Offeritem = Item.objects.filter(id=offerSerializer.data["offered_item"]).first()
+            except Post.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            itemOfferSerializer = ItemSerializer(Offeritem)
+            print("offered item",itemOfferSerializer.data)
+            post_offers.append({"offer": offerSerializer.data, "item": itemOfferSerializer.data})
+        if post_offers:
+            postData.append({"post": postSerializer.data, "post_item": itemSerializer.data, "offers": post_offers})
+        
+
+    if request.method == "GET":
+        return Response(postData, status=status.HTTP_200_OK)
+  
+@api_view(['GET', 'PUT'])
+def set_pending(request):
+    if request.method == "PUT":
+        serializer = OfferSerializer(data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("saved", status=status.HTTP_200_OK)
+        return Response("did not save")
+
+
+@api_view(['GET', 'POST'])
 def hello(request):
     if request.method == "GET":
         # queryset = User.objects.all()
