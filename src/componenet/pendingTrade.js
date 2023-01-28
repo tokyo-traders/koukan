@@ -14,88 +14,111 @@ import  Divider  from '@mui/material/Divider';
 import { useNavigate, useLocation} from "react-router-dom";
 
 const BASE_URL = 'http://127.0.0.1:8000/api'
+const homepage = '/api/homepage'
 
 
-function UserItemsList(props) {
+function PendingTrade(props) {
 
     const {user} = props
 
     const navigate = useNavigate();
     const location = useLocation();
-  
 
     const from = location.state?.from?.pathname || "/MyPage"
-    const addItem = useCallback(()=> navigate('/MyPage/addItem', {replace: true}), [navigate]);
-    const myPage = useCallback(()=> {
-      if (from === "/signup") {
-        navigate('/MyPage', {replace: true})
-      } else {
-        navigate(from, {replace: true})
-      }
-      }, [navigate]);
+    const myPage = useCallback(()=> navigate('/MyPage', {replace: true}), [navigate]);
 
-   
-      const [itemInfo, setItemInfo] = useState([{
-        "itemName": "",
-        "itemImages": "",
-        "itemID": ""
-      }])
-      const [offersMade, setOffersMade] = useState([]);
-    useEffect(() => {
-        if (user) {
-        axios.get(`/api/all-info/${user.id}`)
-          .then(response => {
-            console.log(response.data)
-            setItemInfo([...response.data])
-          })
-        }
-      }, [user])
+      const [tradingItems, setTradingItems] = useState(null);
+
 
       useEffect(() => {
-        axios.get(`/api/create-offer`)
+        axios.get(`/api/acceptedTrade/${user.id}`)
           .then(response => {
-            const data = response.data
+            console.log(response.data)
+            setTradingItems(response.data)
           })
       }, [])
 
-    return (
-      <Grid
-        container
-        width="100%"
-        direction="row"
-        justifyContent="center"
-        alignItems="center" 
-        xl={12}
-        spacing={3}
-      >
-        {user && itemInfo?.map(item => (
+
+      const completeTrade = (obj) => {
+        console.log(obj)
+        axios.put(`/api/itemHandover`,
+        JSON.stringify(obj),
+        {
+					headers: { "Content-Type": "application/json" },
+					withCredentials: true,
+				}
+        )
+          .then(response => {
+            console.log(response.data)
+          }).then(() => myPage())
+      }
+
+      return (
+        <Grid
+          container
+          width="100%"
+          direction="row"
+          justifyContent="center"
+          alignItems="center" 
+          xl={12}
+          spacing={3}
+        >
+          {tradingItems && tradingItems?.map(item => (
+            <Card elevation={6} 
+            sx={{ maxWidth: 610, mt: 10, marginLeft: 4, display: "flex" }}>
             <Card 
-              elevation={6} 
-              sx={{ maxWidth: 300, mt: 10, marginLeft: 4 }}
-              onClick={() => {
-                if (item) {
-                  navigate(`/MyPage/Items/${item.itemID}`, {replace: true})
-                }
-              }}
-              >
-              <CardMedia
-                component="img"
-                style={{ Width: 300 }}
-                image={BASE_URL + `${item.itemImages[0]}`}
-                height="140"
-              />
-              <CardContent >
-                <Box display="flex" justify="space-between">
-                <Typography gutterBottom variant="body">{item.itemName}</Typography>
-                </Box>
-              </CardContent>
-            </Card>
-        ))}
-        <Button onClick={addItem}>
-          <Icon sx={{ fontSize: 90, marginLeft: 15, marginTop: 3 }}>add_circle</Icon>
-        </Button>
-      </Grid>
-    )
+                elevation={6} 
+                sx={{ maxWidth: 300, mt: 10, marginLeft: 4 }}
+              //   onClick={() => {
+              //     if (item) {
+              //       navigate(`/MyPage/Items/${item.itemID}`, {replace: true})
+              //     }
+              //   }}
+                >
+                <CardMedia
+                  component="img"
+                  style={{ Width: 300 }}
+                  image={BASE_URL + `${item.image[0].image}`}
+                  height="140"
+                />
+                <CardContent >
+                  <Box display="flex" justify="space-between">
+                  <Typography gutterBottom variant="body">{item.post_item.item_name}</Typography>
+                  </Box>
+                </CardContent>
+              </Card>
+              <Card 
+                elevation={6} 
+                sx={{ maxWidth: 300, mt: 10, marginLeft: 4 }}
+              //   onClick={() => {
+              //     if (item) {
+              //       navigate(`/MyPage/Items/${item.itemID}`, {replace: true})
+              //     }
+              //   }}
+                >
+                <CardMedia
+                  component="img"
+                  style={{ Width: 300 }}
+                  image={BASE_URL + `${item.offers.image[0].image}`}
+                  height="140"
+                />
+                <CardContent >
+                  <Box display="flex" justify="space-between">
+                  <Typography gutterBottom variant="body">{item.offers.item.item_name}</Typography>
+                  </Box>
+                </CardContent>
+              </Card>
+              <Button
+              color='secondary'
+              variant='contained'
+              height="50"
+              alignItems="flex-end"
+              onClick={() => completeTrade(item.offers.offer)}
+              >I have Recieved my Item</Button>
+              </Card>
+          ))}
+        </Grid>
+      )
 }
 
-export default UserItemsList
+export default PendingTrade
