@@ -13,32 +13,31 @@ import { createTheme, CssBaseline, Menu } from '@mui/material';
 import useAuth from './hooks/useAuth';
 import { useNavigate, useLocation, Outlet } from "react-router-dom";
 import { ThemeProvider } from 'styled-components';
+import { hover } from '@testing-library/user-event/dist/hover';
 
 
-// const RoundedButton = styled(Button)(() => ({
-//     borderRadius: 35,
-//     backgroundColor: "#D904B5",
-//     color: "#46C8F5",
-//     padding: "15px 36px",
-//     fontSize: "18px"
-// }));
+const GreenButton = styled(Button)(() => ({
+    // borderRadius: 8,
+    backgroundColor: "#3cd64b",
+    color: "#def4f6",
+    "&:hover": {
+      background: "#32B13E"
+    }
+    // padding: "15px 36px",
+    // fontSize: "14px"
+}));
 
 const customTheme = createTheme({
-  palette: {
-    primary: {
-      main: '#3cd64b',
-      contrastText: 'white',
-    },
-    secondary: {
-      main: '#4d3e38'
-    },
-  },
+  root: {
+    backgroundColor: "#def4f6",
+  }
+
 });
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   // borderRadius: theme.shape.borderRadius,
-  borderRadius: '8px',
+  borderRadius: '4px',
   backgroundColor: alpha(theme.palette.common.black, 0.15),
   '&:hover': {
     backgroundColor: alpha(theme.palette.common.black, 0.25),
@@ -52,6 +51,7 @@ const Search = styled('div')(({ theme }) => ({
 }));
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
+  color: '#4d3e38',
   padding: theme.spacing(0, 2),
   height: '100%',
   position: 'absolute',
@@ -65,14 +65,15 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
+    color: '#4d3e38',
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-      width: '20ch',
+      width: '40ch',
       '&:focus': {
-        width: '25ch',
+        width: '45ch',
       },
     },
   },
@@ -122,46 +123,47 @@ function NavBar(props) {
 
   return (
     <>
-      <ThemeProvider theme={customTheme}>
-        <CssBaseline />
-        <Box sx={{ flexGrow: 1 }}>
-          <AppBar position="static" sx={{ background: "white" }}>
-            <Toolbar
-              sx={{
-                justifyContent: "space-between"
-              }}
-            >
-              <Link
-                variant="body1"
-                fontFamily="Roboto Slab"
-                padding={2}
-                color="secondary"
-                onClick={home}
-                underline='none'
-              >
-                <div>TOKYO</div>
-                <div>TRADERS</div>
-              </Link>
-              <Search onChange={handleSearchChange}>
-                <SearchIconWrapper>
-                  <SearchIcon />
-                </SearchIconWrapper>
-                <StyledInputBase
-                  placeholder="Looking for something?"
-                  inputProps={{ 'aria-label': 'search' }}
-                />
-              </Search>
-              {!user ? <Button color='secondary' variant='contained' onClick={login}>LOG IN</Button> :
-                <div>
-                  <Button color='secondary' variant='contained' onClick={myPage}>My Page</Button>
-                  <Button variant='contained' onClick={logOut}>Log Out</Button>
-                </div>}
-            </Toolbar>
-          </AppBar>
-        </Box>
-        <Outlet />
-      </ThemeProvider>
-    </>
+    {/* <ThemeProvider theme={customTheme}> */}
+    <CssBaseline />
+    <Box sx={{ flexGrow: 1,}} bgcolor={'blue'}>
+      <AppBar position="static" sx={{background: "#def4f6"}}>
+        <Toolbar
+          sx={{
+            justifyContent: "space-between"
+          }}
+        >
+          <Link
+            variant="body1"
+            fontFamily="Roboto Slab"
+            padding={2}
+            paddingLeft={3}
+            color="#3cd64b"
+            onClick={home}
+            underline='none'
+          >
+            <div>TOKYO</div>
+            <div>TRADERS</div>
+          </Link>
+          <Search>
+            <SearchIconWrapper>
+              <SearchIcon />
+            </SearchIconWrapper>
+            <StyledInputBase
+              placeholder="Looking for something?"
+              inputProps={{ 'aria-label': 'search' }}
+            />
+          </Search>
+          {!user ? <GreenButton variant='contained' onClick={login}>LOG IN</GreenButton> :
+          <div>
+          <GreenButton variant='contained' onClick={myPage}>My Page</GreenButton>
+          <GreenButton variant='contained' onClick={logOut}>Log Out</GreenButton>
+          </div>}
+        </Toolbar>
+      </AppBar>
+    </Box>
+  <Outlet/>
+  {/* </ThemeProvider> */}
+  </>
   );
 }
 

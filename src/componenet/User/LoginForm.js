@@ -14,18 +14,21 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import { useNavigate, useLocation} from "react-router-dom";
+import { padding } from "@mui/system";
 
 const REGISTER_URL = '/api/user/login';
 
-const RoundedButton = styled(Button)(() => ({
-    borderRadius: 35,
-    backgroundColor: "#D904B5",
-    color: "#46C8F5",
-    padding: "15px 36px",
-    fontSize: "18px"
+const BrownButton = styled(Button)(() => ({
+    backgroundColor: "#4d3e38",
+    borderRadius: "8px",
+    color: "#def4f6",
+    "&:hover": {
+      background: "#332925"
+    },
+    // padding: "15px 36px",
+    fontSize: "16px"
 }));
 
-const theme = createTheme();
 
 function LoginForm(props) {
 
@@ -85,8 +88,8 @@ function LoginForm(props) {
   }
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
+  
+     <>
         <CssBaseline />
         <Box
           sx={{
@@ -94,17 +97,27 @@ function LoginForm(props) {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            // marginLeft: '40%'
           }}
         >
           <Typography
             variant="h4"
             fontFamily="Roboto Slab"
             padding={2}
-            color="#D904B5"
+            color="#4d3e38"
           >
             Welcome Back!
           </Typography>
-          <Box component="form" onSubmit={handleSubmit}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }} 
+            component="form" 
+            onSubmit={handleSubmit} 
+            justifyContent={"center"}
+            >
             <TextField
               margin="normal"
               id="email"
@@ -123,25 +136,27 @@ function LoginForm(props) {
               onChange={e => setDetails({...details, password:e.target.value})}
               value={details.password}
             />
+            <Box>
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
-            <RoundedButton
+            </Box>
+            <BrownButton
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
               Log In
-            </RoundedButton>
+            </BrownButton>
             <Grid container>
               {/* <Grid item xs>
                 <Link href="#" variant="body2">
                   Forgot password?
                 </Link>
               </Grid> */}
-              <Grid item>
+              <Grid item  marginBottom={3}>
                 <Link
                   onClick={signup}
                 >
@@ -151,8 +166,7 @@ function LoginForm(props) {
             </Grid>
           </Box>
         </Box>
-      </Container>
-    </ThemeProvider>
+   </>
   );
 }
 

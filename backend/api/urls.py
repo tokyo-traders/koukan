@@ -14,6 +14,7 @@ router.register('image', views.ImageView)
 router.register('image/multiple_upload', views.ImageView)
 
 urlpatterns = [
+
     path('user/register', views.user_register),
     path('user/login', views.user_login),
     path('user/refresh', views.user_refresh),
@@ -50,7 +51,6 @@ urlpatterns = [
 
     # this path is for email verification
     # path('verify-email', VerifyEmail.as_view(), name='verify-email')
-
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 #
 # use the static or...

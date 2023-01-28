@@ -20,19 +20,19 @@ from rest_framework.parsers import JSONParser  # delete
 from rest_framework.renderers import JSONRenderer  # delete
 
 
-@api_view(['GET', 'POST'])
-def user_register(request):
+# @api_view(['GET', 'POST'])
+# def user_register(request):
 
-    if request.method == "GET":
-        obj = User.objects.all()
-        item = Item.objects.all()
-        serializer = UserSerializer(obj, many=True)
-        return Response(serializer.data)
-    if request.method == "POST":
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            print("!!!!!CHECK!!!!!", serializer)
-            serializer.save()
+#     if request.method == "GET":
+#         obj = User.objects.all()
+#         item = Item.objects.all()
+#         serializer = UserSerializer(obj, many=True)
+#         return Response(serializer.data)
+#     if request.method == "POST":
+#         serializer = UserSerializer(data=request.data)
+#         if serializer.is_valid():
+#             print("!!!!!CHECK!!!!!", serializer)
+#             serializer.save()
 
             # # email verification trial
             # # get the user email
@@ -55,14 +55,16 @@ def user_register(request):
             # # check util.py
             # Util.send_confirmation(data)
 
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         else:
+#             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+
 
 
 class VerifyEmail(generics.GenericAPIView):
     def get(self):
         pass
+
 
 
 @api_view(['GET', 'PUT', 'DELETE', 'POST'])

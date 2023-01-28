@@ -71,7 +71,7 @@ function UserItemsList(props) {
         {user && itemInfo?.map(item => (
             <Card 
               elevation={6} 
-              sx={{ maxWidth: 300, mt: 10, marginLeft: 4 }}
+              sx={{ maxWidth: 200, mt: 10, marginLeft: 3}}
               onClick={() => {
                 if (item) {
                   navigate(`/MyPage/Items/${item.itemID}`, {replace: true})
@@ -80,19 +80,19 @@ function UserItemsList(props) {
               >
               <CardMedia
                 component="img"
-                style={{ Width: 300 }}
                 image={BASE_URL + `${item.itemImages[0]}`}
                 height="140"
+                width="200"
               />
               <CardContent >
                 <Box display="flex" justify="space-between">
-                <Typography gutterBottom variant="body">{item.itemName}</Typography>
+                <Typography sx={{justifyContent:"center", display:"flex"}} gutterBottom variant="body">{item.itemName}</Typography>
                 </Box>
               </CardContent>
             </Card>
         ))}
         <Button onClick={addItem}>
-          <Icon sx={{ fontSize: 90, marginLeft: 15, marginTop: 3 }}>add_circle</Icon>
+          <Icon sx={{ fontSize: 50, marginLeft: 5, marginTop: 3, color:'#AEAEAE' }}>add_circle</Icon>
         </Button>
       </Grid>
     )
