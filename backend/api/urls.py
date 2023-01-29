@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import user_register, user_login, item_list, image_list, all_item, newall_item, create_post, edit_post, create_offer, edit_offer, homepage, listingItem, search_item, VerifyEmail, item_handover,accepted_trade,set_pending,accepted_trade, category_list 
+from .views import user_register, user_login, item_list, item_edit, image_list, all_item, newall_item, create_post, edit_post, create_offer, edit_offer, homepage, listingItem, search_item, VerifyEmail, item_handover,accepted_trade,set_pending,accepted_trade, category_list 
 
 
 from api import views
@@ -20,7 +20,7 @@ urlpatterns = [
   # to GET and POST all the item objects
   path('item/<int:userid>', views.item_list),
   # to get the item with full CRUD
-  path('item/<str:username>/<int:id>', views.item_edit),
+  path('item/<str:itemName>', views.item_edit),
   # to get the images path with GET and DELETE method only
   path('item-image/<int:itemId>', views.image_list),
    #HandOver
