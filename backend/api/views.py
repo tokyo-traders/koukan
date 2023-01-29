@@ -35,12 +35,14 @@ def user_register(request):
         if serializer.is_valid():
             # serializer.is_active = False # make the accounte deactivated check if this works
             serializer.save()
+            user = serializer.data
 
-            # email_body = 'Hi ' + \
-            #     str(user.data['username']) + \
-            #     'Click the link below to verify your email: \n' + abstractURL
-            # data = {'email_subject': 'Email Verification', 'email_to': str(
-            #     user.data['email']), 'email_body': email_body, }
+            # email verification trial
+            # get the user email 
+            getUser = User.objects.get(email=serializer.data['email'])
+            user = UserSerializer(getUser)
+            # produce a token
+            token = RefreshToken.for_user(getUser).access_token
 
             current_site = get_current_site(request).domain
             relativeLink = reverse('verify-email')
