@@ -33,15 +33,15 @@ const Img = styled('img')({
 });
 
 const BrownButton = styled(Button)(() => ({
-    backgroundColor: "#4d3e38",
-    borderRadius: "8px",
-    color: "#def4f6",
-    width: '60%',
-    "&:hover": {
-      background: "#332925"
-    },
-    // padding: "15px 36px",
-    fontSize: "16px"
+  backgroundColor: "#4d3e38",
+  borderRadius: "8px",
+  color: "#def4f6",
+  width: '60%',
+  "&:hover": {
+    background: "#332925"
+  },
+  // padding: "15px 36px",
+  fontSize: "16px"
 }));
 
 const BASE_URL = 'http://127.0.0.1:8000/api'
@@ -77,14 +77,14 @@ export default function ListingSingleItem(props) {
   }
 
 
- const acceptOffer =  async (obj) => {
-  obj.acceptance = true
-  const response = await axios.put(
-    `/api/SetPending`, 
-    JSON.stringify(obj),
-    {
-      headers: { 'Content-Type': 'application/json' },
-      withCredentials: true
+  const acceptOffer = async (obj) => {
+    obj.acceptance = true
+    const response = await axios.put(
+      `/api/SetPending`,
+      JSON.stringify(obj),
+      {
+        headers: { 'Content-Type': 'application/json' },
+        withCredentials: true
       }
     )
     console.log(response.data)
@@ -203,9 +203,20 @@ export default function ListingSingleItem(props) {
                     marginTop: 2,
                   }}
                 >
-                  {listing && <Typography variant='h3'>
-                    {listing.item.item_name}
-                  </Typography>}
+                  {listing &&
+                    <div margin='20px'>
+                      <Typography variant='h3'>
+                        {listing.item.item_name}
+                      </Typography>
+                      <Typography variant='h7'>
+                        posted by: <Typography variant='h5'>
+                          {listing.username}
+                        </Typography>
+                      </Typography>
+
+                    </div>
+                  }
+
 
 
                   {user?.id !== listing?.item.user_id &&
@@ -213,7 +224,7 @@ export default function ListingSingleItem(props) {
                       {/* <Box sx={{ marginLeft: 50 }}>
                         <ModeEditIcon /></Box> */}
                       <BrownButton
-                 
+
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                         onClick={display}
@@ -328,7 +339,7 @@ export default function ListingSingleItem(props) {
                           <>
                             <Box sx={{ marginLeft: 50 }}><ModeEditIcon /></Box>
                             <BrownButton
-                             
+
                               variant="contained"
                               sx={{ mt: 3, mb: 2 }}
                               onClick={() => {
