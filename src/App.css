@@ -7,12 +7,12 @@ body {
   z-index: 0;
 }
 
-/* .App {
+ /* .App {
   text-align: center;
 }
 
 
-* {
+ {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -52,18 +52,18 @@ body {
   to {
     transform: rotate(360deg);
   }
-}
+} */
 
 .listing {
-  width: 75%;
+  width: 90%;
   float: Right;
-  display: flex;
+  /* display: flex;
   flex-flow: row wrap;
-  justify-content: space-around;
+  justify-content: space-around; */
 
 }
 
 .listingClass {
   width: 220px;
   flex: 0 1 20%;
-} */
+} 
