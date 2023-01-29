@@ -18,14 +18,14 @@ import MenuItem from '@mui/material/MenuItem';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 
 const GreenButton = styled(Button)(() => ({
-    // borderRadius: 8,
-    backgroundColor: "#3cd64b",
-    color: "#def4f6",
-    "&:hover": {
-      background: "#32B13E"
-    }
-    // padding: "15px 36px",
-    // fontSize: "14px"
+  // borderRadius: 8,
+  backgroundColor: "#3cd64b",
+  color: "#def4f6",
+  "&:hover": {
+    background: "#32B13E"
+  }
+  // padding: "15px 36px",
+  // fontSize: "14px"
 }));
 
 const customTheme = createTheme({
@@ -113,7 +113,7 @@ function NavBar(props) {
     home();
   }
 
-    const handleChange = (event) => {
+  const handleChange = (event) => {
     setAuth(event.target.checked);
   };
 
@@ -137,76 +137,77 @@ function NavBar(props) {
 
   return (
     <>
-    {/* <ThemeProvider theme={customTheme}> */}
-    <CssBaseline />
-    <Box sx={{ flexGrow: 1,}} bgcolor={'blue'}>
-      <AppBar position="static" sx={{background: "#def4f6"}}>
-        <Toolbar
-          sx={{
-            justifyContent: "space-between"
-          }}
-        >
-          <Link
-            variant="body1"
-            fontFamily="Roboto Slab"
-            padding={2}
-            paddingLeft={3}
-            color="#3cd64b"
-            onClick={home}
-            underline='none'
+      {/* <ThemeProvider theme={customTheme}> */}
+      <CssBaseline />
+      <Box sx={{ flexGrow: 1, }} bgcolor={'blue'}>
+        <AppBar position="static" sx={{ background: "#def4f6" }}>
+          <Toolbar
+            sx={{
+              justifyContent: "space-between"
+            }}
           >
-            <div>TOKYO</div>
-            <div>TRADERS</div>
-          </Link>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Looking for something?"
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search>
-          {!user ? <GreenButton variant='contained' onClick={login}>LOG IN</GreenButton> :
-          <div>
-           <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="#3CD64B" 
-           >
-            <AccountCircle />
-            </IconButton> 
+            <Link
+              variant="body1"
+              fontFamily="Roboto Slab"
+              padding={2}
+              paddingLeft={3}
+              color="#3cd64b"
+              onClick={home}
+              underline='none'
+            >
+              <div>TOKYO</div>
+              <div>TRADERS</div>
+            </Link>
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Looking for something?"
+                inputProps={{ 'aria-label': 'search' }}
+                onChange={handleSearchChange}
+              />
+            </Search>
+            {!user ? <GreenButton variant='contained' onClick={login}>LOG IN</GreenButton> :
+              <div>
+                <IconButton
+                  size="large"
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleMenu}
+                  color="#3CD64B"
+                >
+                  <AccountCircle />
+                </IconButton>
 
-           <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                >
 
-          <MenuItem variant='contained' onClick={myPage}>My Page</MenuItem>
-          <MenuItem variant='contained' onClick={logOut}>Log Out</MenuItem>
+                  <MenuItem variant='contained' onClick={myPage}>My Page</MenuItem>
+                  <MenuItem variant='contained' onClick={logOut}>Log Out</MenuItem>
 
-          </Menu>       
-          </div>}
-        </Toolbar>
-      </AppBar>
-    </Box>
-  <Outlet/>
-  {/* </ThemeProvider> */}
-  </>
+                </Menu>
+              </div>}
+          </Toolbar>
+        </AppBar>
+      </Box>
+      <Outlet />
+      {/* </ThemeProvider> */}
+    </>
   );
 }
 
