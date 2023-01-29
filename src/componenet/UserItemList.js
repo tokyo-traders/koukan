@@ -51,12 +51,12 @@ function UserItemsList(props) {
         }
       }, [user])
 
-      useEffect(() => {
-        axios.get(`/api/create-offer`)
-          .then(response => {
-            const data = response.data
-          })
-      }, [])
+      // useEffect(() => {
+      //   axios.get(`/api/create-offer`)
+      //     .then(response => {
+      //       const data = response.data
+      //     })
+      // }, [])
 
     return (
       <Grid
