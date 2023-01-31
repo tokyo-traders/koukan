@@ -504,7 +504,7 @@ def item_handover(request):
                 print(item_Serializer.data)
                 print(offered_Serializer.data)
         return Response("saved", status=status.HTTP_200_OK)  
-    return Response(item_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(item_Serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         # return Response("at least you see it")
     # elif request.method == 'POST':
     #     item.delete()
