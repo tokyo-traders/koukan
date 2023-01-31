@@ -99,15 +99,9 @@ export default function AllListings(props) {
                 {listings?.map(listing => (
                     categoryFilter
                         ?
-                        // console.log(categoryFilter, listing.item.category)
                         listing.item.category === selectedCategory && listing.item.item_name.includes(searchValue?.toLowerCase()) && showListing(listing)
                         :
                         listing.item.item_name.includes(searchValue?.toLowerCase()) && showListing(listing)
-                    // searchValue
-                    //     ?
-                    //     listing.item.item_name.includes(searchValue.toLowerCase()) && showListing(listing)
-                    //     :
-                    //     showListing(listing)
                 ))
                 }
             </Grid>
