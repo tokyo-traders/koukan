@@ -240,30 +240,42 @@ def item_list(request, userid):
 
 @api_view(['GET', 'PUT', 'DELETE', 'POST', 'PATCH'])
 # @permission_classes([IsAuthenticated])
-def item_edit(request, itemName):
+def item_edit(request, itemId):
 
     try:
-        item = Item.objects.get(item_name=itemName)
+        # item = Item.objects.get(item_name=itemName)
+        item = Item.objects.get(pk=itemId)
+        itemSerializer = ItemSerializer(item)
         # maybe filter is better
         # user = User.objects.filter(username=username).first()
     except Item.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == "GET":
-        serializer = UserSerializer(item)
-        return Response(serializer.data)
+        print(itemSerializer.data)
+        return Response(itemSerializer.data, status=status.HTTP_200_OK)
     if request.method == "PATCH":
-        # serializer = ItemSerializer(item, data=request.data)
-        serializer = ItemSerializer(item, data=request.data, partial=True)
-        print("this is serializer in put", serializer)
+        currentItemId = itemSerializer.data['id']
+        try:
+            getItem = Item.objects.get(pk=currentItemId)
+            serializer = ItemSerializer(getItem, data=request.data, partial=True)
+        except Item.DoesNotExist:
+            error = {"There is no item to be updated"}
+            return Response(error, status=status.HTTP_404_NOT_FOUND)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'DELETE':
-        item.delete()
-        message = {"message": "You have now deleted the offer"}
-        return Response(message, status=status.HTTP_204_NO_CONTENT)
+        currentItemId = itemSerializer.data['id']
+        try:
+            toBeDeleted = Item.objects.get(pk=currentItemId)
+            toBeDeleted.delete()
+            message = {"message": "You have now deleted the offer"}
+            return Response(message, status=status.HTTP_204_NO_CONTENT)
+        except Item.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
 
 
 @api_view(['GET'])
@@ -380,23 +392,23 @@ def create_post(request):
 @ api_view(['GET', 'PUT', 'DELETE'])
 def edit_post(request, postId):
     try:
-        post = Post.objects.filter(pk=postId).first()
+        getPost = Post.objects.filter(pk=postId).first()
+        postSerializer = PostSerializer(getPost)
     except Post.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == "GET":
-        serializer = PostSerializer(post)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    elif request.method == "PUT":
-        serializer = PostSerializer(post, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-    elif request.method == "DELETE":
-        post.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(postSerializer.data, status=status.HTTP_200_OK)
+    if request.method == "DELETE":
+        currentPostID = postSerializer.data['id']
+        try:
+            postToBeDeleted = Post.objects.get(pk=currentPostID)
+            postToBeDeleted.delete()
+            message = {"The post has been deleted!"}
+            return Response(message, status=status.HTTP_204_NO_CONTENT)
+        except Post.DoesNotExist:
+            error = {"There is no posting to be deleted!"}
+            return Response(error, status=status.HTTP_404_NOT_FOUND)
 
 @ api_view(['GET'])
 def all_item(request, itemid):
@@ -492,7 +504,7 @@ def item_handover(request):
                 print(item_Serializer.data)
                 print(offered_Serializer.data)
         return Response("saved", status=status.HTTP_200_OK)  
-    return Response(item_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(item_Serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         # return Response("at least you see it")
     # elif request.method == 'POST':
     #     item.delete()

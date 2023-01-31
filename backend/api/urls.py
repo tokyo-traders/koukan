@@ -20,7 +20,7 @@ urlpatterns = [
   # to GET and POST all the item objects
   path('item/<int:userid>', views.item_list),
   # to get the item with full CRUD
-  path('item/<str:itemName>', views.item_edit),
+  path('item-edit/<int:itemId>', views.item_edit),
   # to get the images path with GET and DELETE method only
   path('item-image/<int:itemId>', views.image_list),
    #HandOver
