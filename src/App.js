@@ -1,10 +1,9 @@
-import axios from "axios";
 
 import "./App.css";
 // import "./componenet/Registration/Registration.css";
 
 import { Route, Routes } from "react-router-dom";
-import { useState, useEffect, useRef, useCallback, Component } from "react";
+import { useState, useEffect, useRef, } from "react";
 import Sidebar from "./componenet/Sidebar";
 import NavBar from "./componenet/NavBar";
 import AllListings from "./componenet/AllListings";
@@ -17,7 +16,6 @@ import LoginForm from "./componenet/User/LoginForm";
 import SignupForm from "./componenet/User/SignupForm";
 // import PendingTrade from "./componenet/PendingTrade";
 import MyPage from "./componenet/MyPage";
-import Layout from "./componenet/context/Layout";
 import UserPostList from "./componenet/UserPostList";
 import RequireAuth from "./componenet/User/RequireAuth";
 import UserSingleItem from "./componenet/UserSingleItem";
@@ -25,7 +23,7 @@ import UserItemsList from "./componenet/UserItemList";
 import AddListingForm from "./componenet/ListingForm";
 import ListingSingleItem from "./componenet/ListingSingleItem";
 import OfferForm from "./componenet/OfferForm";
-import { Category } from "@mui/icons-material";
+
 
 function App() {
 
@@ -35,7 +33,6 @@ function App() {
 	const [searchValue, setSearchValue] = useState('');
 	const [categories, setCategories] = useState([])
 
-	const categoryRef = useRef(null)
 
 	const axiosPrivate = useAxiosPrivate();
 
