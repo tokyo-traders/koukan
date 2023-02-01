@@ -94,7 +94,7 @@ function App() {
 								<Route path="/MyPage/addItem" element={<AddItem user={user} />} />
 
 								<Route path="/MyPage/postList" element={<UserPostList user={user} />} />
-								<Route path="/MyPage/pendingTrade" element={<PendingTrade user={user} />} />
+								<Route path="/MyPage/PendingTrade" element={<PendingTrade user={user} />} />
 								<Route path="/MyPage/Items/:itemId" element={<UserSingleItem user={user} />} />
 								<Route path="/MyPage/makeListing/:itemId" element={<AddListingForm user={user} />} />
 							</Route>
