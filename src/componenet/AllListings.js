@@ -15,10 +15,11 @@ export default function AllListings(props) {
 	// const body = document.getElementsByTagName("body");
 	// console.log(body);
 
-	const { searchValue } = props;
+    const { searchValue, categoryFilter, categories } = props;
 
-	const [listings, setListings] = useState([]);
-	const [diplayListing, setDuisplayListing] = useState([]);
+    const [listings, setListings] = useState([]);
+    const [diplayListing, setDuisplayListing] = useState([])
+    const [selectedCategory, setSelectedCategory] = useState()
 
 	useEffect(() => {
 		axios.get("api/homepage").then((res) => {
@@ -27,93 +28,91 @@ export default function AllListings(props) {
 		});
 	}, []);
 
-	console.log(searchValue);
-	const navigate = useNavigate();
-	const makeOffer = (obj) => {
-		navigate(`/listing/${obj.post.id}`, { replace: true });
-	};
+    useEffect(() => {
+        axios
+            .get('api/homepage')
+            .then(res => {
+                // console.log("this is the new data", res.data)
+                setListings(res.data)
+            })
+    }, [])
 
-	const showListing = (listing) => {
-		return (
-			// <div className='listingClass'
-			//     >
-			//     <img alt="image1" width="220px" src={BASE_URL + `${listing?.images[0]}`} />
-			//     < h3 > {listing.item.item_name}</h3>
+    const navigate = useNavigate();
+    const makeOffer = (obj) => {
+        navigate(`/listing/${obj.post.id}`, { replace: true })
+    }
 
-			<Card
-				elevation={2}
-				sx={{
-					// this is for the overall
-					width: 250,
-					height: 200,
-					mt: 5,
-					marginLeft: 3,
-				}}
-				onClick={() => {
-					if (listing) {
-						makeOffer(listing);
-					}
-				}}
-			>
-				<CardMedia
-					component="img"
-					image={BASE_URL + `${listing?.images[0]}`}
-					sx={{
-						// this is for image boxes
-						// padding: "0.5em 0.5em 0 0.5em",
-						objectFit: "contain",
-						height: 150,
-						objectFit: "cover",
-					}}
-				/>
-				<CardContent>
-					<Box>
-						<Typography
-							sx={{
-								// this one is only the name box
-								justifyContent: "center",
-								display: "flex",
-								textAlign: "center",
-								fontSize: "20px",
-								fontFamily: "monospace",
-							}}
-							gutterBottom
-							variant="body"
-						>
-							{listing.item.item_name}
-						</Typography>
-					</Box>
-				</CardContent>
-			</Card>
-		);
-	};
+    const showListing = (listing, index) => {
+        return (
+            <div key={index}>
+                <Card
+                    key={index}
+                    elevation={2}
+                    sx={{ maxWidth: 200, mt: 5, marginLeft: 3 }}
+                    onClick={() => {
+                        if (listing) {
+                            makeOffer(listing)
+                        }
+                    }}
+                >
+                    <CardMedia
+                        component="img"
+                        image={BASE_URL + `${listing?.images[0]}`}
+                        width="200"
+                        sx={{ padding: "1em 1em 0 1em", objectFit: "contain" }}
 
-	function findMatches(searchValue, listings) {
-		return listings.filter((item) => {
-			const regex = new RegExp(searchValue, "gi");
-			return item.item.item_name.match(regex);
-		});
-	}
+                    />
+                    <CardContent >
+                        <Box display="flex" justify="space-between">
+                            <Typography sx={{ justifyContent: "center", display: "flex" }} gutterBottom variant="body">{listing.item.item_name}</Typography>
+                        </Box>
+                    </CardContent>
+                </Card>
+            </div>
+        )
+    }
 
-	return (
-		<div className="listing">
-			<Grid
-				container
-				width="100%"
-				height="100%"
-				direction="row"
-				justifyContent="center"
-				alignItems="center"
-				xl={12}
-				spacing={1}
-			>
-				{listings?.map((listing) =>
-					searchValue
-						? listing.item.item_name.includes(searchValue.toLowerCase()) &&
-						  showListing(listing)
-						: showListing(listing)
-				)}
-			</Grid>
-		</div>
-	);
-}
+    // NO NEED THIS FUNCTION ANYMORE, PLS DELETE
+    // function findMatches(searchValue, listings) {
+    //     return listings.filter(item => {
+    //         const regex = new RegExp(searchValue, 'gi')
+    //         return item.item.item_name.match(regex)
+    //     });
+    // }
+
+    useEffect(() => {
+        const getCategoryId = (category) => {
+            const selectedCategory = categories.filter(cat => {
+                return cat.category_name === category
+            })
+            // console.log(selectedCategory[0]?.id)
+            setSelectedCategory(selectedCategory[0]?.id)
+        }
+        getCategoryId(categoryFilter)
+    }, [categoryFilter])
+
+    return (
+        <div className='listing'>
+            <Grid
+                container
+                width="100%"
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+                xl={12}
+                spacing={1}
+            >
+
+                {listings?.map(listing => (
+                    categoryFilter
+                        ?
+                        listing.item.category === selectedCategory && listing.item.item_name.includes(searchValue?.toLowerCase()) && showListing(listing)
+                        :
+                        listing.item.item_name.includes(searchValue?.toLowerCase()) && showListing(listing)
+                ))
+                }
+            </Grid>
+
+        </div>
+    )
+} 

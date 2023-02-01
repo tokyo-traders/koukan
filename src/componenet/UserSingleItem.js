@@ -104,7 +104,7 @@ export default function UserSingleItem(props) {
 			// PUT request using axios with async/await
 			const rawResponse = await axios
 				.patch(
-					`http://localhost:8000/api/item/${currentItemName}`,
+					`http://localhost:8000/api/item-edit/${itemId}`,
 					JSON.stringify(obj),
 					{
 						headers: { "Content-Type": "application/json" },
