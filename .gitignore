@@ -26,4 +26,4 @@ yarn-error.log*
 venv
 backend/backend/.env
 **/__pycache__
-
+**/media
