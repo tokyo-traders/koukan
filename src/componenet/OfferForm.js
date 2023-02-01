@@ -145,7 +145,7 @@ function OfferForm(props) {
       >
         {user && itemInfo?.map(item => (
           <Card
-            elevation={6}
+            elevation={2}
             sx={{ maxWidth: 200, margin: 2}}
             onClick={() => {
               console.log(item)
@@ -153,7 +153,8 @@ function OfferForm(props) {
             }}
           >
             <CardMedia
-              sx={{maxWidth: 200, objectFit:"contain",  bgcolor: '#f5f5f5',}}
+              // sx={{maxWidth: 200, objectFit:"contain",  bgcolor: '#f5f5f5',}}
+              sx={{objectFit: "contain",bgcolor: '#f5f5f5'  }}
               component="img"
               image={BASE_URL + `${item.itemImages[0]}`}
               height="150"
@@ -200,18 +201,18 @@ function OfferForm(props) {
           }}
           >
            <Card
-            elevation={6}
+            elevation={2}
             sx={{ maxHeight: 340, margin: 2}}
            >
             <CardActionArea>
             <CardMedia
-              sx={{maxWidth: 200, objectFit:"contain",  bgcolor: '#f5f5f5'}}
+              sx={{objectFit:"contain",  bgcolor: '#f5f5f5'}}
               component="img"
               image={listing && BASE_URL + `${listing.images[0]}`}
               height="150"
             />
               <CardContent>
-                <Typography gutterBottom variant="h6" component="div">
+                <Typography nowrap>
                    {listing && listing.item.item_name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
@@ -236,7 +237,7 @@ function OfferForm(props) {
         >
             <BrownButton
             onClick={makeOffer}
-          >Trade</BrownButton>
+          >MAKE OFFER</BrownButton>
         </Grid>
 
         
@@ -248,16 +249,19 @@ function OfferForm(props) {
             justifyContent:"center",
             alignItems:"center"
           }}
-        >
+        >   
+
+            {offer &&
             <Card
             elevation={6}
             sx={{ maxHeight: 340, margin: 2}}
            >
             <CardActionArea>
+              
              <CardMedia
-              sx={{maxWidth: 200, objectFit:"contain",  bgcolor: '#f5f5f5'}}
+              sx={{objectFit:"contain",  bgcolor: '#f5f5f5'}}
               component="img"
-              image={offer && BASE_URL + `${offer?.itemImages[0]}`}
+              image={BASE_URL + `${offer?.itemImages[0]}`}
               height="150"
             />
               {/* <CardMedia
@@ -269,66 +273,18 @@ function OfferForm(props) {
                 alt="please select your item"
               /> */}
               <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
+                <Typography npwrap>
                    {offer && offer.itemName}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {offer && offer.username}
+                  Your item
                 </Typography>
               </CardContent>
             </CardActionArea>
-          </Card>
+          </Card>}
         </Grid>
       </Grid>
       </Box>
-
-
-
-
-
-
-      {/* this is the listing item   */}
-      <Container sx={{ display: "flex", }}>
-        <Box sx={{ width: '30%', margin: 'auto', marginLeft: 15, marginTop: 2, display: 'flex', flexDirection: 'column', float: 'left' }}>
-          <Grid container spacing={1} sx={{ backgroundColor: "none", marginTop: 2 }}>
-            <Grid item xs={5} sx={{ margin: '10px' }}>
-              <Container sx={{ height: 350, width: 350 }}>
-
-                {/* {listing && <Img alt="image1" src={BASE_URL + `${listing.images[0]}`} />}
-                {listing && <Typography variant='h3'>
-                  {listing.item.item_name}
-                </Typography>} */}
-                
-                {listing && <Img alt="image1" src={BASE_URL + `${listing.images[0]}`}/>}
-                <Typography variant='h4'>
-                  {listing && listing.item.item_name}
-                </Typography>
-              </Container>
-            </Grid>
-          </Grid>
-        </Box>
-
-
-        <Container sx={{ height: 350, width: 70, margin: "auto" }}>
-          <BrownButton
-            onClick={makeOffer}
-          >Trade</BrownButton>
-        </Container>
-
-        {/* this is the trading item  */}
-        <Box sx={{ width: '30%', margin: 'auto', marginLeft: 2, marginTop: 2, display: 'flex', flexDirection: 'column', float: 'right' }}>
-          <Grid container spacing={1} sx={{ backgroundColor: "none", marginTop: 2 }}>
-            <Grid item xs={5} sx={{ margin: '10px' }}>
-              <Container sx={{ height: 350, width: 350 }}>
-                {offer && <img alt="image1" width="100%" src={BASE_URL + `${offer?.itemImages[0]}`} />}
-                {offer && <Typography variant='h3'>
-                  {offer.itemName}
-                </Typography>}
-              </Container>
-            </Grid>
-          </Grid>
-        </Box>
-      </Container>
     </>
   )
 }
