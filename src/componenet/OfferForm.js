@@ -7,6 +7,8 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import { CardActionArea } from '@mui/material';
+
 
 import Divider from '@mui/material/Divider';
 
@@ -17,15 +19,16 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 
 const BASE_URL = 'http://127.0.0.1:8000/api'
 
-const RoundedButton = styled(Button)(() => ({
-  borderRadius: 50,
-  backgroundColor: "#D904B5",
-  color: "#46C8F5",
-  fontSize: "1rem",
-  height: "70px",
-  width: "70px",
-  margin: "auto",
-  padding: "0px"
+
+const BrownButton = styled(Button)(() => ({
+	backgroundColor: "#4d3e38",
+	borderRadius: "8px",
+	color: "#def4f6",
+	"&:hover": {
+		background: "#332925",
+	},
+	// padding: "15px 36px",
+	fontSize: "16px",
 }));
 
 const Img = styled('img')({
@@ -115,51 +118,173 @@ function OfferForm(props) {
 
   return (
     <>
-      <Typography 
+      <Typography
+        marginTop={4} 
         variant="h4"
         fontFamily="Roboto Slab"
         padding={2}
         color="#4d3e38"
+        align='center'
       >
-        Would you like to make an Offer?
+        SELECT FROM YOUR ITEM
       </Typography>
+      <Box 
+        sx={{
+          backgroundColor: 'none',
+          width:'80%',
+          display: "flex",
+          margin: "auto",
+          }}>
       <Grid
         container
-        width="80$"
-        direction="row"
+        // width="80%"
+        // direction="row"
         justifyContent="center"
-        alignItems="center"
-        lg={12}
-        spacing={3}
+        // lg={12}
+        // spacing={2}
       >
         {user && itemInfo?.map(item => (
           <Card
             elevation={6}
-            sx={{ maxWidth: 250, mt: 10, marginLeft: 4 }}
+            sx={{ maxWidth: 200, margin: 2}}
             onClick={() => {
               console.log(item)
               setOffer(item)
             }}
           >
             <CardMedia
+              sx={{maxWidth: 200, objectFit:"contain",  bgcolor: '#f5f5f5',}}
               component="img"
-              style={{ Width: 250 }}
               image={BASE_URL + `${item.itemImages[0]}`}
-              height="140"
+              height="150"
             />
-            <CardContent >
-              <Typography gutterBottom variant="body">{item?.itemName}</Typography>
-              <Box display="flex" justify="space-between">
-                <Typography gutterBottom variant="subtitle1"></Typography>
-              </Box>
+            <CardContent>
+              <Typography noWrap>{item?.itemName}</Typography>
             </CardContent>
           </Card>
         ))}
       </Grid>
+      </Box>
 
       <Box sx={{ width: '80%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
-        <Divider sx={{ borderBottomWidth: 3 }} variant="middle" />
+        <Divider sx={{ borderBottomWidth: 2 }} variant="middle" />
       </Box>
+
+      <Box
+       sx={{
+        width: "80%",
+        margin: "auto",
+        marginTop: 2,
+        display: "flex",
+        flexDirection: "column"
+       }}
+      >
+
+      <Grid container spacing={2} 
+          sx={{
+            flexGrow: 1,
+            backgroundColor: "none",
+            marginTop: 2,
+            display: "flex",
+            justifyContent:"center",
+            alignItems:"center"
+            }}>
+
+        <Grid item xs={5} 
+          sx={{
+            flexGrow: 1,
+            marginTop: 2,
+            display: "flex",
+            justifyContent:"center",
+            alignItems:"center"
+          }}
+          >
+           <Card
+            elevation={6}
+            sx={{ maxHeight: 340, margin: 2}}
+           >
+            <CardActionArea>
+            <CardMedia
+              sx={{maxWidth: 200, objectFit:"contain",  bgcolor: '#f5f5f5'}}
+              component="img"
+              image={listing && BASE_URL + `${listing.images[0]}`}
+              height="150"
+            />
+              <CardContent>
+                <Typography gutterBottom variant="h6" component="div">
+                   {listing && listing.item.item_name}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                 Owner : {listing && listing.username}
+                </Typography>
+                {/* <Typography variant="body2" color="text.secondary">
+                  {listing && listing.item.details}
+                </Typography> */}
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        </Grid>
+
+        <Grid item xs={2}
+            sx={{
+            flexGrow: 1,
+            marginTop: 2,
+            display: "flex",
+            justifyContent:"center",
+            alignItems:"center"
+          }}
+        >
+            <BrownButton
+            onClick={makeOffer}
+          >Trade</BrownButton>
+        </Grid>
+
+        
+        <Grid item xs={5}
+              sx={{
+            flexGrow: 1,
+            marginTop: 2,
+            display: "flex",
+            justifyContent:"center",
+            alignItems:"center"
+          }}
+        >
+            <Card
+            elevation={6}
+            sx={{ maxHeight: 340, margin: 2}}
+           >
+            <CardActionArea>
+             <CardMedia
+              sx={{maxWidth: 200, objectFit:"contain",  bgcolor: '#f5f5f5'}}
+              component="img"
+              image={offer && BASE_URL + `${offer?.itemImages[0]}`}
+              height="150"
+            />
+              {/* <CardMedia
+                component="img"
+                height="220"
+                width="220"
+                sx={{objectFit:"contain" }}
+                image={offer && BASE_URL + `${offer?.itemImages[0]}`}
+                alt="please select your item"
+              /> */}
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
+                   {offer && offer.itemName}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {offer && offer.username}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        </Grid>
+      </Grid>
+      </Box>
+
+
+
+
 
 
       {/* this is the listing item   */}
@@ -168,12 +293,14 @@ function OfferForm(props) {
           <Grid container spacing={1} sx={{ backgroundColor: "none", marginTop: 2 }}>
             <Grid item xs={5} sx={{ margin: '10px' }}>
               <Container sx={{ height: 350, width: 350 }}>
+
                 {/* {listing && <Img alt="image1" src={BASE_URL + `${listing.images[0]}`} />}
                 {listing && <Typography variant='h3'>
                   {listing.item.item_name}
                 </Typography>} */}
+                
                 {listing && <Img alt="image1" src={BASE_URL + `${listing.images[0]}`}/>}
-                <Typography variant='h3'>
+                <Typography variant='h4'>
                   {listing && listing.item.item_name}
                 </Typography>
               </Container>
@@ -183,9 +310,9 @@ function OfferForm(props) {
 
 
         <Container sx={{ height: 350, width: 70, margin: "auto" }}>
-          <RoundedButton
+          <BrownButton
             onClick={makeOffer}
-          >Trade</RoundedButton>
+          >Trade</BrownButton>
         </Container>
 
         {/* this is the trading item  */}
