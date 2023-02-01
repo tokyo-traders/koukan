@@ -7,6 +7,8 @@ import {
   ListItemIcon,
   ListItemText,
   Switch,
+  ToggleButton,
+  ToggleButtonGroup,
   Typography,
 } from "@mui/material";
 import axios from "axios";
@@ -15,7 +17,7 @@ import React, { useEffect, useState } from "react";
 function Sidebar(props) {
 
   const { handleCategoryFilter, categories, setCategories } = props;
-  // const [categories, setCategories] = useState([])
+  const [selected, setSelected] = useState('');
 
   useEffect(() => {
     const getCategories = async () => {
@@ -23,7 +25,6 @@ function Sidebar(props) {
       setCategories(response.data)
     }
     getCategories()
-    console.log(categories)
   }, [])
 
   return (
@@ -36,81 +37,27 @@ function Sidebar(props) {
                 <Typography variant="h6">Categories</Typography>
               </ListItem>
             </ListItem>
-            {categories?.map(category => (
-              <ListItem disablePadding>
-                <ListItemButton component="a" onClick={handleCategoryFilter}>
-                  <ListItemText primary={category.category_name} />
-                </ListItemButton>
-              </ListItem>
-            )
+            <ToggleButtonGroup
+              orientation="vertical"
+              value={selected}
+              exclusive
+            >
+              {categories?.map(category => (
+                <ToggleButton value={category.category_name} onClick={(e) => { handleCategoryFilter(e); setSelected(category.category_name) }}>
+                  <ListItem disablePadding>
+                    <ListItemButton component="a" >
+                      <ListItemText primary={category.category_name} />
+                    </ListItemButton>
+                  </ListItem>
+                </ToggleButton>
+              )
+              )}
+            </ToggleButtonGroup>
 
-            )}
-            {/* <ListItem disablePadding>
-              <ListItem>
-                <Typography variant="h6">Categories</Typography>
-              </ListItem>
-            </ListItem>
-            <ListItem disablePadding>
-
-              <ListItemButton component="a" onClick={handleCategoryFilter}>
-                <ListItemText primary="Furniture" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-
-              <ListItemButton component="a" href="#simple-list">
-                <ListItemText primary="Storage" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-
-              <ListItemButton component="a" href="#simple-list">
-                <ListItemText primary="Home Accessories" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-
-              <ListItemButton component="a" href="#simple-list">
-                <ListItemText primary="Travel" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-
-              <ListItemButton component="a" href="#simple-list">
-                <ListItemText primary="Electronics" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-
-              <ListItemButton component="a" href="#simple-list">
-                <ListItemText primary="Health & Beauty" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-
-              <ListItemButton component="a" href="#simple-list">
-                <ListItemText primary="Sporting Goods" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-
-              <ListItemButton component="a" href="#simple-list">
-                <ListItemText primary="Clothing" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-
-              <ListItemButton component="a" href="#simple-list">
-                <ListItemText primary="Shoes" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-
-            </ListItem> */}
           </List>
         </Box>
       </Box>
-    </div>
+    </div >
   );
 };
 
