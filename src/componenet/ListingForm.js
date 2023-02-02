@@ -56,13 +56,14 @@ function AddListingForm(props) {
       
 
                 <Box sx={{ marginTop: 2}}>
-                <Typography >Desire Item</Typography>
+                <Typography >Wishlist</Typography>
                 <TextField
                     fullWidth
                     multiline
                     rows={2}
                     value={desire}
-                    onChange={(e) => setDesire(e.target.value)} 
+                    onChange={(e) => setDesire(e.target.value)}
+                    label="Enten something you would like to trade"
                 />
                 </Box>
 
@@ -83,7 +84,7 @@ function AddListingForm(props) {
                 
                 <FormControlLabel
                     control={<Checkbox />} 
-                    label="Giveaway for free" 
+                    label="Give away for free" 
                     value={priceFree}
                     onChange={(e) => setPriceFree(true)} 
                     />
@@ -110,7 +111,7 @@ function AddListingForm(props) {
                     onClick={newPost}
                   >
                     CREATE NEW LISTING
-                  </BrownButton>  
+                  </BrownButton>
 
             </Box>
 

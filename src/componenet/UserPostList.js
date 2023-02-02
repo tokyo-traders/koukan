@@ -51,41 +51,41 @@ function UserPostList(props) {
       })
   }, [])
 
-  return (
-    <Grid
-      container
-      width="100%"
-      direction="row"
-      justifyContent="center"
-      alignItems="center"
-      xl={12}
-      spacing={3}
-    >
-      {listings && listings?.map(item => (
-        <Card
-          elevation={6}
-          sx={{ maxWidth: 300, mt: 10, marginLeft: 4 }}
-          onClick={() => {
-            if (item) {
-              navigate(`/listing/${item.post.id}`, { replace: true })
-            }
-          }}
-        >
-          <CardMedia
-            component="img"
-            style={{ Width: 300 }}
-            image={BASE_URL + `${item.images[0]}`}
-            height="140"
-          />
-          <CardContent >
-            <Box display="flex" justify="space-between">
-              <Typography gutterBottom variant="body">{item.item.item_name}</Typography>
-            </Box>
-          </CardContent>
-        </Card>
-      ))}
-    </Grid>
-  )
+    return (
+      <Grid
+        container
+        width="100%"
+        direction="row"
+        justifyContent="center"
+        alignItems="center" 
+        xl={12}
+        spacing={3}
+      >
+        {listings && listings?.map(item => (
+            <Card 
+              elevation={6} 
+              sx={{ maxWidth: 200, mt: 10, marginLeft: 3}}
+              onClick={() => {
+                if (item) {
+                  navigate(`/listing/${item.post.id}`, { replace: true })
+                }
+              }}
+              >
+              <CardMedia
+                component="img"
+                sx={{objectFit: "contain", bgcolor: '#f5f5f5'}}
+                image={BASE_URL + `${item.images[0]}`}
+                height="150"
+              />
+              <CardContent >
+                <Box display="flex" justify="space-between">
+                <Typography noWrap>{item.item.item_name}</Typography>
+                </Box>
+              </CardContent>
+            </Card>
+        ))}
+      </Grid>
+    )
 }
 
 export default UserPostList

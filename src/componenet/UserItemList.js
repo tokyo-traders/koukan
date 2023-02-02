@@ -58,49 +58,45 @@ function UserItemsList(props) {
   //     })
   // }, [])
 
-  return (
-    <Grid
-      container
-      width="100%"
-      direction="row"
-      justifyContent="center"
-      alignItems="center"
-      xl={12}
-      spacing={3}
-    >
-      {user && itemInfo?.map(item => (
-        <div key={item.id}>
-
-          <Card
-            key={item.id}
-            elevation={6}
-            sx={{ maxWidth: 300, mt: 10, marginLeft: 3 }}
-            onClick={() => {
-              if (item) {
-                navigate(`/MyPage/Items/${item.itemID}`, { replace: true })
-              }
-            }}
-          >
-            <CardMedia
-              component="img"
-              image={BASE_URL + `${item.itemImages[0]}`}
-              height="140"
-              sx={{ padding: "1em 1em 0 1em", objectFit: "contain" }}
-
-            />
-            <CardContent >
-              <Box display="flex" justify="space-between">
-                <Typography sx={{ justifyContent: "center", display: "flex" }} gutterBottom variant="body">{item.itemName}</Typography>
-              </Box>
-            </CardContent>
-          </Card>
-        </div>
-      ))}
-      <Button onClick={addItem}>
-        <Icon sx={{ fontSize: 50, marginLeft: 5, marginTop: 3, color: '#AEAEAE' }}>add_circle</Icon>
-      </Button>
-    </Grid>
-  )
+    return (
+      <Grid
+        container
+        width="100%"
+        direction="row"
+        justifyContent="center"
+        alignItems="center" 
+        xl={12}
+        spacing={3}
+      >
+        {user && itemInfo?.map(item => (
+            <Card 
+              elevation={2} 
+              sx={{ maxWidth: 200, mt: 10, marginLeft: 3}}
+              onClick={() => {
+                if (item) {
+                  navigate(`/MyPage/Items/${item.itemID}`, {replace: true})
+                }
+              }}
+              >
+              <CardMedia
+                component="img"
+                image={BASE_URL + `${item.itemImages[0]}`}
+                height="150"
+                sx={{objectFit: "contain", bgcolor: '#f5f5f5'}}
+                
+              />
+              <CardContent >
+                {/* <Box display="flex" justify="space-between"> */}
+                <Typography noWrap>{item.itemName}</Typography>
+                {/* </Box> */}
+              </CardContent>
+            </Card>
+        ))}
+        <Button onClick={addItem}>
+          <Icon sx={{ fontSize: 50, marginLeft: 5, marginTop: 3, color:'#AEAEAE' }}>add_circle</Icon>
+        </Button>
+      </Grid>
+    )
 }
 
 export default UserItemsList

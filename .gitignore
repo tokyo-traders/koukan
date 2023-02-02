@@ -10,6 +10,8 @@
 
 # production
 **/build
+**/build
+
 misc
 .DS_Store
 .env.local
@@ -25,3 +27,4 @@ yarn-error.log*
 venv
 backend/backend/.env
 **/__pycache__
+

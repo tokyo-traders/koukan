@@ -85,14 +85,15 @@ export default function MyPage(props) {
 
           {/* get logged in user name and display */}
 
-          {user &&
-            <Typography
-              variant="h4"
-              fontFamily="Roboto Slab"
-              padding={2}
-              color="#4d3e38"
-            >
-              {user.username}
+         {user &&
+          <Typography
+            variant="h4"
+            fontFamily="Roboto Slab"
+            sx={{fontWeight: 'bold'}}
+            padding={2}
+            color="#4d3e38"
+          >
+            {user.username}
 
             </Typography>}
           <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '80%' }}>

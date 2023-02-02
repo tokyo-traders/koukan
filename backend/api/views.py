@@ -294,7 +294,9 @@ def all_item(request, itemid):
 
     if request.method == "GET":
         itemSerializer = ItemSerializer(item)
-        print("😂", itemSerializer)
+        getOffer = Offer.objects.get(offered_item=itemSerializer.data['id'])
+        currentOffer = OfferSerializer(getOffer)
+        print("current offer", currentOffer.data)
         data = []
         imgUrl = []
         for image in images:
@@ -303,7 +305,7 @@ def all_item(request, itemid):
                 imgUrl.append(imageSerializer.data['image'])
         data.append({'itemName': itemSerializer.data['item_name'],
                      'images': imgUrl,
-                     'details': itemSerializer.data['details']})
+                     'details': itemSerializer.data['details'], 'expiration': currentOffer.data['date_offered'], 'user_id': itemSerializer.data['user_id']})
         return Response(data)
 
 
