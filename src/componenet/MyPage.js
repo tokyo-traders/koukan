@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { useNavigate, useLocation, Outlet} from "react-router-dom";
+import { useNavigate, useLocation, Outlet } from "react-router-dom";
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -46,7 +46,7 @@ const StyledTab = styled((props) => <Tab disableRipple {...props} />)(
 
 
 export default function MyPage(props) {
-  const {user} = props
+  const { user } = props
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -54,34 +54,34 @@ export default function MyPage(props) {
 
   const [value, setValue] = useState('My Items');
   const handleChange = (event, newValue) => {
-      setValue(newValue);
-    };
+    setValue(newValue);
+  };
 
   const from = location.state?.from?.pathname || "/MyPage"
-  const itemList = useCallback(()=> navigate("/MyPage", {replace: true}), [navigate]);
-  const postList = useCallback(()=> navigate("/MyPage/postList", {replace: true}), [navigate]);
-  const postHistory = useCallback(()=> navigate("/MyPage/postHistory", {replace: true}), [navigate]);
-  const pendingTrade = useCallback(()=> navigate("/MyPage/PendingTrade", {replace: true}), [navigate]);
-  const myPage = useCallback(()=> {
+  const itemList = useCallback(() => navigate("/MyPage", { replace: true }), [navigate]);
+  const postList = useCallback(() => navigate("/MyPage/postList", { replace: true }), [navigate]);
+  const offerList = useCallback(() => navigate("/MyPage/offered-items/", { replace: true }), [navigate]);
+  const pendingTrade = useCallback(() => navigate("/MyPage/PendingTrade", { replace: true }), [navigate]);
+  const myPage = useCallback(() => {
     if (from === "/signup") {
-      navigate('/MyPage', {replace: true})
+      navigate('/MyPage', { replace: true })
     } else {
-      navigate(from, {replace: true})
+      navigate(from, { replace: true })
     }
-    }, [navigate]);
+  }, [navigate]);
 
-    return (
+  return (
     <>
       <Container component="main" maxWidth="lg">
-      <CssBaseline />
-      <Box
+        <CssBaseline />
+        <Box
           sx={{
             marginTop: 5,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
           }}
-      >
+        >
 
           {/* get logged in user name and display */}
 
@@ -95,26 +95,26 @@ export default function MyPage(props) {
           >
             {user.username}
 
-          </Typography>}
-        <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '80%'}}>
-          <StyledTabs 
-            centered
-            value={value}
-            onChange={handleChange}
-            textColor="blue"
-            indicatorColor="secondary"
-            aria-label="secondary tabs example"
+            </Typography>}
+          <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '80%' }}>
+            <StyledTabs
+              centered
+              value={value}
+              onChange={handleChange}
+              textColor="blue"
+              indicatorColor="secondary"
+              aria-label="secondary tabs example"
             >
-            <StyledTab value="My Items" label="My Items" onClick={itemList}/>
-            <StyledTab value="My Listing" label="My Listing" onClick={postList}/>
-            <StyledTab value="Traded Items" label="Traded Items" onClick={postHistory}/>
-            <StyledTab value="Pending trades" label="Pending trades" onClick={pendingTrade}/>
-          </StyledTabs>
-        </Box>
-      
+              <StyledTab value="My Items" label="My Items" onClick={itemList} />
+              <StyledTab value="My Listing" label="My Listings" onClick={postList} />
+              <StyledTab value="My Offers" label="Accepted Offers" onClick={offerList} />
+              <StyledTab value="Pending trades" label="Pending Listings" onClick={pendingTrade} />
+            </StyledTabs>
+          </Box>
+
         </Box>
       </Container>
-     <Outlet />
+      <Outlet />
     </>
   );
 }

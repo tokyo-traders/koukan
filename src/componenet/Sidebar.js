@@ -1,6 +1,7 @@
 import { Category } from "@mui/icons-material";
 import {
   Box,
+  ButtonBase,
   List,
   ListItem,
   ListItemButton,
@@ -26,6 +27,10 @@ function Sidebar(props) {
     }
     getCategories()
   }, [])
+
+  const resetCategories = () => {
+    setSelected('')
+  }
 
   return (
     <div>
@@ -53,8 +58,8 @@ function Sidebar(props) {
               )
               )}
             </ToggleButtonGroup>
-
           </List>
+          <ButtonBase onClick={resetCategories}>reset categories</ButtonBase>
         </Box>
       </Box>
     </div >

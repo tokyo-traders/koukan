@@ -10,8 +10,8 @@ import CardActions from '@mui/material/CardActions';
 import Grid from '@mui/material/Grid';
 import Icon from '@mui/material/Icon';
 import MyPage from './MyPage'
-import  Divider  from '@mui/material/Divider';
-import { useNavigate, useLocation} from "react-router-dom";
+import Divider from '@mui/material/Divider';
+import { useNavigate, useLocation } from "react-router-dom";
 
 const BASE_URL = 'http://127.0.0.1:8000/api'
 const homepage = '/api/homepage'
@@ -19,37 +19,37 @@ const homepage = '/api/homepage'
 
 function UserPostList(props) {
 
-    const {user} = props
+  const { user } = props
 
-    const navigate = useNavigate();
-    const location = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    const [listings, setListings] = useState(null);
+  const [listings, setListings] = useState(null);
 
-    useEffect(() => {
-        axios
-            .get(homepage)
-            .then(res => {
-                setListings(res.data.filter(item => item.item.user_id === user.id))
-            })
-    }, [])
-  
-
-    const from = location.state?.from?.pathname || "/MyPage"
-    const addItem = useCallback(()=> navigate('/MyPage/addItem', {replace: true}), [navigate]);
+  useEffect(() => {
+    axios
+      .get(homepage)
+      .then(res => {
+        setListings(res.data.filter(item => item.item.user_id === user.id))
+      })
+  }, [])
 
 
-   
-    
-      const [offersMade, setOffersMade] = useState([]);
+  const from = location.state?.from?.pathname || "/MyPage"
+  const addItem = useCallback(() => navigate('/MyPage/addItem', { replace: true }), [navigate]);
 
 
-      useEffect(() => {
-        axios.get(`/api/create-offer`)
-          .then(response => {
-             setOffersMade(response.data)
-          })
-      }, [])
+
+
+  const [offersMade, setOffersMade] = useState([]);
+
+
+  useEffect(() => {
+    axios.get(`/api/create-offer`)
+      .then(response => {
+        setOffersMade(response.data)
+      })
+  }, [])
 
     return (
       <Grid

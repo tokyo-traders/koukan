@@ -10,53 +10,53 @@ import CardActions from '@mui/material/CardActions';
 import Grid from '@mui/material/Grid';
 import Icon from '@mui/material/Icon';
 import MyPage from './MyPage'
-import  Divider  from '@mui/material/Divider';
-import { useNavigate, useLocation} from "react-router-dom";
+import Divider from '@mui/material/Divider';
+import { useNavigate, useLocation } from "react-router-dom";
 
 const BASE_URL = 'http://127.0.0.1:8000/api'
 
 
 function UserItemsList(props) {
 
-    const {user} = props
+  const { user } = props
 
-    const navigate = useNavigate();
-    const location = useLocation();
-  
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    const from = location.state?.from?.pathname || "/MyPage"
-    const addItem = useCallback(()=> navigate('/MyPage/addItem', {replace: true}), [navigate]);
-    const myPage = useCallback(()=> {
-      if (from === "/signup") {
-        navigate('/MyPage', {replace: true})
-      } else {
-        navigate(from, {replace: true})
-      }
-      }, [navigate]);
 
-   
-      const [itemInfo, setItemInfo] = useState([{
-        "itemName": "",
-        "itemImages": "",
-        "itemID": ""
-      }])
+  const from = location.state?.from?.pathname || "/MyPage"
+  const addItem = useCallback(() => navigate('/MyPage/addItem', { replace: true }), [navigate]);
+  const myPage = useCallback(() => {
+    if (from === "/signup") {
+      navigate('/MyPage', { replace: true })
+    } else {
+      navigate(from, { replace: true })
+    }
+  }, [navigate]);
 
-    useEffect(() => {
-        if (user) {
-        axios.get(`/api/all-info/${user.id}`)
-          .then(response => {
-            console.log(response.data)
-            setItemInfo([...response.data])
-          })
-        }
-      }, [user])
 
-      // useEffect(() => {
-      //   axios.get(`/api/create-offer`)
-      //     .then(response => {
-      //       const data = response.data
-      //     })
-      // }, [])
+  const [itemInfo, setItemInfo] = useState([{
+    "itemName": "",
+    "itemImages": "",
+    "itemID": ""
+  }])
+
+  useEffect(() => {
+    if (user) {
+      axios.get(`/api/all-info/${user.id}`)
+        .then(response => {
+          // console.log(response.data)
+          setItemInfo([...response.data])
+        })
+    }
+  }, [user])
+
+  // useEffect(() => {
+  //   axios.get(`/api/create-offer`)
+  //     .then(response => {
+  //       const data = response.data
+  //     })
+  // }, [])
 
     return (
       <Grid
