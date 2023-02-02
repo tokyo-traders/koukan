@@ -234,7 +234,7 @@ export default function ListingSingleItem(props) {
                       <Typography >
                         <a
                           href={`https://wa.me/${listing?.phoneDetail}`}
-                          class="whatsapp_float"
+                          className="whatsapp_float"
                           target="_blank"
                           rel="noopener noreferrer"
                         >

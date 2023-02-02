@@ -26,6 +26,7 @@ import AddListingForm from "./componenet/ListingForm";
 import ListingSingleItem from "./componenet/ListingSingleItem";
 import OfferForm from "./componenet/OfferForm";
 import UserOfferList from "./componenet/UserOffersList";
+import UserSingleOffer from "./componenet/UserSingleOffer";
 import { Category } from "@mui/icons-material";
 
 function App() {
@@ -36,7 +37,7 @@ function App() {
 	const [searchValue, setSearchValue] = useState('');
 	const [categories, setCategories] = useState([])
 
-	const categoryRef = useRef(null)
+
 
 	const axiosPrivate = useAxiosPrivate();
 
@@ -93,9 +94,10 @@ function App() {
 							<Route path="/MyPage" element={<MyPage user={user} />} >
 								<Route path="/MyPage" element={<UserItemsList user={user} />} />
 								<Route path="/MyPage/addItem" element={<AddItem user={user} />} />
-
 								<Route path="/MyPage/postList" element={<UserPostList user={user} />} />
 								<Route path="/MyPage/offered-items" element={<UserOfferList user={user} />} />
+								<Route path="/MyPage/offered-items/:userId/:offerId" element={<UserSingleOffer user={user} />} />
+
 								<Route path="/MyPage/pendingTrade" element={<PendingTrade user={user} />} />
 								<Route path="/MyPage/Items/:itemId" element={<UserSingleItem user={user} />} />
 								<Route path="/MyPage/makeListing/:itemId" element={<AddListingForm user={user} />} />

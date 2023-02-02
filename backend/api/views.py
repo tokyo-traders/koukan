@@ -624,6 +624,32 @@ def items_offered(request, userId):
             data = []
             for item in itemSerializer:
                 getOffer = Offer.objects.get(
+                    offered_item=item['id'], acceptance=True)
+                test = OfferSerializer(getOffer).data
+                image = Image.objects.filter(item_id=item['id'])
+                imageSerializer = ImageSerializer(image, many=True)
+                if test['offered_item'] == item['id']:
+                    data.append(
+                        {"itemName": item['item_name'], "image": imageSerializer.data[0]['image'], "id": test['id']})
+        except User.DoesNotExist:
+            error = {"Error on user"}
+            return Response(error, status=status.HTTP_404_NOT_FOUND)
+        return Response(data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def single_offer(request, userId, offerId):
+    if request.method == "GET":
+        try:
+            user = User.objects.get(pk=userId)
+            offer = Offer.objects.get(pk=offerId)
+            getUserId = UserSerializer(user).data["id"]
+            print(offer)
+            allItems = Item.objects.filter(user_id=getUserId)
+            itemSerializer = ItemSerializer(allItems, many=True).data
+            data = []
+            for item in itemSerializer:
+                getOffer = Offer.objects.get(
                     offered_item=item['id'], acceptance=False)
                 test = OfferSerializer(getOffer).data
                 image = Image.objects.filter(item_id=item['id'])

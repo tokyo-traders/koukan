@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import user_register, user_login, item_list, item_edit, image_list, items_offered, all_item, newall_item, create_post, edit_post, create_offer, edit_offer, homepage, listingItem, search_item, VerifyEmail, item_handover, accepted_trade, set_pending, accepted_trade, category_list
+from .views import user_register, user_login, item_list, item_edit, image_list, single_offer, items_offered, all_item, newall_item, create_post, edit_post, create_offer, edit_offer, homepage, listingItem, search_item, VerifyEmail, item_handover, accepted_trade, set_pending, accepted_trade, category_list
 
 
 from api import views
@@ -56,6 +56,7 @@ urlpatterns = [
     path('verify-email', VerifyEmail.as_view(), name='verify-email'),
     path('categories-list', views.category_list),
     path('offered-items/<int:userId>', views.items_offered),
+    path('offered-items/<int:userId>/<int:offerId>', views.single_offer),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 #
 # use the static or...

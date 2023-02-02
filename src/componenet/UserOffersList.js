@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
+import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -18,16 +20,15 @@ function UserOfferList(props) {
 
     const [offers, setOffers] = useState();
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         axios
             .get(`/api/offered-items/${user.id}`)
             .then(res => {
-                console.log(res.data)
                 setOffers(res.data)
             })
     }, [])
-
-
     return (
 
         <Grid
@@ -39,25 +40,26 @@ function UserOfferList(props) {
             xl={12}
             spacing={3}
         >
-            {offers && offers?.map(item => (
+            {offers && offers?.map((offer, index) => (
                 <Card
+                    key={index}
                     elevation={6}
                     sx={{ maxWidth: 300, mt: 10, marginLeft: 4 }}
                     onClick={() => {
-                        if (item) {
-                            // navigate(`/listing/${item.post.id}`, { replace: true }) need the path for the single offer view 
+                        if (offer) {
+                            navigate(`/MyPage/offered-items/${user.id}/${offer.id}`, { replace: true })
                         }
                     }}
                 >
                     <CardMedia
                         component="img"
                         style={{ Width: 300 }}
-                        image={BASE_URL + `${item.image}`}
+                        image={BASE_URL + `${offer.image}`}
                         height="140"
                     />
                     <CardContent >
                         <Box display="flex" justify="space-between">
-                            <Typography gutterBottom variant="body">{item.itemName}</Typography>
+                            <Typography gutterBottom variant="body">{offer.itemName}</Typography>
                         </Box>
                     </CardContent>
                 </Card>
