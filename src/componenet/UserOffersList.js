@@ -47,7 +47,7 @@ function UserOfferList(props) {
                     sx={{ maxWidth: 300, mt: 10, marginLeft: 4 }}
                     onClick={() => {
                         if (offer) {
-                            navigate(`/MyPage/offered-items/${user.id}/${offer.id}`, { replace: true })
+                            navigate(`/MyPage/singleOffer/${offer.id}`, { replace: true })
                         }
                     }}
                 >

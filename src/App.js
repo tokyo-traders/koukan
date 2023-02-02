@@ -85,7 +85,7 @@ function App() {
 						]} />
 						<Route path="/Login" element={<LoginForm userState={userState} setUserState={setUserState} />} />
 						<Route path="/Signup" element={<SignupForm />} />
-						<Route path="/listing/:listingId" element={[<Sidebar />, <ListingSingleItem user={user} />]} />
+						<Route path="/listing/:listingId" element={[<Sidebar handleCategoryFilter={handleCategoryFilter} categoryFilter={categoryFilter} categories={categories} setCategories={setCategories} />, <ListingSingleItem user={user} />]} />
 
 
 
@@ -96,7 +96,7 @@ function App() {
 								<Route path="/MyPage/addItem" element={<AddItem user={user} />} />
 								<Route path="/MyPage/postList" element={<UserPostList user={user} />} />
 								<Route path="/MyPage/offered-items" element={<UserOfferList user={user} />} />
-								<Route path="/MyPage/offered-items/:userId/:offerId" element={<UserSingleOffer user={user} />} />
+								<Route path="/MyPage/singleOffer/:offerId" element={<UserSingleOffer user={user} />} />
 
 								<Route path="/MyPage/pendingTrade" element={<PendingTrade user={user} />} />
 								<Route path="/MyPage/Items/:itemId" element={<UserSingleItem user={user} />} />

@@ -93,7 +93,7 @@ export default function UserSingleItem(props) {
 
 	const deleteItem = (itemId) => {
 		axios
-			.delete(`/api/item/${user.username}/${itemId}`)
+			.delete(`/api/item-edit/${itemId}`)
 			.then((res) => console.log(res));
 	};
 
@@ -128,18 +128,6 @@ export default function UserSingleItem(props) {
 				);
 			});
 		}
-		// // if (itemId) {
-		//   axios.get(`/api/all-item/${itemId}`)
-		//     // .then(response => setItemData(response.data))
-		//     .then(response => {
-		//       // console.log("😂", response.data)
-		//       // console.log(user, itemId)
-		//       setItemData(response.data[0])
-		//       console.log("heyheyhey", itemData)
-		//       setImages(response.data[0].image)
-		//       console.log("this is the image", images)
-		//     })
-		// // }
 	}, []);
 	return (
 		<>

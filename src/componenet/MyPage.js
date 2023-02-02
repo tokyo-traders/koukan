@@ -107,7 +107,7 @@ export default function MyPage(props) {
               <StyledTab value="My Items" label="My Items" onClick={itemList} />
               <StyledTab value="My Listing" label="My Listings" onClick={postList} />
               <StyledTab value="My Offers" label="Accepted Offers" onClick={offerList} />
-              <StyledTab value="Pending trades" label="Accepted Listings" onClick={pendingTrade} />
+              <StyledTab value="Pending trades" label="Pending Listings" onClick={pendingTrade} />
             </StyledTabs>
           </Box>
 

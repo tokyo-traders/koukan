@@ -637,30 +637,63 @@ def items_offered(request, userId):
         return Response(data, status=status.HTTP_200_OK)
 
 
-@api_view(['GET'])
-def single_offer(request, userId, offerId):
+# @api_view(['GET'])
+# def single_offer(request, userId, offerId):
+#     if request.method == "GET":
+#         try:
+#             user = User.objects.get(pk=userId)
+#             offer = OfferSerializer(Offer.objects.get(pk=offerId))
+#             getUserId = UserSerializer(user).data["id"]
+#             getOfferId = offer['id'].value
+#             getPostId = offer['post_id']
+#             allItems = Item.objects.filter(user_id=getUserId)
+#             itemSerializer = ItemSerializer(allItems, many=True).data
+#             data = []
+#             for item in itemSerializer:
+#                 getOffer = Offer.objects.get(
+#                     offered_item=item['id'], acceptance=False)
+#                 test = OfferSerializer(getOffer).data
+#                 image = Image.objects.filter(item_id=item['id'])
+#                 imageSerializer = ImageSerializer(image, many=True)
+#                 if test['offered_item'] == item['id']:
+#                     data.append(
+#                         {"itemName": item['item_name'], "image": imageSerializer.data[0]['image']})
+#         except User.DoesNotExist:
+#             error = {"Error on user"}
+#             return Response(error, status=status.HTTP_404_NOT_FOUND)
+#         return Response(data, status=status.HTTP_200_OK)
+
+@api_view(['GET', 'PUT'])
+def single_offer(request, offerId):
+    try:
+        currentOffer = Offer.objects.get(pk=offerId)
+        item1Id = OfferSerializer(currentOffer).data["offered_item"]
+        item2PostId = OfferSerializer(currentOffer).data["post_id"]
+        getPost = Post.objects.get(pk=item2PostId)
+        currentPostItemId = PostSerializer(getPost).data["item_id"]
+        currentPostUserId = PostSerializer(getPost).data["user_id"]
+    except Offer.DoesNotExist:
+        error = {"There is no such offer!"}
+        return Response(error, status=status.HTTP_404_NOT_FOUND)
+
     if request.method == "GET":
-        try:
-            user = User.objects.get(pk=userId)
-            offer = Offer.objects.get(pk=offerId)
-            getUserId = UserSerializer(user).data["id"]
-            print(offer)
-            allItems = Item.objects.filter(user_id=getUserId)
-            itemSerializer = ItemSerializer(allItems, many=True).data
-            data = []
-            for item in itemSerializer:
-                getOffer = Offer.objects.get(
-                    offered_item=item['id'], acceptance=False)
-                test = OfferSerializer(getOffer).data
-                image = Image.objects.filter(item_id=item['id'])
-                imageSerializer = ImageSerializer(image, many=True)
-                if test['offered_item'] == item['id']:
-                    data.append(
-                        {"itemName": item['item_name'], "image": imageSerializer.data[0]['image']})
-        except User.DoesNotExist:
-            error = {"Error on user"}
+        item1 = Item.objects.get(pk=item1Id)
+        currentUserItem = ItemSerializer(item1).data
+        getItem1Image = Image.objects.filter(item_id=item1Id).first()
+        item1Image = ImageSerializer(getItem1Image).data
+        item2 = Item.objects.get(pk=currentPostItemId)
+        wantedItem = ItemSerializer(item2).data
+        getItem2Image = Image.objects.filter(item_id=currentPostItemId).first()
+        item2Image = ImageSerializer(getItem2Image).data
+        getUser = User.objects.get(pk=currentPostUserId)
+        otherUser = UserSerializer(getUser).data
+        data = {"itemOffered": currentUserItem['item_name'], "itemOfferedImage": item1Image['image'],
+                "desiredItem": wantedItem['item_name'], "desiredItemImage": item2Image['image'], "otherUserInfo": otherUser['username']}
+        if data:
+            return Response(data, status=status.HTTP_200_OK)
+        else:
+            error = {"there is something wrong in the single item offered"}
             return Response(error, status=status.HTTP_404_NOT_FOUND)
-        return Response(data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET', 'POST'])

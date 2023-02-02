@@ -56,7 +56,9 @@ urlpatterns = [
     path('verify-email', VerifyEmail.as_view(), name='verify-email'),
     path('categories-list', views.category_list),
     path('offered-items/<int:userId>', views.items_offered),
-    path('offered-items/<int:userId>/<int:offerId>', views.single_offer),
+    # path('offered-items/<int:userId>/<int:offerId>', views.single_offer),
+    path('singleOffer/<int:offerId>', views.single_offer)
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 #
 # use the static or...
