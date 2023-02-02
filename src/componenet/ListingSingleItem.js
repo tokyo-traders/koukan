@@ -19,6 +19,7 @@ import Tooltip from '@mui/material/Tooltip';
 import { IconButton } from '@mui/material';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import Badge from '@mui/material/Badge';
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -64,7 +65,7 @@ export default function ListingSingleItem(props) {
     navigate(from, { replace: true })
   }, [navigate]);
 
-  
+
   const [expanded, setExpanded] = React.useState(false);
 
   const handleChange = (panel) => (event, isExpanded) => {
@@ -98,6 +99,21 @@ export default function ListingSingleItem(props) {
     console.log(response.data)
   }
 
+  const deletePost = () => {
+    axios
+      .delete(`/api/edit-post/${listing.post.id}`)
+      .then((res) => console.log(res));
+  };
+
+  const hidAcceptedPost = (id) => {
+    axios
+      .put(`/api/edit-post/${id}`,
+        {
+          visibile: false
+        }
+      )
+      .then((res) => console.log(res));
+  };
 
   useEffect(() => {
     if (listingId) {
@@ -183,7 +199,7 @@ export default function ListingSingleItem(props) {
   return (
     <div >
       {/* <Box sx={{ width: '50%', marginLeft: '30%', marginTop: 2, display: 'flex', flexDirection: 'column' }}> */}
-      <Box sx={{ width: '70%', margin: 'auto', marginTop: 10, display: 'flex', flexDirection: 'column'}}>
+      <Box sx={{ width: '70%', margin: 'auto', marginTop: 10, display: 'flex', flexDirection: 'column' }}>
         <Grid container spacing={2} sx={{ backgroundColor: "none", marginTop: 2 }}>
           <Grid item xs={6} sx={{ margin: '10px' }}>
             <Container>
@@ -193,12 +209,12 @@ export default function ListingSingleItem(props) {
                   showArrows={true}
                   showThumbs={true}
                   thumbWidth={100}
-                  sx={{objectFit: "contain", bgcolor: '#f5f5f5'}}
+                  sx={{ objectFit: "contain", bgcolor: '#f5f5f5' }}
                   autoPlay={false}
                 >
                   {listing?.images.map((img, i) => (
                     <div>
-                      <img alt="image1" src={BASE_URL + `${listing.images[i]}`}/>
+                      <img alt="image1" src={BASE_URL + `${listing.images[i]}`} />
                     </div>
                   ))}
                 </Carousel>}
@@ -214,18 +230,18 @@ export default function ListingSingleItem(props) {
                 <Box
                   sx={{
                     backgroundColor: "none",
-                    paddingBottom:2,
+                    paddingBottom: 2,
                     borderBottom: 1,
                     borderColor: 'grey.500'
                   }}
-                
+
                 >
                   {listing &&
                     <div margin='20px'>
                       <Typography variant='h5'>
                         {listing.item.item_name}
                       </Typography>
-                    
+
                     </div>
                   }
                   {user?.id !== listing?.item.user_id &&
@@ -241,37 +257,37 @@ export default function ListingSingleItem(props) {
                       </BrownButton>
 
                       <div>
-                      <Tooltip title="Send poster a message on whatspp">
-                      <IconButton >
-                        <a href={`https://wa.me/${listing?.phoneDetail}`}>
-                          <WhatsAppIcon sx={{ fontSize: "30px", color:'#4d3e38' }}/>
-                        </a>
-                      </IconButton>
-                      </Tooltip>
+                        <Tooltip title="Send poster a message on whatspp">
+                          <IconButton >
+                            <a href={`https://wa.me/${listing?.phoneDetail}`}>
+                              <WhatsAppIcon sx={{ fontSize: "30px", color: '#4d3e38' }} />
+                            </a>
+                          </IconButton>
+                        </Tooltip>
 
-                      
-                      {listing &&  
-                      <Tooltip title="Send an email to poster">
-                      <IconButton>
-                      <a href={`mailto:${listing.email}`}>
-                        <EmailIcon sx={{ fontSize: "30px", color:'#4d3e38' }}/> </a> 
-                      </IconButton>
-                      </Tooltip>
-                      }
 
-                      {offersItems &&  
-                      <Tooltip title="Offer received">
-                      <Badge badgeContent={offersItems.length}>
-                      <a >
-                        <LocalOfferIcon sx={{ fontSize: "30px", color:'#4d3e38' , marginLeft:"0.5rem" }}/> </a> 
-                      </Badge>
-                      </Tooltip>
-                      }
+                        {listing &&
+                          <Tooltip title="Send an email to poster">
+                            <IconButton>
+                              <a href={`mailto:${listing.email}`}>
+                                <EmailIcon sx={{ fontSize: "30px", color: '#4d3e38' }} /> </a>
+                            </IconButton>
+                          </Tooltip>
+                        }
+
+                        {offersItems &&
+                          <Tooltip title="Offer received">
+                            <Badge badgeContent={offersItems.length}>
+                              <a >
+                                <LocalOfferIcon sx={{ fontSize: "30px", color: '#4d3e38', marginLeft: "0.5rem" }} /> </a>
+                            </Badge>
+                          </Tooltip>
+                        }
                       </div>
                     </>}
-                
+
                 </Box>
-   
+
                 <Box
                   sx={{
                     backgroundColor: "none",
@@ -313,8 +329,15 @@ export default function ListingSingleItem(props) {
                     {new Date(listing.post.expiration).toDateString()}
                   </Typography>}
                 </Box>
-
-                
+                {user?.id === listing?.item.user_id &&
+                  <Button
+                    variant="outlined"
+                    startIcon={<DeleteIcon />}
+                    onClick={() => deletePost()}
+                  >
+                    Delete
+                  </Button>
+                }
                 <Box
                   sx={{
                     backgroundColor: "none",
@@ -328,7 +351,7 @@ export default function ListingSingleItem(props) {
                   </Typography>
                   {listing &&
                     <Typography variant='h7'>
-                          {listing.username}
+                      {listing.username}
                     </Typography>}
                 </Box>
 
@@ -383,7 +406,7 @@ export default function ListingSingleItem(props) {
       );} */}
 
 
-    {/* ____________________________________________________________________________________________________________________________       */}
+      {/* ____________________________________________________________________________________________________________________________       */}
 
 
       {offersItems && offersItems.map((items, index) => {
@@ -393,21 +416,21 @@ export default function ListingSingleItem(props) {
               <Divider sx={{ borderBottomWidth: 1 }} variant="middle" />
             </Box>
 
-            <Box sx={{ width: '70%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column'}}>
+            <Box sx={{ width: '70%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
               <Grid container spacing={2} sx={{ backgroundColor: "none", marginTop: 2 }}>
                 <Grid item xs={5} sx={{ margin: '10px' }}>
                   <Container sx={{ height: 350 }}>
-                    {listing && <Img alt="image1" src={BASE_URL + `${items?.images[0]}`} />}
+                    {items && <Img alt="image1" src={BASE_URL + `${items?.images[0]}`} />}
                   </Container>
                 </Grid>
                 <Grid item xs={5} sm container>
                   <Grid item xs container direction="column" spacing={2}>
                     <Grid item xs>
-                     <Box
+                      <Box
                         sx={{
                           backgroundColor: "white",
                         }}
-                      
+
                       >
                         <Typography variant='h5'>
                           {items?.itemName}
@@ -421,7 +444,8 @@ export default function ListingSingleItem(props) {
                               variant="contained"
                               sx={{ mt: 3, mb: 2 }}
                               onClick={() => {
-                                acceptOffer(offersMade[index])
+                                acceptOffer(offersMade[index]);
+                                hidAcceptedPost(listing.post.id)
                               }}
                             >
                               ACCEPT OFFER

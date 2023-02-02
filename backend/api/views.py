@@ -329,7 +329,7 @@ def image_list(request, itemId):
 @api_view(['GET'])  # to be refactored
 def homepage(request):
     if request.method == "GET":
-        posts = Post.objects.all()
+        posts = Post.objects.filter(visible=True)
         images = Image.objects.all()
         data = []
         imageUrl = []
@@ -358,7 +358,7 @@ def homepage(request):
 def listingItem(request, postId):
     if request.method == "GET":
         data = []
-        post = Post.objects.get(pk=postId)
+        post = Post.objects.get(pk=postId, visible=True)
         images = Image.objects.all()
         imageUrl = []
         postSerializer = PostSerializer(post)
