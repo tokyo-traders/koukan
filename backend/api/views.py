@@ -419,27 +419,6 @@ def edit_post(request, postId):
             return Response(error, status=status.HTTP_404_NOT_FOUND)
 
 
-@ api_view(['GET'])
-def all_item(request, itemid):
-    try:
-        item = Item.objects.filter(id=itemid).first()
-        images = Image.objects.all()
-    except Item.DoesNotExist or Image.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == "GET":
-        itemSerializer = ItemSerializer(item)
-        data = []
-        imgUrl = []
-        for image in images:
-            imageSerializer = ImageSerializer(image)
-            if imageSerializer.data["item_id"] == itemSerializer.data["id"]:
-                imgUrl.append(imageSerializer.data['image'])
-        data.append({'itemName': itemSerializer.data['item_name'],
-                     'image': imgUrl, 'details': itemSerializer.data['details'], 'user_id': itemSerializer.data['user_id']})
-        return Response(data)
-
-
 @api_view(['GET', 'POST'])
 def create_offer(request):
     if request.method == "GET":
