@@ -64,7 +64,7 @@ function UserPostList(props) {
         {listings && listings?.map(item => (
             <Card 
               elevation={6} 
-              sx={{ maxWidth: 300, mt: 10, marginLeft: 4 }}
+              sx={{ maxWidth: 200, mt: 10, marginLeft: 3}}
             //   onClick={() => {
             //     if (item) {
             //       navigate(`/MyPage/Items/${item.itemID}`, {replace: true})
@@ -73,13 +73,13 @@ function UserPostList(props) {
               >
               <CardMedia
                 component="img"
-                style={{ Width: 300 }}
+                sx={{objectFit: "contain", bgcolor: '#f5f5f5'}}
                 image={BASE_URL + `${item.images[0]}`}
-                height="140"
+                height="150"
               />
               <CardContent >
                 <Box display="flex" justify="space-between">
-                <Typography gutterBottom variant="body">{item.item.item_name}</Typography>
+                <Typography noWrap>{item.item.item_name}</Typography>
                 </Box>
               </CardContent>
             </Card>
