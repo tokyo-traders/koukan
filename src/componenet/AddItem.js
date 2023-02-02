@@ -161,7 +161,7 @@ function AddItem(props) {
 					onChange={(e) => setDetails(e.target.value)}
 				/>
 			</Box>
-			<Box sx={{ minWidth: 120 }}>
+			<Box sx={{ minWidth: 120, marginTop: 2 }}>
 				<FormControl fullWidth>
 					<InputLabel id="demo-simple-select-label">Category</InputLabel>
 					<Select

@@ -1,9 +1,9 @@
 body {
-  background-image: url(../public/Koukan_background_web.png);
-   background-repeat: no-repeat;
+  background-image: url(../public/Koukan_background_web_opacity50.png);
+   /* background-repeat: no-repeat; */
   background-attachment: fixed;
-  background-size: cover;
-   font-family: sans-serif;
+  /* background-size: cover; */
+   /* font-family: sans-serif; */
   z-index: 0;
 }
 

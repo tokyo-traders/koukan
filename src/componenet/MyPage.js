@@ -89,6 +89,7 @@ export default function MyPage(props) {
           <Typography
             variant="h4"
             fontFamily="Roboto Slab"
+            sx={{fontWeight: 'bold'}}
             padding={2}
             color="#4d3e38"
           >
