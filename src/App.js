@@ -83,7 +83,7 @@ function App() {
 						]} />
 						<Route path="/Login" element={<LoginForm userState={userState} setUserState={setUserState} />} />
 						<Route path="/Signup" element={<SignupForm />} />
-						<Route path="/listing/:listingId" element={[<Sidebar />, <ListingSingleItem user={user} />]} />
+						<Route path="/listing/:listingId" element={[<ListingSingleItem user={user} />]} />
 
 
 

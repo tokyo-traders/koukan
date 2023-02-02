@@ -65,11 +65,11 @@ function UserPostList(props) {
             <Card 
               elevation={6} 
               sx={{ maxWidth: 200, mt: 10, marginLeft: 3}}
-            //   onClick={() => {
-            //     if (item) {
-            //       navigate(`/MyPage/Items/${item.itemID}`, {replace: true})
-            //     }
-            //   }}
+              onClick={() => {
+                if (item) {
+                  navigate(`/listing/${item.post.id}`, { replace: true })
+                }
+              }}
               >
               <CardMedia
                 component="img"
