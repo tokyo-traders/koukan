@@ -25,6 +25,7 @@ import UserItemsList from "./componenet/UserItemList";
 import AddListingForm from "./componenet/ListingForm";
 import ListingSingleItem from "./componenet/ListingSingleItem";
 import OfferForm from "./componenet/OfferForm";
+import UserOfferList from "./componenet/UserOffersList";
 import { Category } from "@mui/icons-material";
 
 function App() {
@@ -94,6 +95,7 @@ function App() {
 								<Route path="/MyPage/addItem" element={<AddItem user={user} />} />
 
 								<Route path="/MyPage/postList" element={<UserPostList user={user} />} />
+								<Route path="/MyPage/offered-items" element={<UserOfferList user={user} />} />
 								<Route path="/MyPage/pendingTrade" element={<PendingTrade user={user} />} />
 								<Route path="/MyPage/Items/:itemId" element={<UserSingleItem user={user} />} />
 								<Route path="/MyPage/makeListing/:itemId" element={<AddListingForm user={user} />} />
