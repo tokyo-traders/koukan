@@ -192,6 +192,7 @@ class ImageView(viewsets.ModelViewSet):
         print(serializer.errors)
 
 
+# All items of a user
 @api_view(['GET'])
 def newall_item(request, userid):
     try:
@@ -283,6 +284,9 @@ def item_edit(request, itemId):
         except Item.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
+# DO NOT USE
+# # Single item's all information
+
 
 @api_view(['GET'])
 def all_item(request, itemid):
@@ -308,6 +312,29 @@ def all_item(request, itemid):
                      'details': itemSerializer.data['details'], 'expiration': currentOffer.data['date_offered'], 'user_id': itemSerializer.data['user_id']})
         return Response(data)
 
+#   Single item's all information in My Page
+
+
+# @ api_view(['GET'])
+# def all_item(request, itemid):
+#     try:
+#         item = Item.objects.filter(id=itemid).first()
+#         images = Image.objects.all()
+#     except Item.DoesNotExist or Image.DoesNotExist:
+#         return Response(status=status.HTTP_404_NOT_FOUND)
+
+#     if request.method == "GET":
+#         itemSerializer = ItemSerializer(item)
+#         data = []
+#         imgUrl = []
+#         for image in images:
+#             imageSerializer = ImageSerializer(image)
+#             if imageSerializer.data["item_id"] == itemSerializer.data["id"]:
+#                 imgUrl.append(imageSerializer.data['image'])
+#         data.append({'itemName': itemSerializer.data['item_name'],
+#                      'image': imgUrl, 'details': itemSerializer.data['details'], 'user_id': itemSerializer.data['user_id']})
+#         return Response(data)
+
 
 @ api_view(['GET', 'DELETE'])
 def image_list(request, itemId):
@@ -329,7 +356,7 @@ def image_list(request, itemId):
 @api_view(['GET'])  # to be refactored
 def homepage(request):
     if request.method == "GET":
-        posts = Post.objects.filter(visible=True)
+        posts = Post.objects.filter(visibile=False)
         images = Image.objects.all()
         data = []
         imageUrl = []
@@ -358,7 +385,7 @@ def homepage(request):
 def listingItem(request, postId):
     if request.method == "GET":
         data = []
-        post = Post.objects.get(pk=postId, visible=True)
+        post = Post.objects.get(pk=postId, visibile=False)
         images = Image.objects.all()
         imageUrl = []
         postSerializer = PostSerializer(post)
