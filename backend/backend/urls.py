@@ -12,6 +12,6 @@ urlpatterns = [
 ]
 
 print("😁",(
-    os.path.join(BASE_DIR,  'build', 'static')
+    os.path.join(BASE_DIR, "backend", 'static')
     # BASE_DIR / "static/"
 ))

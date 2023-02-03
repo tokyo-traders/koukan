@@ -27,9 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 #deployment
-SECRET_KEY = os.getenv("SECRET_KEY")
-#pduction
-# SECRET_KEY = env("SECRET_KEY")
+# SECRET_KEY = os.getenv("SECRET_KEY")
+#prduction
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -155,16 +155,15 @@ USE_TZ = True
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')  # BASE_DIR is in line 20ish
 
-# STATICFILES_DIR = (
-#     os.path.join(BASE_DIR, 'build', 'static')
-#     BASE_DIR / "build/static/"
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, "backend", 'static'),
 # )
 
 STATIC_ROOT = ''
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = ('build/static',)
+STATICFILES_DIRS = ('backend/static',)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -181,6 +180,6 @@ EMAIL_HOST = 'smtp.gmail.com'  # this will use gmail for confirmation
 EMAIL_PORT = 587
 
 # # these are the email and password of the account that will send the confirmation to new users.
-# EMAIL_HOST_USER = env("EMAIL_HOST_USER")
-# EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 
