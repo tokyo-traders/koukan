@@ -16,7 +16,7 @@ import { styled } from '@mui/material/styles';
 import { useNavigate, useLocation} from "react-router-dom";
 import { padding } from "@mui/system";
 
-const REGISTER_URL = "http://127.0.0.1:8000/api/user/login";
+const REGISTER_URL = "api/user/login";
 
 const BrownButton = styled(Button)(() => ({
     backgroundColor: "#4d3e38",
