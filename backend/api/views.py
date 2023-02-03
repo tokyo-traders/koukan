@@ -596,7 +596,7 @@ def set_pending(request):
         return Response("did not save")
 
 
-@api_view(['GET', 'POST'])
+@api_view(['GET'])
 def hello(request):
     if request.method == "GET":
         # queryset = User.objects.all()

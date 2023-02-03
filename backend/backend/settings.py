@@ -12,9 +12,9 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 import dj_database_url
-# import environ
-# env = os.environ.get()
-# environ.Env.read_env()
+import environ
+env = environ.Env()
+environ.Env.read_env()
 
 # env = environ.Env()
 
@@ -26,7 +26,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+#deployment
 SECRET_KEY = os.getenv("SECRET_KEY")
+#pduction
+# SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -99,8 +102,12 @@ ALLOWED_HOSTS = ['*']
 # }
 DATABASE_URL = os.getenv('DATABASE_URL')
 DATABASES = {
-    'default': dj_database_url.config(),
+    'default': dj_database_url.config(
+    conn_max_age=600,
+    conn_health_checks=True,
+    ),
 }
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (

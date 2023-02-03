@@ -34,7 +34,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": " npm install && react-scripts build && move build ./backend && cd ./backend && pip install -r requirements.txt"
+    "server": "react-scripts build && move build ./backend && cd ./backend"
   },
   "eslintConfig": {
     "extends": [
