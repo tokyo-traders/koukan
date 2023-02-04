@@ -46,7 +46,7 @@ function App() {
 	}
 
 	const handleCategoryFilter = (event) => {
-		setCategoryFilter(event.target.innerHTML)
+		event.target.innerHTML !== "All Categories" ? setCategoryFilter(event.target.innerHTML) : setCategoryFilter('')
 	}
 
 	useEffect(() => {
@@ -80,7 +80,11 @@ function App() {
 				<Routes>
 					<Route path="/" element={<NavBar user={user} setUser={setUser} handleSearchChange={handleSearchChange} searchValue={searchValue} />} exact>
 						<Route path="/" element={[
-							<Sidebar handleCategoryFilter={handleCategoryFilter} categoryFilter={categoryFilter} categories={categories} setCategories={setCategories} />,
+							<Sidebar
+								handleCategoryFilter={handleCategoryFilter}
+								categoryFilter={categoryFilter}
+								categories={categories}
+								setCategories={setCategories} />,
 							<AllListings searchValue={searchValue} categoryFilter={categoryFilter} categories={categories} />
 						]} />
 						<Route path="/Login" element={<LoginForm userState={userState} setUserState={setUserState} />} />
