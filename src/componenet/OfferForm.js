@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import { CardActionArea } from '@mui/material';
+import Tooltip from '@mui/material/Tooltip';
 
 
 import Divider from '@mui/material/Divider';
@@ -152,6 +153,7 @@ function OfferForm(props) {
               setOffer(item)
             }}
           >
+             <CardActionArea>
             <CardMedia
               // sx={{maxWidth: 200, objectFit:"contain",  bgcolor: '#f5f5f5',}}
               sx={{objectFit: "contain",bgcolor: '#f5f5f5'  }}
@@ -159,6 +161,7 @@ function OfferForm(props) {
               image={BASE_URL + `${item.itemImages[0]}`}
               height="150"
             />
+            </CardActionArea>
             <CardContent>
               <Typography noWrap>{item?.itemName}</Typography>
             </CardContent>
@@ -235,9 +238,9 @@ function OfferForm(props) {
             alignItems:"center"
           }}
         >
-            <BrownButton
-            onClick={makeOffer}
-          >MAKE OFFER</BrownButton>
+          <Tooltip title="Submit your offer">
+            <BrownButton onClick={makeOffer}>MAKE OFFER</BrownButton>
+          </Tooltip>
         </Grid>
 
         
@@ -250,28 +253,21 @@ function OfferForm(props) {
             alignItems:"center"
           }}
         >   
+   
 
-            {offer &&
+
+            {offer?
             <Card
             elevation={6}
             sx={{ maxHeight: 340, margin: 2}}
            >
             <CardActionArea>
-              
              <CardMedia
               sx={{objectFit:"contain",  bgcolor: '#f5f5f5'}}
               component="img"
               image={BASE_URL + `${offer?.itemImages[0]}`}
               height="150"
             />
-              {/* <CardMedia
-                component="img"
-                height="220"
-                width="220"
-                sx={{objectFit:"contain" }}
-                image={offer && BASE_URL + `${offer?.itemImages[0]}`}
-                alt="please select your item"
-              /> */}
               <CardContent>
                 <Typography npwrap>
                    {offer && offer.itemName}
@@ -281,7 +277,14 @@ function OfferForm(props) {
                 </Typography>
               </CardContent>
             </CardActionArea>
-          </Card>}
+          </Card> :
+              <Box component="span" sx={{ p: 2, border: '1px dashed grey', height: 200, width: 200}}>
+                <Typography variant="body" color="text.secondary">
+                  Select your item 
+                </Typography>
+              </Box>
+      }
+
         </Grid>
       </Grid>
       </Box>

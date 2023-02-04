@@ -8,9 +8,15 @@ import Grid from '@mui/material/Grid';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { styled } from '@mui/material/styles';
 
 const BASE_URL = 'http://127.0.0.1:8000/api';
 
+const MyContent = styled(CardContent)`
+  &:last-child {
+  padding-bottom: 10px;
+ } 
+`
 
 export default function AllListings(props) {
 
@@ -51,27 +57,19 @@ export default function AllListings(props) {
                     <CardMedia
                         component="img"
                         image={BASE_URL + `${listing?.images[0]}`}
-                        width="200"
-                        sx={{ padding: "1em 1em 0 1em", objectFit: "contain" }}
+                        height="150"
+                        sx={{bgcolor: '#f5f5f5', objectFit: "contain" }}
 
                     />
-                    <CardContent >
-                        <Box display="flex" justify="space-between">
-                            <Typography sx={{ justifyContent: "center", display: "flex" }} gutterBottom variant="body">{listing.item.item_name}</Typography>
-                        </Box>
-                    </CardContent>
+                    <MyContent >
+                        
+                        <Typography noWrap variant='body2'>{listing.item.item_name}</Typography>
+                      
+                    </MyContent>
                 </Card>
             </div>
         )
     }
-
-    // NO NEED THIS FUNCTION ANYMORE, PLS DELETE
-    // function findMatches(searchValue, listings) {
-    //     return listings.filter(item => {
-    //         const regex = new RegExp(searchValue, 'gi')
-    //         return item.item.item_name.match(regex)
-    //     });
-    // }
 
     useEffect(() => {
         const getCategoryId = (category) => {
