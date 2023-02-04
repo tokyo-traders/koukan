@@ -4,7 +4,7 @@ import useRefreshToken from "./useRefreshToken";
 import useAuth from "./useAuth";
 
 const axiosPrivate = axios.create({
-    baseURL: "http://127.0.0.1:8000",
+    baseURL: "https://koukan.onrender.com",
     headers: {'content-Type': 'application/json'},
     withCredentials: true
 })
