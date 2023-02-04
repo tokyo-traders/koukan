@@ -72,7 +72,7 @@ export default function UserSingleItem(props) {
 
 	const [itemData, setItemData] = useState({
 		itemName: "",
-		image: [],
+		images: [],
 		details: "",
 		user_id: 0,
 	});
@@ -125,7 +125,7 @@ export default function UserSingleItem(props) {
 				console.log(response.data[0]);
 				return (
 					setItemData(response.data[0]),
-					setImages(response.data[0].image),
+					setImages(response.data[0].images),
 					setItemName(response.data[0].itemName),
 					setDetails(response.data[0].details),
 					setCurrentItemName(response.data[0].itemName)
