@@ -1,7 +1,7 @@
 import React, { useState, useEffect, PureComponent } from 'react';
 import axios from "axios";
 import { ContentPasteSearchOutlined } from '@mui/icons-material';
-import { useNavigate, useLocation, useParams  } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import { TextField, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -15,7 +15,7 @@ const BrownButton = styled(Button)(() => ({
     borderRadius: "8px",
     color: "#def4f6",
     "&:hover": {
-      background: "#332925"
+        background: "#332925"
     },
     // padding: "15px 36px",
     fontSize: "16px"
@@ -24,8 +24,8 @@ const BrownButton = styled(Button)(() => ({
 
 function AddListingForm(props) {
 
-    const {itemId} = useParams();
-    const {user} = props
+    const { itemId } = useParams();
+    const { user } = props
 
     const [desire, setDesire] = useState('')
     const [expirationDate, setExpirationDate] = useState('')
@@ -41,6 +41,7 @@ function AddListingForm(props) {
         uploadData.append("price", priceFree)
         uploadData.append("user_id", user.id)
         uploadData.append("item_id", itemId)
+        uploadData.append("visible", true)
 
         fetch("/api/create-post", {
             method: "POST",
@@ -52,22 +53,22 @@ function AddListingForm(props) {
 
     return (
         <>
-                <Box sx={{ width: '30%', margin: 'auto', marginTop: 2,display: 'flex', flexDirection: 'column' }}>
-      
+            <Box sx={{ width: '30%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
 
-                <Box sx={{ marginTop: 2}}>
-                <Typography >Wishlist</Typography>
-                <TextField
-                    fullWidth
-                    multiline
-                    rows={2}
-                    value={desire}
-                    onChange={(e) => setDesire(e.target.value)}
-                    label="Enten something you would like to trade"
-                />
+
+                <Box sx={{ marginTop: 2 }}>
+                    <Typography >Wishlist</Typography>
+                    <TextField
+                        fullWidth
+                        multiline
+                        rows={2}
+                        value={desire}
+                        onChange={(e) => setDesire(e.target.value)}
+                        label="Enten something you would like to trade"
+                    />
                 </Box>
 
-                
+
                 {/* <Box sx={{ marginTop: 2}}>
                 <Typography >Note</Typography>
                 <TextField
@@ -79,39 +80,39 @@ function AddListingForm(props) {
                 </Box> */}
 
 
-                <Box sx={{ marginTop: 2}}>
-                {/* <Typography>Trading Option</Typography> */}
-                
-                <FormControlLabel
-                    control={<Checkbox />} 
-                    label="Give away for free" 
-                    value={priceFree}
-                    onChange={(e) => setPriceFree(true)} 
+                <Box sx={{ marginTop: 2 }}>
+                    {/* <Typography>Trading Option</Typography> */}
+
+                    <FormControlLabel
+                        control={<Checkbox />}
+                        label="Give away for free"
+                        value={priceFree}
+                        onChange={(e) => setPriceFree(true)}
                     />
-                <FormControlLabel 
-                    control={<Checkbox />}
-                    label="To trade" 
-                    value={priceFree}
-                    onChange={(e) => setPriceFree(false)}
+                    <FormControlLabel
+                        control={<Checkbox />}
+                        label="To trade"
+                        value={priceFree}
+                        onChange={(e) => setPriceFree(false)}
                     />
                 </Box>
 
-                <Box sx={{ marginTop: 2}}>
-                <Typography>Expiration Date</Typography>
-                <input 
-                type='datetime-local' 
-                value={expirationDate} 
-                onChange={(e) => setExpirationDate(e.target.value)}
-                />
-                </Box>    
-                 
+                <Box sx={{ marginTop: 2 }}>
+                    <Typography>Expiration Date</Typography>
+                    <input
+                        type='datetime-local'
+                        value={expirationDate}
+                        onChange={(e) => setExpirationDate(e.target.value)}
+                    />
+                </Box>
+
                 <BrownButton
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
                     onClick={newPost}
-                  >
+                >
                     CREATE NEW LISTING
-                  </BrownButton>
+                </BrownButton>
 
             </Box>
 

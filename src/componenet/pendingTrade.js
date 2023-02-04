@@ -31,7 +31,9 @@ function PendingTrade(props) {
   const myPage = useCallback(() => navigate('/MyPage', { replace: true }), [navigate]);
 
   const [tradingItems, setTradingItems] = useState([]);
-  const [offeredItems, setOfferedItems] = useState(null);
+  const [tradesDisplayed, setTradesDisplayed] = useState(false)
+  const [offeredItems, setOfferedItems] = useState([]);
+  const [offerDisplayed, setOfferDisplayed] = useState(false)
   const [openModal, setOpenModal] = useState(false)
   const [value, setValue] = useState(3);
 
@@ -39,19 +41,54 @@ function PendingTrade(props) {
     axios.get(`/api/acceptedTrade/${user.id}`)
       .then(response => {
         console.log(response.data)
-        tradingItems.push(...response.data)
+        !tradesDisplayed && tradingItems.push(...response.data)
+        setTradesDisplayed(true)
       })
+      .catch(() => console.log("no listings"))
+      .then(() => console.log(tradingItems)
+      )
+    // .then(() => setTradingItems([]))
   }, [])
 
   useEffect(() => {
+    // axios.get(`/api/singleOffer/${offerId}`)
     axios
       .get(`/api/offered-items/${user.id}`)
       .then(res => {
-        setTradingItems(...res.data)
+        console.log(res.data)
+        !offerDisplayed && offeredItems.push(...res.data)
+        setOfferDisplayed(true)
       })
+      .catch(() => console.log("no offers"))
+      .then(() => console.log(tradingItems))
+    // .then(() => setTradingItems([]))
   }, [])
 
-  console.log(tradingItems)
+  // useEffect(() => {
+  //   const offerItemData = axios.get(`/api/offered-items/${user.id}`);
+  //   // const desiredItemData = axios.get(`/api/singleOffer/${offerId}`)
+  //   Promise.all([
+  //     offerItemData,
+  //     desiredItemData
+  //   ])
+  //     .then(res => {
+  //       console.log(res.data)
+  //       !offerDisplayed && offeredItems.push(...res.data)
+  //       setOfferDisplayed(true)
+  //     })
+  //     .catch(() => console.log("no offers"))
+  //     .then(() => console.log(tradingItems))
+  //   // .then(() => setTradingItems([]))
+  // }, [])
+
+  // useEffect(() => {
+  //   axios.get(`/api/singleOffer/${offerId}`)
+  //     .then((response) =>
+  //       setOffer(response.data)
+  //     )
+
+  // }, [])
+
   const completeTrade = (obj) => {
     console.log(obj)
     axios.put(`/api/itemHandover`,
@@ -87,93 +124,172 @@ function PendingTrade(props) {
   };
 
   return (
-    <Grid
-      container
-      width="100%"
-      direction="row"
-      justifyContent="center"
-      alignItems="center"
-      xl={12}
-      spacing={3}
-    >
-      {tradingItems && tradingItems?.map(item => (
-        <Card elevation={6}
-          sx={{ maxWidth: 610, mt: 10, marginLeft: 4, display: "flex" }}>
-          <Card
-            elevation={6}
-            sx={{ maxWidth: 300, mt: 10, marginLeft: 4 }}
-          //   onClick={() => {
-          //     if (item) {
-          //       navigate(`/MyPage/Items/${item.itemID}`, {replace: true})
-          //     }
-          //   }}
-          >
-            <CardMedia
-              component="img"
-              style={{ Width: 300 }}
-              image={BASE_URL + `${item.image[0].image}`}
-              height="140"
-            />
-            <CardContent >
-              <Box display="flex" justify="space-between">
-                <Typography gutterBottom variant="body">{item.post_item.item_name}</Typography>
-              </Box>
-            </CardContent>
-          </Card>
-          <Card
-            elevation={6}
-            sx={{ maxWidth: 300, mt: 10, marginLeft: 4 }}
-          //   onClick={() => {
-          //     if (item) {
-          //       navigate(`/MyPage/Items/${item.itemID}`, {replace: true})
-          //     }
-          //   }}
-          >
-            <CardMedia
-              component="img"
-              style={{ Width: 300 }}
-              image={BASE_URL + `${item.offers.image[0].image}`}
-              height="140"
-            />
-            <CardContent >
-              <Box display="flex" justify="space-between">
-                <Typography gutterBottom variant="body">{item.offers.item.item_name}</Typography>
-              </Box>
-            </CardContent>
-          </Card>
-          <Button
-            color='secondary'
-            variant='contained'
-            height="50"
-            alignItems="flex-end"
-            onClick={() => completeTrade(item.offers.offer)}
-          >I have Recieved my Item</Button>
-          <Modal
-
-            open={openModal}
-            onClose={handleCloseModal}
-            aria-labelledby="modal-modal-description"
-          >
-            <Box
-              sx={styleModal}
+    <>
+      <Grid
+        container
+        width="100%"
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        xl={12}
+        spacing={3}
+      >
+        {tradingItems && tradingItems?.map(item => (
+          <Card elevation={6}
+            sx={{ maxWidth: 610, mt: 10, marginLeft: 4, display: "flex" }}>
+            <Card
+              elevation={6}
+              sx={{ maxWidth: 300, mt: 10, marginLeft: 4 }}
+            //   onClick={() => {
+            //     if (item) {
+            //       navigate(`/MyPage/Items/${item.itemID}`, {replace: true})
+            //     }
+            //   }}
             >
-              <Typography id="modal-modal-description" variant="h6" component="h2">
-                {/* Please giver a score to {item.otherUserInfo ? item.otherUserInfo : off} ? */}
-                Please give ;eave a score
-              </Typography>
-              <Rating
-                name="simple-controlled"
-                value={value}
-                onChange={(event, newValue) => {
-                  setValue(newValue);
-                }}
+              <CardMedia
+                component="img"
+                style={{ Width: 300 }}
+                image={BASE_URL + `${item.offers.image[0].image}`}
+                height="140"
               />
+              <CardContent >
+                <Box display="flex" justify="space-between">
+                  <Typography gutterBottom variant="body">{item.offers.item.item_name}</Typography>
+                </Box>
+              </CardContent>
+            </Card>
+            <Card
+              elevation={6}
+              sx={{ maxWidth: 300, mt: 10, marginLeft: 4 }}
+            >
+              <CardMedia
+                component="img"
+                style={{ Width: 300 }}
+                image={BASE_URL + `${item.image[0].image}`}
+                height="140"
+              />
+              <CardContent >
+                <Box display="flex" justify="space-between">
+                  <Typography gutterBottom variant="body">{item.post_item.item_name}</Typography>
+                </Box>
+              </CardContent>
+            </Card>
+            <Button
+              color='secondary'
+              variant='contained'
+              height="50"
+              alignItems="flex-end"
+              onClick={() => completeTrade(item)}
+            >I have Received my Item</Button>
+            <Modal
+              open={openModal}
+              onClose={handleCloseModal}
+              aria-labelledby="modal-modal-description"
+            >
+              <Box
+                sx={styleModal}
+              >
+                <Typography id="modal-modal-description" variant="h6" component="h2">
+                  {/* Please giver a score to {item.otherUserInfo ? item.otherUserInfo : off} ? */}
+                  Please give ;eave a score
+                </Typography>
+                <Rating
+                  name="simple-controlled"
+                  value={value}
+                  onChange={(event, newValue) => {
+                    setValue(newValue);
+                  }}
+                />
+              </Box>
+            </Modal>
+          </Card>
+        ))}
+      </Grid>
+      <Grid
+        container
+        width="100%"
+        // direction="column"
+        justifyContent="center"
+        alignItems="center"
+        xl={12}
+        spacing={3}
+      >
+        {offeredItems && offeredItems?.map(item => (
 
-            </Box>
-          </Modal>
-        </Card>
-      ))}
-    </Grid>
+          <Box elevation={6} justifyContent="center"
+            sx={{ maxWidth: 610, mt: 10, marginLeft: 4, display: "flex", flexDirection: "row" }}>
+
+            <Card
+              elevation={6}
+              sx={{ maxWidth: 300, mt: 10, marginLeft: 4 }}
+            >
+              <Typography component="div" sx={{ fontSize: 12 }}>
+                you will receive
+              </Typography>
+              <CardMedia
+                component="img"
+                style={{ Width: 300 }}
+                image={BASE_URL + `${item.desiredItemImage}`}
+                height="140"
+              />
+              <CardContent >
+                <Box display="flex" justify="space-between">
+                  <Typography gutterBottom variant="body">{item.desiredItemName}</Typography>
+                </Box>
+              </CardContent>
+            </Card>
+            <Card
+              elevation={6}
+              sx={{ maxWidth: 300, mt: 10, marginLeft: 4 }}
+            >
+              <Typography component="div" sx={{ fontSize: 12 }}>
+                you will send
+              </Typography>
+              <CardMedia
+                component="img"
+                style={{ Width: 300 }}
+                image={BASE_URL + `${item.image}`}
+                height="140"
+              />
+              <CardContent >
+                <Box display="flex" justify="space-between">
+                  <Typography gutterBottom variant="body">{item.itemName}</Typography>
+                </Box>
+              </CardContent>
+            </Card>
+
+            <Button
+              color='secondary'
+              variant='contained'
+
+              alignItems="flex-end"
+              onClick={() => completeTrade(item)}
+            >I have received my Item</Button>
+            <Modal
+              open={openModal}
+              onClose={handleCloseModal}
+              aria-labelledby="modal-modal-description"
+            >
+              <Box
+                sx={styleModal}
+              >
+                <Typography id="modal-modal-description" variant="h6" component="h2">
+                  {/* Please giver a score to {item.otherUserInfo ? item.otherUserInfo : off} ? */}
+                  Please give ;eave a score
+                </Typography>
+                <Rating
+                  name="simple-controlled"
+                  value={value}
+                  onChange={(event, newValue) => {
+                    setValue(newValue);
+                  }}
+                />
+              </Box>
+            </Modal>
+          </Box>
+        ))}
+      </Grid>
+    </>
   )
 }
 

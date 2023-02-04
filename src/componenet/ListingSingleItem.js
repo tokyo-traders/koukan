@@ -20,8 +20,7 @@ import { IconButton } from '@mui/material';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import Badge from '@mui/material/Badge';
 import DeleteIcon from "@mui/icons-material/Delete";
-
-import Accordion from '@mui/material/Accordion';
+import StarIcon from '@mui/icons-material/Star'; import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -129,7 +128,7 @@ export default function ListingSingleItem(props) {
     if (listingId) {
       axios.get(`/api/listing/${listingId}`)
         .then(response => {
-          console.log(response.data[0].images)
+          // console.log(response.data[0].images)
           images.concat(response.data[0].images)
         })
     }
@@ -351,7 +350,7 @@ export default function ListingSingleItem(props) {
                   </Typography>
                   {listing &&
                     <Typography variant='h7'>
-                      {listing.username}
+                      {listing.username} ({listing.rating}) <StarIcon sx={{ fontSize: "30px", color: '#4d3e38' }} />
                     </Typography>}
                 </Box>
 

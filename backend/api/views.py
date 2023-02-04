@@ -288,6 +288,30 @@ def item_edit(request, itemId):
 # # Single item's all information
 
 
+# @api_view(['GET'])
+# def all_item(request, itemid):
+#     try:
+#         item = Item.objects.filter(id=itemid).first()
+#         images = Image.objects.all()
+#     except Item.DoesNotExist or Image.DoesNotExist:
+#         return Response(status=status.HTTP_404_NOT_FOUND)
+
+#     if request.method == "GET":
+#         itemSerializer = ItemSerializer(item)
+#         getOffer = Offer.objects.get(offered_item=itemSerializer.data['id'])
+#         currentOffer = OfferSerializer(getOffer)
+#         print("current offer", currentOffer.data)
+#         data = []
+#         imgUrl = []
+#         for image in images:
+#             imageSerializer = ImageSerializer(image)
+#             if imageSerializer.data["item_id"] == itemSerializer.data["id"]:
+#                 imgUrl.append(imageSerializer.data['image'])
+#         data.append({'itemName': itemSerializer.data['item_name'],
+#                      'images': imgUrl,
+#                      'details': itemSerializer.data['details'], 'expiration': currentOffer.data['date_offered'], 'user_id': itemSerializer.data['user_id']})
+#         return Response(data)
+
 @api_view(['GET'])
 def all_item(request, itemid):
     try:
@@ -298,18 +322,30 @@ def all_item(request, itemid):
 
     if request.method == "GET":
         itemSerializer = ItemSerializer(item)
-        getOffer = Offer.objects.get(offered_item=itemSerializer.data['id'])
-        currentOffer = OfferSerializer(getOffer)
-        print("current offer", currentOffer.data)
-        data = []
-        imgUrl = []
-        for image in images:
-            imageSerializer = ImageSerializer(image)
-            if imageSerializer.data["item_id"] == itemSerializer.data["id"]:
-                imgUrl.append(imageSerializer.data['image'])
-        data.append({'itemName': itemSerializer.data['item_name'],
-                     'images': imgUrl,
-                     'details': itemSerializer.data['details'], 'expiration': currentOffer.data['date_offered'], 'user_id': itemSerializer.data['user_id']})
+        try:
+            getOffer = Offer.objects.get(
+                offered_item=itemSerializer.data['id'])
+            currentOffer = OfferSerializer(getOffer)
+            print("current offer", currentOffer.data)
+            data = []
+            imgUrl = []
+            for image in images:
+                imageSerializer = ImageSerializer(image)
+                if imageSerializer.data["item_id"] == itemSerializer.data["id"]:
+                    imgUrl.append(imageSerializer.data['image'])
+            data.append({'itemName': itemSerializer.data['item_name'],
+                         'images': imgUrl,
+                         'details': itemSerializer.data['details'], 'expiration': currentOffer.data['date_offered'], 'user_id': itemSerializer.data['user_id']})
+        except Offer.DoesNotExist:
+            data = []
+            imgUrl = []
+            for image in images:
+                imageSerializer = ImageSerializer(image)
+                if imageSerializer.data["item_id"] == itemSerializer.data["id"]:
+                    imgUrl.append(imageSerializer.data['image'])
+            data.append({'itemName': itemSerializer.data['item_name'],
+                         'images': imgUrl,
+                         'details': itemSerializer.data['details'], 'user_id': itemSerializer.data['user_id']})
         return Response(data)
 
 #   Single item's all information in My Page
@@ -403,7 +439,7 @@ def listingItem(request, postId):
                 imageUrl.append(imageSerializer.data["image"])
         data.append({"post": postSerializer.data,
                      "item": itemSeralizer.data[0], "images": imageUrl,
-                     "username": userSerializer.data[0]["username"], "phoneDetail": userSerializer.data[0]["phone_detail"], "email": userSerializer.data[0]["email"]})
+                     "username": userSerializer.data[0]["username"], "phoneDetail": userSerializer.data[0]["phone_detail"], "email": userSerializer.data[0]["email"], "rating": userSerializer.data[0]["reputation_rating"]})
         imageUrl = []
         return Response(data, status=status.HTTP_200_OK)
 
@@ -634,11 +670,20 @@ def items_offered(request, userId):
                 getOffer = Offer.objects.get(
                     offered_item=item['id'], acceptance=True)
                 test = OfferSerializer(getOffer).data
+                getPost = Post.objects.get(id=test["post_id"])
+                post = PostSerializer(getPost).data
+                itemId = post['item_id']
+                getDesiredItem = Item.objects.get(pk=itemId)
+                desiredItem = ItemSerializer(getDesiredItem)
+                getDesireditemImage = Image.objects.filter(
+                    item_id=itemId).first()
+                desiredItemImage = ImageSerializer(getDesireditemImage)
                 image = Image.objects.filter(item_id=item['id'])
                 imageSerializer = ImageSerializer(image, many=True)
                 if test['offered_item'] == item['id']:
                     data.append(
-                        {"itemName": item['item_name'], "image": imageSerializer.data[0]['image'], "id": test['id']})
+                        {"itemName": item['item_name'], "desiredItemName": desiredItem.data['item_name'], "desiredItemImage": desiredItemImage.data['image'], "image": imageSerializer.data[0]['image'], "id": test['id'], "date_of_offer": test['date_offered']})
+
         except User.DoesNotExist:
             error = {"Error on user"}
             return Response(error, status=status.HTTP_404_NOT_FOUND)
