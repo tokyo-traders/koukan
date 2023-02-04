@@ -88,19 +88,81 @@ function PendingTrade(props) {
   //     )
 
   // }, [])
+  const completeTrade = (itemId) => {
+    // const completeTrade = (userIdReview) => {
+    const data = { user_id: user.id }
+    // console.log(itemId)
+    console.log(itemId)
+    // axios.put(`/api/itemHandover/${userIdReview}`,
+    // axios.put(`/api/itemHandover/${itemId}`,
+    //   JSON.stringify(data),
+    //   {
+    //     headers: { "Content-Type": "application/json" },
+    //     withCredentials: true,
+    //   }
+    // )
+    // .then(response => {
+    //   console.log(response.data)
+    // })
+    // .then(() => myPage())
+  }
 
-  const completeTrade = (obj) => {
-    console.log(obj)
-    axios.put(`/api/itemHandover`,
-      JSON.stringify(obj),
-      {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      }
-    )
-      .then(response => {
-        console.log(response.data)
-      }).then(() => myPage())
+  const postCompleteTrade = async (offer) => {
+    // const data = { user_id: user.id }
+    console.log(offer)
+    if (!offer.offer_confirmation) {
+      offer.post_confirmation = true
+      const response = await axios.put(
+        `/api/SetPending`,
+        JSON.stringify(offer),
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true
+        }
+      )
+      console.log(response.data)
+    } else {
+      axios.put(`/api/itemHandover`,
+        JSON.stringify(offer),
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      )
+        .then(response => {
+          console.log(response.data)
+        })
+        .then(() => myPage())
+    }
+  }
+  const offerCompleteTrade = async (offer) => {
+    // const data = { user_id: user.id }
+    console.log(offer)
+    if (!offer.post_confirmation) {
+      offer.post_confirmation = true
+      const response = await axios.put(
+        `/api/SetPending`,
+        JSON.stringify(offer),
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true
+        }
+      )
+      console.log(response.data)
+    } else {
+      axios.put(`/api/itemHandover`,
+        JSON.stringify(offer),
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      )
+        .then(response => {
+          console.log(response.data)
+        })
+        .then(() => myPage())
+    }
+
   }
 
   const handleOpenModal = () => {
@@ -174,13 +236,16 @@ function PendingTrade(props) {
                 </Box>
               </CardContent>
             </Card>
-            <Button
+            {item.offer.offer_confirmation ? <Typography gutterBottom variant="body">My item has arrived</Typography> : <Button
               color='secondary'
               variant='contained'
               height="50"
               alignItems="flex-end"
-              onClick={() => completeTrade(item)}
-            >I have Received my Item</Button>
+              onClick={() => { postCompleteTrade(item.offers.offer); handleOpenModal() }}
+            // onClick={() => { completeTrade(item.offers.item.id); handleOpenModal() }}
+            // onClick={() => { completeTrade(item.offers.item.user_id); handleOpenModal() }}
+
+            >I have Received my Item</Button>}
             <Modal
               open={openModal}
               onClose={handleCloseModal}
@@ -191,7 +256,7 @@ function PendingTrade(props) {
               >
                 <Typography id="modal-modal-description" variant="h6" component="h2">
                   {/* Please giver a score to {item.otherUserInfo ? item.otherUserInfo : off} ? */}
-                  Please give ;eave a score
+                  Please leave a score
                 </Typography>
                 <Rating
                   name="simple-controlled"
@@ -258,13 +323,12 @@ function PendingTrade(props) {
               </CardContent>
             </Card>
 
-            <Button
+            {item.offer.offer_confirmation ? <Typography gutterBottom variant="body">My item has arrived</Typography> : <Button
               color='secondary'
               variant='contained'
-
               alignItems="flex-end"
-              onClick={() => completeTrade(item)}
-            >I have received my Item</Button>
+              onClick={() => { offerCompleteTrade(item.offer); handleOpenModal() }}
+            >I have received my Item</Button>}
             <Modal
               open={openModal}
               onClose={handleCloseModal}
@@ -275,7 +339,7 @@ function PendingTrade(props) {
               >
                 <Typography id="modal-modal-description" variant="h6" component="h2">
                   {/* Please giver a score to {item.otherUserInfo ? item.otherUserInfo : off} ? */}
-                  Please give ;eave a score
+                  Please leave a score
                 </Typography>
                 <Rating
                   name="simple-controlled"

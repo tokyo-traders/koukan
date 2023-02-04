@@ -66,8 +66,8 @@ class Offer(models.Model):
     offered_item = models.ForeignKey('Item', on_delete=models.CASCADE)
     acceptance = models.BooleanField(default=False)
     date_offered = models.DateTimeField(auto_now_add=True)
-    first_confirmation = models.BooleanField(default=False)
-    second_confirmation = models.BooleanField(default=False)
+    post_confirmation = models.BooleanField(default=False)
+    offer_confirmation = models.BooleanField(default=False)
     visibile = models.BooleanField(default=True)
 
 

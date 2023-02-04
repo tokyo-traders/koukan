@@ -170,6 +170,7 @@ function NavBar(props) {
             </Search>
             {!user ? <GreenButton variant='contained' onClick={login}>LOG IN</GreenButton> :
               <div>
+                <span style={{ color: "black" }}>{user.username} {(Math.round(user.reputation_rating * 10) / 10).toFixed(1)}</span>
                 <IconButton
                   size="large"
                   aria-label="account of current user"

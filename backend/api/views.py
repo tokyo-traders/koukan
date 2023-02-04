@@ -326,6 +326,11 @@ def all_item(request, itemid):
             getOffer = Offer.objects.get(
                 offered_item=itemSerializer.data['id'])
             currentOffer = OfferSerializer(getOffer)
+            offeredItemId = currentOffer.data['offered_item']
+            getItemDetail = Item.objects.get(pk=offeredItemId)
+            itemDetail = ItemSerializer(getItemDetail)
+            getUserInfo = User.objects.get(pk=itemDetail.data['user_id'])
+            userInfo = UserSerializer(getUserInfo)
             print("current offer", currentOffer.data)
             data = []
             imgUrl = []
@@ -335,7 +340,7 @@ def all_item(request, itemid):
                     imgUrl.append(imageSerializer.data['image'])
             data.append({'itemName': itemSerializer.data['item_name'],
                          'images': imgUrl,
-                         'details': itemSerializer.data['details'], 'expiration': currentOffer.data['date_offered'], 'user_id': itemSerializer.data['user_id']})
+                         'details': itemSerializer.data['details'], 'expiration': currentOffer.data['date_offered'], 'user_id': itemSerializer.data['user_id'], 'userName': userInfo.data['username']})
         except Offer.DoesNotExist:
             data = []
             imgUrl = []
@@ -524,8 +529,35 @@ def edit_offer(request, offerId):
 
 
 @api_view(['PUT', 'POST'])
+# def item_handover(request, userIdreview):
+#     getUser = User.objects.get(id=userIdreview)
+#     user = UserSerializer(getUser)
+#     print(user)
+#     # return Response(user.data, status=status.HTTP_200_OK)
+#     if request.method == "PUT":
+#         user = UserSerializer(getUser, data=)
+# receive one item
 def item_handover(request):
+    # print("BODY: ", request.data)
+    # try:
+    #     handedOverItem = Item.objects.filter(id=itemId).first()
+    # except Item.DoesNotExist:
+    #     return Response("no item to handover!", status=status.HTTP_404_NOT_FOUND)
+    # if request.method == "PUT":
+    #     # newItemUserId = newItem.data['user_id']
+    #     try:
+    #         toBeUpdated = ItemSerializer(
+    #             handedOverItem, data=request.data, partial=True)
+    #         if toBeUpdated.is_valid():
+    #             toBeUpdated.save()
+    #             print("new details", toBeUpdated.data)
+    #             message = {"You have successfully obtained the new item"}
+    #             return Response(message, status=status.HTTP_200_OK)
+    #         print("before change", toBeUpdated.data)
+    #     except Item.DoesNotExist:
+    #         return Response("hey no item", status=status.HTTP_404_NOT_FOUND)
 
+    # swap items
     listedPost = Post.objects.filter(id=request.data["post_id"]).first()
     postSerializer = PostSerializer(listedPost)
 
@@ -557,14 +589,9 @@ def item_handover(request):
                 print(offered_Serializer.data)
         return Response("saved", status=status.HTTP_200_OK)
     return Response(item_Serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    # return Response("at least you see it")
-    # elif request.method == 'POST':
-    #     item.delete()
-    #     message = {"message": "You have now deleted the offer"}
-    #     return Response(message, status=status.HTTP_204_NO_CONTENT)
 
 
-@api_view(['GET'])
+@ api_view(['GET'])
 def search_item(request):
     if request.method == "GET":
         posts = Post.objects.all()
@@ -580,7 +607,7 @@ def search_item(request):
         return Response(data, status=status.HTTP_200_OK)
 
 
-@api_view(['GET'])
+@ api_view(['GET'])
 def category_list(request):
     try:
         categories = Categories.objects.all()
@@ -593,7 +620,7 @@ def category_list(request):
         return Response(catergorySerializer.data, status=status.HTTP_200_OK)
 
 
-@api_view(['GET'])
+@ api_view(['GET'])
 def accepted_trade(request, userId):
 
     try:
@@ -604,7 +631,7 @@ def accepted_trade(request, userId):
     postData = []
     for post in posts:
         postSerializer = PostSerializer(post)
-        print("post", postSerializer.data)
+        # print("post", postSerializer.data)
         try:
             item = Item.objects.filter(
                 id=postSerializer.data["item_id"]).first()
@@ -647,7 +674,7 @@ def accepted_trade(request, userId):
         return Response(postData, status=status.HTTP_200_OK)
 
 
-@api_view(['GET', 'PUT'])
+@ api_view(['GET', 'PUT'])
 def set_pending(request):
     if request.method == "PUT":
         serializer = OfferSerializer(data=request.data, partial=True)
@@ -657,7 +684,7 @@ def set_pending(request):
         return Response("did not save")
 
 
-@api_view(['GET'])
+@ api_view(['GET'])
 def items_offered(request, userId):
     if request.method == "GET":
         try:
@@ -682,12 +709,12 @@ def items_offered(request, userId):
                 imageSerializer = ImageSerializer(image, many=True)
                 if test['offered_item'] == item['id']:
                     data.append(
-                        {"itemName": item['item_name'], "desiredItemName": desiredItem.data['item_name'], "desiredItemImage": desiredItemImage.data['image'], "image": imageSerializer.data[0]['image'], "id": test['id'], "date_of_offer": test['date_offered']})
+                        {"offer": test, "itemName": item['item_name'], "itemId": item['id'], "desideredUserId": desiredItem.data['user_id'], "desideredItemId": desiredItem.data['id'], "desiredItemName": desiredItem.data['item_name'], "desiredItemImage": desiredItemImage.data['image'], "image": imageSerializer.data[0]['image']})
 
         except User.DoesNotExist:
             error = {"Error on user"}
             return Response(error, status=status.HTTP_404_NOT_FOUND)
-        return Response(data, status=status.HTTP_200_OK)
+    return Response(data, status=status.HTTP_200_OK)
 
 
 # @api_view(['GET'])

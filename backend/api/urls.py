@@ -27,7 +27,7 @@ urlpatterns = [
     path('SetPending', views.set_pending),
     path('acceptedTrade/<int:userId>', views.accepted_trade),
     path('itemHandover', views.item_handover),
-
+    # path('itemHandover/<int:userIdreview>', views.item_handover),
 
     path('all-item/<int:userid>/<int:itemid>', views.all_item),
 
