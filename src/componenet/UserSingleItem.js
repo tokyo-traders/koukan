@@ -18,7 +18,11 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a lo
 import { Carousel } from "react-responsive-carousel";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
-import { CompareSharp, ConstructionOutlined } from "@mui/icons-material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from '@mui/icons-material/Edit';
+import Tooltip from '@mui/material/Tooltip';
+import { IconButton } from '@mui/material';
+
 
 const Img = styled("img")({
 	margin: "auto",
@@ -133,7 +137,7 @@ export default function UserSingleItem(props) {
 		<>
 			<Box
 				sx={{
-					width: "80%",
+					width: "70%",
 					margin: "auto",
 					marginTop: 2,
 					display: "flex",
@@ -158,22 +162,35 @@ export default function UserSingleItem(props) {
 							)}
 						</Container>
 					</Grid>
-					<Grid item xs={5} sm container>
+					<Grid item xs={5} container>
 						<Grid item xs container direction="column" spacing={2}>
 							<Grid item xs>
 								<Box
 									sx={{
-										backgroundColor: "white",
-										marginTop: 2,
+										backgroundColor: "none",
+										paddingBottom:2,
+										borderBottom: 1,
+										borderColor: 'grey.500'
 									}}
 								>
+									<div>
 									{itemData && (
 										<Typography variant="h5">{itemData?.itemName}</Typography>
 									)}
+									
+									<Tooltip title="Edit item">
+										<IconButton onClick={handleOpenEdit}>
+											<EditIcon sx={{ fontSize: "30px", color:'#4d3e38' }}/>
+										</IconButton>
+									</Tooltip>
 
-									<Box sx={{ marginLeft: 50 }}>
-										<Button onClick={handleOpenEdit}>Edit</Button>
-										<Modal
+									<Tooltip title="Delete item">
+										<IconButton onClick={() => deleteItem(Number(itemId))}>
+											<DeleteIcon sx={{ fontSize: "30px", color:'#4d3e38' }}/>
+										</IconButton>
+									</Tooltip>
+
+									<Modal
 											open={openEdit}
 											onClose={handleCloseEdit}
 											aria-labelledby="modal-modal-title"
@@ -226,7 +243,7 @@ export default function UserSingleItem(props) {
 												</Stack>
 											</Box>
 										</Modal>
-									</Box>
+									</div>
 
 									<BrownButton
 										fullWidth
@@ -236,23 +253,15 @@ export default function UserSingleItem(props) {
 									>
 										MAKE POST
 									</BrownButton>
-									<BrownButton
-										fullWidth
-										variant="contained"
-										sx={{ mt: 3, mb: 2 }}
-										onClick={() => deleteItem(Number(itemId))}
-									>
-										DELETE ITEM
-									</BrownButton>
 								</Box>
 
 								<Box
 									sx={{
-										backgroundColor: "white",
+										backgroundColor: "none",
 										marginTop: 4,
 									}}
 								>
-									<Typography gutterBottom variant="h5" component="div">
+									<Typography gutterBottom variant="h6" component="div">
 										Description
 									</Typography>
 									{itemData && (
