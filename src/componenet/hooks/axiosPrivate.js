@@ -4,7 +4,6 @@ import useRefreshToken from "./useRefreshToken";
 import useAuth from "./useAuth";
 
 const axiosPrivate = axios.create({
-    baseURL: "https://koukan.onrender.com",
     headers: {'content-Type': 'application/json'},
     withCredentials: true
 })
@@ -16,7 +15,6 @@ const useAxiosPrivate = () => {
     useEffect(() => {
         const requestIntercept = axiosPrivate.interceptors.request.use(
             config => {
-                    // console.log("🤣",auth)
                 if (!config.headers['Authorization']) {
                     config.headers['Authorization'] = `bearer ${auth?.accessToken}`;
                 }
