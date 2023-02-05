@@ -232,11 +232,11 @@ function PendingTrade(props) {
               />
               <CardContent >
                 <Box display="flex" justify="space-between">
-                  <Typography gutterBottom variant="body">{item.post_item.item_name}</Typography>
+                  <Typography gutterBottom variant="body">{item?.post_item?.item_name}</Typography>
                 </Box>
               </CardContent>
             </Card>
-            {item.offer.offer_confirmation ? <Typography gutterBottom variant="body">My item has arrived</Typography> : <Button
+            {item?.offer?.offer_confirmation ? <Typography gutterBottom variant="body">My item has arrived</Typography> : <Button
               color='secondary'
               variant='contained'
               height="50"

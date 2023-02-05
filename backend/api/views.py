@@ -677,7 +677,13 @@ def accepted_trade(request, userId):
 @ api_view(['GET', 'PUT'])
 def set_pending(request):
     if request.method == "PUT":
-        serializer = OfferSerializer(data=request.data, partial=True)
+        print(request.data)
+        try:
+            offer = Offer.objects.filter(pk=request.data["id"]).first()
+        except Offer.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        print("😁",offer)
+        serializer = OfferSerializer(offer, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response("saved", status=status.HTTP_200_OK)
@@ -689,27 +695,39 @@ def items_offered(request, userId):
     if request.method == "GET":
         try:
             user = User.objects.get(pk=userId)
-            getUserId = UserSerializer(user).data["id"]
-            allItems = Item.objects.filter(user_id=getUserId)
+            allItems = Item.objects.filter(user_id=userId)
             itemSerializer = ItemSerializer(allItems, many=True).data
             data = []
             for item in itemSerializer:
-                getOffer = Offer.objects.get(
-                    offered_item=item['id'], acceptance=True)
-                test = OfferSerializer(getOffer).data
-                getPost = Post.objects.get(id=test["post_id"])
-                post = PostSerializer(getPost).data
-                itemId = post['item_id']
-                getDesiredItem = Item.objects.get(pk=itemId)
-                desiredItem = ItemSerializer(getDesiredItem)
-                getDesireditemImage = Image.objects.filter(
-                    item_id=itemId).first()
-                desiredItemImage = ImageSerializer(getDesireditemImage)
-                image = Image.objects.filter(item_id=item['id'])
-                imageSerializer = ImageSerializer(image, many=True)
-                if test['offered_item'] == item['id']:
-                    data.append(
-                        {"offer": test, "itemName": item['item_name'], "itemId": item['id'], "desideredUserId": desiredItem.data['user_id'], "desideredItemId": desiredItem.data['id'], "desiredItemName": desiredItem.data['item_name'], "desiredItemImage": desiredItemImage.data['image'], "image": imageSerializer.data[0]['image']})
+                print("😁",item)
+                try:
+                    getOffer = Offer.objects.get(
+                        offered_item=item['id'], acceptance=True)
+                    test = OfferSerializer(getOffer).data
+                    getPost = Post.objects.get(id=test["post_id"])
+                    post = PostSerializer(getPost).data
+                    itemId = post['item_id']
+                    getDesiredItem = Item.objects.get(pk=itemId)
+                    desiredItem = ItemSerializer(getDesiredItem)
+                    getDesireditemImage = Image.objects.filter(
+                        item_id=itemId).first()
+                    desiredItemImage = ImageSerializer(getDesireditemImage)
+                    image = Image.objects.filter(item_id=item['id'])
+                    imageSerializer = ImageSerializer(image, many=True)
+                    if test['offered_item'] == item['id']:
+                        data.append(
+                            {
+                            "offer": test,
+                            "itemName": item['item_name'],
+                            "itemId": item['id'],
+                            "desideredUserId": desiredItem.data['user_id'],
+                            "desideredItemId": desiredItem.data['id'],
+                            "desiredItemName": desiredItem.data['item_name'],
+                            "desiredItemImage": desiredItemImage.data['image'],
+                            "image": imageSerializer.data[0]['image']
+                            })
+                except Offer.DoesNotExist:
+                    print("next")
 
         except User.DoesNotExist:
             error = {"Error on user"}
