@@ -205,9 +205,7 @@ export default function ListingSingleItem(props) {
   return (
     <div >
       {/* <Box sx={{ width: '50%', marginLeft: '30%', marginTop: 2, display: 'flex', flexDirection: 'column' }}> */}
-
-      <Box sx={{ width: '70%', margin: 'auto', marginTop: 10, display: 'flex', flexDirection: 'column' }}>
-
+      <Box sx={{ width: '70%', margin: 'auto', marginTop: 5, display: 'flex', flexDirection: 'column'}}>
         <Grid container spacing={2} sx={{ backgroundColor: "none", marginTop: 2 }}>
           <Grid item xs={6} sx={{ margin: '10px' }}>
             <Container>
@@ -217,12 +215,12 @@ export default function ListingSingleItem(props) {
                   showArrows={true}
                   showThumbs={true}
                   thumbWidth={100}
-                  sx={{ objectFit: "contain", bgcolor: '#f5f5f5' }}
+                  sx={{objectFit: "contain", bgcolor: '#f5f5f5'}}
                   autoPlay={false}
                 >
                   {listing?.images.map((img, i) => (
                     <div>
-                      <img alt="image1" src={BASE_URL + `${listing.images[i]}`} />
+                      <img alt="image1" src={BASE_URL + `${listing.images[i]}`}/>
                     </div>
                   ))}
                 </Carousel>}
@@ -238,7 +236,7 @@ export default function ListingSingleItem(props) {
                 <Box
                   sx={{
                     backgroundColor: "none",
-                    paddingBottom: 2,
+                    paddingBottom:2,
                     borderBottom: 1,
                     borderColor: 'grey.500'
                   }}
@@ -248,6 +246,16 @@ export default function ListingSingleItem(props) {
                       <Typography variant='h5'>
                         {listing.item.item_name}
                       </Typography>
+                  
+                  {user?.id === listing?.item.user_id && (
+                    <BrownButton
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2 }}
+                        onClick={deletePost}
+                      >
+                        DELETE ITEM
+                      </BrownButton>
+                        )}
 
                     </div>
                   }
@@ -262,38 +270,39 @@ export default function ListingSingleItem(props) {
                       </BrownButton>
 
                       <div>
-                        <Tooltip title="Send poster a message on whatspp">
-                          <IconButton >
-                            <a href={`https://wa.me/${listing?.phoneDetail}`}>
-                              <WhatsAppIcon sx={{ fontSize: "30px", color: '#4d3e38' }} />
-                            </a>
-                          </IconButton>
-                        </Tooltip>
+                      <Tooltip title="Send poster a message on whatspp">
+                      <IconButton >
+                        <a href={`https://wa.me/${listing?.phoneDetail}`}>
+                          <WhatsAppIcon sx={{ fontSize: "30px", color:'#4d3e38' }}/>
+                        </a>
+                      </IconButton>
+                      </Tooltip>
 
+                      
+                      {listing &&  
+                      <Tooltip title="Send an email to poster">
+                      <IconButton>
+                      <a href={`mailto:${listing.email}`}>
+                        <EmailIcon sx={{ fontSize: "30px", color:'#4d3e38' }}/> </a> 
+                      </IconButton>
+                      </Tooltip>
+                      }
 
-                        {listing &&
-                          <Tooltip title="Send an email to poster">
-                            <IconButton>
-                              <a href={`mailto:${listing.email}`}>
-                                <EmailIcon sx={{ fontSize: "30px", color: '#4d3e38' }} /> </a>
-                            </IconButton>
-                          </Tooltip>
-                        }
+                      {offersItems &&  
+                      <Tooltip title="Offer received">
+                      <Badge badgeContent={offersItems.length}>
+                      <a >
+                        <LocalOfferIcon sx={{ fontSize: "30px", color:'#4d3e38' , marginLeft:"0.5rem" }}/> </a> 
+                      </Badge>
+                      </Tooltip>
+                      }
 
-                        {offersItems &&
-                          <Tooltip title="Offer received">
-                            <Badge badgeContent={offersItems.length}>
-                              <a >
-                                <LocalOfferIcon sx={{ fontSize: "30px", color: '#4d3e38', marginLeft: "0.5rem" }} /> </a>
-                            </Badge>
-                          </Tooltip>
-                        }
-
+                      
                       </div>
                     </>}
-
+                
                 </Box>
-
+   
                 <Box
                   sx={{
                     backgroundColor: "none",
@@ -335,15 +344,8 @@ export default function ListingSingleItem(props) {
                     {new Date(listing.post.expiration).toDateString()}
                   </Typography>}
                 </Box>
-                {user?.id === listing?.item.user_id &&
-                  <Button
-                    variant="outlined"
-                    startIcon={<DeleteIcon />}
-                    onClick={() => deletePost()}
-                  >
-                    Delete
-                  </Button>
-                }
+
+                
                 <Box
                   sx={{
                     backgroundColor: "none",
@@ -357,9 +359,10 @@ export default function ListingSingleItem(props) {
                   </Typography>
                   {listing &&
                     <Typography variant='h7'>
-                      {listing.username} ({listing.rating}) <StarIcon sx={{ fontSize: "30px", color: '#4d3e38' }} />
-                    </Typography>}
-                </Box>    
+                          {listing.username}
+                  </Typography>}
+
+                    
                 </Box>
               </Grid>
             </Grid>
@@ -378,115 +381,59 @@ export default function ListingSingleItem(props) {
       </Box>
 
       {/* ____________________________________________________________________________________________________________________________       */}
-      {/* <Box sx={{ width: '35%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column'}}>
-          {offersItems && offersItems.map((items, index) => {
-            return (
-              <>
-                <div>
-                    <Accordion expanded={expanded === `panel${index}`} onChange={handleChange(`panel${index}`)}>
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      aria-controls="panel1bh-content"
-                      id="panel1bh-header"
-                    >
-                      <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                        {items?.itemName}
-                      </Typography>
-                      <Typography sx={{ color: 'text.secondary' }}>I am an accordion</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                 
-                      <Typography>
-                         {items.details}
-
-                      {user?.id === listing?.item.user_id &&   
-                      <BrownButton
-                        variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
-                        onClick={() => {
-                        acceptOffer(offersMade[index])
-                        }}
-                      >
-                              ACCEPT OFFER
-                      </BrownButton>}
-                      </Typography>
-                  
-                    </AccordionDetails>
-                  </Accordion>
-                </div>
-          </>
-            )
-          })}
-        </Box>
-        </div>
-      );} */}
-
-
-      {/* ____________________________________________________________________________________________________________________________       */}
-
-
-      {offersItems && offersItems.map((items, index) => {
+  
+    {offersItems && offersItems.map((items, index) => {
+        // console.log("this is" , items)
         return (
           <>
-            <Box sx={{ width: '70%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
-              <Divider sx={{ borderBottomWidth: 1 }} variant="middle" />
-            </Box>
+            <Box 
+              sx={{ 
+                width: '50%',
+                maxHeight: '300px',
+                margin: 'auto',
+                marginTop: 2,
+                display: 'flex',
+                flexDirection: 'column',
+                backgroundColor: 'white',
+                '&:hover': {
+                  backgroundColor: 'gray',
+                  opacity: [0.9, 0.8, 0.7]},
+                }}
+                onClick={handleOpen}
+                >
+                  <Grid
+                  container
+                  spacing={2}
+                  sx={{ backgroundColor: "none", marginTop: 2 }}
+                >
+                  <Grid item xs={5}>
+                   {listing && <Img alt="image1" src={BASE_URL + `${items?.images[0]}`} />}
+                  </Grid>
 
-            <Box sx={{ width: '70%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
-              <Grid container spacing={2} sx={{ backgroundColor: "none", marginTop: 2 }}>
-                <Grid item xs={5} sx={{ margin: '10px' }}>
-                  <Container sx={{ height: 350 }}>
-                    {items && <Img alt="image1" src={BASE_URL + `${items?.images[0]}`} />}
-                  </Container>
-                </Grid>
-                <Grid item xs={5} sm container>
-                  <Grid item xs container direction="column" spacing={2}>
-                    <Grid item xs>
-                      <Box
-                        sx={{
-                          backgroundColor: "white",
-                        }}
+                   <Grid item xs={7} mt={5}>
+                    <Typography variant='h5'>
+                    {items?.itemName} 
+                   </Typography>
+                   
+                  <Typography variant="body2" color="text.secondary" display="inline">
+                     {items?.userName} 
+                   </Typography>
 
-                      >
-                        <Typography variant='h5'>
-                          {items?.itemName}
-                        </Typography>
+                   <Typography variant="body2" color="text.secondary" display="inline">
+                     {new Date(items.expiration).toLocaleString()}
+                   </Typography>
+                   </Grid>
+                   
+                  </Grid>
+                  </Box>
 
-                        {user?.id === listing?.item.user_id &&
-                          <>
-                            <Box sx={{ marginLeft: 50 }}><ModeEditIcon /></Box>
-                            <BrownButton
+                  
 
-                              variant="contained"
-                              sx={{ mt: 3, mb: 2 }}
-                              onClick={() => {
-                                acceptOffer(offersMade[index]);
-                                hidAcceptedPost(listing.post)
-                              }}
-                            >
-                              ACCEPT OFFER
-                            </BrownButton>
-                          </>
-                        }
-                      </Box>
-                      <Box
-                        sx={{
-                          backgroundColor: "white",
-                          marginTop: 4,
-                        }}
-                      >
-                        <Typography gutterBottom variant='h5' component='div'>
-                          Description
-                        </Typography>
-                        <Typography gutterBottom variant='body'>
-                          {items.details}
-                        </Typography>
-                      </Box>
-                      <Box
-                        sx={{
-                          backgroundColor: "white",
-                          marginTop: 4,
-                        }}
+                  <Modal
+                      open={open}
+                      onClose={handleClose}
+                      aria-labelledby="modal-modal-title"
+                      aria-describedby="modal-modal-description"
                       >
                       <Box sx={style}>
                         <Typography id="modal-modal-title" variant="h6" component="h2">
