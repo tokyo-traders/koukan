@@ -85,15 +85,15 @@ export default function MyPage(props) {
 
           {/* get logged in user name and display */}
 
-         {user &&
-          <Typography
-            variant="h4"
-            fontFamily="Roboto Slab"
-            sx={{fontWeight: 'bold'}}
-            padding={2}
-            color="#4d3e38"
-          >
-            {user.username}
+          {user &&
+            <Typography
+              variant="h4"
+              fontFamily="Roboto Slab"
+              sx={{ fontWeight: 'bold' }}
+              padding={2}
+              color="#4d3e38"
+            >
+              {user.username}
 
             </Typography>}
           <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '80%' }}>
@@ -107,8 +107,8 @@ export default function MyPage(props) {
             >
               <StyledTab value="My Items" label="My Items" onClick={itemList} />
               <StyledTab value="My Listing" label="My Listings" onClick={postList} />
-              <StyledTab value="My Offers" label="Accepted Offers" onClick={offerList} />
-              <StyledTab value="Pending trades" label="Pending Listings" onClick={pendingTrade} />
+              {/* <StyledTab value="My Offers" label="Accepted Offers" onClick={offerList} /> */}
+              <StyledTab value="Pending trades" label="Pending trades" onClick={pendingTrade} />
             </StyledTabs>
           </Box>
 
