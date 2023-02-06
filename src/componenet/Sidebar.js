@@ -18,7 +18,7 @@ import React, { useEffect, useState } from "react";
 function Sidebar(props) {
 
   const { handleCategoryFilter, categories, setCategories } = props;
-  const [selected, setSelected] = useState('');
+  const [selected, setSelected] = useState(null);
 
   useEffect(() => {
     const getCategories = async () => {
@@ -28,25 +28,24 @@ function Sidebar(props) {
     getCategories()
   }, [])
 
-  const resetCategories = () => {
-    setSelected('')
-  }
-
+  console.log(selected)
   return (
     <div>
       <Box flex={1} p={2} sx={{ display: { xs: "block", sm: "block" } }}>
         <Box position="fixed" boxShadow={3} borderRadius={2} bgcolor={"white"}>
           <List>
-            <ListItem disablePadding>
-              <ListItem>
-                <Typography variant="h6">Categories</Typography>
-              </ListItem>
-            </ListItem>
             <ToggleButtonGroup
               orientation="vertical"
               value={selected}
               exclusive
             >
+              {/* <ListItem disablePadding> */}
+              <ToggleButton value={''} onClick={(e) => { handleCategoryFilter(e); setSelected(null); }} >
+                {/* <ListItem> */}
+                <Typography variant="h6">All Categories</Typography> {/* please do not change this wording 😅/*}
+                {/* </ListItem> */}
+              </ToggleButton>
+              {/* </ListItem> */}
               {categories?.map(category => (
                 <ToggleButton value={category.category_name} onClick={(e) => { handleCategoryFilter(e); setSelected(category.category_name) }}>
                   <ListItem disablePadding>
@@ -59,7 +58,6 @@ function Sidebar(props) {
               )}
             </ToggleButtonGroup>
           </List>
-          <ButtonBase onClick={resetCategories}>reset categories</ButtonBase>
         </Box>
       </Box>
     </div >

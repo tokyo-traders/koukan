@@ -18,6 +18,11 @@ import Tooltip from '@mui/material/Tooltip';
 import { IconButton } from '@mui/material';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import Badge from '@mui/material/Badge';
+import DeleteIcon from "@mui/icons-material/Delete";
+import StarIcon from '@mui/icons-material/Star'; import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Modal from "@mui/material/Modal";
 
 const style = {
@@ -30,6 +35,7 @@ const style = {
   border: "0.5px solid #000",
   p: 3
 };
+
 
 const Img = styled('img')({
   margin: 'auto',
@@ -69,6 +75,14 @@ export default function ListingSingleItem(props) {
     navigate(from, { replace: true })
   }, [navigate]);
 
+
+  const [expanded, setExpanded] = React.useState(false);
+
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
+
+
   const [listing, setListing] = useState(null);
   const [date, setDate] = useState('');
   const [offersMade, setOffersMade] = useState(null);
@@ -101,11 +115,24 @@ export default function ListingSingleItem(props) {
   }
 
   const deletePost = () => {
-        axios
-            .delete(`/api/edit-post/${listing.post.id}`)
-            .then((res) => console.log(res));
-    };
+    axios
+      .delete(`/api/edit-post/${listing.post.id}`)
+      .then((res) => console.log(res));
+  };
 
+  const hidAcceptedPost = async (obj) => {
+    obj.visibile = false;
+    const response = axios
+      .put(`/api/edit-post/${listing.post.id}`,
+        JSON.stringify(obj),
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true
+        }
+      )
+    console.log(response.data)
+  };
+  
 
   useEffect(() => {
     if (listingId) {
@@ -121,7 +148,7 @@ export default function ListingSingleItem(props) {
     if (listingId) {
       axios.get(`/api/listing/${listingId}`)
         .then(response => {
-          console.log(response.data[0].images)
+          // console.log(response.data[0].images)
           images.concat(response.data[0].images)
         })
     }

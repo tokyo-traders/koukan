@@ -253,6 +253,15 @@ export default function UserSingleItem(props) {
 									>
 										MAKE POST
 									</BrownButton>
+									<BrownButton
+										fullWidth
+										variant="contained"
+										sx={{ mt: 3, mb: 2 }}
+										onClick={() => { deleteItem(Number(itemId)); navigate("/MyPage/") }}
+									>
+										DELETE ITEM
+									</BrownButton>
+
 								</Box>
 
 								<Box
