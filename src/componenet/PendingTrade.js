@@ -183,7 +183,8 @@ function PendingTrade(props) {
       reputation_rating: value
     }
     console.log(userIdReview)
-    axios.put(`/api/send-review/${userIdReview}`,
+    // axios.put(`/api/send-review/${userIdReview}`,
+    axios.put(`/api/sendUserReview/${userIdReview}`,
       JSON.stringify(data),
       {
         headers: { "Content-Type": "application/json" },

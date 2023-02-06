@@ -59,7 +59,7 @@ urlpatterns = [
     # path('offered-items/<int:userId>/<int:offerId>', views.single_offer),
     path('singleOffer/<int:offerId>', views.single_offer),
     path('currentUserScore/<int:userId>', views.currentUser_review),
-    path('sendUserReview/<int:userId>', views.sendUserReview)
+    path('sendUserReview/<int:userId>', views.sendUserReview),
     path('send-review/<int:userIdReview>', views.send_review)
 
 
