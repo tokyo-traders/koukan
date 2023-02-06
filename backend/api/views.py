@@ -801,6 +801,19 @@ def single_offer(request, offerId):
             return Response(error, status=status.HTTP_404_NOT_FOUND)
 
 
+@api_view(['PUT'])
+def send_review(request, userIdReview):
+    print("✌️", request.data, "✌️", userIdReview)
+    if request.method == 'PUT':
+        user = User.objects.get(pk=userIdReview)
+        editedUser = UserSerializer(user, data=request.data, partial=True)
+        if editedUser.is_valid():
+            editedUser.save()
+            return Response("review sent succesfully", status=status.HTTP_202_ACCEPTED)
+        else:
+            return Response('wrong review', status=status.HTTP_400_BAD_REQUEST)
+
+
 @api_view(['GET', 'POST'])
 def hello(request):
     if request.method == "GET":

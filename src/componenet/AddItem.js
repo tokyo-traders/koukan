@@ -120,7 +120,8 @@ function AddItem(props) {
 		setDesire("");
 		setDetails("");
 		setItemName("");
-		mypage();
+		// mypage();
+		navigate("/MyPage/")
 	};
 
 	const handleChange = (e) => {

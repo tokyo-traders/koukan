@@ -63,7 +63,7 @@ function PendingTrade(props) {
         // setOfferDisplayed(true)
       })
       .catch(() => console.log("no offers"))
-      .then(() => console.log(tradingItems))
+      .then(() => console.log(offeredItems))
     // .then(() => setTradingItems([]))
   }, [])
 
@@ -174,6 +174,23 @@ function PendingTrade(props) {
 
   const handleCloseModal = () => {
     setOpenModal(false)
+    // console.log(userIdReview.desideredUserId)
+
+  }
+
+  const sendReviewScore = (userIdReview) => {
+    const data = {
+      reputation_rating: value
+    }
+    console.log(userIdReview)
+    axios.put(`/api/send-review/${userIdReview}`,
+      JSON.stringify(data),
+      {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      }
+    )
+      .then(res => console.log(res))
   }
 
   const styleModal = {
@@ -207,7 +224,7 @@ function PendingTrade(props) {
               sx={{ maxWidth: 300, mt: 10, marginLeft: 4 }}
             //   onClick={() => {
             //     if (item) {
-            //       navigate(`/MyPage/Items/${item.itemID}`, {replace: true})
+            //       navigate(`/ MyPage / Items / ${ item.itemID }`, {replace: true})
             //     }
             //   }}
             >
@@ -251,7 +268,7 @@ function PendingTrade(props) {
             >I have Received my Item</Button>}
             <Modal
               open={openModal}
-              onClose={handleCloseModal}
+              onClose={() => { sendReviewScore(item.offers.item.user_id); handleCloseModal(); }}
               aria-labelledby="modal-modal-description"
             >
               <Box
@@ -334,7 +351,7 @@ function PendingTrade(props) {
             >I have received my Item</Button>}
             <Modal
               open={openModal}
-              onClose={handleCloseModal}
+              onClose={() => { sendReviewScore(item.desideredUserId); handleCloseModal(); }}
               aria-labelledby="modal-modal-description"
             >
               <Box

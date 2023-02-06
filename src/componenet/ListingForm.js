@@ -10,6 +10,8 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 
+
+
 const BrownButton = styled(Button)(() => ({
     backgroundColor: "#4d3e38",
     borderRadius: "8px",
@@ -31,6 +33,7 @@ function AddListingForm(props) {
     const [expirationDate, setExpirationDate] = useState('')
     const [priceFree, setPriceFree] = useState(false)
 
+    const navigate = useNavigate();
 
     const uploadData = new FormData();
 
@@ -49,6 +52,7 @@ function AddListingForm(props) {
         })
             .then(res => res.json())
             .then(data => console.log(data))
+            .then(() => navigate('/MyPage/postlist/'))
     }
 
     return (

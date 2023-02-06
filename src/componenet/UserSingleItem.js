@@ -240,7 +240,7 @@ export default function UserSingleItem(props) {
 										fullWidth
 										variant="contained"
 										sx={{ mt: 3, mb: 2 }}
-										onClick={() => deleteItem(Number(itemId))}
+										onClick={() => { deleteItem(Number(itemId)); navigate("/MyPage/") }}
 									>
 										DELETE ITEM
 									</BrownButton>
