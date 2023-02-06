@@ -27,11 +27,11 @@ urlpatterns = [
     path('SetPending', views.set_pending),
     path('acceptedTrade/<int:userId>', views.accepted_trade),
     path('itemHandover', views.item_handover),
-
+    # path('itemHandover/<int:userIdreview>', views.item_handover),
 
     path('all-item/<int:userid>/<int:itemid>', views.all_item),
 
-    path('all-info/<int:userid>', views.newall_item),
+    # path('all-info/<int:userid>', views.newall_item),
     # path('create-post', views.post_list),  # added manually from Koji
     # path('user/login/<str:name>', views.user_login),
     path('all-item/<int:itemid>', views.all_item),
@@ -57,7 +57,8 @@ urlpatterns = [
     path('categories-list', views.category_list),
     path('offered-items/<int:userId>', views.items_offered),
     # path('offered-items/<int:userId>/<int:offerId>', views.single_offer),
-    path('singleOffer/<int:offerId>', views.single_offer)
+    path('singleOffer/<int:offerId>', views.single_offer),
+    path('send-review/<int:userIdReview>', views.send_review)
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 #
