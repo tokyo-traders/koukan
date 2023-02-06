@@ -89,12 +89,12 @@ function App() {
 						]} />
 						<Route path="/Login" element={<LoginForm userState={userState} setUserState={setUserState} />} />
 						<Route path="/Signup" element={<SignupForm />} />
-						<Route path="/listing/:listingId" element={[<ListingSingleItem user={user} />]} />
+						<Route path="/listing/:listingId" element={[<ListingSingleItem user={user} categories={categories} />]} />
 
 
 
 						<Route element={<RequireAuth />}>
-							<Route path="/listing/:listingId/offer" element={<OfferForm user={user} />} />
+							<Route path="/listing/:listingId/offer" element={<OfferForm user={user} categories={categories}/>} />
 							<Route path="/MyPage" element={<MyPage user={user} />} >
 								<Route path="/MyPage" element={<UserItemsList user={user} />} />
 								<Route path="/MyPage/addItem" element={<AddItem user={user} />} />
@@ -104,7 +104,7 @@ function App() {
 
 								<Route path="/MyPage/pendingTrade" element={<PendingTrade user={user} />} />
 								<Route path="/MyPage/Items/:itemId" element={<UserSingleItem user={user} />} />
-								<Route path="/MyPage/makeListing/:itemId" element={<AddListingForm user={user} />} />
+								<Route path="/MyPage/makeListing/:itemId" element={<AddListingForm user={user} categories={categories}/>} />
 							</Route>
 						</Route>
 					</Route>
