@@ -397,7 +397,7 @@ def image_list(request, itemId):
 @api_view(['GET'])  # to be refactored
 def homepage(request):
     if request.method == "GET":
-        posts = Post.objects.filter(visibile=False)
+        posts = Post.objects.filter(visibile=True)
         images = Image.objects.all()
         data = []
         imageUrl = []
@@ -426,7 +426,7 @@ def homepage(request):
 def listingItem(request, postId):
     if request.method == "GET":
         data = []
-        post = Post.objects.get(pk=postId, visibile=False)
+        post = Post.objects.get(pk=postId, visibile=True)
         images = Image.objects.all()
         imageUrl = []
         postSerializer = PostSerializer(post)
@@ -475,6 +475,13 @@ def edit_post(request, postId):
 
     if request.method == "GET":
         return Response(postSerializer.data, status=status.HTTP_200_OK)
+    if request.method == "PUT":
+        editedPostSerializer = PostSerializer(
+            getPost, data=request.data, partial=True)
+        if editedPostSerializer.is_valid():
+            editedPostSerializer.save()
+            return Response("the post is no more visible", status=status.HTTP_200_OK)
+        return Response("post is still visible", status=status.HTTP_400_BAD_REQUEST)
     if request.method == "DELETE":
         currentPostID = postSerializer.data['id']
         try:
@@ -682,7 +689,7 @@ def set_pending(request):
             offer = Offer.objects.filter(pk=request.data["id"]).first()
         except Offer.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        print("😁",offer)
+        print("😁", offer)
         serializer = OfferSerializer(offer, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
@@ -699,7 +706,7 @@ def items_offered(request, userId):
             itemSerializer = ItemSerializer(allItems, many=True).data
             data = []
             for item in itemSerializer:
-                print("😁",item)
+                print("😁", item)
                 try:
                     getOffer = Offer.objects.get(
                         offered_item=item['id'], acceptance=True)
@@ -717,14 +724,14 @@ def items_offered(request, userId):
                     if test['offered_item'] == item['id']:
                         data.append(
                             {
-                            "offer": test,
-                            "itemName": item['item_name'],
-                            "itemId": item['id'],
-                            "desideredUserId": desiredItem.data['user_id'],
-                            "desideredItemId": desiredItem.data['id'],
-                            "desiredItemName": desiredItem.data['item_name'],
-                            "desiredItemImage": desiredItemImage.data['image'],
-                            "image": imageSerializer.data[0]['image']
+                                "offer": test,
+                                "itemName": item['item_name'],
+                                "itemId": item['id'],
+                                "desideredUserId": desiredItem.data['user_id'],
+                                "desideredItemId": desiredItem.data['id'],
+                                "desiredItemName": desiredItem.data['item_name'],
+                                "desiredItemImage": desiredItemImage.data['image'],
+                                "image": imageSerializer.data[0]['image']
                             })
                 except Offer.DoesNotExist:
                     print("next")

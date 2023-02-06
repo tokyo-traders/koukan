@@ -41,7 +41,7 @@ function AddListingForm(props) {
         uploadData.append("price", priceFree)
         uploadData.append("user_id", user.id)
         uploadData.append("item_id", itemId)
-        uploadData.append("visible", true)
+        uploadData.append("visibile", true)
 
         fetch("/api/create-post", {
             method: "POST",

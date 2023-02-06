@@ -104,14 +104,17 @@ export default function ListingSingleItem(props) {
       .then((res) => console.log(res));
   };
 
-  const hidAcceptedPost = (id) => {
-    axios
-      .put(`/api/edit-post/${id}`,
+  const hidAcceptedPost = async (obj) => {
+    obj.visibile = false;
+    const response = axios
+      .put(`/api/edit-post/${listing.post.id}`,
+        JSON.stringify(obj),
         {
-          visibile: false
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true
         }
       )
-      .then((res) => console.log(res));
+    console.log(response.data)
   };
 
   useEffect(() => {
@@ -444,7 +447,7 @@ export default function ListingSingleItem(props) {
                               sx={{ mt: 3, mb: 2 }}
                               onClick={() => {
                                 acceptOffer(offersMade[index]);
-                                hidAcceptedPost(listing.post.id)
+                                hidAcceptedPost(listing.post)
                               }}
                             >
                               ACCEPT OFFER
