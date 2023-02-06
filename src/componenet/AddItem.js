@@ -14,14 +14,14 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 const BrownButton = styled(Button)(() => ({
-    backgroundColor: "#4d3e38",
-    borderRadius: "8px",
-    color: "#def4f6",
-    "&:hover": {
-      background: "#332925"
-    },
-    // padding: "15px 36px",
-    fontSize: "16px"
+	backgroundColor: "#4d3e38",
+	borderRadius: "8px",
+	color: "#def4f6",
+	"&:hover": {
+		background: "#332925"
+	},
+	// padding: "15px 36px",
+	fontSize: "16px"
 }));
 
 function AddItem(props) {
@@ -120,7 +120,7 @@ function AddItem(props) {
 		setDesire("");
 		setDetails("");
 		setItemName("");
-		// mypage();
+		mypage();
 	};
 
 	const handleChange = (e) => {
@@ -174,8 +174,8 @@ function AddItem(props) {
 						{
 							categoriesArray.map((x) => {
 								return <MenuItem value={x["id"]}>
-								{x["category_name"]}
-							</MenuItem>
+									{x["category_name"]}
+								</MenuItem>
 							})
 						}
 					</Select>
