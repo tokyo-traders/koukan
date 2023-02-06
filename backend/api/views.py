@@ -323,8 +323,8 @@ def all_item(request, itemid):
     if request.method == "GET":
         itemSerializer = ItemSerializer(item)
         try:
-            getOffer = Offer.objects.get(
-                offered_item=itemSerializer.data['id'])
+
+            getOffer = Offer.objects.get(offered_item=itemSerializer.data['id'])
             currentOffer = OfferSerializer(getOffer)
             offeredItemId = currentOffer.data['offered_item']
             getItemDetail = Item.objects.get(pk=offeredItemId)
@@ -341,6 +341,7 @@ def all_item(request, itemid):
             data.append({'itemName': itemSerializer.data['item_name'],
                          'images': imgUrl,
                          'details': itemSerializer.data['details'], 'expiration': currentOffer.data['date_offered'], 'user_id': itemSerializer.data['user_id'], 'userName': userInfo.data['username']})
+
         except Offer.DoesNotExist:
             data = []
             imgUrl = []

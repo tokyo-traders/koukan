@@ -179,9 +179,9 @@ function NavBar(props) {
                   onClick={handleMenu}
                   color="#3CD64B"
                 >
-                  <AccountCircle />
+                  <AccountCircle  sx={{ fontSize: "40px"}} />
                 </IconButton>
-
+                
                 <Menu
                   id="menu-appbar"
                   anchorEl={anchorEl}
