@@ -25,7 +25,8 @@ class User(models.Model):
     phone_detail = models.CharField(validators=[phone_regex], default="", max_length=20, unique=True)
     is_emailVerified = models.BooleanField(default=False)
     is_phoneVerified = models.BooleanField(default=False) 
-    reputation_rating = models.DecimalField(max_digits=1000, decimal_places=4,default=0)
+    reputation_rating = models.DecimalField(max_digits=1000, decimal_places=2,default=0)
+    total_review = models.IntegerField(default=0, null=True)
 
 
 class Image(models.Model):
