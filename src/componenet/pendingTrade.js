@@ -41,7 +41,9 @@ function PendingTrade(props) {
     axios.get(`/api/acceptedTrade/${user.id}`)
       .then(response => {
         console.log(response.data)
-        !tradesDisplayed && tradingItems.push(...response.data)
+        // !tradesDisplayed && tradingItems.push(...response.data)
+        setTradingItems(response.data)
+        // console.log(tradesDisplayed)
         setTradesDisplayed(true)
       })
       .catch(() => console.log("no listings"))
@@ -56,8 +58,9 @@ function PendingTrade(props) {
       .get(`/api/offered-items/${user.id}`)
       .then(res => {
         console.log(res.data)
-        !offerDisplayed && offeredItems.push(...res.data)
-        setOfferDisplayed(true)
+        // !offerDisplayed && offeredItems.push(...res.data)
+        setOfferedItems(res.data)
+        // setOfferDisplayed(true)
       })
       .catch(() => console.log("no offers"))
       .then(() => console.log(tradingItems))
