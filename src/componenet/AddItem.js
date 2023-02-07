@@ -69,33 +69,10 @@ function AddItem(props) {
 		uploadData.append("user_id", user.id);
 		uploadData.append("desire", desire);
 		uploadData.append("category", category);
-		// uploadImages.append("itemId", 85);
-		// try {
-		//     const sendItemInfo = await axios.post('/api/item', uploadData);
-		//     let info = await sendItemInfo.json()
-		//     localStorage.setItem("itemId", Number(info['id']))
-		//     const id = localStorage.getItem('itemId');
-		//     console.log(id)
-		// }
-		// catch (error) {
-		//     console.log(error)
-		// }
-
-		// const asyncLocalStorage = {
-		//     setItem: async function (key, value) {
-		//         await Promise.resolve();
-		//         localStorage.setItem(key, value);
-		//     },
-		//     getItem: async function (key, value) {
-		//         await Promise.resolve();
-		//         localStorage.getItem(key, value);
-		//     },
-		// }
 		console.log(uploadData);
 		fetch(`/api/item/${user.id}`, {
 			method: "POST",
 			body: uploadData,
-			// headers: { 'Content-Type': 'application/json'}
 		})
 			.then((res) => res.json())
 			.then((data) => {

@@ -43,12 +43,13 @@ const REGISTER_URL = '/api/create-offer';
 
 function OfferForm(props) {
 
-  const { user } = props
+  const { user, categories } = props
   const { listingId } = useParams();
 
   const [listing, setListing] = useState(null);
   const [offer, setOffer] = useState(null);
   const [date, setDate] = useState('');
+  const [acceptedCat,SetAccptedCat] = useState(null)
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -78,7 +79,12 @@ function OfferForm(props) {
         // .then(response => setItemData(response.data))
         .then(response => {
           setListing(response.data[0])
-        })
+          let safe = response.data[0].categories.map((category)=>{
+            return category.categories_id
+          })
+          SetAccptedCat(safe)
+          
+        }).then(() => console.log(acceptedCat))
     }
   }, [user])
 // console.log(listing)
@@ -144,7 +150,7 @@ function OfferForm(props) {
         // lg={12}
         // spacing={2}
       >
-        {user && itemInfo?.map(item => (
+        {(user && acceptedCat) && itemInfo?.filter((item) => acceptedCat.includes(item.category)).map(item => (
           <Card
             elevation={2}
             sx={{ maxWidth: 200, margin: 2}}
