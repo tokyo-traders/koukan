@@ -14,6 +14,7 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import EmailIcon from '@mui/icons-material/Email';
 import { Carousel } from 'react-responsive-carousel';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import Chip from '@mui/material/Chip';
 import Tooltip from '@mui/material/Tooltip';
 import { IconButton } from '@mui/material';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
@@ -59,7 +60,7 @@ const BASE_URL = 'http://127.0.0.1:8000/api'
 
 export default function ListingSingleItem(props) {
 
-  const { user } = props;
+  const { user, categories } = props;
 
 
   const { listingId } = useParams();
@@ -88,6 +89,7 @@ export default function ListingSingleItem(props) {
   const [offersMade, setOffersMade] = useState(null);
   const [offersItems, setOffersItems] = useState(null);
   const [images, setImages] = useState([])
+  const [postCat, setPostCat] = useState([])
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -138,21 +140,12 @@ export default function ListingSingleItem(props) {
     if (listingId) {
       axios.get(`/api/listing/${listingId}`)
         .then(response => {
-          console.log(response.data)
+          console.log(response.data[0])
           setListing(response.data[0])
         })
     }
   }, [])
 
-  useEffect(() => {
-    if (listingId) {
-      axios.get(`/api/listing/${listingId}`)
-        .then(response => {
-          // console.log(response.data[0].images)
-          images.concat(response.data[0].images)
-        })
-    }
-  }, [])
 
   useEffect(() => {
 
@@ -309,7 +302,7 @@ export default function ListingSingleItem(props) {
                     marginTop: 4,
                   }}
                 >
-                  <Typography variant='h6' component='div'>
+                  <Typography variant='h6' component='div' fontWeight={700}>
                     Description
                   </Typography>
                   {listing && <Typography gutterBottom variant='body'>
@@ -323,9 +316,33 @@ export default function ListingSingleItem(props) {
                     marginTop: 2,
                   }}
                 >
-                  <Typography variant='h6' component='div'>
+                  <Typography variant='h6' component='div' fontWeight={700}>
+                    Accepted Catagories
+                  </Typography>
+                  <br/>
+                  <Grid
+                   container
+                   width="100%"
+                   direction="row"
+                   justifyContent="space-around"
+                   alignItems="center"
+                   xs={12}
+                   xl={4}
+                   spacing={3}
+                   columnSpacing={3}
+                  
+                  >
+
+                  {listing && listing?.categories?.map((category, index) => (
+                    <Chip label={categories[index]?.category_name}/>
+                    )
+                  )}
+                  </Grid>
+                  <br/>
+                  <Typography variant='h6' component='div' fontWeight={700}>
                     Wishlist
                   </Typography>
+                  
                   {listing && <Typography gutterBottom variant='body'>
                     {listing.post.desire}
                   </Typography>}
@@ -337,7 +354,7 @@ export default function ListingSingleItem(props) {
                     marginTop: 2,
                   }}
                 >
-                  <Typography variant='h6' component='div'>
+                  <Typography variant='h6' component='div' fontWeight={700}>
                     Post Expired By
                   </Typography>
                   {listing && <Typography gutterBottom variant='body'>
@@ -354,7 +371,7 @@ export default function ListingSingleItem(props) {
                     borderColor: 'grey.500'
                   }}
                 >
-                  <Typography variant='h6' component='div'>
+                  <Typography variant='h6' component='div' fontWeight={700}>
                     Owner
                   </Typography>
                   {listing &&

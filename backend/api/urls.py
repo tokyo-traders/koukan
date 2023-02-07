@@ -63,6 +63,7 @@ urlpatterns = [
     path('send-review/<int:userIdReview>', views.send_review)
 
 
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 #
 # use the static or...

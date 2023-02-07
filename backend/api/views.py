@@ -4,8 +4,8 @@ from rest_framework import generics, status, viewsets
 from rest_framework.decorators import api_view, action, permission_classes
 from rest_framework.response import Response
 from rest_framework.authentication import get_authorization_header
-from .serializers import UserSerializer, ItemSerializer, ImageSerializer, MultipleImageSerializer, PostSerializer, OfferSerializer, CategoriesSerializer, ReportedUserSerializer
-from .models import User, Item, Image, Post, Offer, Categories, ReportedUser
+from .serializers import UserSerializer, ItemSerializer, ImageSerializer, MultipleImageSerializer, PostSerializer, OfferSerializer, CategoriesSerializer, ReportedUserSerializer, PostCategoriesSerializer
+from .models import User, Item, Image, Post, Offer, Categories, ReportedUser, PostCategories
 from .authentication import create_access_token, create_refresh_token, decode_access_token, decode_refresh_token
 from rest_framework_simplejwt.tokens import RefreshToken
 from .utils import Util
@@ -215,6 +215,7 @@ def newall_item(request, userid):
                 'itemName': singleItemSerializer.data['item_name'],
                 'itemImages': imgUrl,
                 'userId': singleItemSerializer.data['user_id'],
+                'category': singleItemSerializer.data['category']
             })
             imgUrl = []
         return Response(data)
@@ -427,6 +428,7 @@ def homepage(request):
 @api_view(['GET'])  # to be refactored
 def listingItem(request, postId):
     if request.method == "GET":
+        print(postId)
         data = []
         post = Post.objects.get(pk=postId, visibile=True)
         images = Image.objects.all()
@@ -440,13 +442,23 @@ def listingItem(request, postId):
         userID = postSerializer.data['user_id']
         user = User.objects.filter(pk=userID)
         userSerializer = UserSerializer(user, many=True)
+        categories = PostCategories.objects.filter(post_id=postId)
+        # # categories = PostCategories.objects.get(pk=1)
+        catSerializer = PostCategoriesSerializer(categories, many=True)
+        print(catSerializer.data)
         for image in images:
             imageSerializer = ImageSerializer(image)
             if imageSerializer.data["item_id"] == itemID:
                 imageUrl.append(imageSerializer.data["image"])
         data.append({"post": postSerializer.data,
-                     "item": itemSeralizer.data[0], "images": imageUrl,
-                     "username": userSerializer.data[0]["username"], "phoneDetail": userSerializer.data[0]["phone_detail"], "email": userSerializer.data[0]["email"], "rating": userSerializer.data[0]["reputation_rating"]})
+                     "item": itemSeralizer.data[0],
+                    "images": imageUrl,
+                     "username": userSerializer.data[0]["username"],
+                    "phoneDetail": userSerializer.data[0]["phone_detail"],
+                    "email": userSerializer.data[0]["email"],
+                    "rating": userSerializer.data[0]["reputation_rating"],
+                    "categories": catSerializer.data
+                    })
         imageUrl = []
         return Response(data, status=status.HTTP_200_OK)
 
@@ -458,10 +470,22 @@ def create_post(request):
         serializer = PostSerializer(post, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     elif request.method == "POST":
-        serializer = PostSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        print("🤑",request.data)
+        postSerializer = PostSerializer(data=request.data["post"])
+        if postSerializer.is_valid():
+            postSerializer.save()
+            postSerializer.data["id"]
+            for key in request.data["categories"]:
+                if request.data["categories"][key]:
+                    categ = {}
+                    categ["post_id"] = postSerializer.data["id"]
+                    categ["categories_id"] = key
+                    print("😂",categ)
+                    catSerializer = PostCategoriesSerializer(data=categ, partial=True)
+                    if catSerializer.is_valid():
+                        catSerializer.save()
+
+            return Response(postSerializer.data, status=status.HTTP_201_CREATED)
         else:
             error = {"error": "You have failed to create a post properly"}
             return Response(error, status=status.HTTP_406_NOT_ACCEPTABLE)

@@ -82,3 +82,7 @@ class ReportedUser(models.Model):
     user_id = models.ForeignKey('User', on_delete=models.CASCADE)
     subject = models.CharField(max_length=100, default="")
     reason = models.TextField(default="")
+
+class PostCategories(models.Model):
+    post_id = models.ForeignKey('Post', on_delete=models.CASCADE)
+    categories_id = models.ForeignKey('categories', on_delete=models.CASCADE)

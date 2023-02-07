@@ -67,48 +67,7 @@ function PendingTrade(props) {
     // .then(() => setTradingItems([]))
   }, [])
 
-  // useEffect(() => {
-  //   const offerItemData = axios.get(`/api/offered-items/${user.id}`);
-  //   // const desiredItemData = axios.get(`/api/singleOffer/${offerId}`)
-  //   Promise.all([
-  //     offerItemData,
-  //     desiredItemData
-  //   ])
-  //     .then(res => {
-  //       console.log(res.data)
-  //       !offerDisplayed && offeredItems.push(...res.data)
-  //       setOfferDisplayed(true)
-  //     })
-  //     .catch(() => console.log("no offers"))
-  //     .then(() => console.log(tradingItems))
-  //   // .then(() => setTradingItems([]))
-  // }, [])
-
-  // useEffect(() => {
-  //   axios.get(`/api/singleOffer/${offerId}`)
-  //     .then((response) =>
-  //       setOffer(response.data)
-  //     )
-
-  // }, [])
-  const completeTrade = (itemId) => {
-    // const completeTrade = (userIdReview) => {
-    const data = { user_id: user.id }
-    // console.log(itemId)
-    console.log(itemId)
-    // axios.put(`/api/itemHandover/${userIdReview}`,
-    // axios.put(`/api/itemHandover/${itemId}`,
-    //   JSON.stringify(data),
-    //   {
-    //     headers: { "Content-Type": "application/json" },
-    //     withCredentials: true,
-    //   }
-    // )
-    // .then(response => {
-    //   console.log(response.data)
-    // })
-    // .then(() => myPage())
-  }
+ 
 
   const postCompleteTrade = async (offer) => {
     console.log("offer", offer)
@@ -180,8 +139,6 @@ function PendingTrade(props) {
 
   const handleCloseModal = () => {
     setOpenModal(false)
-    // console.log(userIdReview.desideredUserId)
-
   }
 
   const sendReviewScore = (userIdReview) => {
