@@ -67,7 +67,7 @@ function PendingTrade(props) {
     // .then(() => setTradingItems([]))
   }, [])
 
- 
+
 
   const postCompleteTrade = async (offer) => {
     console.log("offer", offer)
@@ -181,86 +181,123 @@ function PendingTrade(props) {
         spacing={3}
       >
         {tradingItems && tradingItems?.map(item => (
-          <Card elevation={6}
-            sx={{ maxWidth: 610, mt: 10, marginLeft: 4, display: "flex" }}>
-            <Card
-              elevation={6}
-              sx={{ maxWidth: 300, mt: 10, marginLeft: 4 }}
-            //   onClick={() => {
-            //     if (item) {
-            //       navigate(`/ MyPage / Items / ${ item.itemID }`, {replace: true})
-            //     }
-            //   }}
-            >
-              <Typography component="div" sx={{ fontSize: 12 }}>
-                Incoming article from your listing
-              </Typography>
-              <CardMedia
-                component="img"
-                style={{ Width: 300 }}
-                image={BASE_URL + `${item.offers.image[0].image}`}
-                height="140"
-              />
-              <CardContent >
-                <Box display="flex" justify="space-between">
-                  <Typography gutterBottom variant="body">{item.offers.item.item_name}</Typography>
-                </Box>
-              </CardContent>
-            </Card>
-            <Card
-              elevation={6}
-              sx={{ maxWidth: 300, mt: 10, marginLeft: 4 }}
-            >
-              <Typography component="div" sx={{ fontSize: 12 }}>
-                Outgoing article that you listed
-              </Typography>
-              <CardMedia
-                component="img"
-                style={{ Width: 300 }}
-                image={BASE_URL + `${item.image[0].image}`}
-                height="140"
-              />
-              <CardContent >
-                <Box display="flex" justify="space-between">
-                  <Typography gutterBottom variant="body">{item?.post_item?.item_name}</Typography>
-                </Box>
-              </CardContent>
-            </Card>
-            {item?.offers?.offer.offer_confirmation ? <Typography gutterBottom variant="body">My item has arrived</Typography> : <Button
-              color='secondary'
-              variant='contained'
-              height="50"
-              alignItems="flex-end"
-              // onClick={() => { postCompleteTrade(item.offers.offer); handleOpenModal() }}
-              onClick={() => { handleOpenModal() }}
-            // onClick={() => { completeTrade(item.offers.item.id); handleOpenModal() }}
-            // onClick={() => { completeTrade(item.offers.item.user_id); handleOpenModal() }}
-
-            >I have Received my Item</Button>}
-            <Modal
-              open={openModal}
-              onClose={() => { sendReviewScore(item.offers.item.user_id); handleCloseModal(); offerCompleteTrade(item.offers.offer) }}
-              aria-labelledby="modal-modal-description"
-            >
-              <Box
-                sx={styleModal}
+          <>
+            <Box elevation={6} justifyContent="center"
+              sx={{ maxWidth: 610, mt: 4, mb: 4, marginLeft: 4, marginRight: 4, display: "grid", gridTemplateColumns: 'repeat(3, 1fr)' }}>
+              <Card
+                elevation={6}
+                sx={{ maxWidth: 300, mt: 10, marginLeft: 4, background: "#66BBFE30" }}
               >
-                <Typography id="modal-modal-description" variant="h6" component="h2">
-                  {/* Please giver a score to {item.otherUserInfo ? item.otherUserInfo : off} ? */}
-                  Please leave a score
-                </Typography>
-                <Rating
-                  name="simple-controlled"
-                  value={value}
-                  onChange={(event, newValue) => {
-                    setValue(newValue);
-                  }}
+                <CardContent>
+                  <Typography component="div" sx={{ fontSize: 11, textAlign: "center" }}>
+                    Incoming article
+                  </Typography>
+                </CardContent>
+                <CardMedia
+                  component="img"
+                  style={{ Width: 300 }}
+                  image={BASE_URL + `${item.offers.image[0].image}`}
+                  height="140"
                 />
-              </Box>
-            </Modal>
-          </Card>
+                <CardContent >
+                  <Box display="flex" justify="space-between">
+                    <Typography gutterBottom variant="body">{item.offers.item.item_name}</Typography>
+                  </Box>
+                </CardContent>
+              </Card>
+              <Card
+                elevation={6}
+                sx={{ maxWidth: 300, mt: 10, marginLeft: 4, background: "#C7C7C770" }}
+              >
+                <CardContent>
+
+                  <Typography gutterBottom component="div" sx={{ fontSize: 11, textAlign: "center" }}>
+                    Outgoing article
+                  </Typography>
+                </CardContent>
+                <CardMedia
+                  component="img"
+                  style={{ Width: 300 }}
+                  image={BASE_URL + `${item.image[0].image}`}
+                  height="140"
+                />
+                <CardContent >
+                  <Box display="flex" justify="space-between">
+                    <Typography gutterBottom variant="body">{item?.post_item?.item_name}</Typography>
+                  </Box>
+                </CardContent>
+              </Card>
+              {item?.offers?.offer.offer_confirmation ?
+                <Box elevation={6}
+                  sx={{
+                    color: "#E65E00",
+                    background: "#F9924B50",
+                    display: "flex",
+                    justifyContent: "center",
+                    height: "auto",
+                    boxShadow: 3,
+                    maxWidth: 200, mt: 10, marginLeft: 4,
+                    borderRadius: "200",
+                    alignItems: "center"
+                    // alignContent: "center",
+                    // justifyItems: "right"
+                  }}
+                >
+
+                  <Typography gutterBottom variant="body">My item has arrived</Typography>
+                </Box>
+                :
+                <Button
+                  elevation={6}
+
+                  sx={{
+                    color: "#3AAD00",
+                    background: "#83D85B70",
+                    boxShadow: 3,
+                    height: "auto",
+                    maxWidth: 200, mt: 10, marginLeft: 4,
+                    borderRadius: "200"
+                  }}
+                  // onClick={() => { postCompleteTrade(item.offers.offer); handleOpenModal() }}
+                  onClick={() => { handleOpenModal() }}
+                // onClick={() => { completeTrade(item.offers.item.id); handleOpenModal() }}
+                // onClick={() => { completeTrade(item.offers.item.user_id); handleOpenModal() }}
+
+                >
+                  <Typography>
+                    I have received my Item
+                  </Typography>
+                </Button>}
+              <Modal
+                open={openModal}
+                onClose={() => { sendReviewScore(item.offers.item.user_id); handleCloseModal(); offerCompleteTrade(item.offers.offer) }}
+                aria-labelledby="modal-modal-description"
+              >
+                <Box
+                  sx={styleModal}
+                >
+                  <Typography id="modal-modal-description" variant="h6" component="h2">
+                    {/* Please giver a score to {item.otherUserInfo ? item.otherUserInfo : off} ? */}
+                    Please leave a score
+                  </Typography>
+                  <Rating
+                    name="simple-controlled"
+                    value={value}
+                    onChange={(event, newValue) => {
+                      setValue(newValue);
+                    }}
+                  />
+                </Box>
+              </Modal>
+            </Box>
+
+            <Box sx={{ width: '70%', margin: 'auto', marginTop: 5, display: 'flex', flexDirection: 'column' }}>
+              <Divider sx={{ borderBottomWidth: 3 }} variant="middle" />
+            </Box>
+          </>
         ))}
       </Grid>
+
       <Grid
         container
         width="100%"
@@ -270,79 +307,127 @@ function PendingTrade(props) {
         xl={12}
         spacing={3}
       >
+
         {offeredItems && offeredItems?.map(item => (
-          <Box elevation={6} justifyContent="center"
-            sx={{ maxWidth: 610, mt: 10, marginLeft: 4, display: "flex", flexDirection: "row" }}>
+          <>
+            <Box elevation={6} justifyContent="center"
+              sx={{ maxWidth: 610, mt: 4, mb: 4, marginLeft: 4, marginRight: 4, display: "grid", gridTemplateColumns: 'repeat(3, 1fr)' }}>
 
-            <Card
-              elevation={6}
-              sx={{ maxWidth: 300, mt: 10, marginLeft: 4 }}
-            >
-              <Typography component="div" sx={{ fontSize: 12 }}>
-                Incoming article you desidered
-              </Typography>
-              <CardMedia
-                component="img"
-                style={{ Width: 300 }}
-                image={BASE_URL + `${item.desiredItemImage}`}
-                height="140"
-              />
-              <CardContent >
-                <Box display="flex" justify="space-between">
-                  <Typography gutterBottom variant="body">{item.desiredItemName}</Typography>
-                </Box>
-              </CardContent>
-            </Card>
-            <Card
-              elevation={6}
-              sx={{ maxWidth: 300, mt: 10, marginLeft: 4 }}
-            >
-              <Typography component="div" sx={{ fontSize: 12 }}>
-                Outgoing article you offered
-              </Typography>
-              <CardMedia
-                component="img"
-                style={{ Width: 300 }}
-                image={BASE_URL + `${item.image}`}
-                height="140"
-              />
-              <CardContent >
-                <Box display="flex" justify="space-between">
-                  <Typography gutterBottom variant="body">{item.itemName}</Typography>
-                </Box>
-              </CardContent>
-            </Card>
-
-            {item.offer.post_confirmation ? <Typography gutterBottom variant="body">My item has arrived</Typography> : <Button
-              color='secondary'
-              variant='contained'
-              alignItems="flex-end"
-              // onClick={() => { offerCompleteTrade(item.offer); handleOpenModal() }}
-              onClick={() => { handleOpenModal() }}
-            >I have received my Item</Button>}
-            <Modal
-              open={openModal}
-              onClose={() => { sendReviewScore(item.desideredUserId); handleCloseModal(); postCompleteTrade(item.offer); }}
-              aria-labelledby="modal-modal-description"
-            >
-              <Box
-                sx={styleModal}
+              <Card
+                elevation={6}
+                sx={{ maxWidth: 300, mt: 10, marginLeft: 4, background: "#66BBFE30" }}
               >
-                <Typography id="modal-modal-description" variant="h6" component="h2">
-                  {/* Please giver a score to {item.otherUserInfo ? item.otherUserInfo : off} ? */}
-                  Please leave a score
-                </Typography>
-                <Rating
-                  name="simple-controlled"
-                  value={value}
-                  onChange={(event, newValue) => {
-                    setValue(newValue);
-                  }}
+                <CardContent>
+
+                  <Typography component="div" sx={{ fontSize: 11, textAlign: "center" }}>
+                    Incoming article
+                  </Typography>
+                </CardContent>
+
+                <CardMedia
+                  component="img"
+                  style={{ Width: 300 }}
+                  image={BASE_URL + `${item.desiredItemImage}`}
+                  height="140"
                 />
-              </Box>
-            </Modal>
-          </Box>
+                <CardContent >
+                  <Box display="flex" justify="space-between">
+                    <Typography gutterBottom variant="body">{item.desiredItemName}</Typography>
+                  </Box>
+                </CardContent>
+              </Card>
+              <Card
+                elevation={6}
+                sx={{ maxWidth: 300, mt: 10, marginLeft: 4, background: "#C7C7C770" }}
+              >
+                <CardContent>
+
+                  <Typography gutterBottom component="div" sx={{ fontSize: 11, textAlign: "center" }}>
+                    Outgoing article
+                  </Typography>
+                </CardContent>
+                <CardMedia
+                  component="img"
+                  style={{ Width: 300 }}
+                  image={BASE_URL + `${item.image}`}
+                  height="140"
+                />
+                <CardContent >
+                  <Box display="flex" justify="space-between">
+                    <Typography gutterBottom variant="body">{item.itemName}</Typography>
+                  </Box>
+                </CardContent>
+              </Card>
+
+              {item.offer.post_confirmation ?
+                <Box
+                  elevation={6}
+                  sx={{
+                    color: "#E65E00",
+                    background: "#F9924B50",
+                    display: "flex",
+                    justifyContent: "center",
+                    height: "auto",
+                    boxShadow: 3,
+                    maxWidth: 200, mt: 10, marginLeft: 4,
+                    borderRadius: "200",
+                    alignItems: "center"
+                  }}
+                >
+
+                  <Typography gutterBottom variant="body">
+                    My item has arrived
+                  </Typography>
+
+                </Box>
+                :
+                <Button
+                  elevation={6}
+
+                  sx={{
+                    color: "#3AAD00",
+                    background: "#83D85B70",
+                    boxShadow: 3,
+                    height: "auto",
+                    maxWidth: 200, mt: 10, marginLeft: 4,
+                    borderRadius: "200"
+                  }}
+                  // onClick={() => { offerCompleteTrade(item.offer); handleOpenModal() }}
+                  onClick={() => { handleOpenModal() }}
+                >
+                  <Typography>
+                    I have received my Item
+                  </Typography>
+                </Button>}
+              <Modal
+                open={openModal}
+                onClose={() => { sendReviewScore(item.desideredUserId); handleCloseModal(); postCompleteTrade(item.offer); }}
+                aria-labelledby="modal-modal-description"
+              >
+                <Box
+                  sx={styleModal}
+                >
+                  <Typography id="modal-modal-description" variant="h6" component="h2">
+                    {/* Please giver a score to {item.otherUserInfo ? item.otherUserInfo : off} ? */}
+                    Please leave a score
+                  </Typography>
+                  <Rating
+                    name="simple-controlled"
+                    value={value}
+                    onChange={(event, newValue) => {
+                      setValue(newValue);
+                    }}
+                  />
+                </Box>
+              </Modal>
+            </Box>
+
+            <Box sx={{ width: '70%', margin: 'auto', marginTop: 5, display: 'flex', flexDirection: 'column' }}>
+              <Divider sx={{ borderBottomWidth: 3 }} variant="middle" />
+            </Box>
+          </>
         ))}
+
       </Grid>
     </>
   )
