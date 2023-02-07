@@ -122,7 +122,7 @@ function PendingTrade(props) {
           withCredentials: true
         }
       )
-      handleOpenModal()
+      // handleOpenModal()
       console.log(response.data)
     } else if (offer.post_confirmation || offer.offer_confirmation) {
       console.log("handover!!!")
@@ -154,7 +154,7 @@ function PendingTrade(props) {
           withCredentials: true
         }
       )
-      handleOpenModal()
+      // handleOpenModal()
       console.log(response.data)
     } else if (offer.post_confirmation || offer.offer_confirmation) {
       console.log("handover!!!")
