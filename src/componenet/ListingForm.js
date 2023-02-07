@@ -27,33 +27,51 @@ const BrownButton = styled(Button)(() => ({
 function AddListingForm(props) {
 
     const { itemId } = useParams();
-    const { user } = props
+    const { user, categories } = props
 
     const [desire, setDesire] = useState('')
     const [expirationDate, setExpirationDate] = useState('')
     const [priceFree, setPriceFree] = useState(false)
+    const [selectCat, setSelectCat] = useState({})
 
     const navigate = useNavigate();
 
-    const uploadData = new FormData();
 
     const newPost = async (e) => {
-        e.preventDefault();
-        uploadData.append("desire", desire);
-        uploadData.append("expiration", expirationDate);
-        uploadData.append("price", priceFree)
-        uploadData.append("user_id", user.id)
-        uploadData.append("item_id", itemId)
-        uploadData.append("visibile", true)
 
-        fetch("/api/create-post", {
-            method: "POST",
-            body: uploadData,
-        })
-            .then(res => res.json())
-            .then(data => console.log(data))
-            .then(() => navigate('/MyPage/postlist/'))
+        const post = {
+            "desire": desire,
+            "expiration": expirationDate,
+            "price": priceFree,
+            "user_id": user.id,
+            "item_id": itemId,
+            "visibile": true,
+        }
+        if (Object.keys(selectCat).length === 0) {
+            selectCat = {
+                1:true,
+                2:true,
+                3:true,
+                4:true,
+                5:true,
+                6:true,
+                7:true,
+                8:true,
+                9:true,
+            }
+        }
+        axios.post(
+            "/api/create-post",
+            JSON.stringify({post, "categories": selectCat}),
+            {
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
+            }
+        )
+        .then((res) => console.log(res.data))
+        .then(() => navigate('/MyPage/postlist/'))
     }
+
 
     return (
         <>
@@ -61,7 +79,25 @@ function AddListingForm(props) {
 
 
                 <Box sx={{ marginTop: 2 }}>
-                    <Typography >Wishlist</Typography>
+                    <Typography >Wishlist:</Typography>
+                    {categories?.map((category)=>{
+                       return(
+                           <>
+                            <FormControlLabel
+                            control={<Checkbox />}
+                            label={category.category_name}
+                            value={priceFree}
+                            onChange={() => {
+                                if (selectCat[category.id]) {
+                                    selectCat[category.id] = false
+                                } else {
+                                    selectCat[category.id] = true
+                                }
+                                console.log(selectCat)
+                            }}
+                            />
+                        </>)})
+                    }
                     <TextField
                         fullWidth
                         multiline
