@@ -40,7 +40,7 @@ function PendingTrade(props) {
   useEffect(() => {
     axios.get(`/api/acceptedTrade/${user.id}`)
       .then(response => {
-        console.log(response.data)
+        console.log("TRADE", response.data)
         // !tradesDisplayed && tradingItems.push(...response.data)
         setTradingItems(response.data)
         // console.log(tradesDisplayed)
@@ -57,7 +57,7 @@ function PendingTrade(props) {
     axios
       .get(`/api/offered-items/${user.id}`)
       .then(res => {
-        console.log(res.data)
+        console.log("OFFER", res.data)
         // !offerDisplayed && offeredItems.push(...res.data)
         setOfferedItems(res.data)
         // setOfferDisplayed(true)
@@ -111,9 +111,8 @@ function PendingTrade(props) {
   }
 
   const postCompleteTrade = async (offer) => {
-    // const data = { user_id: user.id }
-    console.log(offer)
-    if (!offer.offer_confirmation) {
+    console.log("offer", offer)
+    if (!offer.post_confirmation && !offer.offer_confirmation) {
       offer.post_confirmation = true
       const response = await axios.put(
         `/api/SetPending`,
@@ -123,8 +122,11 @@ function PendingTrade(props) {
           withCredentials: true
         }
       )
+      handleOpenModal()
       console.log(response.data)
-    } else {
+    } else if (offer.post_confirmation || offer.offer_confirmation) {
+      console.log("handover!!!")
+
       axios.put(`/api/itemHandover`,
         JSON.stringify(offer),
         {
@@ -135,14 +137,15 @@ function PendingTrade(props) {
         .then(response => {
           console.log(response.data)
         })
+        .then(() => handleOpenModal())
         .then(() => myPage())
     }
   }
+
   const offerCompleteTrade = async (offer) => {
-    // const data = { user_id: user.id }
-    console.log(offer)
-    if (!offer.post_confirmation) {
-      offer.post_confirmation = true
+    console.log("offer", offer)
+    if (!offer.offer_confirmation && !offer.post_confirmation) {
+      offer.offer_confirmation = true
       const response = await axios.put(
         `/api/SetPending`,
         JSON.stringify(offer),
@@ -151,8 +154,10 @@ function PendingTrade(props) {
           withCredentials: true
         }
       )
+      handleOpenModal()
       console.log(response.data)
-    } else {
+    } else if (offer.post_confirmation || offer.offer_confirmation) {
+      console.log("handover!!!")
       axios.put(`/api/itemHandover`,
         JSON.stringify(offer),
         {
@@ -163,6 +168,7 @@ function PendingTrade(props) {
         .then(response => {
           console.log(response.data)
         })
+        // .then(() => handleOpenModal())
         .then(() => myPage())
     }
 
@@ -229,6 +235,9 @@ function PendingTrade(props) {
             //     }
             //   }}
             >
+              <Typography component="div" sx={{ fontSize: 12 }}>
+                Incoming article from your listing
+              </Typography>
               <CardMedia
                 component="img"
                 style={{ Width: 300 }}
@@ -245,6 +254,9 @@ function PendingTrade(props) {
               elevation={6}
               sx={{ maxWidth: 300, mt: 10, marginLeft: 4 }}
             >
+              <Typography component="div" sx={{ fontSize: 12 }}>
+                Outgoing article that you listed
+              </Typography>
               <CardMedia
                 component="img"
                 style={{ Width: 300 }}
@@ -257,19 +269,20 @@ function PendingTrade(props) {
                 </Box>
               </CardContent>
             </Card>
-            {item?.offer?.offer_confirmation ? <Typography gutterBottom variant="body">My item has arrived</Typography> : <Button
+            {item?.offers?.offer.offer_confirmation ? <Typography gutterBottom variant="body">My item has arrived</Typography> : <Button
               color='secondary'
               variant='contained'
               height="50"
               alignItems="flex-end"
-              onClick={() => { postCompleteTrade(item.offers.offer); handleOpenModal() }}
+              // onClick={() => { postCompleteTrade(item.offers.offer); handleOpenModal() }}
+              onClick={() => { handleOpenModal() }}
             // onClick={() => { completeTrade(item.offers.item.id); handleOpenModal() }}
             // onClick={() => { completeTrade(item.offers.item.user_id); handleOpenModal() }}
 
             >I have Received my Item</Button>}
             <Modal
               open={openModal}
-              onClose={() => { sendReviewScore(item.offers.item.user_id); handleCloseModal(); }}
+              onClose={() => { sendReviewScore(item.offers.item.user_id); handleCloseModal(); offerCompleteTrade(item.offers.offer) }}
               aria-labelledby="modal-modal-description"
             >
               <Box
@@ -301,7 +314,6 @@ function PendingTrade(props) {
         spacing={3}
       >
         {offeredItems && offeredItems?.map(item => (
-
           <Box elevation={6} justifyContent="center"
             sx={{ maxWidth: 610, mt: 10, marginLeft: 4, display: "flex", flexDirection: "row" }}>
 
@@ -310,7 +322,7 @@ function PendingTrade(props) {
               sx={{ maxWidth: 300, mt: 10, marginLeft: 4 }}
             >
               <Typography component="div" sx={{ fontSize: 12 }}>
-                you will receive
+                Incoming article you desidered
               </Typography>
               <CardMedia
                 component="img"
@@ -329,7 +341,7 @@ function PendingTrade(props) {
               sx={{ maxWidth: 300, mt: 10, marginLeft: 4 }}
             >
               <Typography component="div" sx={{ fontSize: 12 }}>
-                you will send
+                Outgoing article you offered
               </Typography>
               <CardMedia
                 component="img"
@@ -344,15 +356,16 @@ function PendingTrade(props) {
               </CardContent>
             </Card>
 
-            {item.offer.offer_confirmation ? <Typography gutterBottom variant="body">My item has arrived</Typography> : <Button
+            {item.offer.post_confirmation ? <Typography gutterBottom variant="body">My item has arrived</Typography> : <Button
               color='secondary'
               variant='contained'
               alignItems="flex-end"
-              onClick={() => { offerCompleteTrade(item.offer); handleOpenModal() }}
+              // onClick={() => { offerCompleteTrade(item.offer); handleOpenModal() }}
+              onClick={() => { handleOpenModal() }}
             >I have received my Item</Button>}
             <Modal
               open={openModal}
-              onClose={() => { sendReviewScore(item.desideredUserId); handleCloseModal(); }}
+              onClose={() => { sendReviewScore(item.desideredUserId); handleCloseModal(); postCompleteTrade(item.offer); }}
               aria-labelledby="modal-modal-description"
             >
               <Box

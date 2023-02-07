@@ -572,31 +572,35 @@ def item_handover(request):
 
     listedItem = Item.objects.filter(id=postSerializer.data["item_id"]).first()
 
-    try:
-        offeredItem = Item.objects.filter(
-            id=request.data['offered_item']).first()
-    except Item.DoesNotExist or Image.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+    # try:
+    #     offeredItem = Item.objects.filter(
+    #         id=request.data['offered_item']).first()
+    # except Item.DoesNotExist or Image.DoesNotExist:
+    #     return Response(status=status.HTTP_404_NOT_FOUND)
+    offeredItem = Item.objects.filter(id=request.data['offered_item']).first()
 
-    itemSerializer = ItemSerializer(listedItem)
+    listedSerializer = ItemSerializer(listedItem)
     offeredSerializer = ItemSerializer(offeredItem)
-    print(itemSerializer.data["id"])
-    print(offeredSerializer.data["id"])
+    print("😁", listedSerializer.data["id"])
+    print("😁", offeredSerializer.data["id"])
 
     if request.method == "PUT":
-
+        print("😁", request.data)
         item_Serializer = ItemSerializer(
             listedItem, data={"user_id": offeredSerializer.data["user_id"]}, partial=True)
 
         offered_Serializer = ItemSerializer(
-            offeredItem, data={"user_id": itemSerializer.data["user_id"]}, partial=True)
+            offeredItem, data={"user_id": listedSerializer.data["user_id"]}, partial=True)
         if item_Serializer.is_valid():
             item_Serializer.save()
-            if offered_Serializer.is_valid():
-                offered_Serializer.save()
-                print(item_Serializer.data)
-                print(offered_Serializer.data)
-        return Response("saved", status=status.HTTP_200_OK)
+        if offered_Serializer.is_valid():
+            offered_Serializer.save()
+            offer = Offer.objects.get(pk=request.data['id'])
+            offer.delete()
+            listedPost.delete()
+            return Response("swapped", status=status.HTTP_200_OK)
+        print(item_Serializer.data)
+        print(offered_Serializer.data)
     return Response(item_Serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -691,7 +695,7 @@ def set_pending(request):
             offer = Offer.objects.filter(pk=request.data["id"]).first()
         except Offer.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        print("😁", offer)
+        # print("😁", offer)
         serializer = OfferSerializer(offer, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
@@ -708,7 +712,7 @@ def items_offered(request, userId):
             itemSerializer = ItemSerializer(allItems, many=True).data
             data = []
             for item in itemSerializer:
-                print("😁", item)
+                # print("😁", item)
                 try:
                     getOffer = Offer.objects.get(
                         offered_item=item['id'], acceptance=True)

@@ -448,7 +448,8 @@ export default function ListingSingleItem(props) {
                                sx={{mt:2, marginLeft: 3}}
                                onClick={() => {
                                  acceptOffer(offersMade[index]);
-                                 hidAcceptedPost(listing.post)
+                                 hidAcceptedPost(listing.post);
+                                 navigate('/MyPage/PendingTrade')
                                }}
                              >
                                ACCEPT OFFER
