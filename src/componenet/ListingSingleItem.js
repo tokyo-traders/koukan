@@ -122,6 +122,10 @@ export default function ListingSingleItem(props) {
       .then((res) => console.log(res));
   };
 
+  const deleteOffer = (offerId) => {
+		axios.delete(`/api/edit-offer/${offerId}`).then((res) => console.log(res));
+	};
+
   const hidAcceptedPost = async (obj) => {
     obj.visibile = false;
     const response = axios
@@ -333,8 +337,8 @@ export default function ListingSingleItem(props) {
                   
                   >
 
-                  {listing && listing?.categories?.map((category, index) => (
-                    <Chip label={categories[index]?.category_name}/>
+                  {(listing && categories) && listing?.categories?.map((category, index) => (
+                    <Chip label={categories[category.categories_id]?.category_name}/>
                     )
                   )}
                   </Grid>
@@ -471,7 +475,14 @@ export default function ListingSingleItem(props) {
                              >
                                ACCEPT OFFER
                             </BrownButton>
-                      </Box>
+                            <Button
+										onClick={() => {
+											deleteOffer(items.idOffer);
+										}}
+									>
+										DELETE OFFER
+									</Button>
+                      </Box>              
                  </Modal>
           </>
         )

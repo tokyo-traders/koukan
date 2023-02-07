@@ -14,12 +14,15 @@ import axios from "axios";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 
-const RoundedButton = styled(Button)(() => ({
-  borderRadius: 35,
-  backgroundColor: "#D904B5",
-  color: "#46C8F5",
-  padding: "15px 36px",
-  fontSize: "18px",
+const BrownButton = styled(Button)(() => ({
+	backgroundColor: "#4d3e38",
+	borderRadius: "8px",
+	color: "#def4f6",
+	"&:hover": {
+		background: "#332925",
+	},
+	// padding: "15px 36px",
+	fontSize: "16px",
 }));
 
 const theme = createTheme();
@@ -271,7 +274,7 @@ export default function SignupForm() {
                 />
               </Grid>
             </Grid>
-            <RoundedButton
+            {/* <RoundedButton
               type="submit"
               fullWidth
               variant="contained"
@@ -281,7 +284,21 @@ export default function SignupForm() {
               link="login"
             >
               Sign Up
-            </RoundedButton>
+            </RoundedButton> */}
+
+            <BrownButton
+                    type="submit"
+										fullWidth
+										variant="contained"
+										sx={{ mt: 3, mb: 2 }}
+                    disabled={!validName || !validPwd || !validMatch ? true : false}
+                    link="login"
+									>
+										Sign Up
+									</BrownButton>
+
+
+
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link variant="body2" onClick={login}>
