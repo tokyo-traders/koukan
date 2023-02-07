@@ -28,7 +28,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 300,
+  width: 400,
   bgcolor: "background.paper",
   border: "0.5px solid #000",
   p: 3
@@ -459,18 +459,19 @@ export default function ListingSingleItem(props) {
                    {listing && <PreviewImg alt="image1" src={BASE_URL + `${items?.images[0]}`} />}
                   </Grid>
 
-                   <Grid item xs={5} mt={5}>
-                    <Typography variant='h5'>
+                   <Grid item xs={5}>
+                    <Typography variant='h6'>
                     {items?.itemName} 
                    </Typography>
                    
                   <Typography variant="body2" color="text.secondary" display="inline">
-                     {items?.userName} 
+                     user: {items?.userName} 
                    </Typography>
-
+                   <div>
                    <Typography variant="body2" color="text.secondary" display="inline">
-                     {items && new Date(items.expiration).toLocaleString()}
+                     offer on: {items && new Date(items.expiration).toLocaleString()}
                    </Typography>
+                   </div>
                    </Grid>
 
                    <Grid item xs={3}>
@@ -522,13 +523,15 @@ export default function ListingSingleItem(props) {
                         <Typography id="modal-modal-title" variant="h6" component="h2">
                             {items?.itemName} 
                         </Typography>
-                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+
+                        <Typography gutterBottom id="modal-modal-description" sx={{ mt: 2 }}>
                             {items?.details} 
                         </Typography>
+
+                        <Img alt="image1" src={BASE_URL + `${items?.images[0]}`} />
                         
                         {user?.id === listing?.item.user_id && 
                         <>
-                        {listing && <Img alt="image1" src={BASE_URL + `${items?.images[0]}`} />}
                            <BrownButton
                                variant="contained"
                                sx={{mt:2, marginLeft: 3}}
