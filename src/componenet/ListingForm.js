@@ -49,27 +49,28 @@ function AddListingForm(props) {
         }
         if (Object.keys(selectCat).length === 0) {
             selectCat = {
-                1:true,
-                2:true,
-                3:true,
-                4:true,
-                5:true,
-                6:true,
-                7:true,
-                8:true,
-                9:true,
+                1: true,
+                2: true,
+                3: true,
+                4: true,
+                5: true,
+                6: true,
+                7: true,
+                8: true,
+                9: true,
+                10: true
             }
         }
         axios.post(
             "/api/create-post",
-            JSON.stringify({post, "categories": selectCat}),
+            JSON.stringify({ post, "categories": selectCat }),
             {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             }
         )
-        .then((res) => console.log(res.data))
-        .then(() => navigate('/MyPage/postlist/'))
+            .then((res) => console.log(res.data))
+            .then(() => navigate('/MyPage/postlist/'))
     }
 
 
@@ -80,23 +81,24 @@ function AddListingForm(props) {
 
                 <Box sx={{ marginTop: 2 }}>
                     <Typography >Wishlist:</Typography>
-                    {categories?.map((category)=>{
-                       return(
-                           <>
-                            <FormControlLabel
-                            control={<Checkbox />}
-                            label={category.category_name}
-                            value={priceFree}
-                            onChange={() => {
-                                if (selectCat[category.id]) {
-                                    selectCat[category.id] = false
-                                } else {
-                                    selectCat[category.id] = true
-                                }
-                                console.log(selectCat)
-                            }}
-                            />
-                        </>)})
+                    {categories?.map((category) => {
+                        return (
+                            <>
+                                <FormControlLabel
+                                    control={<Checkbox />}
+                                    label={category.category_name}
+                                    value={priceFree}
+                                    onChange={() => {
+                                        if (selectCat[category.id]) {
+                                            selectCat[category.id] = false
+                                        } else {
+                                            selectCat[category.id] = true
+                                        }
+                                        console.log(category)
+                                    }}
+                                />
+                            </>)
+                    })
                     }
                     <TextField
                         fullWidth

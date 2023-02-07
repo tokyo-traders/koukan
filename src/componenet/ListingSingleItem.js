@@ -333,9 +333,10 @@ export default function ListingSingleItem(props) {
                   
                   >
 
-                  {listing && listing?.categories?.map((category, index) => (
-                    <Chip label={categories[index]?.category_name}/>
-                    )
+                  {listing && listing?.categories?.map((category) => {
+                    return (
+                   <Chip label={categories[category.categories_id -1]?.category_name}/>
+                    )}
                   )}
                   </Grid>
                   <br/>

@@ -13,27 +13,30 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='user',
-            name='total_review',
-            field=models.IntegerField(default=0, null=True),
-        ),
-        migrations.AlterField(
-            model_name='post',
-            name='expiration',
-            field=models.DateTimeField(default=datetime.datetime(2023, 2, 13, 12, 56, 9, 68705, tzinfo=utc)),
-        ),
-        migrations.AlterField(
-            model_name='user',
-            name='reputation_rating',
-            field=models.DecimalField(decimal_places=2, default=0, max_digits=1000),
-        ),
+        # migrations.AddField(
+        #     model_name='user',
+        #     name='total_review',
+        #     field=models.IntegerField(default=0, null=True),
+        # ),
+        # migrations.AlterField(
+        #     model_name='post',
+        #     name='expiration',
+        #     field=models.DateTimeField(default=datetime.datetime(2023, 2, 13, 12, 56, 9, 68705, tzinfo=utc)),
+        # ),
+        # migrations.AlterField(
+        #     model_name='user',
+        #     name='reputation_rating',
+        #     field=models.DecimalField(decimal_places=2, default=0, max_digits=1000),
+        # ),
         migrations.CreateModel(
             name='PostCategories',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('Categories_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.categories')),
-                ('post_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.post')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
+                ('Categories_id', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='api.categories')),
+                ('post_id', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='api.post')),
             ],
         ),
     ]
