@@ -148,9 +148,11 @@ function OfferForm(props) {
         // direction="row"
         justifyContent="center"
         // lg={12}
-        // spacing={2}
+        // spacing={2} 
+        
+        //filter((item) => acceptedCat.includes(item.category)).
       >
-        {(user && acceptedCat) && itemInfo?.filter((item) => acceptedCat.includes(item.category)).map(item => (
+        {(user && acceptedCat) && itemInfo?.map(item => (
           <Card
             elevation={2}
             sx={{ maxWidth: 200, margin: 2}}
