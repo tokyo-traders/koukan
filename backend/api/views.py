@@ -325,7 +325,8 @@ def all_item(request, itemid):
         itemSerializer = ItemSerializer(item)
         try:
 
-            getOffer = Offer.objects.get(offered_item=itemSerializer.data['id'])
+            getOffer = Offer.objects.get(
+                offered_item=itemSerializer.data['id'])
             currentOffer = OfferSerializer(getOffer)
             offeredItemId = currentOffer.data['offered_item']
             getItemDetail = Item.objects.get(pk=offeredItemId)
@@ -595,31 +596,35 @@ def item_handover(request):
 
     listedItem = Item.objects.filter(id=postSerializer.data["item_id"]).first()
 
-    try:
-        offeredItem = Item.objects.filter(
-            id=request.data['offered_item']).first()
-    except Item.DoesNotExist or Image.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+    # try:
+    #     offeredItem = Item.objects.filter(
+    #         id=request.data['offered_item']).first()
+    # except Item.DoesNotExist or Image.DoesNotExist:
+    #     return Response(status=status.HTTP_404_NOT_FOUND)
+    offeredItem = Item.objects.filter(id=request.data['offered_item']).first()
 
-    itemSerializer = ItemSerializer(listedItem)
+    listedSerializer = ItemSerializer(listedItem)
     offeredSerializer = ItemSerializer(offeredItem)
-    print(itemSerializer.data["id"])
-    print(offeredSerializer.data["id"])
+    print("😁", listedSerializer.data["id"])
+    print("😁", offeredSerializer.data["id"])
 
     if request.method == "PUT":
-
+        print("😁", request.data)
         item_Serializer = ItemSerializer(
             listedItem, data={"user_id": offeredSerializer.data["user_id"]}, partial=True)
 
         offered_Serializer = ItemSerializer(
-            offeredItem, data={"user_id": itemSerializer.data["user_id"]}, partial=True)
+            offeredItem, data={"user_id": listedSerializer.data["user_id"]}, partial=True)
         if item_Serializer.is_valid():
             item_Serializer.save()
-            if offered_Serializer.is_valid():
-                offered_Serializer.save()
-                print(item_Serializer.data)
-                print(offered_Serializer.data)
-        return Response("saved", status=status.HTTP_200_OK)
+        if offered_Serializer.is_valid():
+            offered_Serializer.save()
+            offer = Offer.objects.get(pk=request.data['id'])
+            offer.delete()
+            listedPost.delete()
+            return Response("swapped", status=status.HTTP_200_OK)
+        print(item_Serializer.data)
+        print(offered_Serializer.data)
     return Response(item_Serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -714,7 +719,7 @@ def set_pending(request):
             offer = Offer.objects.filter(pk=request.data["id"]).first()
         except Offer.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        print("😁", offer)
+        # print("😁", offer)
         serializer = OfferSerializer(offer, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
@@ -731,7 +736,7 @@ def items_offered(request, userId):
             itemSerializer = ItemSerializer(allItems, many=True).data
             data = []
             for item in itemSerializer:
-                print("😁", item)
+                # print("😁", item)
                 try:
                     getOffer = Offer.objects.get(
                         offered_item=item['id'], acceptance=True)
@@ -825,6 +830,7 @@ def single_offer(request, offerId):
             error = {"there is something wrong in the single item offered"}
             return Response(error, status=status.HTTP_404_NOT_FOUND)
 
+
 @api_view(['GET'])
 def currentUser_review(request, userId):
     if request.method == "GET":
@@ -835,12 +841,14 @@ def currentUser_review(request, userId):
             error = {"there is no user for the current user review"}
             return Response(error, status=status.HTTP_404_NOT_FOUND)
 
-        data = {"currentReputationScore": currentUser['reputation_rating'], "totalReviews": currentUser['total_review']}
+        data = {
+            "currentReputationScore": currentUser['reputation_rating'], "totalReviews": currentUser['total_review']}
         if data:
             return Response(data, status=status.HTTP_200_OK)
         else:
             error = {"there is something wrong in the current user review"}
             return Response(error, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
 
 @api_view(['GET', 'PUT'])
 def sendUserReview(request, userId):
@@ -850,33 +858,47 @@ def sendUserReview(request, userId):
     except User.DoesNotExist:
         error = {"there is no user for the send user review"}
         return Response(error, status=status.HTTP_404_NOT_FOUND)
-    
+
     if request.method == "GET":
-        data = {"currentReputationScore": currentUser['reputation_rating'], "totalReviews": currentUser['total_review']}
+        data = {
+            "currentReputationScore": currentUser['reputation_rating'], "totalReviews": currentUser['total_review']}
         if data:
             return Response(data, status=status.HTTP_200_OK)
         else:
             error = {"there is something wrong in the send user review"}
             return Response(error, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-    # if request.method == "PUT":
-    #     currentUserId = currentUser['id']
-    #     try:
-    #         getUser = User.objects.get(pk=currentUserId)
-    #         updateUser = UserSerializer(getUser).data
-    #         if updateUser.is_valid():
-    #             score = request.data['reputation_rating']
-    #             print("THIS IS SCORE", score)
-    #             serializer = UserSerializer(getUser, data={"reputation_rating": updateUser['reputation_rating']+score, "total_review": updateUser['total_review'] + 1}, partial=True)
-    #             print(serializer.data['total_review'])
-    #     except User.DoesNotExist:
-    #         error = {"there is no user to be updated in review"}
-    #         return Response(error, status=status.HTTP_404_NOT_FOUND)
-    #     if serializer.is_valid(raise_exception=True):
-    #         serializer.save()
-    #         return Response(serializer.data, status=status.HTTP_200_OK)
-    #     else:
-    #         error = {"the serializer to be edited is not valid in send user review"}
-    #         return Response(error, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    if request.method == "PUT":
+        currentUserId = currentUser['id']
+        try:
+            getUser = User.objects.get(pk=currentUserId)
+        except User.DoesNotExist:
+            error = {"there is no user to be updated in review"}
+            return Response(error, status=status.HTTP_404_NOT_FOUND)
+
+        updateUser = UserSerializer(getUser).data
+        sumPoints = int(updateUser['reputation_rating']) + \
+            int(request.data['reputation_rating'])
+        updateUser['reputation_rating'] = str(sumPoints)
+        totalReview = int(updateUser['total_review']) + 1
+        updateUser['total_review'] = str(totalReview)
+        newdata = {
+            "reputation_rating": updateUser['reputation_rating'], "total_review": updateUser["total_review"]}
+        try:
+            test = User.objects.get(pk=updateUser['id'])
+        except User.DoesNotExist:
+            error = {"there is no user to be updated in review 2"}
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        toBeupdated = UserSerializer(test, data=newdata, partial=True)
+        toBeupdated.is_valid(raise_exception=True)
+        toBeupdated.save()
+        print("latest data", toBeupdated)
+        return Response(toBeupdated.data, status=status.HTTP_200_OK)
+        # if serializer.is_valid(raise_exception=True):
+        #     serializer.save()
+        #     return Response(serializer.data, status=status.HTTP_200_OK)
+        # else:
+        #     error = {"the serializer to be edited is not valid in send user review"}
+        #     return Response(error, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
 @api_view(['PUT'])
@@ -884,7 +906,7 @@ def send_review(request, userIdReview):
     print("✌️", request.data, "✌️", userIdReview)
     if request.method == 'PUT':
         user = User.objects.get(pk=userIdReview)
-        editedUser = UserSerializer(user, data=request.data, partial=True)
+        # editedUser = UserSerializer(user, data={"reputation_rating" : data + request.data}, partial=True)
         if editedUser.is_valid():
             editedUser.save()
             return Response("review sent succesfully", status=status.HTTP_202_ACCEPTED)

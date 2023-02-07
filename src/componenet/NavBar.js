@@ -170,7 +170,7 @@ function NavBar(props) {
             </Search>
             {!user ? <GreenButton variant='contained' onClick={login}>LOG IN</GreenButton> :
               <div>
-                <span style={{ color: "black" }}>{user.username} {(Math.round(user.reputation_rating * 10) / 10).toFixed(1)}</span>
+                <span style={{ color: "black" }}>{user.username}</span>
                 <IconButton
                   size="large"
                   aria-label="account of current user"
@@ -179,9 +179,9 @@ function NavBar(props) {
                   onClick={handleMenu}
                   color="#3CD64B"
                 >
-                  <AccountCircle  sx={{ fontSize: "40px"}} />
+                  <AccountCircle sx={{ fontSize: "40px" }} />
                 </IconButton>
-                
+
                 <Menu
                   id="menu-appbar"
                   anchorEl={anchorEl}

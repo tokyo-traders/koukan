@@ -246,7 +246,7 @@ export default function ListingSingleItem(props) {
                         sx={{ mt: 3, mb: 2 }}
                         onClick={deletePost}
                       >
-                        DELETE POST
+                        DELETE LISTING
                       </BrownButton>
                         )}
 
@@ -464,7 +464,9 @@ export default function ListingSingleItem(props) {
                                variant="contained"
                                sx={{mt:2, marginLeft: 3}}
                                onClick={() => {
-                                 acceptOffer(offersMade[index])
+                                 acceptOffer(offersMade[index]);
+                                 hidAcceptedPost(listing.post);
+                                 navigate('/MyPage/PendingTrade')
                                }}
                              >
                                ACCEPT OFFER
