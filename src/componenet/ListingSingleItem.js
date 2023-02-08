@@ -25,6 +25,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Modal from "@mui/material/Modal";
+import Rating from '@mui/material/Rating';
 
 
 const style = {
@@ -377,12 +378,14 @@ export default function ListingSingleItem(props) {
                   <Typography variant='h6' component='div' fontWeight={700}>
                     Owner 
                   </Typography>
+                  
                   {listing &&
-                    <Typography variant='h7'>
-                          {listing.username} ({user.reputation_rating != 0 ? ((Math.round(user.reputation_rating * 10) / 10) / user.total_review).toFixed(1) : 0})
-                  </Typography>}
-
-                    
+                  <Typography>
+                    <Typography variant='h6' component="legend"> {listing.username}  
+                    </Typography>
+                    <Rating name="size-small" readOnly value={user.reputation_rating != 0 ? ((Math.round(user.reputation_rating * 10) / 10) / user.total_review).toFixed(1) : 0}/>
+                    </Typography>
+                    }
                 </Box>
               </Grid>
             </Grid>
