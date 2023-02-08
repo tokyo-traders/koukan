@@ -7,6 +7,7 @@ import Container from '@mui/material/Container';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { styled } from '@mui/material/styles';
+import Rating from '@mui/material/Rating';
 
 
 const StyledTabs = styled((props) => (
@@ -93,9 +94,13 @@ export default function MyPage(props) {
               padding={2}
               color="#4d3e38"
             >
-              {user.username} ({user.reputation_rating !== 0 ? ((Math.round(user.reputation_rating * 10) / 10) / user.total_review).toFixed(1) : 0})
-
+              {user.username}
             </Typography>}
+
+          <Typography>
+            <Rating name="size-small" readOnly value={(Math.round(user?.reputation_rating * 10) / 10).toFixed(1)} />
+          </Typography>
+
           <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '80%' }}>
             <StyledTabs
               centered
