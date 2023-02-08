@@ -342,7 +342,7 @@ def all_item(request, itemid):
                     imgUrl.append(imageSerializer.data['image'])
             data.append({'itemName': itemSerializer.data['item_name'],
                          'images': imgUrl,
-                         'details': itemSerializer.data['details'], 'expiration': currentOffer.data['date_offered'], 'user_id': itemSerializer.data['user_id'], 'userName': userInfo.data['username']})
+                         'details': itemSerializer.data['details'], 'expiration': currentOffer.data['date_offered'], 'idOffer': currentOffer.data['id'], 'user_id': itemSerializer.data['user_id'], 'userName': userInfo.data['username']})
 
         except Offer.DoesNotExist:
             data = []
@@ -454,11 +454,11 @@ def listingItem(request, postId):
                      "item": itemSeralizer.data[0],
                     "images": imageUrl,
                      "username": userSerializer.data[0]["username"],
-                    "phoneDetail": userSerializer.data[0]["phone_detail"],
-                    "email": userSerializer.data[0]["email"],
-                    "rating": userSerializer.data[0]["reputation_rating"],
-                    "categories": catSerializer.data
-                    })
+                     "phoneDetail": userSerializer.data[0]["phone_detail"],
+                     "email": userSerializer.data[0]["email"],
+                     "rating": userSerializer.data[0]["reputation_rating"],
+                     "categories": catSerializer.data
+                     })
         imageUrl = []
         return Response(data, status=status.HTTP_200_OK)
 
@@ -470,7 +470,7 @@ def create_post(request):
         serializer = PostSerializer(post, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     elif request.method == "POST":
-        print("🤑",request.data)
+        print("🤑", request.data)
         postSerializer = PostSerializer(data=request.data["post"])
         if postSerializer.is_valid():
             postSerializer.save()
@@ -480,8 +480,9 @@ def create_post(request):
                     categ = {}
                     categ["post_id"] = postSerializer.data["id"]
                     categ["categories_id"] = key
-                    print("😂",categ)
-                    catSerializer = PostCategoriesSerializer(data=categ, partial=True)
+                    print("😂", categ)
+                    catSerializer = PostCategoriesSerializer(
+                        data=categ, partial=True)
                     if catSerializer.is_valid():
                         catSerializer.save()
 
