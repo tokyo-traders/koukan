@@ -130,7 +130,7 @@ export default function SignupForm() {
       } else {
         setErrMsg("Registration Failed");
       }
-      errRef.current.focus();
+      // errRef.current.focus();
     }
     login();
   };

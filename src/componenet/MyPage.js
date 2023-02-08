@@ -93,7 +93,7 @@ export default function MyPage(props) {
               padding={2}
               color="#4d3e38"
             >
-              {user.username} ({((Math.round(user.reputation_rating * 10) / 10) / user.total_review).toFixed(1)})
+              {user.username} ({user.reputation_rating !== 0 ? ((Math.round(user.reputation_rating * 10) / 10) / user.total_review).toFixed(1) : 0})
 
             </Typography>}
           <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '80%' }}>
