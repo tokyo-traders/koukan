@@ -26,6 +26,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Modal from "@mui/material/Modal";
 
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -119,6 +120,7 @@ export default function ListingSingleItem(props) {
   const deletePost = () => {
     axios
       .delete(`/api/edit-post/${listing.post.id}`)
+      .then(() => navigate("/MyPage/"))
       .then((res) => console.log(res));
   };
 
@@ -186,15 +188,15 @@ export default function ListingSingleItem(props) {
 
 
   // console.log(listing)
-  const data = async () => {
-    const arr = []
-    for (let i of listing.images) {
-      let img = { image: listing.images[i], caption: `pic N. ${i}` }
-      await img.json()
-      arr.push(img)
-    }
-    return arr
-  }
+  // const data = async () => {
+  //   const arr = []
+  //   for (let i of listing.images) {
+  //     let img = { image: listing.images[i], caption: `pic N. ${i}` }
+  //     await img.json()
+  //     arr.push(img)
+  //   }
+  //   return arr
+  // }
   return (
     <div >
       {/* <Box sx={{ width: '50%', marginLeft: '30%', marginTop: 2, display: 'flex', flexDirection: 'column' }}> */}
@@ -373,11 +375,11 @@ export default function ListingSingleItem(props) {
                   }}
                 >
                   <Typography variant='h6' component='div' fontWeight={700}>
-                    Owner
+                    Owner 
                   </Typography>
                   {listing &&
                     <Typography variant='h7'>
-                          {listing.username}
+                          {listing.username} ({user.reputation_rating !== 0 ? ((Math.round(user.reputation_rating * 10) / 10) / user.total_review).toFixed(1) : 0})
                   </Typography>}
 
                     
