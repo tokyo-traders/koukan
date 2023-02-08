@@ -96,11 +96,13 @@ export default function MyPage(props) {
             >
               {user.username}
 
+
             </Typography>}
 
              <Typography>
               <Rating name="size-small" readOnly value={(Math.round(user?.reputation_rating * 10) / 10).toFixed(1)} />
             </Typography>
+
 
           <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '80%' }}>
             <StyledTabs
