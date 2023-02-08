@@ -20,11 +20,8 @@ import { IconButton } from '@mui/material';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import Badge from '@mui/material/Badge';
 import DeleteIcon from "@mui/icons-material/Delete";
-import StarIcon from '@mui/icons-material/Star'; import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Modal from "@mui/material/Modal";
+import { padding } from '@mui/system';
 import Rating from '@mui/material/Rating';
 
 
@@ -33,7 +30,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 300,
+  width: 400,
   bgcolor: "background.paper",
   border: "0.5px solid #000",
   p: 3
@@ -47,6 +44,13 @@ const Img = styled('img')({
   padding: 2
 });
 
+const PreviewImg = styled('img')({
+  margin: 'auto',
+  display: 'block',
+  height: '100px',
+  // padding: 2
+});
+
 const BrownButton = styled(Button)(() => ({
   backgroundColor: "#4d3e38",
   borderRadius: "10px",
@@ -56,6 +60,18 @@ const BrownButton = styled(Button)(() => ({
     background: "#332925"
   },
   fontSize: "16px"
+}));
+
+const SmallButton = styled(Button)(() => ({
+  backgroundColor: "#4d3e38",
+  borderRadius: "6px",
+  color: "#def4f6",
+  width: '80%',
+  "&:hover": {
+    background: "#332925"
+  },
+  fontSize: "12px",
+  padding: "8px"
 }));
 
 const BASE_URL = 'http://127.0.0.1:8000/api'
@@ -79,7 +95,7 @@ export default function ListingSingleItem(props) {
   }, [navigate]);
 
 
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -93,9 +109,15 @@ export default function ListingSingleItem(props) {
   const [images, setImages] = useState([])
   const [postCat, setPostCat] = useState([])
 
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [open, setOpen] = useState(null);
+
+  const handleOpenModal = () => {
+    setOpen(true)
+  }
+
+  const handleCloseModal = () => {
+    setOpen(false)
+  }
 
 
   const display = () => {
@@ -124,6 +146,10 @@ export default function ListingSingleItem(props) {
       .then(() => navigate("/MyPage/"))
       .then((res) => console.log(res));
   };
+
+  const deleteOffer = (offerId) => {
+		axios.delete(`/api/edit-offer/${offerId}`).then((res) => console.log(res));
+	};
 
   const hidAcceptedPost = async (obj) => {
     obj.visibile = false;
@@ -177,7 +203,14 @@ export default function ListingSingleItem(props) {
           return item.data[0]
         })
       })
-        .then((res) => setOffersItems(res))
+        .then((res) => {
+          const items = res.map((item) => {
+            return { ...item, model: false}
+          })
+          console.log(items)
+          return items
+          
+        }).then((res) => setOffersItems(res))
 
       return responseArray
     }
@@ -336,10 +369,9 @@ export default function ListingSingleItem(props) {
                   
                   >
 
-                  {listing && listing?.categories?.map((category) => {
-                    return (
-                   <Chip label={categories[category.categories_id -1]?.category_name}/>
-                    )}
+                  {(listing && categories) && listing?.categories?.map((category, index) => (
+                    <Chip label={categories[category.categories_id]?.category_name}/>
+                    )
                   )}
                   </Grid>
                   <br/>
@@ -412,49 +444,83 @@ export default function ListingSingleItem(props) {
             <Box 
               sx={{ 
                 width: '50%',
-                maxHeight: '300px',
+                maxHeight: '250px',
                 margin: 'auto',
                 marginTop: 2,
+                paddingBottom:3,
                 display: 'flex',
                 flexDirection: 'column',
                 backgroundColor: 'white',
-                '&:hover': {
-                  backgroundColor: 'gray',
-                  opacity: [0.9, 0.8, 0.7]},
+                
                 }}
-                onClick={handleOpen}
+                
                 >
                   <Grid
                   container
                   spacing={2}
                   sx={{ backgroundColor: "none", marginTop: 2 }}
                 >
-                  <Grid item xs={5}>
-                   {listing && <Img alt="image1" src={BASE_URL + `${items?.images[0]}`} />}
+                  <Grid item xs={4}>
+                   {listing && <PreviewImg alt="image1" src={BASE_URL + `${items?.images[0]}`} />}
                   </Grid>
 
-                   <Grid item xs={7} mt={5}>
-                    <Typography variant='h5'>
+                   <Grid item xs={5}>
+                    <Typography variant='h6'>
                     {items?.itemName} 
                    </Typography>
                    
                   <Typography variant="body2" color="text.secondary" display="inline">
-                     {items?.userName} 
+                     user: {items?.userName} 
                    </Typography>
-
+                   <div>
                    <Typography variant="body2" color="text.secondary" display="inline">
-                     {new Date(items.expiration).toLocaleString()}
+                     offer on: {items && new Date(items.expiration).toLocaleString()}
                    </Typography>
+                   </div>
                    </Grid>
-                   
+
+                   <Grid item xs={3}>
+                    <SmallButton 
+                      onClick={()=>{
+                        offersItems[index].model = true
+                        setOffersItems([...offersItems])
+                      }}
+                      sx={{
+                        marginTop: "10%",
+                        marginBottom: 2,
+                      '&:hover': {
+                        backgroundColor: 'gray',
+                        opacity: [0.9, 0.8, 0.7]}
+                      }}
+                      >
+                        Check detail
+                        
+                      </SmallButton>
+
+
+                      {user?.id === listing?.item.user_id && 
+                      <SmallButton 
+                      onClick={()=>{deleteOffer(items.idOffer);}}
+                      sx={{
+                      '&:hover': {
+                        backgroundColor: 'gray',
+                        opacity: [0.9, 0.8, 0.7]}
+                      }}
+                      >
+                        DELETE OFFER
+                      </SmallButton>}
+                  </Grid>
                   </Grid>
                   </Box>
 
                   
 
                   <Modal
-                      open={open}
-                      onClose={handleClose}
+                      open={items?.model}
+                      onClose={()=> {
+                        offersItems[index].model = false
+                        setOffersItems([...offersItems])
+                      }}
                       aria-labelledby="modal-modal-title"
                       aria-describedby="modal-modal-description"
                       >
@@ -462,10 +528,15 @@ export default function ListingSingleItem(props) {
                         <Typography id="modal-modal-title" variant="h6" component="h2">
                             {items?.itemName} 
                         </Typography>
-                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+
+                        <Typography gutterBottom id="modal-modal-description" sx={{ mt: 2 }}>
                             {items?.details} 
                         </Typography>
-                         {listing && <Img alt="image1" src={BASE_URL + `${items?.images[0]}`} />}
+
+                        <Img alt="image1" src={BASE_URL + `${items?.images[0]}`} />
+                        
+                        {user?.id === listing?.item.user_id && 
+                        <>
                            <BrownButton
                                variant="contained"
                                sx={{mt:2, marginLeft: 3}}
@@ -477,7 +548,16 @@ export default function ListingSingleItem(props) {
                              >
                                ACCEPT OFFER
                             </BrownButton>
-                      </Box>
+                            {/* <Button
+										onClick={() => {
+											deleteOffer(items.idOffer);
+										}}
+									>
+										DELETE OFFER
+									</Button> */}
+                  </>
+                  }
+                      </Box>              
                  </Modal>
           </>
         )

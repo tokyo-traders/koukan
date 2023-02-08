@@ -170,7 +170,7 @@ function NavBar(props) {
             </Search>
             {!user ? <GreenButton variant='contained' onClick={login}>LOG IN</GreenButton> :
               <div>
-                <span style={{ color: "black" }}>{user.username}</span>
+                <span style={{ color: "black",fontFamily:"Roboto Slab", color:"#332925"}} >{user.username}</span>
                 <IconButton
                   size="large"
                   aria-label="account of current user"

@@ -1,17 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
-import CssBaseline from "@mui/material/CssBaseline";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
-import Divider from "@mui/material/Divider";
 import { Stack } from "@mui/system";
 import Button from "@mui/material/Button";
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import axios from "axios";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
@@ -196,11 +190,12 @@ export default function UserSingleItem(props) {
 											aria-labelledby="modal-modal-title"
 											aria-describedby="modal-modal-description"
 										>
-											<Box sx={modalStyle}>
+											<Box sx={modalStyle} >
 												<Typography
 													id="modal-modal-title"
 													variant="h6"
 													component="h2"
+													sx={{display:"flex", justifyContent:"center", alignItems:"center", mb:2}}
 												>
 													Edit Item Details
 												</Typography>
@@ -208,38 +203,42 @@ export default function UserSingleItem(props) {
 													direction="column"
 													justifyContent="center"
 													alignItems="center"
-													spacing={0.5}
 												>
+													<Typography >Item Name</Typography>
 													<TextField
+													fullWidth
 														required
-														id="itemName"
-														label="Item Name"
 														value={item_name}
 														onChange={inputItemName}
 													/>
+													<Typography sx={{mt:2}}>Descriptions</Typography>
 													<TextField
+														fullWidth
 														required
+														multiline
 														id="itemDetails"
-														label="Description"
 														value={details}
+														rows={10}
 														onChange={inputDetail}
 													/>
-													<Button
+													<span><BrownButton
 														onClick={() => {
 															submitEditItemDetail(data);
 														}}
 														variant="outlined"
+														sx={{margin:2}}
 													>
-														Submit
-													</Button>
-													<Button
+															SAVE
+													</BrownButton>
+													<BrownButton
 														onClick={() => {
 															handleCloseEdit();
 														}}
 														variant="outlined"
 													>
 														Close
-													</Button>
+													</BrownButton>
+													</span>
 												</Stack>
 											</Box>
 										</Modal>
@@ -252,14 +251,6 @@ export default function UserSingleItem(props) {
 										onClick={display}
 									>
 										MAKE POST
-									</BrownButton>
-									<BrownButton
-										fullWidth
-										variant="contained"
-										sx={{ mt: 3, mb: 2 }}
-										onClick={() => { deleteItem(Number(itemId)); navigate("/MyPage/") }}
-									>
-										DELETE ITEM
 									</BrownButton>
 
 								</Box>

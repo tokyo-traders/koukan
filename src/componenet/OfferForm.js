@@ -148,6 +148,38 @@ function OfferForm(props) {
           // direction="row"
           justifyContent="center"
         // lg={12}
+        
+// PR incoming merge not accepted
+//
+//        // spacing={2} 
+//        
+//        //filter((item) => acceptedCat.includes(item.category)).
+//      >
+//        {(user && acceptedCat) && itemInfo?.map(item => (
+//          <Card
+//            elevation={2}
+//            sx={{ maxWidth: 200, margin: 2}}
+//            onClick={() => {
+//              console.log(item)
+//              setOffer(item)
+//            }}
+//          >
+//             <CardActionArea>
+//            <CardMedia
+//              // sx={{maxWidth: 200, objectFit:"contain",  bgcolor: '#f5f5f5',}}
+//              sx={{objectFit: "contain",bgcolor: '#f5f5f5'  }}
+//              component="img"
+//              image={BASE_URL + `${item.itemImages[0]}`}
+//              height="150"
+//            />
+//            </CardActionArea>
+//            <CardContent>
+//              <Typography noWrap>{item?.itemName}</Typography>
+//            </CardContent>
+//          </Card>
+//        ))}
+//      </Grid>
+
         // spacing={2}
         // 
         >
@@ -175,6 +207,7 @@ function OfferForm(props) {
             </Card>
           ))}
         </Grid>
+
       </Box>
 
       <Box sx={{ width: '80%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
