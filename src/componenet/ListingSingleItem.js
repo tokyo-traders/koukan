@@ -379,7 +379,7 @@ export default function ListingSingleItem(props) {
                   </Typography>
                   {listing &&
                     <Typography variant='h7'>
-                          {listing.username} ({user.reputation_rating !== 0 ? ((Math.round(user.reputation_rating * 10) / 10) / user.total_review).toFixed(1) : 0})
+                          {listing.username} ({user.reputation_rating != 0 ? ((Math.round(user.reputation_rating * 10) / 10) / user.total_review).toFixed(1) : 0})
                   </Typography>}
 
                     
