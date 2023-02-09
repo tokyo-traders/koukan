@@ -27,6 +27,8 @@ const BrownButton = styled(Button)(() => ({
 
 const theme = createTheme();
 
+const BASE_URL = "https://koukan.onrender.com/api"
+
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const REGISTER_URL = "/api/user/register";
@@ -105,7 +107,7 @@ export default function SignupForm() {
     }
     try {
       const response = await axios.post(
-        REGISTER_URL,
+        BASE_URL + "/user/register",
         JSON.stringify({
           username: user,
           password: pwd,

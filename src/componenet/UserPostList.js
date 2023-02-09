@@ -13,7 +13,7 @@ import MyPage from './MyPage'
 import Divider from '@mui/material/Divider';
 import { useNavigate, useLocation } from "react-router-dom";
 
-const BASE_URL = 'http://127.0.0.1:8000/api'
+const BASE_URL = "https://koukan.onrender.com/api"
 const homepage = '/api/homepage'
 
 
@@ -28,7 +28,7 @@ function UserPostList(props) {
 
   useEffect(() => {
     axios
-      .get(homepage)
+      .get(BASE_URL+ homepage)
       .then(res => {
         setListings(res.data.filter(item => item.item.user_id === user.id))
       })
@@ -45,7 +45,7 @@ function UserPostList(props) {
 
 
   useEffect(() => {
-    axios.get(`/api/create-offer`)
+    axios.get(BASE_URL + `/api/create-offer`)
       .then(response => {
         setOffersMade(response.data)
       })

@@ -18,7 +18,7 @@ import { styled, } from '@mui/material/styles';
 
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 
-const BASE_URL = 'http://127.0.0.1:8000/api'
+const BASE_URL = "https://koukan.onrender.com/api"
 
 
 const BrownButton = styled(Button)(() => ({
@@ -39,7 +39,7 @@ const Img = styled('img')({
   maxHeight: '100%',
 });
 
-const REGISTER_URL = '/api/create-offer';
+const REGISTER_URL = '/create-offer';
 
 function OfferForm(props) {
 
@@ -69,13 +69,13 @@ function OfferForm(props) {
 
   useEffect(() => {
     if (user) {
-      axios.get(`/api/all-info/${user.id}`)
+      axios.get(BASE_URL + `/api/all-info/${user.id}`)
         .then(response => {
           setItemInfo([...response.data])
         })
     }
     if (listingId) {
-      axios.get(`/api/listing/${listingId}`)
+      axios.get( BASE_URL + `/api/listing/${listingId}`)
         // .then(response => setItemData(response.data))
         .then(response => {
           setListing(response.data[0])
@@ -98,8 +98,6 @@ function OfferForm(props) {
   //   }
   // }, [listingId])
 
-  console.log("LISTING", listing)
-  console.log("ITEM INFO", itemInfo)
   const makeOffer = async () => {
     console.log(offer.itemID)
     console.log(listing.post.id)
@@ -110,7 +108,7 @@ function OfferForm(props) {
     }
     console.log(offerObj)
     const response = await axios.post(
-      REGISTER_URL,
+      BASE_URL + REGISTER_URL,
 
       JSON.stringify(offerObj),
       {

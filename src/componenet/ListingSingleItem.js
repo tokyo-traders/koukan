@@ -74,7 +74,7 @@ const SmallButton = styled(Button)(() => ({
   padding: "8px"
 }));
 
-const BASE_URL = 'http://127.0.0.1:8000/api'
+const BASE_URL = "https://koukan.onrender.com/api"
 
 export default function ListingSingleItem(props) {
 
@@ -130,7 +130,7 @@ export default function ListingSingleItem(props) {
   const acceptOffer = async (obj) => {
     obj.acceptance = true
     const response = await axios.put(
-      `/api/SetPending`,
+      BASE_URL + `/api/SetPending`,
       JSON.stringify(obj),
       {
         headers: { 'Content-Type': 'application/json' },
@@ -142,19 +142,19 @@ export default function ListingSingleItem(props) {
 
   const deletePost = () => {
     axios
-      .delete(`/api/edit-post/${listing.post.id}`)
+      .delete(BASE_URL+ `/api/edit-post/${listing.post.id}`)
       .then(() => navigate("/MyPage/"))
       .then((res) => console.log(res));
   };
 
   const deleteOffer = (offerId) => {
-		axios.delete(`/api/edit-offer/${offerId}`).then((res) => console.log(res));
+		axios.delete(BASE_URL+ `/api/edit-offer/${offerId}`).then((res) => console.log(res));
 	};
 
   const hidAcceptedPost = async (obj) => {
     obj.visibile = false;
     const response = axios
-      .put(`/api/edit-post/${listing.post.id}`,
+      .put(BASE_URL + `/api/edit-post/${listing.post.id}`,
         JSON.stringify(obj),
         {
           headers: { 'Content-Type': 'application/json' },
@@ -167,7 +167,7 @@ export default function ListingSingleItem(props) {
 
   useEffect(() => {
     if (listingId) {
-      axios.get(`/api/listing/${listingId}`)
+      axios.get(BASE_URL+ `/api/listing/${listingId}`)
         .then(response => {
           console.log(response.data[0])
           setListing(response.data[0])
@@ -179,7 +179,7 @@ export default function ListingSingleItem(props) {
   useEffect(() => {
 
     const getOffers = async () => {
-      let response = await axios.get(`/api/create-offer`)
+      let response = await axios.get(+ `/api/create-offer`)
       console.log(response.data.filter(item => item.post_id == listingId))
       setOffersMade(response.data.filter(item => item.post_id == listingId))
 
@@ -193,7 +193,7 @@ export default function ListingSingleItem(props) {
 
     const getItem = async () => {
       let responseArray = offersMade.map((offer) => {
-        return axios.get(`http://127.0.0.1:8000/api/all-item/${offer.offered_item}`)
+        return axios.get(BASE_URL + `/all-item/${offer.offered_item}`)
       })
 
       Promise.all(responseArray).then((res) => {

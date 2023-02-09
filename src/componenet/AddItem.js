@@ -24,6 +24,8 @@ const BrownButton = styled(Button)(() => ({
 	fontSize: "16px"
 }));
 
+const BASE_URL = "https://koukan.onrender.com/api"
+
 function AddItem(props) {
 	const { user } = props;
 	const navigate = useNavigate();
@@ -43,7 +45,7 @@ function AddItem(props) {
 
 	useEffect(() => {
 		(async () => {
-			const rawData = await fetch("http://127.0.0.1:8000/api/categories-list", {
+			const rawData = await fetch(BASE_URL + "/categories-list", {
 				method: "GET",
 			});
 			const data = await rawData.json();
@@ -70,7 +72,7 @@ function AddItem(props) {
 		uploadData.append("desire", desire);
 		uploadData.append("category", category);
 		console.log(uploadData);
-		fetch(`/api/item/${user.id}`, {
+		fetch(BASE_URL + `/api/item/${user.id}`, {
 			method: "POST",
 			body: uploadData,
 		})

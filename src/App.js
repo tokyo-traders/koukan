@@ -35,7 +35,7 @@ function App() {
 	const [searchValue, setSearchValue] = useState('');
 	const [categories, setCategories] = useState([])
 
-
+	const BASE_URL = "https://koukan.onrender.com/api"
 	const axiosPrivate = useAxiosPrivate();
 
 	const handleSearchChange = (event) => {
@@ -53,7 +53,7 @@ function App() {
 
 			const getUsers = async () => {
 				try {
-					const response = await axiosPrivate.get("/api/user/login", {
+					const response = await axiosPrivate.get(BASE_URL + "/api/user/login", {
 						signal: controller.signal,
 					});
 					isMounted && setUser(response.data);

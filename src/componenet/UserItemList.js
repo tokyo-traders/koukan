@@ -13,7 +13,7 @@ import MyPage from './MyPage'
 import Divider from '@mui/material/Divider';
 import { useNavigate, useLocation } from "react-router-dom";
 
-const BASE_URL = 'http://127.0.0.1:8000/api'
+const BASE_URL = "https://koukan.onrender.com/api"
 
 
 function UserItemsList(props) {
@@ -43,7 +43,7 @@ function UserItemsList(props) {
 
   useEffect(() => {
     if (user) {
-      axios.get(`/api/all-info/${user.id}`)
+      axios.get(BASE_URL + `/api/all-info/${user.id}`)
         .then(response => {
           // console.log(response.data)
           setItemInfo([...response.data])

@@ -15,6 +15,9 @@ import {
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
+
+const BASE_URL = "https://koukan.onrender.com/api"
+
 function Sidebar(props) {
 
   const { handleCategoryFilter, categories, setCategories } = props;
@@ -22,7 +25,7 @@ function Sidebar(props) {
 
   useEffect(() => {
     const getCategories = async () => {
-      const response = await axios('https://koukan.onrender.com/api/categories-list')
+      const response = await axios(BASE_URL + '/categories-list')
       setCategories(response.data)
     }
     getCategories()

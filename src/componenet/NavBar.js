@@ -80,6 +80,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+
+
 function NavBar(props) {
 
   const { user, setUser, setUserState, handleSearchChange } = props

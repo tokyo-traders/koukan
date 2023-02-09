@@ -48,7 +48,7 @@ const BrownButton = styled(Button)(() => ({
 	fontSize: "16px",
 }));
 
-const BASE_URL = "http://127.0.0.1:8000/api";
+const BASE_URL = "https://koukan.onrender.com/api"
 
 export default function UserSingleItem(props) {
 	const { itemId } = useParams();
@@ -91,7 +91,7 @@ export default function UserSingleItem(props) {
 
 	const deleteItem = (itemId) => {
 		axios
-			.delete(`http://127.0.0.1:8000/api/item-edit/${itemId}`)
+			.delete(BASE_URL + `/item-edit/${itemId}`)
 			.then((res) => console.log(res));
 	};
 
@@ -102,7 +102,7 @@ export default function UserSingleItem(props) {
 			// PUT request using axios with async/await
 			const rawResponse = await axios
 				.patch(
-					`http://localhost:8000/api/item-edit/${itemId}`,
+					BASE_URL + `/item-edit/${itemId}`,
 					JSON.stringify(obj),
 					{
 						headers: { "Content-Type": "application/json" },
@@ -115,7 +115,7 @@ export default function UserSingleItem(props) {
 
 	useEffect(() => {
 		if (itemId) {
-			axios.get(`http://127.0.0.1:8000/api/all-item/${itemId}`).then((response) => {
+			axios.get(BASE_URL + `/all-item/${itemId}`).then((response) => {
 				console.log(response.data[0]);
 				return (
 					setItemData(response.data[0]),

@@ -10,7 +10,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 
-const BASE_URL = "http://127.0.0.1:8000/api"
+const BASE_URL = "https://koukan.onrender.com/api"
 
 
 const MyContent = styled(CardContent)`
@@ -30,16 +30,15 @@ export default function AllListings(props) {
 
     useEffect(() => {
         axios
-            .get('api/homepage')
+            .get(BASE_URL + 'api/homepage')
             .then(res => {
-                // console.log("this is the new data", res.data)
                 setListings(res.data)
             })
     }, [])
 
     const navigate = useNavigate();
     const makeOffer = (obj) => {
-        navigate(`/listing/${obj.post.id}`, { replace: true })
+        navigate(BASE_URL + `/listing/${obj.post.id}`, { replace: true })
     }
 
     const showListing = (listing, index) => {

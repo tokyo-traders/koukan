@@ -21,12 +21,13 @@ import { Carousel } from 'react-responsive-carousel';
 import SendIcon from '@mui/icons-material/Send';
 import Rating from '@mui/material/Rating';
 
-
+const BASE_URL = "https://koukan.onrender.com/api"
 
 
 import "./LisitingSingleItem.css"
 import { CollectionsBookmarkOutlined } from '@mui/icons-material';
 import { CardContent, CardMedia } from '@mui/material';
+
 
 const modalStyle = {
     position: "absolute",
@@ -59,7 +60,7 @@ const modalStyle = {
 //     fontSize: "16px"
 // }));
 
-const BASE_URL = 'http://127.0.0.1:8000/api'
+
 
 export default function UserSingleOffer(props) {
 
@@ -77,7 +78,7 @@ export default function UserSingleOffer(props) {
 
 
     useEffect(() => {
-        axios.get(`/api/singleOffer/${offerId}`)
+        axios.get(BASE_URL + `/api/singleOffer/${offerId}`)
             .then((response) =>
                 setOffer(response.data)
             )

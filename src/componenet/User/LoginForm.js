@@ -16,7 +16,7 @@ import { styled } from '@mui/material/styles';
 import { useNavigate, useLocation} from "react-router-dom";
 import { padding } from "@mui/system";
 
-const REGISTER_URL = "api/user/login";
+const BASE_URL = "https://koukan.onrender.com/api"
 
 const BrownButton = styled(Button)(() => ({
     backgroundColor: "#4d3e38",
@@ -62,7 +62,7 @@ function LoginForm(props) {
 
 		try {
 			const response = await axios.post(
-				REGISTER_URL,
+				BASE_URL + "user/login",
 				JSON.stringify({
 					email: details.email.toLowerCase(),
 					password: details.password,

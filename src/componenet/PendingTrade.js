@@ -16,7 +16,7 @@ import Modal from "@mui/material/Modal";
 import Rating from '@mui/material/Rating';
 
 
-const BASE_URL = 'http://127.0.0.1:8000/api'
+const BASE_URL = "https://koukan.onrender.com/api"
 const homepage = '/api/homepage'
 
 
@@ -38,7 +38,7 @@ function PendingTrade(props) {
   const [value, setValue] = useState(3);
 
   useEffect(() => {
-    axios.get(`/api/acceptedTrade/${user.id}`)
+    axios.get(BASE_URL + `/api/acceptedTrade/${user.id}`)
       .then(response => {
         console.log("TRADE", response.data)
         // !tradesDisplayed && tradingItems.push(...response.data)
@@ -55,7 +55,7 @@ function PendingTrade(props) {
   useEffect(() => {
     // axios.get(`/api/singleOffer/${offerId}`)
     axios
-      .get(`/api/offered-items/${user.id}`)
+      .get( BASE_URL + `/api/offered-items/${user.id}`)
       .then(res => {
         console.log("OFFER", res.data)
         // !offerDisplayed && offeredItems.push(...res.data)
@@ -74,7 +74,7 @@ function PendingTrade(props) {
     if (!offer.post_confirmation && !offer.offer_confirmation) {
       offer.post_confirmation = true
       const response = await axios.put(
-        `/api/SetPending`,
+        BASE_URL + `/api/SetPending`,
         JSON.stringify(offer),
         {
           headers: { 'Content-Type': 'application/json' },
@@ -86,7 +86,7 @@ function PendingTrade(props) {
     } else if (offer.post_confirmation || offer.offer_confirmation) {
       console.log("handover!!!")
 
-      axios.put(`/api/itemHandover`,
+      axios.put(BASE_URL + `/api/itemHandover`,
         JSON.stringify(offer),
         {
           headers: { "Content-Type": "application/json" },
@@ -106,7 +106,7 @@ function PendingTrade(props) {
     if (!offer.offer_confirmation && !offer.post_confirmation) {
       offer.offer_confirmation = true
       const response = await axios.put(
-        `/api/SetPending`,
+        BASE_URL + `/api/SetPending`,
         JSON.stringify(offer),
         {
           headers: { 'Content-Type': 'application/json' },
@@ -117,7 +117,7 @@ function PendingTrade(props) {
       console.log(response.data)
     } else if (offer.post_confirmation || offer.offer_confirmation) {
       console.log("handover!!!")
-      axios.put(`/api/itemHandover`,
+      axios.put(BASE_URL + `/api/itemHandover`,
         JSON.stringify(offer),
         {
           headers: { "Content-Type": "application/json" },
@@ -147,7 +147,7 @@ function PendingTrade(props) {
     }
     console.log(userIdReview)
     // axios.put(`/api/send-review/${userIdReview}`,
-    axios.put(`/api/sendUserReview/${userIdReview}`,
+    axios.put(BASE_URL + `/api/sendUserReview/${userIdReview}`,
       JSON.stringify(data),
       {
         headers: { "Content-Type": "application/json" },

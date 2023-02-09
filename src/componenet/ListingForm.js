@@ -35,7 +35,7 @@ function AddListingForm(props) {
     const [selectCat, setSelectCat] = useState({})
 
     const navigate = useNavigate();
-
+    const BASE_URL = "https://koukan.onrender.com/api"
 
     const newPost = async (e) => {
 
@@ -62,7 +62,7 @@ function AddListingForm(props) {
             }
         }
         axios.post(
-            "/api/create-post",
+            BASE_URL + "/api/create-post",
             JSON.stringify({ post, "categories": selectCat }),
             {
                 headers: { 'Content-Type': 'application/json' },

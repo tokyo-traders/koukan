@@ -10,7 +10,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 
 
-const BASE_URL = 'http://127.0.0.1:8000/api'
+const BASE_URL = "https://koukan.onrender.com/api"
 const homepage = '/api/homepage'
 
 
@@ -24,7 +24,7 @@ function UserOfferList(props) {
 
     useEffect(() => {
         axios
-            .get(`/api/offered-items/${user.id}`)
+            .get(BASE_URL + `/api/offered-items/${user.id}`)
             .then(res => {
                 setOffers(res.data)
             })
