@@ -45,7 +45,7 @@ Here's why:
 
 * Getting rid of things you do not need can take time, efforts and sometimes also money, so better to have something back!
 * The more you waste and produce, the higher is your footprint. Remember, we only have one World!
-* Save the World and saving money, still need more? :bird: :bird: :rock:
+* Save the World by saving money, need more? :bird: :bird: :rock:
 
 
 ## Built With
@@ -64,25 +64,25 @@ We have also used JWT as authentication/authorization
     <th>Database</th>
   </tr>
   <tr>
-  <td>
+    <td align="center">
     <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="40" height="40"/> </a>
-  </td>
-  <td>
+    </td>
+    <td align="center">
     <a href="https://https://mui.com//" target="_blank" rel="noreferrer"> 
       <img src="https://user-images.githubusercontent.com/67497636/217686777-1302937e-51e8-4d8b-8905-8796c4911b88.png" alt="react" width="40" height="40"/> </a>
-  </td>
-  <td>
+    </td>
+    <td align="center">
       <a href="https://www.djangoproject.com/" target="_blank" rel="noreferrer"> <img src="https://cdn.worldvectorlogo.com/logos/django.svg" alt="django" width="40" height="40"/> </a>
-  </td>
-  <td>
+    </td>
+    <td align="center">
       <a href="https://www.postgresql.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original-wordmark.svg" alt="postgresql" width="40" height="40"/> </a>
-  </td>
+    </td>
   </tr>
   <tr>
-    <td>
+    <td align="center">
     <a href="https://www.python.org" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="python" width="40" height="40"/> </a>
     </td>
-    <td>
+    <td align="center">
       <a href="https://reactjs.org/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original-wordmark.svg" alt="react" width="40" height="40"/> </a>
     </td>
     <td>
@@ -93,8 +93,8 @@ We have also used JWT as authentication/authorization
     <tr>
     <td>
     </td>
-    <td>
-    <a href="https://jwt.io/" target="_blank" rel="noreferrer"> <img src="https://user-images.githubusercontent.com/67497636/217804934-d450c024-a02d-4649-bc7d-d606788afe29.png" alt="jwt" width="40" height="40"/> </a>
+    <td align="center">
+    <a href="https://jwt.io/" target="_blank" rel="noreferrer"> <img src="https://user-images.githubusercontent.com/67497636/217804934-d450c024-a02d-4649-bc7d-d606788afe29.png" alt="jwt" width="70" height="40"/> </a>
     </td>
     <td>
     </td>
