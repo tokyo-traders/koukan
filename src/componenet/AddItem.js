@@ -72,7 +72,7 @@ function AddItem(props) {
 		uploadData.append("desire", desire);
 		uploadData.append("category", category);
 		console.log(uploadData);
-		fetch(BASE_URL + `/api/item/${user.id}`, {
+		fetch(BASE_URL + `/item/${user.id}`, {
 			method: "POST",
 			body: uploadData,
 		})
