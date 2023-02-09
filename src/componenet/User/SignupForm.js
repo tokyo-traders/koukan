@@ -238,6 +238,7 @@ export default function SignupForm() {
                   ref={phoneRef}
                   onChange={(e) => setPhone(e.target.value)}
                   value={phone}
+                  helperText="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed."
                 />
               </Grid>
               <Grid item xs={12}>
@@ -253,6 +254,7 @@ export default function SignupForm() {
                   value={pwd}
                   onFocus={() => setPwdFocus(true)}
                   onBlur={() => setPwdFocus(false)}
+                  helperText="At least 8 characters in length, at least one uppercase, at least one special character (+-*/=.,:;`@!#$%?|~^()[]{}_)"
                 />
               </Grid>
               <Grid item xs={12}>
