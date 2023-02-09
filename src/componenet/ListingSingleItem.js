@@ -193,7 +193,7 @@ export default function ListingSingleItem(props) {
 
     const getItem = async () => {
       let responseArray = offersMade.map((offer) => {
-        return axios.get(`/api/all-item/${offer.offered_item}`)
+        return axios.get(`http://127.0.0.1:8000/api/all-item/${offer.offered_item}`)
       })
 
       Promise.all(responseArray).then((res) => {
@@ -370,7 +370,7 @@ export default function ListingSingleItem(props) {
                   >
 
                   {(listing && categories) && listing?.categories?.map((category, index) => (
-                    <Chip label={categories[category.categories_id]?.category_name}/>
+                    <Chip label={categories[category.categories_id - 1]?.category_name}/>
                     )
                   )}
                   </Grid>
@@ -415,7 +415,7 @@ export default function ListingSingleItem(props) {
                   <Typography>
                     <Typography variant='h6' component="legend"> {listing.username}  
                     </Typography>
-                    <Rating name="size-small" readOnly value={user.reputation_rating != 0 ? ((Math.round(user.reputation_rating * 10) / 10) / user.total_review).toFixed(1) : 0}/>
+                    <Rating name="size-small" readOnly value={listing.rating != 0 ? ((Math.round(listing.rating * 10) / 10) / listing.total_review).toFixed(1) : 0}/>
                     </Typography>
                     }
                 </Box>

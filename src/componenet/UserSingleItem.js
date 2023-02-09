@@ -72,9 +72,9 @@ export default function UserSingleItem(props) {
 	});
 	const [images, setImages] = useState([]);
 	const [currentItemName, setCurrentItemName] = useState("");
-	const [item_name, setItemName] = React.useState("");
-	const [details, setDetails] = React.useState("");
-	const [openEdit, setOpenEdit] = React.useState(false);
+	const [item_name, setItemName] = useState("");
+	const [details, setDetails] = useState("");
+	const [openEdit, setOpenEdit] = useState(false);
 	const handleOpenEdit = () => setOpenEdit(true);
 	const handleCloseEdit = () => setOpenEdit(false);
 	const inputItemName = (e) => {
@@ -91,7 +91,7 @@ export default function UserSingleItem(props) {
 
 	const deleteItem = (itemId) => {
 		axios
-			.delete(`/api/item-edit/${itemId}`)
+			.delete(`http://127.0.0.1:8000/api/item-edit/${itemId}`)
 			.then((res) => console.log(res));
 	};
 
@@ -115,7 +115,7 @@ export default function UserSingleItem(props) {
 
 	useEffect(() => {
 		if (itemId) {
-			axios.get(`/api/all-item/${itemId}`).then((response) => {
+			axios.get(`http://127.0.0.1:8000/api/all-item/${itemId}`).then((response) => {
 				console.log(response.data[0]);
 				return (
 					setItemData(response.data[0]),

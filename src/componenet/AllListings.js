@@ -10,7 +10,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 
-const BASE_URL = 'http://127.0.0.1:8000/api';
+const BASE_URL = "http://127.0.0.1:8000/api"
+
 
 const MyContent = styled(CardContent)`
   &:last-child {
@@ -43,6 +44,7 @@ export default function AllListings(props) {
 
     const showListing = (listing, index) => {
         return (
+            
             <div key={index}>
                 <Card
                     key={index}
@@ -68,6 +70,7 @@ export default function AllListings(props) {
                     </MyContent>
                 </Card>
             </div>
+            
         )
     }
 

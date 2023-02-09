@@ -95,7 +95,19 @@ def user_login(request):
             id = decode_access_token(token)
             if id:
                 user = User.objects.get(pk=id)
-                return Response(UserSerializer(user).data)
+                userSerializer = UserSerializer(user).data
+                return Response({
+                    "first_name": userSerializer["first_name"] ,
+                    "last_name": userSerializer["last_name"],
+                    "address": userSerializer['address'],
+                    "username": userSerializer["username"],
+                    "email": userSerializer["email"],
+                    "phone_detail": userSerializer["phone_detail"],
+                    "is_emailVerified": userSerializer["is_emailVerified"],
+                    "is_phoneVerified": userSerializer["is_phoneVerified"],
+                    "reputation_rating": userSerializer["reputation_rating"],
+                    "total_review": userSerializer["total_review"]
+                    })
             return Response(False, status=status.HTTP_401_UNAUTHORIZED)
 
     if request.method == "PUT":
@@ -215,9 +227,11 @@ def newall_item(request, userid):
                 'itemName': singleItemSerializer.data['item_name'],
                 'itemImages': imgUrl,
                 'userId': singleItemSerializer.data['user_id'],
-                'category': singleItemSerializer.data['category']
+                'category': singleItemSerializer.data['category'],
+                
             })
             imgUrl = []
+            print(data)
         return Response(data)
 
         # Initialize final data to return
@@ -316,7 +330,7 @@ def item_edit(request, itemId):
 @api_view(['GET'])
 def all_item(request, itemid):
     try:
-        item = Item.objects.filter(id=itemid).first()
+        item = Item.objects.get(id=itemid)
         images = Image.objects.all()
     except Item.DoesNotExist or Image.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
@@ -342,7 +356,7 @@ def all_item(request, itemid):
                     imgUrl.append(imageSerializer.data['image'])
             data.append({'itemName': itemSerializer.data['item_name'],
                          'images': imgUrl,
-                         'details': itemSerializer.data['details'], 'expiration': currentOffer.data['date_offered'], 'idOffer': currentOffer.data['id'], 'user_id': itemSerializer.data['user_id'], 'userName': userInfo.data['username']})
+                         'details': itemSerializer.data['details'], 'expiration': currentOffer.data['date_offered'], 'idOffer': currentOffer.data['id'], 'user_id': itemSerializer.data['user_id'], 'userName': userInfo.data['username'], 'userReputation': userInfo.data['reputation_rating'], 'userTotalReview': userInfo.data['total_review']})
 
         except Offer.DoesNotExist:
             data = []
@@ -457,6 +471,7 @@ def listingItem(request, postId):
                      "phoneDetail": userSerializer.data[0]["phone_detail"],
                      "email": userSerializer.data[0]["email"],
                      "rating": userSerializer.data[0]["reputation_rating"],
+                     "total_review": userSerializer.data[0]["total_review"],
                      "categories": catSerializer.data
                      })
         imageUrl = []

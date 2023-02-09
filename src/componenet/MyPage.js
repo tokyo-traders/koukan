@@ -70,7 +70,6 @@ export default function MyPage(props) {
       navigate(from, { replace: true })
     }
   }, [navigate]);
-
   return (
     <>
       <Container component="main" maxWidth="lg">
@@ -100,7 +99,7 @@ export default function MyPage(props) {
             </Typography>}
 
              <Typography>
-              <Rating name="size-small" readOnly value={(Math.round(user?.reputation_rating * 10) / 10).toFixed(1)} />
+              <Rating name="size-small" readOnly value={ user?.rating !== 0 ? ((Math.round(user?.reputation_rating * 10) / 10) / user?.total_review).toFixed(1) : 0} />
             </Typography>
 
 
