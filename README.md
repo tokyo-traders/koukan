@@ -7,11 +7,11 @@
   <p align="center">
     The non monetary e-commerce
     <br/>
-    <br/>
+<!--     <br/>
     <a href="https://github.com/tokyo-traders/koukan"><strong>Explore the docs »</strong></a>
+    <br/> -->
     <br/>
-    <br/>
-    <a href="#">Go to deployed version</a>
+    <a href="https://tokyotraders.onrender.com/">Go to deployed version</a>
     .
 <!--     <a href="https://github.com/ShaanCoding/ReadME-Generator/issues">Report Bug</a>
     .
