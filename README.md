@@ -11,8 +11,8 @@
     <a href="https://github.com/tokyo-traders/koukan"><strong>Explore the docs »</strong></a>
     <br/> -->
     <br/>
-    <a href="https://tokyotraders.onrender.com/">Go to deployed version</a>
-    .
+    <a href="https://tokyotraders.onrender.com/">Go to deployed version >>></a>
+    
 <!--     <a href="https://github.com/ShaanCoding/ReadME-Generator/issues">Report Bug</a>
     .
     <a href="https://github.com/ShaanCoding/ReadME-Generator/issues">Request Feature</a> -->
@@ -56,7 +56,7 @@ We have also used JWT as authentication/authorization
 
 
 
-<table>
+<table align="center">
   <tr>
     <th>Languages</th>
     <th>Libraries</th>
@@ -182,7 +182,7 @@ Contributions are what make the open source community such an amazing place to b
 Distributed under the MIT License. See [LICENSE](https://github.com/ShaanCoding/ReadME-Generator/blob/main/LICENSE.md) for more information. -->
 
 ## Authors
-<table>
+<table align="center">
   <tr>
   <th>
     <a href="https://github.com/rpiflv">Flavio Ripa</a>
