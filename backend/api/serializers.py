@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, Item, Image, Post, Offer, Categories, ReportedUser
+from .models import User, Item, Image, Post, Offer, Categories, ReportedUser,PostCategories
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -46,3 +46,8 @@ class ReportedUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReportedUser
         field = "__all__"
+
+class PostCategoriesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PostCategories
+        fields = "__all__"

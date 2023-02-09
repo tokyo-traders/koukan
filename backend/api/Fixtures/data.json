@@ -70,5 +70,13 @@
 			"category_name": "Shoes",
 			"reputation_point": 0.05
 		}
+	},
+	{
+		"model": "api.Categories",
+		"pk": 9,
+		"fields": {
+			"category_name": "Gaming",
+			"reputation_point": 0.05
+		}
 	}
 ]

@@ -23,7 +23,9 @@ import UserItemsList from "./componenet/UserItemList";
 import AddListingForm from "./componenet/ListingForm";
 import ListingSingleItem from "./componenet/ListingSingleItem";
 import OfferForm from "./componenet/OfferForm";
-
+import UserOfferList from "./componenet/UserOffersList";
+import UserSingleOffer from "./componenet/UserSingleOffer";
+import { Category } from "@mui/icons-material";
 
 function App() {
 
@@ -41,7 +43,7 @@ function App() {
 	}
 
 	const handleCategoryFilter = (event) => {
-		setCategoryFilter(event.target.innerHTML)
+		event.target.innerHTML !== "All Categories" ? setCategoryFilter(event.target.innerHTML) : setCategoryFilter('')
 	}
 
 	useEffect(() => {
@@ -75,25 +77,31 @@ function App() {
 				<Routes>
 					<Route path="/" element={<NavBar user={user} setUser={setUser} handleSearchChange={handleSearchChange} searchValue={searchValue} />} exact>
 						<Route path="/" element={[
-							<Sidebar handleCategoryFilter={handleCategoryFilter} categoryFilter={categoryFilter} categories={categories} setCategories={setCategories} />,
+							<Sidebar
+								handleCategoryFilter={handleCategoryFilter}
+								categoryFilter={categoryFilter}
+								categories={categories}
+								setCategories={setCategories} />,
 							<AllListings searchValue={searchValue} categoryFilter={categoryFilter} categories={categories} />
 						]} />
 						<Route path="/Login" element={<LoginForm userState={userState} setUserState={setUserState} />} />
 						<Route path="/Signup" element={<SignupForm />} />
-						<Route path="/listing/:listingId" element={[<Sidebar />, <ListingSingleItem user={user} />]} />
+						<Route path="/listing/:listingId" element={[<ListingSingleItem user={user} categories={categories} />]} />
 
 
 
 						<Route element={<RequireAuth />}>
-							<Route path="/listing/:listingId/offer" element={<OfferForm user={user} />} />
+							<Route path="/listing/:listingId/offer" element={<OfferForm user={user} categories={categories}/>} />
 							<Route path="/MyPage" element={<MyPage user={user} />} >
 								<Route path="/MyPage" element={<UserItemsList user={user} />} />
 								<Route path="/MyPage/addItem" element={<AddItem user={user} />} />
-
 								<Route path="/MyPage/postList" element={<UserPostList user={user} />} />
-								{/* <Route path="/MyPage/PendingTrade" element={<PendingTrade user={user} />} /> */}
+								<Route path="/MyPage/offered-items" element={<UserOfferList user={user} />} />
+								<Route path="/MyPage/singleOffer/:offerId" element={<UserSingleOffer user={user} />} />
+
+								<Route path="/MyPage/pendingTrade" element={<PendingTrade user={user} />} />
 								<Route path="/MyPage/Items/:itemId" element={<UserSingleItem user={user} />} />
-								<Route path="/MyPage/makeListing/:itemId" element={<AddListingForm user={user} />} />
+								<Route path="/MyPage/makeListing/:itemId" element={<AddListingForm user={user} categories={categories}/>} />
 							</Route>
 						</Route>
 					</Route>
