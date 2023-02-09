@@ -75,7 +75,7 @@ export default function UserSingleOffer(props) {
 
 
     useEffect(() => {
-        axios.get(BASE_URL + `/api/singleOffer/${offerId}`)
+        axios.get(BASE_URL + `/singleOffer/${offerId}`)
             .then((response) =>
                 setOffer(response.data)
             )

@@ -62,7 +62,7 @@ function LoginForm(props) {
 
 		try {
 			const response = await axios.post(
-				BASE_URL + "user/login",
+				BASE_URL + "/user/login",
 				JSON.stringify({
 					email: details.email.toLowerCase(),
 					password: details.password,

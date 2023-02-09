@@ -30,7 +30,7 @@ export default function AllListings(props) {
 
     useEffect(() => {
         axios
-            .get(BASE_URL + 'api/homepage')
+            .get(BASE_URL + '/homepage')
             .then(res => {
                 setListings(res.data)
             })

@@ -130,7 +130,7 @@ export default function ListingSingleItem(props) {
   const acceptOffer = async (obj) => {
     obj.acceptance = true
     const response = await axios.put(
-      BASE_URL + `/api/SetPending`,
+      BASE_URL + `/SetPending`,
       JSON.stringify(obj),
       {
         headers: { 'Content-Type': 'application/json' },
@@ -142,19 +142,19 @@ export default function ListingSingleItem(props) {
 
   const deletePost = () => {
     axios
-      .delete(BASE_URL+ `/api/edit-post/${listing.post.id}`)
+      .delete(BASE_URL+ `/edit-post/${listing.post.id}`)
       .then(() => navigate("/MyPage/"))
       .then((res) => console.log(res));
   };
 
   const deleteOffer = (offerId) => {
-		axios.delete(BASE_URL+ `/api/edit-offer/${offerId}`).then((res) => console.log(res));
+		axios.delete(BASE_URL+ `/edit-offer/${offerId}`).then((res) => console.log(res));
 	};
 
   const hidAcceptedPost = async (obj) => {
     obj.visibile = false;
     const response = axios
-      .put(BASE_URL + `/api/edit-post/${listing.post.id}`,
+      .put(BASE_URL + `/edit-post/${listing.post.id}`,
         JSON.stringify(obj),
         {
           headers: { 'Content-Type': 'application/json' },
@@ -167,7 +167,7 @@ export default function ListingSingleItem(props) {
 
   useEffect(() => {
     if (listingId) {
-      axios.get(BASE_URL+ `/api/listing/${listingId}`)
+      axios.get(BASE_URL+ `/listing/${listingId}`)
         .then(response => {
           console.log(response.data[0])
           setListing(response.data[0])
@@ -179,7 +179,7 @@ export default function ListingSingleItem(props) {
   useEffect(() => {
 
     const getOffers = async () => {
-      let response = await axios.get(+ `/api/create-offer`)
+      let response = await axios.get(+ `/create-offer`)
       console.log(response.data.filter(item => item.post_id == listingId))
       setOffersMade(response.data.filter(item => item.post_id == listingId))
 

@@ -53,12 +53,12 @@ function App() {
 
 			const getUsers = async () => {
 				try {
-					const response = await axiosPrivate.get(BASE_URL + "/api/user/login", {
+					const response = await axiosPrivate.get(BASE_URL + "/user/login", {
 						signal: controller.signal,
 					});
 					isMounted && setUser(response.data);
 				} catch (err) {
-					console.error("FUckYOU FROM APP", err);
+					console.error("error", err);
 				}
 			};
 

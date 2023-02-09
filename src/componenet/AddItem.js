@@ -86,7 +86,7 @@ function AddItem(props) {
 					console.log(value);
 				}
 			})
-			.then(() => axios.post("/api/image/multiple_upload/", uploadImages))
+			.then(() => axios.post(BASE_URL + "/image/multiple_upload/", uploadImages))
 			.catch((error) => console.log(error));
 		// let newImages = axios.post(
 		//     '/api/image/multiple_upload/',

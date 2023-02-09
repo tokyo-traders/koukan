@@ -24,7 +24,7 @@ function UserOfferList(props) {
 
     useEffect(() => {
         axios
-            .get(BASE_URL + `/api/offered-items/${user.id}`)
+            .get(BASE_URL + `/offered-items/${user.id}`)
             .then(res => {
                 setOffers(res.data)
             })

@@ -62,7 +62,7 @@ function AddListingForm(props) {
             }
         }
         axios.post(
-            BASE_URL + "/api/create-post",
+            BASE_URL + "/create-post",
             JSON.stringify({ post, "categories": selectCat }),
             {
                 headers: { 'Content-Type': 'application/json' },

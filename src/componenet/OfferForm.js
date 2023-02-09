@@ -69,13 +69,13 @@ function OfferForm(props) {
 
   useEffect(() => {
     if (user) {
-      axios.get(BASE_URL + `/api/all-info/${user.id}`)
+      axios.get(BASE_URL + `/all-info/${user.id}`)
         .then(response => {
           setItemInfo([...response.data])
         })
     }
     if (listingId) {
-      axios.get( BASE_URL + `/api/listing/${listingId}`)
+      axios.get( BASE_URL + `/listing/${listingId}`)
         // .then(response => setItemData(response.data))
         .then(response => {
           setListing(response.data[0])

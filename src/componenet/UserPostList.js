@@ -14,7 +14,7 @@ import Divider from '@mui/material/Divider';
 import { useNavigate, useLocation } from "react-router-dom";
 
 const BASE_URL = "https://koukan.onrender.com/api"
-const homepage = '/api/homepage'
+const homepage = '/homepage'
 
 
 function UserPostList(props) {
@@ -45,7 +45,7 @@ function UserPostList(props) {
 
 
   useEffect(() => {
-    axios.get(BASE_URL + `/api/create-offer`)
+    axios.get(BASE_URL + `/create-offer`)
       .then(response => {
         setOffersMade(response.data)
       })
