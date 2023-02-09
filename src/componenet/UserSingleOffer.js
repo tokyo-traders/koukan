@@ -20,14 +20,11 @@ import EmailIcon from '@mui/icons-material/Email';
 import { Carousel } from 'react-responsive-carousel';
 import SendIcon from '@mui/icons-material/Send';
 import Rating from '@mui/material/Rating';
-
-const BASE_URL = "https://koukan.onrender.com/api"
-
-
 import "./LisitingSingleItem.css"
 import { CollectionsBookmarkOutlined } from '@mui/icons-material';
 import { CardContent, CardMedia } from '@mui/material';
 
+const BASE_URL = "https://koukan.onrender.com/api"
 
 const modalStyle = {
     position: "absolute",
