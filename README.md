@@ -50,7 +50,8 @@ Here's why:
 
 ## Built With
 
-The backend of this application has been built using Django Rest Framework and PostgrsQL as database. Frontend is built with Javascript using ReactJS library, styled with Material UI.
+The application has been built using Javascript, along with ReactJS and Material UI in the frontend, and Python with Django Rest Framework for the backend.
+We have also used JWT as authentication/authorization 
 </br>
 
 
@@ -84,6 +85,21 @@ The backend of this application has been built using Django Rest Framework and P
     <td>
       <a href="https://reactjs.org/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original-wordmark.svg" alt="react" width="40" height="40"/> </a>
     </td>
+    <td>
+    </td>
+    <td>
+    </td>
+    </tr>
+    <tr>
+    <td>
+    </td>
+    <td>
+    <a href="https://jwt.io/" target="_blank" rel="noreferrer"> <img src="https://user-images.githubusercontent.com/67497636/217804934-d450c024-a02d-4649-bc7d-d606788afe29.png" alt="jwt" width="40" height="40"/> </a>
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
   </tr>
 <table>
 
@@ -108,19 +124,32 @@ npm install npm@latest -g
 ```
 3. navigate to backend/api/backend and create a .env file. Add the following to the file
 ```sh
-SECRET_KEY=[your DRF secret key] *
+SECRET_KEY=[your DRF secret key] 
 DB_NAME=[your database name]
 DB_USER=postgres [only Windows]
 DB_PASSWORD=[your database password]
 DB_PORT=5432
 DB_HOST=127.0.0.1
+EMAIL_HOST_USER=[your a gmail account]
+EMAIL_HOST_PASSWORD=[pwd of the gmail account]
 ```
-_*you can generate your SECRET_KEY from the Django Shell_
+_* you can generate your SECRET_KEY from the Django Shell_
   ```
   >>> django-admin shell
   >>> get_random_secret_key()
   ```
   _(or just go to https://djecrety.ir/)_
+  
+  _*the EMAIL_HOST variables are used for the email verification of the user. Click [here](https://support.google.com/accounts/answer/185839#zippy=) for more details_
+  
+  4. run the following command
+  ```sh
+  cd backend & python manage.py runserver
+  ```
+  5. (on a different terminal) run the following command
+  ```sh
+  npm start 
+  ```
   
 ## Usage
 
@@ -153,8 +182,41 @@ Contributions are what make the open source community such an amazing place to b
 Distributed under the MIT License. See [LICENSE](https://github.com/ShaanCoding/ReadME-Generator/blob/main/LICENSE.md) for more information. -->
 
 ## Authors
+<table>
+  <tr>
+  <th>
+    <a href="https://github.com/rpiflv">Flavio Ripa</a>
+  </th>
+    <th>
+      <a href="https://github.com/Coffiey"> Adam Burrough </a>
+  </th>
+    <th>
+      <a href="https://github.com/Yamaki09"> Koji </a>
+  </th>
+    <th>
+      <a href="https://github.com/itsevon"> Evon </a>
+  </th>
+  </tr>
+  <tr>
+  <td>
+    <a href="https://github.com/rpiflv" target="_blank" rel="noreferrer">
+    <img src="https://user-images.githubusercontent.com/67497636/217794799-faf83d7f-9e52-416f-8219-00e1e8cd9fcf.jpeg" alt="javascript" width="150" height="150"/> </a>
 
-* [Flavio Ripa](https://github.com/rpiflv)
-* [Adam](#)
-* [Koji](#)
-* [Evon](#)
+  </td>
+  <td>
+    <a href="https://github.com/Coffiey" target="_blank" rel="noreferrer">
+    <img src="https://user-images.githubusercontent.com/67497636/217795795-7a3869b0-6373-4b43-bacf-ed5f08b046ea.jpeg" alt="javascript" width="150" height="150"/> </a>
+
+  </td>
+  <td>
+    <a href="https://github.com/Yamaki09" target="_blank" rel="noreferrer">
+    <img src="https://user-images.githubusercontent.com/67497636/217795891-9fbe0c8e-5223-42c2-b28f-297869f32552.png" alt="javascript" width="150" height="150"/> </a>
+
+  </td>
+  <td>
+    <a href="https://github.com/itsevon" target="_blank" rel="noreferrer">
+    <img src="https://user-images.githubusercontent.com/67497636/217796060-d31d577d-216b-4709-b3c6-ae8a426c191c.jpeg" alt="javascript" width="150" height="150"/> </a>
+
+  </td>
+  </tr>
+  </table>
