@@ -2,7 +2,7 @@
   "name": "koukan",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://127.0.0.1:8000/",
+  "proxy": "https://koukan.onrender.com",
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
@@ -32,10 +32,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && move ./build ./backend",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": " npm install && react-scripts build && move ./build ./backend && cd ./backend && pip install -r requirements.txt"
+    "server": "react-scripts build && move build ./backend && cd ./backend"
   },
   "eslintConfig": {
     "extends": [
