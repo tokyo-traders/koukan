@@ -13,6 +13,7 @@ import os
 from pathlib import Path
 import dj_database_url
 import environ
+
 # env = environ.Env()
 # environ.Env.read_env()
 
@@ -155,6 +156,8 @@ USE_TZ = True
 # adding media directory
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')  # BASE_DIR is in line 20ish
+
+
 
 # STATICFILES_DIRS = (
 #     os.path.join(BASE_DIR, "backend", 'static'),
