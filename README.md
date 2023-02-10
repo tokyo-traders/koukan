@@ -194,7 +194,7 @@ Distributed under the MIT License. See [LICENSE](https://github.com/ShaanCoding/
       <a href="https://github.com/Yamaki09"> Koji Yamashita</a>
   </th>
     <th>
-      <a href="https://github.com/itsevon"> Evon </a>
+      <a href="https://github.com/itsevon"> Evon Huang</a>
   </th>
   </tr>
   <tr>
