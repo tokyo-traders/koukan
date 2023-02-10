@@ -37,8 +37,6 @@
 
 ## About The Project
 
-![Screen Shot](images/screenshot.png)
-
 This application lets you swap things you do not need anymore with other users, allowing you to save money and at the same time lessen the amount of waste.
 <br/>
 Here's why:
