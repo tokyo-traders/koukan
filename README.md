@@ -41,15 +41,15 @@ This application lets you swap things you do not need anymore with other users, 
 <br/>
 Here's why:
 
-* Getting rid of things you do not need can take time, efforts and sometimes also money, so better to have something back!
-* The more you waste and produce, the higher is your footprint. Remember, we only have one World!
+* Getting rid of things you do not need takes time, efforts and sometimes also money, so better to have something back!
+* The more you waste, the higher is your carbon footprint. Remember, we only have one World!
 * Save the World by saving money, need more? :bird: :bird: :rock:
 
 
 ## Built With
 
-The application has been built using Javascript, along with ReactJS and Material UI in the frontend, and Python with Django Rest Framework for the backend.
-We have also used JWT as authentication/authorization 
+The application has been built using Javascript, along with ReactJS and Material UI in the frontend. Python with Django Rest Framework have been used for the backend.
+Finally, we implemented authentication with JWT.
 </br>
 
 
@@ -103,24 +103,24 @@ We have also used JWT as authentication/authorization
 
 ## Getting Started
 
-If you ae a developers and want to use our application follow the steps below
+If you are a developer and want to use our application, follow the steps below.
 
 ### Prerequisites
 
-Make sure that you have downloaded [Python](https://www.python.org/downloads/) and [Django](https://docs.djangoproject.com/en/4.1/howto/windows/) is installed
+Make sure that you have downloaded [Python](https://www.python.org/downloads/) and that [Django](https://docs.djangoproject.com/en/4.1/howto/windows/) is installed.
 
 
 ### Installation
 
-1. clone the app by running 
+1. clone the app 
   ```sh 
   git clone https://github.com/tokyo-traders/koukan
   ```
 2. install all the packages
 ```sh
-npm install npm@latest -g
+npm install
 ```
-3. navigate to backend/api/backend and create a .env file. Add the following to the file
+3. navigate to backend/api/backend and create a .env file. Add the following to the file:
 ```sh
 SECRET_KEY=[your DRF secret key] 
 DB_NAME=[your database name]
@@ -140,14 +140,16 @@ _* you can generate your SECRET_KEY from the Django Shell_
   
   _*the EMAIL_HOST variables are used for the email verification of the user. Click [here](https://support.google.com/accounts/answer/185839#zippy=) for more details_
   
-  4. run the following command
+  4. start the server:
   ```sh
   cd backend & python manage.py runserver
   ```
-  5. (on a different terminal) run the following command
+  5. (on a different terminal) start the client:
   ```sh
   npm start 
   ```
+  
+  6. Enjoy the app! 🥳
   
 ## Usage
 
