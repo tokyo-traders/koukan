@@ -22,7 +22,7 @@ function Sidebar(props) {
 
   useEffect(() => {
     const getCategories = async () => {
-      const response = await axios('https://koukan.onrender.com/api/categories-list')
+      const response = await axios('/api/categories-list')
       setCategories(response.data)
     }
     getCategories()

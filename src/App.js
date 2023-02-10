@@ -14,7 +14,7 @@ import useAxiosPrivate from "./componenet/hooks/axiosPrivate";
 import AddItem from "./componenet/AddItem";
 import LoginForm from "./componenet/User/LoginForm";
 import SignupForm from "./componenet/User/SignupForm";
-// import PendingTrade from "./componenet/PendingTrade";
+import PendingTrade from "./componenet/PendingTrade";
 import MyPage from "./componenet/MyPage";
 import UserPostList from "./componenet/UserPostList";
 import RequireAuth from "./componenet/User/RequireAuth";
