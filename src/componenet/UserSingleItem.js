@@ -52,7 +52,7 @@ const BASE_URL = "http://127.0.0.1:8000/api";
 
 export default function UserSingleItem() {
   const { auth } = useAuth();
-  const user = auth.user;
+  const user = auth?.user;
   const { itemId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();

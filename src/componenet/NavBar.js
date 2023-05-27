@@ -82,7 +82,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 function NavBar(props) {
   const { setUserState, handleSearchChange } = props;
   const { setAuth, auth } = useAuth();
-  const user = auth.user;
+  const user = auth?.user;
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 

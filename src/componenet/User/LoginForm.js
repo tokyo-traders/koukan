@@ -80,7 +80,6 @@ function LoginForm(props) {
         setAuth({ user: decoded.user, accessToken });
       }
       setSucess(true);
-      // console.log(auth);
     } catch (err) {
       if (!err?.response) {
         setErrMsg("No Server Response");
@@ -92,6 +91,7 @@ function LoginForm(props) {
         setErrMsg("Login Failed");
       }
     }
+    console.log(auth);
   };
 
   return (

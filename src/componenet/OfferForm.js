@@ -44,7 +44,7 @@ function OfferForm(props) {
   const { auth } = useAuth();
   const { categories } = props;
   const { listingId } = useParams();
-  const user = auth.user;
+  const user = auth?.user;
 
   const [listing, setListing] = useState(null);
   const [offer, setOffer] = useState(null);

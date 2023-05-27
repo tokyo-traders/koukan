@@ -27,7 +27,7 @@ const BrownButton = styled(Button)(() => ({
 
 function AddItem() {
   const { auth } = useAuth();
-  const user = auth.user;
+  const user = auth?.user;
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/MyPage";

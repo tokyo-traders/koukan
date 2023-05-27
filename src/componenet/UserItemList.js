@@ -18,7 +18,7 @@ const BASE_URL = "http://127.0.0.1:8000/api";
 
 function UserItemsList() {
   const { auth } = useAuth();
-  const user = auth.user;
+  const user = auth?.user;
 
   const navigate = useNavigate();
   const location = useLocation();

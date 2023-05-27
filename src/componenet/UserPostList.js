@@ -19,7 +19,7 @@ const homepage = "/api/homepage";
 
 function UserPostList() {
   const { auth } = useAuth();
-  const user = auth.user;
+  const user = auth?.user;
 
   const navigate = useNavigate();
   const location = useLocation();

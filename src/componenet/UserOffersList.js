@@ -15,7 +15,7 @@ const homepage = "/api/homepage";
 
 function UserOfferList() {
   const { auth } = useAuth();
-  const user = auth.user;
+  const user = auth?.user;
 
   const [offers, setOffers] = useState();
 

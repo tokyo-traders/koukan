@@ -78,7 +78,7 @@ const BASE_URL = "http://127.0.0.1:8000/api";
 export default function ListingSingleItem(props) {
   const { categories } = props;
   const { auth } = useAuth();
-  const user = auth.user;
+  const user = auth?.user;
 
   const { listingId } = useParams();
 

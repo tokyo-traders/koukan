@@ -26,7 +26,7 @@ function AddListingForm(props) {
   const { itemId } = useParams();
   const { categories } = props;
   const { auth } = useAuth();
-  const user = auth.user;
+  const user = auth?.user;
 
   const [desire, setDesire] = useState("");
   const [expirationDate, setExpirationDate] = useState("");

@@ -61,7 +61,7 @@ const BASE_URL = "http://127.0.0.1:8000/api";
 
 export default function UserSingleOffer() {
   const { auth } = useAuth();
-  const user = auth.user;
+  const user = auth?.user;
 
   const { offerId } = useParams(); // this can be taken from the offer
   const [offer, setOffer] = useState();
