@@ -11,7 +11,7 @@ const useRefreshToken = () => {
     });
     const accessToken = response.data.jwt;
     const decoded = jwt_decode(response.data.jwt);
-    setAuth({ user: decoded.info, accessToken });
+    setAuth({ user: decoded.user, accessToken });
     return response.data.jwt;
   };
   return refresh;

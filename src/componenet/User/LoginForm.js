@@ -33,7 +33,7 @@ const BrownButton = styled(Button)(() => ({
 function LoginForm(props) {
   const { setUserState, userState } = props;
 
-  const { setAuth } = useAuth();
+  const { setAuth, auth } = useAuth();
   const [details, setDetails] = useState({ email: "", password: "" });
   const [success, setSucess] = useState(false);
   const [errMsg, setErrMsg] = useState("");
@@ -75,12 +75,12 @@ function LoginForm(props) {
       console.log(response.data);
       const accessToken = response?.data.jwt;
       const decoded = accessToken ? jwt_decode(accessToken) : undefined;
-      console.log(decoded);
+      console.log(decoded.user);
       if (decoded) {
-        setAuth({ user: decoded.info, accessToken });
+        setAuth({ user: decoded.user, accessToken });
       }
-      // setUserState(true);
-      // setSucess(true);
+      setSucess(true);
+      // console.log(auth);
     } catch (err) {
       if (!err?.response) {
         setErrMsg("No Server Response");
