@@ -1,21 +1,20 @@
-import axios from "axios"
-import useAuth from "./useAuth"
+import axios from "axios";
+import useAuth from "./useAuth";
+import jwt_decode from "jwt-decode";
 
 const useRefreshToken = () => {
-    const { setAuth } = useAuth();
+  const { setAuth } = useAuth();
 
-    const refresh = async () => {
-        const response = await axios.get('user/refresh', {
-            withCredentials: true
-        });
-        setAuth(prev => {
-            console.log(JSON.stringify(prev));
-            console.log(response.data.jwt);
-            return{...prev, accessToken: response.data.jwt}
-        })
-        return response.data.jwt;
-    }
-return refresh;
-}
+  const refresh = async () => {
+    const response = await axios.get("user/refresh", {
+      withCredentials: true,
+    });
+    const accessToken = response.data.jwt;
+    const decoded = jwt_decode(response.data.jwt);
+    setAuth({ user: decoded.info, accessToken });
+    return response.data.jwt;
+  };
+  return refresh;
+};
 
-export default useRefreshToken
+export default useRefreshToken;

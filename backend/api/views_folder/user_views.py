@@ -4,10 +4,10 @@ from rest_framework import generics, status, viewsets
 from rest_framework.decorators import api_view, action, permission_classes
 from rest_framework.response import Response
 from rest_framework.authentication import get_authorization_header
+from rest_framework.permissions import IsAuthenticated
 from ..serializers import UserSerializer, ItemSerializer, ImageSerializer, MultipleImageSerializer, PostSerializer, OfferSerializer, CategoriesSerializer, ReportedUserSerializer, PostCategoriesSerializer
 from ..models import User, Item, Image, Post, Offer, Categories, ReportedUser, PostCategories
-from ..authentication import create_access_token, create_refresh_token, decode_access_token, decode_refresh_token
-from rest_framework_simplejwt.tokens import RefreshToken
+from ..authentication import create_access_token, create_refresh_token, decode_access_token, decode_refresh_token, auth_state
 from ..utils import Util
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
@@ -65,28 +65,28 @@ def user_register(request):
 
 @api_view(['GET', 'PUT', 'DELETE', 'POST'])
 def user_login(request):
-    if request.method == "GET":
-        auth = get_authorization_header(request).split()
-        if auth and len(auth) == 2:
-            token = auth[1].decode("utf-8")
-            id = decode_access_token(token)
-            if id:
-                user = User.objects.get(pk=id)
-                userSerializer = UserSerializer(user).data
-                return Response({
-                    "id": userSerializer["id"],
-                    "first_name": userSerializer["first_name"] ,
-                    "last_name": userSerializer["last_name"],
-                    "address": userSerializer['address'],
-                    "username": userSerializer["username"],
-                    "email": userSerializer["email"],
-                    "phone_detail": userSerializer["phone_detail"],
-                    "is_emailVerified": userSerializer["is_emailVerified"],
-                    "is_phoneVerified": userSerializer["is_phoneVerified"],
-                    "reputation_rating": userSerializer["reputation_rating"],
-                    "total_review": userSerializer["total_review"]
-                    })
-            return Response(False, status=status.HTTP_401_UNAUTHORIZED)
+    # if request.method == "GET":
+    #     auth = get_authorization_header(request).split()
+    #     if auth and len(auth) == 2:
+    #         token = auth[1].decode("utf-8")
+    #         id = decode_access_token(token)
+    #         if id:
+    #             user = User.objects.get(pk=id)
+    #             userSerializer = UserSerializer(user).data
+    #             return Response({
+    #                 "id": userSerializer["id"],
+    #                 "first_name": userSerializer["first_name"] ,
+    #                 "last_name": userSerializer["last_name"],
+    #                 "address": userSerializer['address'],
+    #                 "username": userSerializer["username"],
+    #                 "email": userSerializer["email"],
+    #                 "phone_detail": userSerializer["phone_detail"],
+    #                 "is_emailVerified": userSerializer["is_emailVerified"],
+    #                 "is_phoneVerified": userSerializer["is_phoneVerified"],
+    #                 "reputation_rating": userSerializer["reputation_rating"],
+    #                 "total_review": userSerializer["total_review"]
+    #                 })
+    #         return Response(False, status=status.HTTP_401_UNAUTHORIZED)
 
     if request.method == "PUT":
         serializer = UserSerializer(user, data=request.data)
@@ -102,6 +102,7 @@ def user_login(request):
     elif request.method == "POST":
         password = request.data["password"]
         email = request.data["email"]
+        print("i made it 😁", password, email)
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
@@ -110,8 +111,9 @@ def user_login(request):
         serializer = UserSerializer(user)
         user_password = serializer.data["password"]
         user_email = serializer.data["email"]
-        access_token = create_access_token(user.id)
-        refresh_token = create_refresh_token(user.id)
+        access_token = create_access_token(serializer.data)
+        refresh_token = create_refresh_token(serializer.data)
+        print("😎", user_password, user_email)
 
         response = Response()
         response.set_cookie(key="refreshToken",
