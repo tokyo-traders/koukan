@@ -22,37 +22,6 @@ from rest_framework.parsers import JSONParser  # delete
 from rest_framework.renderers import JSONRenderer  # delete
 
 
-# All items of a user
-@api_view(['GET'])
-def newall_item(request, userid):
-    try:
-        items = Item.objects.filter(user_id=userid).all()
-        images = Image.objects.all()
-    except Item.DoesNotExist or Image.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == "GET":
-        imgUrl = []
-        data = []
-        for item in items:
-            singleItemSerializer = ItemSerializer(item)
-            for image in images:
-                singleImageSerializer = ImageSerializer(image)
-                if singleImageSerializer.data['item_id'] == singleItemSerializer.data['id']:
-                    imgUrl.append(singleImageSerializer.data['image'])
-            data.append({
-                'itemID': singleItemSerializer.data['id'],
-                'itemName': singleItemSerializer.data['item_name'],
-                'itemImages': imgUrl,
-                'userId': singleItemSerializer.data['user_id'],
-                'category': singleItemSerializer.data['category'],
-                
-            })
-            imgUrl = []
-            print(data)
-        return Response(data)
-
-
 @api_view(['GET', 'POST'])
 def item_list(request, userid):
 
@@ -110,49 +79,6 @@ def item_edit(request, itemId):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
 
-@api_view(['GET'])
-def all_item(request, itemid):
-    try:
-        item = Item.objects.get(id=itemid)
-        images = Image.objects.all()
-    except Item.DoesNotExist or Image.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == "GET":
-        itemSerializer = ItemSerializer(item)
-        try:
-
-            getOffer = Offer.objects.get(
-                offered_item=itemSerializer.data['id'])
-            currentOffer = OfferSerializer(getOffer)
-            offeredItemId = currentOffer.data['offered_item']
-            getItemDetail = Item.objects.get(pk=offeredItemId)
-            itemDetail = ItemSerializer(getItemDetail)
-            getUserInfo = User.objects.get(pk=itemDetail.data['user_id'])
-            userInfo = UserSerializer(getUserInfo)
-            print("current offer", currentOffer.data)
-            data = []
-            imgUrl = []
-            for image in images:
-                imageSerializer = ImageSerializer(image)
-                if imageSerializer.data["item_id"] == itemSerializer.data["id"]:
-                    imgUrl.append(imageSerializer.data['image'])
-            data.append({'itemName': itemSerializer.data['item_name'],
-                         'images': imgUrl,
-                         'details': itemSerializer.data['details'], 'expiration': currentOffer.data['date_offered'], 'idOffer': currentOffer.data['id'], 'user_id': itemSerializer.data['user_id'], 'userName': userInfo.data['username'], 'userReputation': userInfo.data['reputation_rating'], 'userTotalReview': userInfo.data['total_review']})
-
-        except Offer.DoesNotExist:
-            data = []
-            imgUrl = []
-            for image in images:
-                imageSerializer = ImageSerializer(image)
-                if imageSerializer.data["item_id"] == itemSerializer.data["id"]:
-                    imgUrl.append(imageSerializer.data['image'])
-            data.append({'itemName': itemSerializer.data['item_name'],
-                         'images': imgUrl,
-                         'details': itemSerializer.data['details'], 'user_id': itemSerializer.data['user_id']})
-        return Response(data)
-
 
 @ api_view(['GET', 'DELETE'])
 def image_list(request, itemId):
@@ -169,3 +95,29 @@ def image_list(request, itemId):
     elif request.method == "DELETE":
         image.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+class ImageView(viewsets.ModelViewSet):
+    queryset = Image.objects.all()
+    serializer_class = ImageSerializer
+
+# --> detail=false is not sending ids in the url
+@action(detail=False, methods=["POST"])
+def multiple_upload(self, request, *args, **kwargs):
+    serializer = MultipleImageSerializer(data=request.data)
+    # itemId = int(request.POST.get('itemId'))
+    if serializer.is_valid(raise_exception=True):
+        images = serializer.validated_data.get('images')
+        itemId = serializer.validated_data.get('itemId')
+        getItemInstance = Item.objects.get(pk=itemId[0])
+
+        image_list = []
+        for img in images:
+            print(img)
+            image_list.append(
+                Image(image=img, item_id=getItemInstance)
+            )
+
+        if image_list:  # --> if imagelist exists
+            Image.objects.bulk_create(image_list)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    print(serializer.errors)

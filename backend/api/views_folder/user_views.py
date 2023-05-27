@@ -152,3 +152,26 @@ def user_logout(request):
         response.status_code = 200
         return response
 
+
+# email verification
+class VerifyEmail(generics.GenericAPIView):
+    def get(self, request):
+        activate_token = request.GET.get('token')
+        try:
+            getUser = jwt.decode(activate_token, settings.SECRET_KEY)
+            user = User.objects.get(pk=getUser['user_id'])
+            if not user.is_emailVerified:
+                user.is_emailVerified = True
+
+                user.save()
+
+            message = {
+                "message": "You have successfully activated your account"}
+            return Response(message, status=status.HTTP_200_OK)
+
+        except jwt.ExpiredSignatureError as identifier:
+            error = {"error": "Your activation link is expired."}
+            return Response(error, status=status.HTTP_408_REQUEST_TIMEOUT)
+        except jwt.exceptions.DecodeError as identifier:
+            error = {"error": "Invalid token"}
+            return Response(error, status=status.HTTP_401_UNAUTHORIZED)

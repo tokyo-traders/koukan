@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import   single_offer, items_offered,  create_post, edit_post, create_offer, edit_offer, homepage, listingItem, search_item, VerifyEmail, item_handover, accepted_trade, set_pending, accepted_trade, category_list, currentUser_review, sendUserReview
-from .views_folder.user_views import user_register, user_login, user_refresh, user_logout
-from .views_folder.item_views import item_list, item_edit, image_list, all_item, newall_item
+from .views import   single_offer, items_offered,  create_post, edit_post, create_offer, edit_offer, homepage, listingItem, search_item, category_list, currentUser_review, sendUserReview
+from .views_folder.user_views import user_register, user_login, user_refresh, user_logout, VerifyEmail
+from .views_folder.item_views import item_list, item_edit, image_list, ImageView
+from .views_folder.handover_views import all_item, newall_item, set_pending, accepted_trade, item_handover
 
 from api import views
 from django.conf import settings
@@ -10,15 +11,14 @@ from django.conf.urls.static import static
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register('image', views.ImageView)
-router.register('image/multiple_upload', views.ImageView)
+router.register('image', ImageView)
+router.register('image/multiple_upload',ImageView)
 
 urlpatterns = [
     path('user/register', user_register),
     path('user/login', user_login),
     path('user/refresh', user_refresh),
     path('user/logout', user_logout),
-
 
     # to GET and POST all the item objects
     path('item/<int:userid>', item_list),
@@ -29,9 +29,9 @@ urlpatterns = [
 
 
     # HandOver
-    path('SetPending', views.set_pending),
-    path('acceptedTrade/<int:userId>', views.accepted_trade),
-    path('itemHandover', views.item_handover),
+    path('SetPending', set_pending),
+    path('acceptedTrade/<int:userId>', accepted_trade),
+    path('itemHandover', item_handover),
     path('all-item/<int:userid>/<int:itemid>', all_item),
     path('all-item/<int:itemid>', all_item),
     path('all-info/<int:userid>', newall_item),
@@ -58,11 +58,10 @@ urlpatterns = [
 
     # this path is for email verification
     path('verify-email', VerifyEmail.as_view(), name='verify-email'),
+
+
     path('categories-list', views.category_list),
     path('offered-items/<int:userId>', views.items_offered),
-
-
-    # path('offered-items/<int:userId>/<int:offerId>', views.single_offer),
     path('singleOffer/<int:offerId>', views.single_offer),
     path('currentUserScore/<int:userId>', views.currentUser_review),
     path('sendUserReview/<int:userId>', views.sendUserReview),
