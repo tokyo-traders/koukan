@@ -33,10 +33,18 @@ const BrownButton = styled(Button)(() => ({
 function LoginForm(props) {
   const { setUserState, userState } = props;
 
-  const { setAuth, auth } = useAuth();
+  const { setAuth, auth, persist, setPersist } = useAuth();
   const [details, setDetails] = useState({ email: "", password: "" });
   const [success, setSucess] = useState(false);
   const [errMsg, setErrMsg] = useState("");
+
+  const togglePersist = () => {
+    setPersist((prev) => !prev);
+  };
+
+  useEffect(() => {
+    localStorage.setItem("Tokyo_traders_persist", persist);
+  }, [persist]);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -150,6 +158,8 @@ function LoginForm(props) {
                 <Checkbox
                   value='remember'
                   color='primary'
+                  onChange={togglePersist}
+                  checked={persist}
                 />
               }
               label='Remember me'

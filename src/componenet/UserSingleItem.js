@@ -7,6 +7,7 @@ import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import { Stack } from "@mui/system";
 import Button from "@mui/material/Button";
 import axios from "axios";
+import useAxiosPrivate from "./hooks/axiosPrivate";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
@@ -51,6 +52,7 @@ const BrownButton = styled(Button)(() => ({
 const BASE_URL = "http://127.0.0.1:8000/api";
 
 export default function UserSingleItem() {
+  const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
   const user = auth?.user;
   const { itemId } = useParams();
@@ -91,8 +93,8 @@ export default function UserSingleItem() {
   };
 
   const deleteItem = (itemId) => {
-    axios
-      .delete(`http://127.0.0.1:8000/api/item-edit/${itemId}`)
+    axiosPrivate
+      .delete(`/api/item-edit/${itemId}`)
       .then((res) => console.log(res));
   };
 
@@ -101,33 +103,27 @@ export default function UserSingleItem() {
   const submitEditItemDetail = (obj) => {
     (async () => {
       // PUT request using axios with async/await
-      const rawResponse = await axios
-        .patch(
-          `http://localhost:8000/api/item-edit/${itemId}`,
-          JSON.stringify(obj),
-          {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-          }
-        )
+      const rawResponse = await axiosPrivate
+        .patch(`/api/item-edit/${itemId}`, JSON.stringify(obj), {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        })
         .then((res) => console.log(res.data));
     })();
   };
 
   useEffect(() => {
     if (itemId) {
-      axios
-        .get(`http://127.0.0.1:8000/api/all-item/${itemId}`)
-        .then((response) => {
-          console.log(response.data[0]);
-          return (
-            setItemData(response.data[0]),
-            setImages(response.data[0].images),
-            setItemName(response.data[0].itemName),
-            setDetails(response.data[0].details),
-            setCurrentItemName(response.data[0].itemName)
-          );
-        });
+      axiosPrivate.get(`/api/all-item/${itemId}`).then((response) => {
+        console.log(response.data[0]);
+        return (
+          setItemData(response.data[0]),
+          setImages(response.data[0].images),
+          setItemName(response.data[0].itemName),
+          setDetails(response.data[0].details),
+          setCurrentItemName(response.data[0].itemName)
+        );
+      });
     }
   }, []);
   return (

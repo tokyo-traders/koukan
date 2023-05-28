@@ -6,9 +6,8 @@ from rest_framework.response import Response
 from rest_framework.authentication import get_authorization_header
 from ..serializers import UserSerializer, ItemSerializer, ImageSerializer, MultipleImageSerializer, PostSerializer, OfferSerializer, CategoriesSerializer, ReportedUserSerializer, PostCategoriesSerializer
 from ..models import User, Item, Image, Post, Offer, Categories, ReportedUser, PostCategories
-from ..authentication import create_access_token, create_refresh_token, decode_access_token, decode_refresh_token
-from rest_framework_simplejwt.tokens import RefreshToken
 from ..utils import Util
+from ..authentication import  auth_state
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from django.conf import settings
@@ -51,40 +50,41 @@ def homepage(request):
 @api_view(['GET'])  # to be refactored
 def listingItem(request, postId):
     if request.method == "GET":
-        print(postId)
-        data = []
-        post = Post.objects.get(pk=postId, visibile=True)
-        images = Image.objects.all()
-        imageUrl = []
-        postSerializer = PostSerializer(post)
-        postID = postSerializer.data["item_id"]
-        item = Item.objects.filter(pk=postID)
-        itemSeralizer = ItemSerializer(
-            item, many=True)  # we need this "many=True"!)
-        itemID = itemSeralizer.data[0]['id']
-        userID = postSerializer.data['user_id']
-        user = User.objects.filter(pk=userID)
-        userSerializer = UserSerializer(user, many=True)
-        categories = PostCategories.objects.filter(post_id=postId)
-        # # categories = PostCategories.objects.get(pk=1)
-        catSerializer = PostCategoriesSerializer(categories, many=True)
-        print(catSerializer.data)
-        for image in images:
-            imageSerializer = ImageSerializer(image)
-            if imageSerializer.data["item_id"] == itemID:
-                imageUrl.append(imageSerializer.data["image"])
-        data.append({"post": postSerializer.data,
-                     "item": itemSeralizer.data[0],
-                    "images": imageUrl,
-                     "username": userSerializer.data[0]["username"],
-                     "phoneDetail": userSerializer.data[0]["phone_detail"],
-                     "email": userSerializer.data[0]["email"],
-                     "rating": userSerializer.data[0]["reputation_rating"],
-                     "total_review": userSerializer.data[0]["total_review"],
-                     "categories": catSerializer.data
-                     })
-        imageUrl = []
-        return Response(data, status=status.HTTP_200_OK)
+        auth = auth_state(request)
+        if auth: 
+            data = []
+            post = Post.objects.get(pk=postId, visibile=True)
+            images = Image.objects.all()
+            imageUrl = []
+            postSerializer = PostSerializer(post)
+            postID = postSerializer.data["item_id"]
+            item = Item.objects.filter(pk=postID)
+            itemSeralizer = ItemSerializer(
+                item, many=True)  # we need this "many=True"!)
+            itemID = itemSeralizer.data[0]['id']
+            userID = postSerializer.data['user_id']
+            user = User.objects.filter(pk=userID)
+            userSerializer = UserSerializer(user, many=True)
+            categories = PostCategories.objects.filter(post_id=postId)
+            # # categories = PostCategories.objects.get(pk=1)
+            catSerializer = PostCategoriesSerializer(categories, many=True)
+            print(catSerializer.data)
+            for image in images:
+                imageSerializer = ImageSerializer(image)
+                if imageSerializer.data["item_id"] == itemID:
+                    imageUrl.append(imageSerializer.data["image"])
+            data.append({"post": postSerializer.data,
+                        "item": itemSeralizer.data[0],
+                        "images": imageUrl,
+                        "username": userSerializer.data[0]["username"],
+                        "phoneDetail": userSerializer.data[0]["phone_detail"],
+                        "email": userSerializer.data[0]["email"],
+                        "rating": userSerializer.data[0]["reputation_rating"],
+                        "total_review": userSerializer.data[0]["total_review"],
+                        "categories": catSerializer.data
+                        })
+            imageUrl = []
+            return Response(data, status=status.HTTP_200_OK)
     
 @ api_view(['GET'])
 def search_item(request):
@@ -266,12 +266,13 @@ def sendUserReview(request, userId):
 
 @api_view(['PUT'])
 def send_review(request, userIdReview):
-    print("✌️", request.data, "✌️", userIdReview)
     if request.method == 'PUT':
-        user = User.objects.get(pk=userIdReview)
-        # editedUser = UserSerializer(user, data={"reputation_rating" : data + request.data}, partial=True)
-        if editedUser.is_valid():
-            editedUser.save()
-            return Response("review sent succesfully", status=status.HTTP_202_ACCEPTED)
-        else:
-            return Response('wrong review', status=status.HTTP_400_BAD_REQUEST)
+        auth = auth_state(request)
+        if auth:
+            user = User.objects.get(pk=userIdReview)
+            editedUser = UserSerializer(user, data={"reputation_rating" : user.data + request.data}, partial=True)
+            if editedUser.is_valid():
+                editedUser.save()
+                return Response("review sent succesfully", status=status.HTTP_202_ACCEPTED)
+            else:
+                return Response('wrong review', status=status.HTTP_400_BAD_REQUEST)

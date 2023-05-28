@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import axios from "axios";
+import useAxiosPrivate from "./hooks/axiosPrivate";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -19,20 +19,18 @@ const BASE_URL = "http://127.0.0.1:8000/api";
 function UserItemsList() {
   const { auth } = useAuth();
   const user = auth?.user;
+  const axiosPrivate = useAxiosPrivate();
 
   const navigate = useNavigate();
   const location = useLocation();
 
   const from = location.state?.from?.pathname || "/MyPage";
-  const addItem = useCallback(
-    () => navigate("/MyPage/addItem", { replace: true }),
-    [navigate]
-  );
+  const addItem = useCallback(() => navigate("/MyPage/addItem"), [navigate]);
   const myPage = useCallback(() => {
     if (from === "/signup") {
-      navigate("/MyPage", { replace: true });
+      navigate("/MyPage");
     } else {
-      navigate(from, { replace: true });
+      navigate(from);
     }
   }, [navigate]);
 
@@ -46,21 +44,11 @@ function UserItemsList() {
 
   useEffect(() => {
     if (user) {
-      axios
-        .get(`http://127.0.0.1:8000/api/all-info/${user.id}`)
-        .then((response) => {
-          // console.log(response.data)
-          setItemInfo([...response.data]);
-        });
+      axiosPrivate.get(`/api/all-info/${user.id}`).then((response) => {
+        setItemInfo([...response.data]);
+      });
     }
   }, [user]);
-
-  // useEffect(() => {
-  //   axios.get(`/api/create-offer`)
-  //     .then(response => {
-  //       const data = response.data
-  //     })
-  // }, [])
 
   return (
     <Grid

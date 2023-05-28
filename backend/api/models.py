@@ -19,7 +19,7 @@ class User(models.Model):
     address = models.CharField(max_length=50, default="")
     username = models.CharField(max_length=20, default="", unique=True)
     email = models.EmailField(max_length=50, default="", unique=True)
-    password = models.CharField(max_length=12, default="")
+    password = models.CharField(max_length=100, default="")
     created_at = models.DateTimeField(auto_now_add=True)
     phone_regex = RegexValidator(
         regex=r'^\+?1?\d{9,15}$',

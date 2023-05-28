@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
+import useAxiosPrivate from "./hooks/axiosPrivate";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -18,6 +19,7 @@ const BASE_URL = "http://127.0.0.1:8000/api";
 const homepage = "/api/homepage";
 
 function UserPostList() {
+  const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
   const user = auth?.user;
 
@@ -41,7 +43,7 @@ function UserPostList() {
   const [offersMade, setOffersMade] = useState([]);
 
   useEffect(() => {
-    axios.get(`/api/create-offer`).then((response) => {
+    axiosPrivate.get(`/api/create-offer`).then((response) => {
       setOffersMade(response.data);
     });
   }, []);

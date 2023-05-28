@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-
-import axios from "axios";
+import useAxiosPrivate from "./hooks/axiosPrivate";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -14,6 +13,7 @@ const BASE_URL = "http://127.0.0.1:8000/api";
 const homepage = "/api/homepage";
 
 function UserOfferList() {
+  const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
   const user = auth?.user;
 
@@ -22,7 +22,7 @@ function UserOfferList() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`/api/offered-items/${user.id}`).then((res) => {
+    axiosPrivate.get(`/api/offered-items/${user.id}`).then((res) => {
       setOffers(res.data);
     });
   }, []);

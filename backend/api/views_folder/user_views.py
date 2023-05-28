@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from rest_framework import generics, status, viewsets
 from rest_framework.decorators import api_view, action, permission_classes
 from rest_framework.response import Response
+from django.contrib.auth.hashers import make_password, check_password
 from rest_framework.authentication import get_authorization_header
 from rest_framework.permissions import IsAuthenticated
 from ..serializers import UserSerializer, ItemSerializer, ImageSerializer, MultipleImageSerializer, PostSerializer, OfferSerializer, CategoriesSerializer, ReportedUserSerializer, PostCategoriesSerializer
@@ -25,15 +26,21 @@ from rest_framework.renderers import JSONRenderer  # delete
 @api_view(['GET', 'POST'])
 def user_register(request):
 
-    if request.method == "GET":
-        obj = User.objects.all()
-        item = Item.objects.all()
-        serializer = UserSerializer(obj, many=True)
-        return Response(serializer.data)
     if request.method == "POST":
-        serializer = UserSerializer(data=request.data)
+        print(request.data)
+        userObj = {
+            "first_name": request.data["first_name"] ,
+            "last_name" :request.data["last_name"],
+            "address":request.data["address"],
+            "username":request.data[ "username"],
+            "email":request.data["email"],
+            "password": make_password(request.data["password"]),
+            "phone_detail":request.data["phone_detail"]
+        }
+        print(userObj)
+        serializer = UserSerializer(data=userObj)
         if serializer.is_valid():
-            # serializer.is_active = False # make the accounte deactivated check if this works
+        # #     # serializer.is_active = False # make the accounte deactivated check if this works
             serializer.save()
             user = serializer.data
 
@@ -58,35 +65,15 @@ def user_register(request):
             # check util.py
             Util.send_confirmation(data)
             return redirect('/')
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
     else:
         return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
     
 
 @api_view(['GET', 'PUT', 'DELETE', 'POST'])
 def user_login(request):
-    # if request.method == "GET":
-    #     auth = get_authorization_header(request).split()
-    #     if auth and len(auth) == 2:
-    #         token = auth[1].decode("utf-8")
-    #         id = decode_access_token(token)
-    #         if id:
-    #             user = User.objects.get(pk=id)
-    #             userSerializer = UserSerializer(user).data
-    #             return Response({
-    #                 "id": userSerializer["id"],
-    #                 "first_name": userSerializer["first_name"] ,
-    #                 "last_name": userSerializer["last_name"],
-    #                 "address": userSerializer['address'],
-    #                 "username": userSerializer["username"],
-    #                 "email": userSerializer["email"],
-    #                 "phone_detail": userSerializer["phone_detail"],
-    #                 "is_emailVerified": userSerializer["is_emailVerified"],
-    #                 "is_phoneVerified": userSerializer["is_phoneVerified"],
-    #                 "reputation_rating": userSerializer["reputation_rating"],
-    #                 "total_review": userSerializer["total_review"]
-    #                 })
-    #         return Response(False, status=status.HTTP_401_UNAUTHORIZED)
+
 
     if request.method == "PUT":
         serializer = UserSerializer(user, data=request.data)
@@ -107,22 +94,23 @@ def user_login(request):
             user = User.objects.get(email=email)
         except User.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-
         serializer = UserSerializer(user)
         user_password = serializer.data["password"]
         user_email = serializer.data["email"]
-        access_token = create_access_token(serializer.data)
-        refresh_token = create_refresh_token(serializer.data)
-        print("😎", user_password, user_email)
+        match = check_password(request.data["password"], user_password)
+        print(match)
+        if match and user_email == email:
+            access_token = create_access_token(serializer.data)
+            refresh_token = create_refresh_token(serializer.data)
+            print("😎", user_password, user_email)
 
-        response = Response()
-        response.set_cookie(key="refreshToken",
-                            value=refresh_token, httponly=True)
-        response.data = {
-            "jwt": access_token
-        }
-        response.status_code = 200
-        if user_password == password and user_email == email:
+            response = Response()
+            response.set_cookie(key="refreshToken",
+                                value=refresh_token, httponly=True)
+            response.data = {
+                "jwt": access_token
+            }
+            response.status_code = 200
             return response
         return Response(False, status=status.HTTP_401_UNAUTHORIZED)
 

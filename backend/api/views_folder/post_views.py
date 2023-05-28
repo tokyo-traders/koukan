@@ -6,8 +6,7 @@ from rest_framework.response import Response
 from rest_framework.authentication import get_authorization_header
 from ..serializers import UserSerializer, ItemSerializer, ImageSerializer, MultipleImageSerializer, PostSerializer, OfferSerializer, CategoriesSerializer, ReportedUserSerializer, PostCategoriesSerializer
 from ..models import User, Item, Image, Post, Offer, Categories, ReportedUser, PostCategories
-from ..authentication import create_access_token, create_refresh_token, decode_access_token, decode_refresh_token
-from rest_framework_simplejwt.tokens import RefreshToken
+from ..authentication import  auth_state
 from ..utils import Util
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
@@ -26,32 +25,32 @@ from rest_framework.renderers import JSONRenderer  # delete
 
 @ api_view(['GET', 'POST'])
 def create_post(request):
-    if request.method == "GET":
-        post = Post.objects.all()
-        serializer = PostSerializer(post, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    elif request.method == "POST":
-        print("🤑", request.data)
-        postSerializer = PostSerializer(data=request.data["post"])
-        if postSerializer.is_valid():
-            postSerializer.save()
-            postSerializer.data["id"]
-            for key in request.data["categories"]:
-                if request.data["categories"][key]:
-                    categ = {}
-                    categ["post_id"] = postSerializer.data["id"]
-                    categ["categories_id"] = key
-                    print("😂", categ)
-                    catSerializer = PostCategoriesSerializer(
-                        data=categ, partial=True)
-                    if catSerializer.is_valid():
-                        catSerializer.save()
+    auth = auth_state(request)
+    if auth:
+        if request.method == "GET":
+            post = Post.objects.all()
+            serializer = PostSerializer(post, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        elif request.method == "POST":
+            postSerializer = PostSerializer(data=request.data["post"])
+            if postSerializer.is_valid():
+                postSerializer.save()
+                postSerializer.data["id"]
+                for key in request.data["categories"]:
+                    if request.data["categories"][key]:
+                        categ = {}
+                        categ["post_id"] = postSerializer.data["id"]
+                        categ["categories_id"] = key
+                        catSerializer = PostCategoriesSerializer(
+                            data=categ, partial=True)
+                        if catSerializer.is_valid():
+                            catSerializer.save()
 
-            return Response(postSerializer.data, status=status.HTTP_201_CREATED)
-        else:
-            error = {"error": "You have failed to create a post properly"}
-            return Response(error, status=status.HTTP_406_NOT_ACCEPTABLE)
-        
+                return Response(postSerializer.data, status=status.HTTP_201_CREATED)
+            else:
+                error = {"error": "You have failed to create a post properly"}
+                return Response(error, status=status.HTTP_406_NOT_ACCEPTABLE)
+            
 
 @ api_view(['GET', 'PUT', 'DELETE'])
 def edit_post(request, postId):
@@ -84,18 +83,22 @@ def edit_post(request, postId):
 
 @api_view(['GET', 'POST'])
 def create_offer(request):
+    
     if request.method == "GET":
         offer = Offer.objects.all()
         serializer = OfferSerializer(offer, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
     elif request.method == "POST":
-        serializer = OfferSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            error = {"error": "You have failed to create an offer properly"}
-            return Response(error, status=status.HTTP_406_NOT_ACCEPTABLE)
+        auth = auth_state(request)
+        if auth:
+            serializer = OfferSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                error = {"error": "You have failed to create an offer properly"}
+                return Response(error, status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
 @ api_view(['GET', 'PUT', 'DELETE'])

@@ -1,7 +1,5 @@
 import React, { useState, useEffect, PureComponent, useCallback } from "react";
-import axios from "axios";
 import _ from "lodash";
-import useAxiosPrivate from "./hooks/axiosPrivate";
 import { upload } from "@testing-library/user-event/dist/upload";
 import { useNavigate, useLocation } from "react-router-dom";
 import { TextField, Typography } from "@mui/material";
@@ -13,6 +11,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import useAuth from "./hooks/useAuth";
+import useAxiosPrivate from "./hooks/axiosPrivate";
 
 const BrownButton = styled(Button)(() => ({
   backgroundColor: "#4d3e38",
@@ -26,6 +25,7 @@ const BrownButton = styled(Button)(() => ({
 }));
 
 function AddItem() {
+  const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
   const user = auth?.user;
   const navigate = useNavigate();
@@ -69,34 +69,29 @@ function AddItem() {
     uploadData.append("desire", desire);
     uploadData.append("category", category);
     console.log(uploadData);
-    fetch(`/api/item/${user.id}`, {
-      method: "POST",
-      body: uploadData,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        uploadImages.append("itemId", Number(data.id));
+
+    axiosPrivate
+      .post(`/api/item/${user.id}`, uploadData)
+      .then((res) => {
+        uploadImages.append("itemId", Number(res.data.id));
       })
       .then(() => {
         for (const value of uploadImages.values()) {
           console.log(value);
         }
       })
-      .then(() => axios.post("/api/image/multiple_upload/", uploadImages))
+      .then(() =>
+        axiosPrivate.post("/api/image/multiple_upload/", uploadImages, {
+          headers: {
+            "Content-Type": `multipart/form-data;`,
+          },
+          withCredentials: true,
+        })
+      )
       .catch((error) => console.log(error));
-    // let newImages = axios.post(
-    //     '/api/image/multiple_upload/',
-    //     uploadImages,
-    // )
-
-    // Promise.all([newImages, newItem])
-
-    //     .catch(error => console.log(error))
     setDesire("");
     setDetails("");
     setItemName("");
-    // mypage();
     navigate("/MyPage/");
   };
 

@@ -10,6 +10,7 @@ import Grid from "@mui/material/Grid";
 import { CardActionArea } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import useAuth from "./hooks/useAuth";
+import useAxiosPrivate from "./hooks/axiosPrivate";
 
 import Divider from "@mui/material/Divider";
 
@@ -41,6 +42,7 @@ const Img = styled("img")({
 const REGISTER_URL = "/api/create-offer";
 
 function OfferForm(props) {
+  const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
   const { categories } = props;
   const { listingId } = useParams();
@@ -70,14 +72,13 @@ function OfferForm(props) {
 
   useEffect(() => {
     if (user) {
-      axios.get(`/api/all-info/${user.id}`).then((response) => {
+      axiosPrivate.get(`/api/all-info/${user.id}`).then((response) => {
         setItemInfo([...response.data]);
       });
     }
     if (listingId) {
-      axios
+      axiosPrivate
         .get(`/api/listing/${listingId}`)
-        // .then(response => setItemData(response.data))
         .then((response) => {
           setListing(response.data[0]);
           let safe = response.data[0].categories.map((category) => {
@@ -88,16 +89,6 @@ function OfferForm(props) {
         .then(() => console.log(acceptedCat));
     }
   }, [user]);
-  // console.log(listing)
-  // useEffect(() => {
-  //   if (listingId) {
-  //     axios.get(`/api/listing/${listingId}`)
-  //       // .then(response => setItemData(response.data))
-  //       .then(response => {
-  //         setListing(response.data)
-  //       })
-  //   }
-  // }, [listingId])
 
   console.log("LISTING", listing);
   console.log("ITEM INFO", itemInfo);
@@ -110,9 +101,8 @@ function OfferForm(props) {
       acceptance: false,
     };
     console.log(offerObj);
-    const response = await axios.post(
+    const response = await axiosPrivate.post(
       REGISTER_URL,
-
       JSON.stringify(offerObj),
       {
         headers: { "Content-Type": "application/json" },

@@ -45,6 +45,7 @@ def create_refresh_token(user):
     return jwt.encode(payload, "refresh_secret", algorithm="HS256")
 
 def decode_access_token(token):
+    print("🤗",token)
     try:
         payload = jwt.decode(token, "access_secret", algorithms="HS256")
         return payload["user"]
@@ -65,4 +66,4 @@ def auth_state(request):
         token = auth[1].decode("utf-8")
         user = decode_access_token(token)
         return user
-    return Response(False, status=status.HTTP_401_UNAUTHORIZED)
+    return Response(status=status.HTTP_403_FORBIDDEN)

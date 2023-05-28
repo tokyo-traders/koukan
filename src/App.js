@@ -26,6 +26,7 @@ import UserOfferList from "./componenet/UserOffersList";
 import UserSingleOffer from "./componenet/UserSingleOffer";
 import useAuth from "./componenet/hooks/useAuth";
 import { Category } from "@mui/icons-material";
+import PersistLogin from "./componenet/User/PersistLogin";
 
 function App() {
   const [categoryFilter, setCategoryFilter] = useState("");
@@ -87,48 +88,50 @@ function App() {
               element={[<ListingSingleItem categories={categories} />]}
             />
 
-            <Route element={<RequireAuth />}>
-              <Route
-                path='/listing/:listingId/offer'
-                element={<OfferForm categories={categories} />}
-              />
-              <Route
-                path='/MyPage'
-                element={<MyPage />}
-              >
+            <Route element={<PersistLogin />}>
+              <Route element={<RequireAuth />}>
+                <Route
+                  path='/listing/:listingId/offer'
+                  element={<OfferForm categories={categories} />}
+                />
                 <Route
                   path='/MyPage'
-                  element={<UserItemsList />}
-                />
-                <Route
-                  path='/MyPage/addItem'
-                  element={<AddItem />}
-                />
-                <Route
-                  path='/MyPage/postList'
-                  element={<UserPostList />}
-                />
-                <Route
-                  path='/MyPage/offered-items'
-                  element={<UserOfferList />}
-                />
-                <Route
-                  path='/MyPage/singleOffer/:offerId'
-                  element={<UserSingleOffer />}
-                />
+                  element={<MyPage />}
+                >
+                  <Route
+                    path='/MyPage'
+                    element={<UserItemsList />}
+                  />
+                  <Route
+                    path='/MyPage/addItem'
+                    element={<AddItem />}
+                  />
+                  <Route
+                    path='/MyPage/postList'
+                    element={<UserPostList />}
+                  />
+                  <Route
+                    path='/MyPage/offered-items'
+                    element={<UserOfferList />}
+                  />
+                  <Route
+                    path='/MyPage/singleOffer/:offerId'
+                    element={<UserSingleOffer />}
+                  />
 
-                <Route
-                  path='/MyPage/pendingTrade'
-                  element={<PendingTrade />}
-                />
-                <Route
-                  path='/MyPage/Items/:itemId'
-                  element={<UserSingleItem />}
-                />
-                <Route
-                  path='/MyPage/makeListing/:itemId'
-                  element={<AddListingForm categories={categories} />}
-                />
+                  <Route
+                    path='/MyPage/pendingTrade'
+                    element={<PendingTrade />}
+                  />
+                  <Route
+                    path='/MyPage/Items/:itemId'
+                    element={<UserSingleItem />}
+                  />
+                  <Route
+                    path='/MyPage/makeListing/:itemId'
+                    element={<AddListingForm categories={categories} />}
+                  />
+                </Route>
               </Route>
             </Route>
           </Route>

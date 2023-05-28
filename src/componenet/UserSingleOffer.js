@@ -13,6 +13,7 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import axios from "axios";
+import useAxiosPrivate from "./hooks/axiosPrivate";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 // import Carousel from 'react-material-ui-carousel'
 import EmailIcon from "@mui/icons-material/Email";
@@ -60,6 +61,7 @@ const modalStyle = {
 const BASE_URL = "http://127.0.0.1:8000/api";
 
 export default function UserSingleOffer() {
+  const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
   const user = auth?.user;
 
@@ -73,7 +75,7 @@ export default function UserSingleOffer() {
   const from = location.state?.from?.pathname || "/MyPage";
 
   useEffect(() => {
-    axios
+    axiosPrivate
       .get(`/api/singleOffer/${offerId}`)
       .then((response) => setOffer(response.data));
   }, []);

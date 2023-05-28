@@ -1,5 +1,6 @@
 import React, { useState, useEffect, PureComponent } from "react";
 import axios from "axios";
+import useAxiosPrivate from "./hooks/axiosPrivate";
 import { ContentPasteSearchOutlined } from "@mui/icons-material";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
@@ -23,6 +24,7 @@ const BrownButton = styled(Button)(() => ({
 }));
 
 function AddListingForm(props) {
+  const axiosPrivate = useAxiosPrivate();
   const { itemId } = useParams();
   const { categories } = props;
   const { auth } = useAuth();
@@ -58,7 +60,7 @@ function AddListingForm(props) {
         10: true,
       };
     }
-    axios
+    axiosPrivate
       .post(
         "/api/create-post",
         JSON.stringify({ post, categories: selectCat }),
