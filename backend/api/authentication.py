@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from rest_framework import  status
 from rest_framework.authentication import get_authorization_header
 from rest_framework.response import Response
+import environ
+env = environ.Env()
 
 def create_access_token(user):
     payload = {
@@ -45,7 +47,6 @@ def create_refresh_token(user):
     return jwt.encode(payload, "refresh_secret", algorithm="HS256")
 
 def decode_access_token(token):
-    print("🤗",token)
     try:
         payload = jwt.decode(token, "access_secret", algorithms="HS256")
         return payload["user"]

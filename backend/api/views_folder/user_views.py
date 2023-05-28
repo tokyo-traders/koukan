@@ -13,6 +13,7 @@ from ..utils import Util
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from django.conf import settings
+from rest_framework.status import HTTP_302_FOUND
 from rest_framework.permissions import IsAuthenticated
 
 import jwt
@@ -27,7 +28,6 @@ from rest_framework.renderers import JSONRenderer  # delete
 def user_register(request):
 
     if request.method == "POST":
-        print(request.data)
         userObj = {
             "first_name": request.data["first_name"] ,
             "last_name" :request.data["last_name"],
@@ -37,19 +37,18 @@ def user_register(request):
             "password": make_password(request.data["password"]),
             "phone_detail":request.data["phone_detail"]
         }
-        print(userObj)
+    
         serializer = UserSerializer(data=userObj)
         if serializer.is_valid():
-        # #     # serializer.is_active = False # make the accounte deactivated check if this works
+        # # # serializer.is_active = False # make the accounte deactivated check if this works
             serializer.save()
-            user = serializer.data
-
             # email verification trial
             # get the user email
             getUser = User.objects.get(email=serializer.data['email'])
             user = UserSerializer(getUser)
+            print(user.data)
             # produce a token
-            token = RefreshToken.for_user(getUser).access_token
+            token = create_refresh_token(user.data)
 
             current_site = get_current_site(request).domain
             relativeLink = reverse('verify-email')
@@ -64,7 +63,7 @@ def user_register(request):
 
             # check util.py
             Util.send_confirmation(data)
-            return redirect('/')
+            # return redirect('/')
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
     else:
@@ -148,16 +147,19 @@ class VerifyEmail(generics.GenericAPIView):
     def get(self, request):
         activate_token = request.GET.get('token')
         try:
-            getUser = jwt.decode(activate_token, settings.SECRET_KEY)
-            user = User.objects.get(pk=getUser['user_id'])
+            print('🤑',activate_token)
+            getUser = decode_refresh_token(activate_token)
+            print('🤩',getUser)
+            user = User.objects.get(pk=getUser['id'])
             if not user.is_emailVerified:
                 user.is_emailVerified = True
 
                 user.save()
-
+            frontend_url = 'http://localhost:3000/login' 
+            redirect_url = request.build_absolute_uri(frontend_url)
             message = {
                 "message": "You have successfully activated your account"}
-            return Response(message, status=status.HTTP_200_OK)
+            return Response(status=HTTP_302_FOUND, headers={"location": redirect_url})
 
         except jwt.ExpiredSignatureError as identifier:
             error = {"error": "Your activation link is expired."}
