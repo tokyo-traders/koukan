@@ -190,7 +190,7 @@ export default function UserSingleOffer() {
           >
             <CardMedia
               component='img'
-              image={BASE_URL + `${offer?.desiredItemImage}`}
+              image={`data:image/jpeg;base64,${offer?.desiredItemImage}`}
               width='200'
               sx={{ padding: "1em 1em 0 1em", objectFit: "contain" }}
             />

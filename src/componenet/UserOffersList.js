@@ -51,7 +51,7 @@ function UserOfferList() {
             <CardMedia
               component='img'
               style={{ Width: 300 }}
-              image={BASE_URL + `${offer.image}`}
+              image={`data:image/jpeg;base64,${offer.image}`}
               height='140'
             />
             <CardContent>

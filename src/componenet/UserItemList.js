@@ -73,7 +73,7 @@ function UserItemsList() {
           >
             <CardMedia
               component='img'
-              image={BASE_URL + `${item.itemImages[0]}`}
+              image={`data:image/jpeg;base64,${item.itemImages[0]}`}
               height='150'
               sx={{ objectFit: "contain", bgcolor: "#f5f5f5" }}
             />

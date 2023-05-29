@@ -157,7 +157,7 @@ export default function UserSingleItem() {
                     <div>
                       <img
                         alt='image1'
-                        src={BASE_URL + `${x}`}
+                        src={`data:image/jpeg;base64,${x}`}
                       />
                     </div>
                   ))}

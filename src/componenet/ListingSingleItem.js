@@ -73,8 +73,6 @@ const SmallButton = styled(Button)(() => ({
   padding: "8px",
 }));
 
-const BASE_URL = "http://127.0.0.1:8000/api";
-
 export default function ListingSingleItem(props) {
   const { categories } = props;
   const { auth } = useAuth();
@@ -181,9 +179,7 @@ export default function ListingSingleItem(props) {
   useEffect(() => {
     const getItem = async () => {
       let responseArray = offersMade.map((offer) => {
-        return axios.get(
-          `http://127.0.0.1:8000/api/all-item/${offer.offered_item}`
-        );
+        return axios.get(`/api/all-item/${offer.offered_item}`);
       });
 
       Promise.all(responseArray)
@@ -257,7 +253,8 @@ export default function ListingSingleItem(props) {
                     <div>
                       <img
                         alt='image1'
-                        src={BASE_URL + `${listing.images[i]}`}
+                        key={i}
+                        src={`data:image/jpeg;base64,${listing.images[i]}`}
                       />
                     </div>
                   ))}
@@ -561,7 +558,7 @@ export default function ListingSingleItem(props) {
                     {listing && (
                       <PreviewImg
                         alt='image1'
-                        src={BASE_URL + `${items?.images[0]}`}
+                        src={`data:image/jpeg;base64,${listing.images[0]}`}
                       />
                     )}
                   </Grid>
@@ -659,7 +656,7 @@ export default function ListingSingleItem(props) {
 
                   <Img
                     alt='image1'
-                    src={BASE_URL + `${items?.images[0]}`}
+                    src={`data:image/jpeg;base64,${listing.images[0]}`}
                   />
 
                   {user?.id === listing?.item.user_id && (
