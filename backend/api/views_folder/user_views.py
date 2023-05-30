@@ -155,7 +155,7 @@ class VerifyEmail(generics.GenericAPIView):
                 user.is_emailVerified = True
 
                 user.save()
-            frontend_url = 'http://localhost:3000/login' 
+            frontend_url = 'https://tokyotraders.onrender.com/login' 
             redirect_url = request.build_absolute_uri(frontend_url)
             message = {
                 "message": "You have successfully activated your account"}

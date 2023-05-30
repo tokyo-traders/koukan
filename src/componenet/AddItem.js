@@ -46,9 +46,7 @@ function AddItem() {
 
   useEffect(() => {
     (async () => {
-      const rawData = await fetch("http://127.0.0.1:8000/api/categories-list", {
-        method: "GET",
-      });
+      const rawData = await axios.get("/api/categories-list");
       const data = await rawData.json();
       setCategoriesArray(data);
       console.log("heyheyhey", categoriesArray);
