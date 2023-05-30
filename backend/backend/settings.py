@@ -91,17 +91,17 @@ ALLOWED_HOSTS = ['*']
 
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env("DB_NAME"),
-        'USER': env("DB_USER"),
-        'PASSWORD': env("DB_PASSWORD"),
-        'HOST': env("DB_HOST"),
-        'PORT': env("DB_PORT"),
-    }
-}
-# DATABASE_URL = os.getenv('DATABASE_URL')
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': env("DB_NAME"),
+#         'USER': env("DB_USER"),
+#         'PASSWORD': env("DB_PASSWORD"),
+#         'HOST': env("DB_HOST"),
+#         'PORT': env("DB_PORT"),
+#     }
+# }
+DATABASE_URL = os.getenv('DATABASE_URL')
 
 # DATABASES = {
 #     'default': dj_database_url.config(
@@ -154,15 +154,12 @@ STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
 
 from google.oauth2 import service_account
 
-#DEVELOPMENT
+
 GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
     os.path.join(BASE_DIR,"GCS_credentials.json")
 )
 
-#PRODUCTION
-GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
-    os.path.join(BASE_DIR,"GCS_credentials.json")
-)
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
