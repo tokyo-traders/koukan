@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
 from pathlib import Path
+import dj_database_url
 import environ
 env = environ.Env()
 environ.Env.read_env()
@@ -26,10 +27,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 #deployment
 # SECRET_KEY = os.getenv("SECRET_KEY")
-# BASE_DIR=etc/secrets
 
 
-#prduction
+
+# #prduction
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -101,14 +102,16 @@ ALLOWED_HOSTS = ['*']
 #         'PORT': env("DB_PORT"),
 #     }
 # }
+
 DATABASE_URL = os.getenv('DATABASE_URL')
 
-# DATABASES = {
-#     'default': dj_database_url.config(
-#     conn_max_age=600,
-#     conn_health_checks=True,
-#     ),
-# }
+DATABASES = {
+    'default': dj_database_url.config(
+    engine="django.db.backends.postgresql_psycopg2",
+    conn_max_age=600,
+    conn_health_checks=True,
+    ),
+}
 
 
 REST_FRAMEWORK = {
@@ -194,5 +197,5 @@ EMAIL_HOST = 'smtp.gmail.com'  # this will use gmail for confirmation
 EMAIL_PORT = 587
 
 # # these are the email and password of the account that will send the confirmation to new users.
-EMAIL_HOST_USER = env("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
