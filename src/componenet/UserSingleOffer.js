@@ -4,21 +4,9 @@ import Modal from "@mui/material/Modal";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
-import Divider from "@mui/material/Divider";
-import { Stack } from "@mui/system";
 import Button from "@mui/material/Button";
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import axios from "axios";
 import useAxiosPrivate from "./hooks/axiosPrivate";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-// import Carousel from 'react-material-ui-carousel'
-import EmailIcon from "@mui/icons-material/Email";
-// import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import { Carousel } from "react-responsive-carousel";
 import SendIcon from "@mui/icons-material/Send";
 import Rating from "@mui/material/Rating";
 import useAuth from "./hooks/useAuth";

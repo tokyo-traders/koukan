@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from "react";
-import axios from "axios";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -38,8 +37,6 @@ const Img = styled("img")({
   maxWidth: "100%",
   maxHeight: "100%",
 });
-
-const REGISTER_URL = "/api/create-offer";
 
 function OfferForm(props) {
   const axiosPrivate = useAxiosPrivate();
@@ -102,7 +99,7 @@ function OfferForm(props) {
     };
     console.log(offerObj);
     const response = await axiosPrivate.post(
-      REGISTER_URL,
+      "/api/create-offer",
       JSON.stringify(offerObj),
       {
         headers: { "Content-Type": "application/json" },

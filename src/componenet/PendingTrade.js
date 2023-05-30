@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from "react";
-import axios from "axios";
 import useAxiosPrivate from "./hooks/axiosPrivate";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
@@ -46,29 +45,22 @@ function PendingTrade() {
       .get(`/api/acceptedTrade/${user.id}`)
       .then((response) => {
         console.log("TRADE", response.data);
-        // !tradesDisplayed && tradingItems.push(...response.data)
         setTradingItems(response.data);
-        // console.log(tradesDisplayed)
         setTradesDisplayed(true);
       })
       .catch(() => console.log("no listings"))
       .then(() => console.log(tradingItems));
-    // .then(() => setTradingItems([]))
   }, []);
 
   useEffect(() => {
-    // axios.get(`/api/singleOffer/${offerId}`)
     axiosPrivate
       .get(`/api/offered-items/${user.id}`)
       .then((res) => {
         console.log("OFFER", res.data);
-        // !offerDisplayed && offeredItems.push(...res.data)
         setOfferedItems(res.data);
-        // setOfferDisplayed(true)
       })
       .catch(() => console.log("no offers"))
       .then(() => console.log(offeredItems));
-    // .then(() => setTradingItems([]))
   }, []);
 
   const postCompleteTrade = async (offer) => {
@@ -83,7 +75,6 @@ function PendingTrade() {
           withCredentials: true,
         }
       );
-      // handleOpenModal()
       console.log(response.data);
     } else if (offer.post_confirmation || offer.offer_confirmation) {
       console.log("handover!!!");
@@ -125,7 +116,6 @@ function PendingTrade() {
         .then((response) => {
           console.log(response.data);
         })
-        // .then(() => handleOpenModal())
         .then(() => myPage());
     }
   };
@@ -142,8 +132,6 @@ function PendingTrade() {
     const data = {
       reputation_rating: value,
     };
-    console.log(userIdReview);
-    // axios.put(`/api/send-review/${userIdReview}`,
     axiosPrivate
       .put(`/api/sendUserReview/${userIdReview}`, JSON.stringify(data), {
         headers: { "Content-Type": "application/json" },
@@ -281,8 +269,6 @@ function PendingTrade() {
                       marginLeft: 4,
                       borderRadius: "200",
                       alignItems: "center",
-                      // alignContent: "center",
-                      // justifyItems: "right"
                     }}
                   >
                     <Typography
@@ -305,12 +291,9 @@ function PendingTrade() {
                       marginLeft: 4,
                       borderRadius: "200",
                     }}
-                    // onClick={() => { postCompleteTrade(item.offers.offer); handleOpenModal() }}
                     onClick={() => {
                       handleOpenModal();
                     }}
-                    // onClick={() => { completeTrade(item.offers.item.id); handleOpenModal() }}
-                    // onClick={() => { completeTrade(item.offers.item.user_id); handleOpenModal() }}
                   >
                     <Typography>I have received my Item</Typography>
                   </Button>

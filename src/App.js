@@ -6,10 +6,6 @@ import { useState, useEffect, useRef } from "react";
 import Sidebar from "./componenet/Sidebar";
 import NavBar from "./componenet/NavBar";
 import AllListings from "./componenet/AllListings";
-import useAxiosPrivate from "./componenet/hooks/axiosPrivate";
-
-// import Registration from "./componenet/Registration/Registration";
-
 import AddItem from "./componenet/AddItem";
 import LoginForm from "./componenet/User/LoginForm";
 import SignupForm from "./componenet/User/SignupForm";
@@ -32,8 +28,6 @@ function App() {
   const [categoryFilter, setCategoryFilter] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [categories, setCategories] = useState([]);
-
-  const axiosPrivate = useAxiosPrivate();
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);

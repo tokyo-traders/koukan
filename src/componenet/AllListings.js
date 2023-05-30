@@ -5,7 +5,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import axios from "axios";
+import axios from "./hooks/axios";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
@@ -26,8 +26,7 @@ export default function AllListings(props) {
   const [selectedCategory, setSelectedCategory] = useState();
 
   useEffect(() => {
-    axios.get("api/homepage").then((res) => {
-      console.log("this is the new data", res.data);
+    axios.get("/api/homepage").then((res) => {
       setListings(res.data);
     });
   }, []);

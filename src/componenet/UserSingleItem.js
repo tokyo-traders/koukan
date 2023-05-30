@@ -3,10 +3,9 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { Stack } from "@mui/system";
 import Button from "@mui/material/Button";
-import axios from "axios";
 import useAxiosPrivate from "./hooks/axiosPrivate";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
@@ -48,8 +47,6 @@ const BrownButton = styled(Button)(() => ({
   // padding: "15px 36px",
   fontSize: "16px",
 }));
-
-const BASE_URL = "http://127.0.0.1:8000/api";
 
 export default function UserSingleItem() {
   const axiosPrivate = useAxiosPrivate();

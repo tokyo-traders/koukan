@@ -12,7 +12,7 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import useAuth from "./hooks/useAuth";
 import useAxiosPrivate from "./hooks/axiosPrivate";
-import axios from "axios";
+import axios from "./hooks/axios";
 
 const BrownButton = styled(Button)(() => ({
   backgroundColor: "#4d3e38",

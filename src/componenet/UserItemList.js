@@ -5,12 +5,8 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import CardActions from "@mui/material/CardActions";
 import Grid from "@mui/material/Grid";
 import Icon from "@mui/material/Icon";
-import MyPage from "./MyPage";
-import Divider from "@mui/material/Divider";
 import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "./hooks/useAuth";
 

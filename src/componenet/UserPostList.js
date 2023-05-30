@@ -1,22 +1,14 @@
 import React, { useState, useEffect, useCallback } from "react";
-import axios from "axios";
+import axios from "./hooks/axios";
 import useAxiosPrivate from "./hooks/axiosPrivate";
-import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import CardActions from "@mui/material/CardActions";
 import Grid from "@mui/material/Grid";
-import Icon from "@mui/material/Icon";
-import MyPage from "./MyPage";
-import Divider from "@mui/material/Divider";
 import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "./hooks/useAuth";
-
-const BASE_URL = "http://127.0.0.1:8000/api";
-const homepage = "/api/homepage";
 
 function UserPostList() {
   const axiosPrivate = useAxiosPrivate();
@@ -29,7 +21,7 @@ function UserPostList() {
   const [listings, setListings] = useState(null);
 
   useEffect(() => {
-    axios.get(homepage).then((res) => {
+    axios.get("/api/homepage").then((res) => {
       setListings(res.data.filter((item) => item.item.user_id === user.id));
     });
   }, []);

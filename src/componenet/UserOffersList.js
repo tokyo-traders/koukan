@@ -9,9 +9,6 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import useAuth from "./hooks/useAuth";
 
-const BASE_URL = "http://127.0.0.1:8000/api";
-const homepage = "/api/homepage";
-
 function UserOfferList() {
   const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();

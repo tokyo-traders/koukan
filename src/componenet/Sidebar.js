@@ -12,56 +12,76 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
-import axios from "axios";
+import axios from "./hooks/axios";
 import React, { useEffect, useState } from "react";
 
 function Sidebar(props) {
-
   const { handleCategoryFilter, categories, setCategories } = props;
   const [selected, setSelected] = useState(null);
 
   useEffect(() => {
     const getCategories = async () => {
-      const response = await axios('/api/categories-list')
-      setCategories(response.data)
-    }
-    getCategories()
-  }, [])
+      const response = await axios("/api/categories-list");
+      setCategories(response.data);
+    };
+    getCategories();
+  }, []);
 
-  console.log(selected)
+  console.log(selected);
   return (
     <div>
-      <Box flex={1} p={2} sx={{ display: { xs: "block", sm: "block" } }}>
-        <Box position="fixed" boxShadow={3} borderRadius={2} bgcolor={"white"}>
+      <Box
+        flex={1}
+        p={2}
+        sx={{ display: { xs: "block", sm: "block" } }}
+      >
+        <Box
+          position='fixed'
+          boxShadow={3}
+          borderRadius={2}
+          bgcolor={"white"}
+        >
           <List>
             <ToggleButtonGroup
-              orientation="vertical"
+              orientation='vertical'
               value={selected}
               exclusive
             >
               {/* <ListItem disablePadding> */}
-              <ToggleButton value={''} onClick={(e) => { handleCategoryFilter(e); setSelected(null); }} >
+              <ToggleButton
+                value={""}
+                onClick={(e) => {
+                  handleCategoryFilter(e);
+                  setSelected(null);
+                }}
+              >
                 {/* <ListItem> */}
-                <Typography variant="h6">All Categories</Typography> {/* please do not change this wording 😅/*}
+                <Typography variant='h6'>All Categories</Typography>{" "}
+                {/* please do not change this wording 😅/*}
                 {/* </ListItem> */}
               </ToggleButton>
               {/* </ListItem> */}
-              {categories?.map(category => (
-                <ToggleButton value={category.category_name} onClick={(e) => { handleCategoryFilter(e); setSelected(category.category_name) }}>
+              {categories?.map((category) => (
+                <ToggleButton
+                  value={category.category_name}
+                  onClick={(e) => {
+                    handleCategoryFilter(e);
+                    setSelected(category.category_name);
+                  }}
+                >
                   <ListItem disablePadding>
-                    <ListItemButton component="a" >
+                    <ListItemButton component='a'>
                       <ListItemText primary={category.category_name} />
                     </ListItemButton>
                   </ListItem>
                 </ToggleButton>
-              )
-              )}
+              ))}
             </ToggleButtonGroup>
           </List>
         </Box>
       </Box>
-    </div >
+    </div>
   );
-};
+}
 
 export default Sidebar;

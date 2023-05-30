@@ -10,26 +10,25 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import axios from "axios";
+import axios from "../hooks/axios";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 
 const BrownButton = styled(Button)(() => ({
-	backgroundColor: "#4d3e38",
-	borderRadius: "8px",
-	color: "#def4f6",
-	"&:hover": {
-		background: "#332925",
-	},
-	// padding: "15px 36px",
-	fontSize: "16px",
+  backgroundColor: "#4d3e38",
+  borderRadius: "8px",
+  color: "#def4f6",
+  "&:hover": {
+    background: "#332925",
+  },
+  // padding: "15px 36px",
+  fontSize: "16px",
 }));
 
 const theme = createTheme();
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
-const REGISTER_URL = "/api/user/register";
 
 export default function SignupForm() {
   const firstNameRef = useRef();
@@ -50,7 +49,6 @@ export default function SignupForm() {
     [navigate]
   );
 
-
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -68,7 +66,6 @@ export default function SignupForm() {
   const [matchPwd, setMatchPwd] = useState("");
   const [validMatch, setValidMatch] = useState(false);
   const [matchFocus, setMatchFocus] = useState(false);
-
 
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
@@ -105,7 +102,7 @@ export default function SignupForm() {
     }
     try {
       const response = await axios.post(
-        REGISTER_URL,
+        "/api/user/register",
         JSON.stringify({
           username: user,
           password: pwd,
@@ -140,7 +137,10 @@ export default function SignupForm() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
+      <Container
+        component='main'
+        maxWidth='xs'
+      >
         <CssBaseline />
         <Box
           sx={{
@@ -151,124 +151,153 @@ export default function SignupForm() {
           }}
         >
           <Typography
-            variant="h4"
-            fontFamily="Roboto Slab"
+            variant='h4'
+            fontFamily='Roboto Slab'
             padding={4}
-            color="#D904B5"
+            color='#D904B5'
           >
             Join Us!
           </Typography>
           <Box
-            component="form"
+            component='form'
             noValidate
             onSubmit={handleSubmit}
             sx={{ mt: 3 }}
           >
-            <Grid container spacing={5}>
-              <Grid item xs={12} sm={6}>
+            <Grid
+              container
+              spacing={5}
+            >
+              <Grid
+                item
+                xs={12}
+                sm={6}
+              >
                 <TextField
-                  autoComplete="given-name"
-                  name="firstName"
+                  autoComplete='given-name'
+                  name='firstName'
                   required
                   fullWidth
-                  id="firstName"
-                  label="First Name"
+                  id='firstName'
+                  label='First Name'
                   autoFocus
                   ref={firstNameRef}
                   onChange={(e) => setFirstName(e.target.value)}
                   value={firstName}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid
+                item
+                xs={12}
+                sm={6}
+              >
                 <TextField
                   required
                   fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
+                  id='lastName'
+                  label='Last Name'
+                  name='lastName'
+                  autoComplete='family-name'
                   ref={lastNameRef}
                   onChange={(e) => setLastName(e.target.value)}
                   value={lastName}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid
+                item
+                xs={12}
+              >
                 <TextField
                   required
                   fullWidth
-                  id="user"
-                  label="User Name"
-                  name="user"
+                  id='user'
+                  label='User Name'
+                  name='user'
                   // autoComplete="email"
                   ref={userRef}
                   onChange={(e) => setUser(e.target.value)}
                   value={user}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid
+                item
+                xs={12}
+              >
                 <TextField
                   required
                   fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
+                  id='email'
+                  label='Email Address'
+                  name='email'
+                  autoComplete='email'
                   ref={emailRef}
                   onChange={(e) => setEmail(e.target.value)}
                   value={email}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid
+                item
+                xs={12}
+              >
                 <TextField
                   required
                   fullWidth
-                  id="address"
-                  label="Address"
-                  name="address"
-                  autoComplete="email"
+                  id='address'
+                  label='Address'
+                  name='address'
+                  autoComplete='email'
                   ref={addressRef}
                   onChange={(e) => setAddress(e.target.value)}
                   value={address}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid
+                item
+                xs={12}
+              >
                 <TextField
                   required
                   fullWidth
-                  id="phone"
-                  label="Phone Number"
-                  name="phone"
+                  id='phone'
+                  label='Phone Number'
+                  name='phone'
                   ref={phoneRef}
                   onChange={(e) => setPhone(e.target.value)}
                   value={phone}
                   helperText="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed."
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid
+                item
+                xs={12}
+              >
                 <TextField
                   required
                   fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
+                  name='password'
+                  label='Password'
+                  type='password'
+                  id='password'
+                  autoComplete='new-password'
                   onChange={(e) => setPwd(e.target.value)}
                   value={pwd}
                   onFocus={() => setPwdFocus(true)}
                   onBlur={() => setPwdFocus(false)}
-                  helperText="At least 8 characters in length, at least one uppercase, at least one special character (+-*/=.,:;`@!#$%?|~^()[]{}_)"
+                  helperText='At least 8 characters in length, at least one uppercase, at least one special character (+-*/=.,:;`@!#$%?|~^()[]{}_)'
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid
+                item
+                xs={12}
+              >
                 <TextField
                   required
                   fullWidth
-                  name="confirm_pwd"
-                  label="Confirm Password"
-                  type="password"
-                  id="confirm_pwd"
-                  autoComplete="new-password"
+                  name='confirm_pwd'
+                  label='Confirm Password'
+                  type='password'
+                  id='confirm_pwd'
+                  autoComplete='new-password'
                   onChange={(e) => setMatchPwd(e.target.value)}
                   value={matchPwd}
                   onFocus={() => setMatchFocus(true)}
@@ -289,21 +318,25 @@ export default function SignupForm() {
             </RoundedButton> */}
 
             <BrownButton
-                    type="submit"
-										fullWidth
-										variant="contained"
-										sx={{ mt: 3, mb: 2 }}
-                    disabled={!validName || !validPwd || !validMatch ? true : false}
-                    link="login"
-									>
-										Sign Up
-									</BrownButton>
+              type='submit'
+              fullWidth
+              variant='contained'
+              sx={{ mt: 3, mb: 2 }}
+              disabled={!validName || !validPwd || !validMatch ? true : false}
+              link='login'
+            >
+              Sign Up
+            </BrownButton>
 
-
-
-            <Grid container justifyContent="flex-end">
+            <Grid
+              container
+              justifyContent='flex-end'
+            >
               <Grid item>
-                <Link variant="body2" onClick={login}>
+                <Link
+                  variant='body2'
+                  onClick={login}
+                >
                   Already have an account? Sign in
                 </Link>
               </Grid>

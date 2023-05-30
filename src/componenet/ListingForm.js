@@ -1,13 +1,11 @@
-import React, { useState, useEffect, PureComponent } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import useAxiosPrivate from "./hooks/axiosPrivate";
-import { ContentPasteSearchOutlined } from "@mui/icons-material";
-import { useNavigate, useLocation, useParams } from "react-router-dom";
+
+import { useNavigate, useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import { TextField, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
-import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import useAuth from "./hooks/useAuth";
