@@ -73,7 +73,6 @@ export default function AllListings(props) {
       const selectedCategory = categories.filter((cat) => {
         return cat.category_name === category;
       });
-      // console.log(selectedCategory[0]?.id)
       setSelectedCategory(selectedCategory[0]?.id);
     };
     getCategoryId(categoryFilter);

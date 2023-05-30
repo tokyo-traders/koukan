@@ -48,7 +48,6 @@ function AddItem() {
     (async () => {
       const response = await axios.get("/api/categories-list");
       setCategoriesArray(response.data);
-      console.log("heyheyhey", categoriesArray);
     })();
   }, []);
 
