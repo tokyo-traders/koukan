@@ -76,13 +76,11 @@ export default function SignupForm() {
 
   useEffect(() => {
     const result = USER_REGEX.test(user);
-    console.log(result);
     setValidName(result);
   }, [user]);
 
   useEffect(() => {
     const result = PWD_REGEX.test(pwd);
-    console.log(result);
     setValidPwd(result);
     setValidMatch(pwd === matchPwd);
   }, [pwd, matchPwd]);
@@ -117,7 +115,6 @@ export default function SignupForm() {
           withCredentials: true,
         }
       );
-      console.log(JSON.stringify(response.data));
       setSuccess(true);
       setUser("");
       setPwd("");

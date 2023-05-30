@@ -73,10 +73,8 @@ function LoginForm(props) {
           withCredentials: true,
         }
       );
-      console.log(response.data);
       const accessToken = response?.data.jwt;
       const decoded = accessToken ? jwt_decode(accessToken) : undefined;
-      console.log(decoded.user);
       if (decoded) {
         setAuth({ user: decoded.user, accessToken });
       }
@@ -92,7 +90,6 @@ function LoginForm(props) {
         setErrMsg("Login Failed");
       }
     }
-    console.log(auth);
   };
 
   return (

@@ -46,9 +46,8 @@ function AddItem() {
 
   useEffect(() => {
     (async () => {
-      const rawData = await axios.get("/api/categories-list");
-      const data = await rawData.json();
-      setCategoriesArray(data);
+      const response = await axios.get("/api/categories-list");
+      setCategoriesArray(response.data);
       console.log("heyheyhey", categoriesArray);
     })();
   }, []);
