@@ -105,7 +105,7 @@ def user_login(request):
 
             response = Response()
             response.set_cookie(key="refreshToken",
-                                value=refresh_token, httponly=True)
+                                value=refresh_token, secure=True, httponly=True)
             response.data = {
                 "jwt": access_token
             }
