@@ -211,7 +211,7 @@ function PendingTrade() {
                   <CardMedia
                     component='img'
                     style={{ Width: 300 }}
-                    image={`data:image/jpeg;base64,${item.offers.image[0].image}`}
+                    image={item.offers.image[0].image}
                     height='140'
                   />
                   <CardContent>
@@ -249,7 +249,7 @@ function PendingTrade() {
                   <CardMedia
                     component='img'
                     style={{ Width: 300 }}
-                    image={`data:image/jpeg;base64,${item.image[0].image}`}
+                    image={item.image[0].image}
                     height='140'
                   />
                   <CardContent>
@@ -408,7 +408,7 @@ function PendingTrade() {
                   <CardMedia
                     component='img'
                     style={{ Width: 300 }}
-                    image={`data:image/jpeg;base64,${item.desiredItemImage}`}
+                    image={item.desiredItemImage}
                     height='140'
                   />
                   <CardContent>
@@ -446,7 +446,7 @@ function PendingTrade() {
                   <CardMedia
                     component='img'
                     style={{ Width: 300 }}
-                    image={`data:image/jpeg;base64,${item.image}`}
+                    image={item.image}
                     height='140'
                   />
                   <CardContent>

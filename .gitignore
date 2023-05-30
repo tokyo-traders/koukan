@@ -10,7 +10,7 @@
 
 # production
 **/build
-
+GCS_credentials.json
 package-lock.json
 
 misc

@@ -72,7 +72,7 @@ function UserPostList() {
             <CardMedia
               component='img'
               sx={{ objectFit: "contain", bgcolor: "#f5f5f5" }}
-              image={`data:image/jpeg;base64,${item.images[0]}`}
+              image={item.images[0]}
               height='150'
             />
             <CardContent>

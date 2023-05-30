@@ -12,6 +12,7 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import useAuth from "./hooks/useAuth";
 import useAxiosPrivate from "./hooks/axiosPrivate";
+import axios from "axios";
 
 const BrownButton = styled(Button)(() => ({
   backgroundColor: "#4d3e38",
@@ -81,7 +82,7 @@ function AddItem() {
         }
       })
       .then(() =>
-        axiosPrivate.post("/api/image/multiple_upload/", uploadImages, {
+        axios.post("/api/image/multiple_upload", uploadImages, {
           headers: {
             "Content-Type": `multipart/form-data;`,
           },

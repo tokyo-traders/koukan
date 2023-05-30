@@ -193,7 +193,7 @@ function OfferForm(props) {
                       // sx={{maxWidth: 200, objectFit:"contain",  bgcolor: '#f5f5f5',}}
                       sx={{ objectFit: "contain", bgcolor: "#f5f5f5" }}
                       component='img'
-                      image={BASE_URL + `${item.itemImages[0]}`}
+                      image={item.itemImages[0]}
                       height='150'
                     />
                   </CardActionArea>
@@ -260,9 +260,7 @@ function OfferForm(props) {
                 <CardMedia
                   sx={{ objectFit: "contain", bgcolor: "#f5f5f5" }}
                   component='img'
-                  image={
-                    listing && `data:image/jpeg;base64,${listing.images[0]}`
-                  }
+                  image={listing && listing.images[0]}
                   height='150'
                 />
                 <CardContent>
@@ -319,7 +317,7 @@ function OfferForm(props) {
                   <CardMedia
                     sx={{ objectFit: "contain", bgcolor: "#f5f5f5" }}
                     component='img'
-                    image={`data:image/jpeg;base64,${offer?.itemImages[0]}`}
+                    image={offer?.itemImages[0]}
                     height='150'
                   />
                   <CardContent>

@@ -254,7 +254,7 @@ export default function ListingSingleItem(props) {
                       <img
                         alt='image1'
                         key={i}
-                        src={`data:image/jpeg;base64,${listing.images[i]}`}
+                        src={`${listing.images[i]}`}
                       />
                     </div>
                   ))}
@@ -558,7 +558,7 @@ export default function ListingSingleItem(props) {
                     {listing && (
                       <PreviewImg
                         alt='image1'
-                        src={`data:image/jpeg;base64,${listing.images[0]}`}
+                        src={listing.images[0]}
                       />
                     )}
                   </Grid>
@@ -656,7 +656,7 @@ export default function ListingSingleItem(props) {
 
                   <Img
                     alt='image1'
-                    src={`data:image/jpeg;base64,${listing.images[0]}`}
+                    src={listing.images[0]}
                   />
 
                   {user?.id === listing?.item.user_id && (

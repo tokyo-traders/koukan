@@ -52,7 +52,7 @@ export default function AllListings(props) {
         >
           <CardMedia
             component='img'
-            image={`data:image/jpeg;base64,${listing?.images[0]}`}
+            image={listing?.images[0]}
             height='150'
             sx={{ bgcolor: "#f5f5f5", objectFit: "contain" }}
           />

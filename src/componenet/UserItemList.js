@@ -14,8 +14,6 @@ import Divider from "@mui/material/Divider";
 import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "./hooks/useAuth";
 
-const BASE_URL = "http://127.0.0.1:8000/api";
-
 function UserItemsList() {
   const { auth } = useAuth();
   const user = auth?.user;
@@ -35,17 +33,19 @@ function UserItemsList() {
   }, [navigate]);
 
   const [itemInfo, setItemInfo] = useState([
-    {
-      itemName: "",
-      itemImages: "",
-      itemID: "",
-    },
+    // {
+    //   itemName: "",
+    //   itemImages: "",
+    //   itemID: "",
+    // },
   ]);
 
   useEffect(() => {
     if (user) {
       axiosPrivate.get(`/api/all-info/${user.id}`).then((response) => {
-        setItemInfo([...response.data]);
+        console.log(response.data);
+        // setItemInfo([...response.data]);
+        setItemInfo(response.data);
       });
     }
   }, [user]);
@@ -73,7 +73,7 @@ function UserItemsList() {
           >
             <CardMedia
               component='img'
-              image={`data:image/jpeg;base64,${item.itemImages[0]}`}
+              image={item.itemImages[0]}
               height='150'
               sx={{ objectFit: "contain", bgcolor: "#f5f5f5" }}
             />
