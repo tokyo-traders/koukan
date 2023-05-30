@@ -1,15 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
-import CssBaseline from "@mui/material/CssBaseline";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import axios from "axios";
+import axios from "./hooks/axios";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import EmailIcon from "@mui/icons-material/Email";
 import { Carousel } from "react-responsive-carousel";
@@ -19,9 +16,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { IconButton } from "@mui/material";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import Badge from "@mui/material/Badge";
-import DeleteIcon from "@mui/icons-material/Delete";
 import Modal from "@mui/material/Modal";
-import { padding } from "@mui/system";
 import Rating from "@mui/material/Rating";
 import useAuth from "./hooks/useAuth";
 
