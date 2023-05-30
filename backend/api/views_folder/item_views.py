@@ -14,6 +14,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from django.conf import settings
 from rest_framework.permissions import IsAuthenticated
+from django.core.files.storage import default_storage
 import base64
 import jwt
 import datetime
@@ -96,37 +97,37 @@ def image_list(request, itemId):
         serializer = ImageSerializer(image, many=True)
         image_list = []
         for image in serializer.data:
-            file = f".{image['image']}"
-            with open(file, 'rb') as image_file:
-                encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
-                image_list.append(encoded_string)
+            image_list.append(image['image'])
         return Response(image_list)
     elif request.method == "DELETE":
         image.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
-class ImageView(viewsets.ModelViewSet):
-    queryset = Image.objects.all()
-    serializer_class = ImageSerializer
+# class ImageView(viewsets.ModelViewSet):
+#     queryset = Image.objects.all()
+#     serializer_class = ImageSerializer
 
 # --> detail=false is not sending ids in the url
-@action(detail=False, methods=["POST"])
-def multiple_upload(self, request, *args, **kwargs):
-    serializer = MultipleImageSerializer(data=request.data)
-    # itemId = int(request.POST.get('itemId'))
-    if serializer.is_valid(raise_exception=True):
-        images = serializer.validated_data.get('images')
-        itemId = serializer.validated_data.get('itemId')
-        getItemInstance = Item.objects.get(pk=itemId[0])
+# @action(detail=False, methods=["POST"])
+@ api_view(["POST"])
+# def multiple_upload(self, request, *args, **kwargs):
+def multiple_upload(request):
+     if request.method == "POST":
+        serializer = MultipleImageSerializer(data=request.data)
+        # itemId = int(request.POST.get('itemId'))
+        if serializer.is_valid(raise_exception=True):
+            images = serializer.validated_data.get('images')
+            itemId = serializer.validated_data.get('itemId')
+            getItemInstance = Item.objects.get(pk=itemId[0])
 
-        image_list = []
-        for img in images:
-            print(img)
-            image_list.append(
-                Image(image=img, item_id=getItemInstance)
-            )
+            image_list = []
+            for img in images:
+                image_list.append(
+                    Image(image=img, item_id=getItemInstance)
+                )
 
-        if image_list:  # --> if imagelist exists
-            Image.objects.bulk_create(image_list)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    print(serializer.errors)
+            if image_list:  # --> if imagelist exists
+                Image.objects.bulk_create(image_list)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        print(serializer.errors)
+

@@ -13,7 +13,9 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from django.conf import settings
 from rest_framework.permissions import IsAuthenticated
+from django.core.files.storage import default_storage
 
+import base64
 import jwt
 import datetime
 import io  # delete
@@ -194,5 +196,4 @@ def newall_item(request, userid):
                     
                 })
                 imgUrl = []
-                print(data)
             return Response(data)

@@ -44,10 +44,7 @@ def homepage(request):
             for image in images:
                 imageSerializer = ImageSerializer(image)
                 if imageSerializer.data["item_id"] == itemID:
-                    file = f".{imageSerializer.data['image']}"
-                    with open(file, 'rb') as image_file:
-                        encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
-                    imageUrl.append(encoded_string)
+                    imageUrl.append(imageSerializer.data["image"])
             data.append({"post": postSerializer.data,
                         "item": itemSeralizer.data[0], "images": imageUrl,
                          "username": userSerializer.data[0]["username"], "phoneDetail": userSerializer.data[0]["phone_detail"]})
@@ -73,16 +70,11 @@ def listingItem(request, postId):
             user = User.objects.filter(pk=userID)
             userSerializer = UserSerializer(user, many=True)
             categories = PostCategories.objects.filter(post_id=postId)
-            # # categories = PostCategories.objects.get(pk=1)
             catSerializer = PostCategoriesSerializer(categories, many=True)
-            print(catSerializer.data)
             for image in images:
                 imageSerializer = ImageSerializer(image)
                 if imageSerializer.data["item_id"] == itemID:
-                    file = f".{imageSerializer.data['image']}"
-                    with open(file, 'rb') as image_file:
-                        encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
-                        imageUrl.append(encoded_string)
+                    imageUrl.append(imageSerializer.data["image"])
             data.append({"post": postSerializer.data,
                         "item": itemSeralizer.data[0],
                         "images": imageUrl,
@@ -150,9 +142,7 @@ def items_offered(request, userId):
                     desiredItemImage = ImageSerializer(getDesireditemImage)
                     image = Image.objects.filter(item_id=item['id'])
                     imageSerializer = ImageSerializer(image, many=True)
-                    file = f".{imageSerializer.data[0]['image']}"
-                    with open(file, 'rb') as image_file:
-                        encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+                    file = imageSerializer.data[0]['image']
                     if test['offered_item'] == item['id']:
                         data.append(
                             {
@@ -163,7 +153,7 @@ def items_offered(request, userId):
                                 "desideredItemId": desiredItem.data['id'],
                                 "desiredItemName": desiredItem.data['item_name'],
                                 "desiredItemImage": desiredItemImage.data['image'],
-                                "image": encoded_string
+                                "image": file
                             })
                 except Offer.DoesNotExist:
                     print("next")
@@ -192,20 +182,16 @@ def single_offer(request, offerId):
         currentUserItem = ItemSerializer(item1).data
         getItem1Image = Image.objects.filter(item_id=item1Id).first()
         item1Image = ImageSerializer(getItem1Image).data
-        file = f".{item1Image['image']}"
-        with open(file, 'rb') as image_file:
-            encoded_string1 = base64.b64encode(image_file.read()).decode('utf-8')
+        file1 = item1Image['image']
         item2 = Item.objects.get(pk=currentPostItemId)
         wantedItem = ItemSerializer(item2).data
         getItem2Image = Image.objects.filter(item_id=currentPostItemId).first()
         item2Image = ImageSerializer(getItem2Image).data
-        file = f".{item2Image['image']}"
-        with open(file, 'rb') as image_file:
-            encoded_string2 = base64.b64encode(image_file.read()).decode('utf-8')
+        file2 = item2Image['image']
         getUser = User.objects.get(pk=currentPostUserId)
         otherUser = UserSerializer(getUser).data
-        data = {"itemOffered": currentUserItem['item_name'], "itemOfferedImage": encoded_string1,
-                "desiredItem": wantedItem['item_name'], "desiredItemImage":encoded_string2, "otherUserInfo": otherUser['username']}
+        data = {"itemOffered": currentUserItem['item_name'], "itemOfferedImage": file1,
+                "desiredItem": wantedItem['item_name'], "desiredItemImage":file2, "otherUserInfo": otherUser['username']}
         if data:
             return Response(data, status=status.HTTP_200_OK)
         else:

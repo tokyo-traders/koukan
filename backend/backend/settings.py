@@ -15,6 +15,7 @@ import environ
 env = environ.Env()
 environ.Env.read_env()
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,6 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 #deployment
 # SECRET_KEY = os.getenv("SECRET_KEY")
+# BASE_DIR=etc/secrets
+
+
 #prduction
 SECRET_KEY = env("SECRET_KEY")
 
@@ -143,6 +147,16 @@ USE_I18N = True
 
 USE_TZ = True
 
+
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+GS_BUCKET_NAME = 'tokyo_traders_photo_bucket'
+STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+
+from google.oauth2 import service_account
+
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+    os.path.join(BASE_DIR,"GCS_credentials.json")
+)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/

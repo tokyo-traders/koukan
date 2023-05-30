@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import hello
 from .views_folder.user_views import user_register, user_login, user_refresh, user_logout, VerifyEmail
-from .views_folder.item_views import item_list, item_edit, image_list, ImageView
+from .views_folder.item_views import item_list, item_edit, image_list, multiple_upload
 from .views_folder.handover_views import all_item, newall_item, set_pending, accepted_trade, item_handover
 from .views_folder.post_views import   create_post, edit_post, create_offer, edit_offer
 from .views_folder.home_views import single_offer, items_offered, homepage, listingItem, search_item, category_list, currentUser_review, sendUserReview, send_review
@@ -13,11 +13,12 @@ from django.conf.urls.static import static
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register('image', ImageView)
-router.register('image/multiple_upload',ImageView)
+# router.register('image', ImageView)
+# router.register('image/multiple_upload',ImageView)
 
 urlpatterns = [
     #user_views
+    path('image/multiple_upload', multiple_upload),
     path('user/register', user_register),
     path('user/login', user_login),
     path('user/refresh', user_refresh),
