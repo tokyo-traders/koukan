@@ -120,7 +120,7 @@ Make sure that you have downloaded [Python](https://www.python.org/downloads/) a
 ```sh
 npm install
 ```
-3. navigate to backend/api/backend and create a .env file. Add the following to the file:
+3. navigate to backend/backend and create a .env file. Add the following to the file:
 ```sh
 SECRET_KEY=[your DRF secret key] 
 DB_NAME=[your database name]
