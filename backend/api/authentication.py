@@ -21,7 +21,7 @@ def create_access_token(user):
                 "reputation_rating": user["reputation_rating"],
                 "total_review": user["total_review"]  
             },
-            "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=1),
+            "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=3),
             "iat": datetime.datetime.utcnow()
         }
     return jwt.encode(payload, "access_secret", algorithm="HS256")
