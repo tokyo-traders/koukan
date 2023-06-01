@@ -61,8 +61,9 @@ function Sidebar(props) {
                 {/* </ListItem> */}
               </ToggleButton>
               {/* </ListItem> */}
-              {categories?.map((category) => (
+              {categories?.map((category, index) => (
                 <ToggleButton
+                  key={index}
                   value={category.category_name}
                   onClick={(e) => {
                     handleCategoryFilter(e);

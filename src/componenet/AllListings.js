@@ -89,16 +89,22 @@ export default function AllListings(props) {
         xl={12}
         spacing={1}
       >
-        {listings?.map((listing) =>
+        {listings?.map((listing, index) =>
           categoryFilter
             ? listing.item.category === selectedCategory &&
               listing.item.item_name
                 .toLowerCase()
                 .includes(searchValue?.toLowerCase()) &&
-              showListing(listing)
-            : listing.item.item_name
+              <div key={index}>
+                {showListing(listing)}
+              </div>
+            : 
+            <div key={index}>
+
+            {listing.item.item_name
                 .toLowerCase()
-                .includes(searchValue?.toLowerCase()) && showListing(listing)
+                .includes(searchValue?.toLowerCase()) && showListing(listing)}
+            </div>
         )}
       </Grid>
     </div>
