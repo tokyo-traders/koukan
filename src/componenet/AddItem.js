@@ -45,10 +45,10 @@ function AddItem() {
   ]);
 
   useEffect(() => {
-    (async () => {
+    async () => {
       const response = await axios.get("/api/categories-list");
       setCategoriesArray(response.data);
-    })();
+    };
   }, []);
 
   const [itemName, setItemName] = useState("");
