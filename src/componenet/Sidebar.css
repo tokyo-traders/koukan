@@ -33,5 +33,10 @@
  }
 
  .sidebar-toggle-btn[aria-pressed="true"] {
-    background-color:#8cedf6;
+    background-color:#8cedf6 ; 
+ }
+
+ .css-ueukts-MuiButtonBase-root-MuiToggleButton-root {
+    background-color: aquamarine;
+
  }

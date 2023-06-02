@@ -43,7 +43,8 @@ function Sidebar(props) {
           borderRadius={2}
           bgcolor={"white"}
         >
-          <List>
+          
+          <List className="sidebar-toggle-btn">
             <ToggleButtonGroup
               orientation='vertical'
               value={selected}
@@ -56,17 +57,17 @@ function Sidebar(props) {
                   setSelected(null);
                 }}
               >
-                <Typography variant='h6'>All Categories</Typography>{" "}
+                <Typography variant='h6' >All Categories</Typography>{" "}
               </ToggleButton>
               {categories?.map((category, index) => (
+                
                 <ToggleButton
-                  key={index}
-                  value={category.category_name}
-                  className="sidebar-toggle-btn"
-                  onClick={(e) => {
-                    handleCategoryFilter(e);
-                    setSelected(category.category_name);
-                  }}
+                key={index}
+                value={category.category_name}
+                onClick={(e) => {
+                  handleCategoryFilter(e);
+                  setSelected(category.category_name);
+                }}
                 >
                   <ListItem disablePadding>
                     <ListItemButton component='a'>
