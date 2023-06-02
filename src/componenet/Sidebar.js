@@ -12,6 +12,8 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
+
+import "./Sidebar.css"
 import axios from "./hooks/axios";
 import React, { useEffect, useState } from "react";
 
@@ -47,7 +49,6 @@ function Sidebar(props) {
               value={selected}
               exclusive
             >
-              {/* <ListItem disablePadding> */}
               <ToggleButton
                 value={""}
                 onClick={(e) => {
@@ -55,16 +56,13 @@ function Sidebar(props) {
                   setSelected(null);
                 }}
               >
-                {/* <ListItem> */}
                 <Typography variant='h6'>All Categories</Typography>{" "}
-                {/* please do not change this wording 😅/*}
-                {/* </ListItem> */}
               </ToggleButton>
-              {/* </ListItem> */}
               {categories?.map((category, index) => (
                 <ToggleButton
                   key={index}
                   value={category.category_name}
+                  className="sidebar-toggle-btn"
                   onClick={(e) => {
                     handleCategoryFilter(e);
                     setSelected(category.category_name);

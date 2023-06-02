@@ -1,15 +1,13 @@
-.sidebar {
+/* .sidebar {
     float: left;
     color: #fff;
     width: 250px;
-    /* padding-left: 20px; */
     height: 100vh;
     background-color:  #d5cbd4;
     font-family: 'Calibri'
 
-}
+} 
 
-/* Div header */
 .sidebar h2 {
     padding: 20px 0 10px 0;
     font-size: 30px;
@@ -18,7 +16,6 @@
     justify-content: center;
 }
 
-/* Div links */
 .sidebar a {
     font-size: 20px;
     color: #fff;
@@ -28,4 +25,13 @@
     padding-left: 25%;
     text-decoration: none;
     outline: none;
-}
+} 
+*/
+ .sidebar-toggle-btn {
+    opacity: 0.5;
+    background-color: aquamarine;
+ }
+
+ .sidebar-toggle-btn[aria-pressed="true"] {
+    background-color:#8cedf6;
+ }
