@@ -44,14 +44,15 @@ function Sidebar(props) {
           bgcolor={"white"}
         >
           
-          <List className="sidebar-toggle-btn">
             <ToggleButtonGroup
+              className="sidebar"
               orientation='vertical'
               value={selected}
               exclusive
             >
               <ToggleButton
                 value={""}
+                className="sidebar-toggle-btn"
                 onClick={(e) => {
                   handleCategoryFilter(e);
                   setSelected(null);
@@ -62,6 +63,8 @@ function Sidebar(props) {
               {categories?.map((category, index) => (
                 
                 <ToggleButton
+                className="sidebar-toggle-btn"
+
                 key={index}
                 value={category.category_name}
                 onClick={(e) => {
@@ -70,14 +73,11 @@ function Sidebar(props) {
                 }}
                 >
                   <ListItem disablePadding>
-                    <ListItemButton component='a'>
                       <ListItemText primary={category.category_name} />
-                    </ListItemButton>
                   </ListItem>
                 </ToggleButton>
               ))}
             </ToggleButtonGroup>
-          </List>
         </Box>
       </Box>
     </div>

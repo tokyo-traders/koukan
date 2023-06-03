@@ -27,16 +27,14 @@
     outline: none;
 } 
 */
- .sidebar-toggle-btn {
+ .sidebar {
     opacity: 0.5;
-    background-color: aquamarine;
+    background-color: #b8f1f6;
  }
+ 
+ .sidebar .sidebar-toggle-btn[aria-pressed="true"]{
+    opacity: 1;
+    background-color: #68e7f3;
+}
 
- .sidebar-toggle-btn[aria-pressed="true"] {
-    background-color:#8cedf6 ; 
- }
 
- .css-ueukts-MuiButtonBase-root-MuiToggleButton-root {
-    background-color: aquamarine;
-
- }
