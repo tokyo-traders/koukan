@@ -26,14 +26,16 @@ export default function AllListings(props) {
   const [selectedCategory, setSelectedCategory] = useState();
 
   useEffect(() => {
+    // axios.get("http://127.0.0.1:8000/api/homepage").then((res) => {
     axios.get("/api/homepage").then((res) => {
       setListings(res.data);
+      console.log(res.data);
     });
   }, []);
 
   const navigate = useNavigate();
   const makeOffer = (obj) => {
-    navigate(`/listing/${obj.post.id}`, { replace: true });
+    navigate(`/listing/${obj.post.id}`);
   };
 
   const showListing = (listing, index) => {
@@ -79,28 +81,28 @@ export default function AllListings(props) {
   }, [categoryFilter]);
 
   return (
-    <div className='listing'>
-      <Grid
-        container
-        width='100%'
-        direction='row'
-        justifyContent='center'
-        alignItems='center'
-        xl={12}
-        spacing={1}
-      >
-        {listings?.map((listing) =>
-          categoryFilter
-            ? listing.item.category === selectedCategory &&
-              listing.item.item_name
-                .toLowerCase()
-                .includes(searchValue?.toLowerCase()) &&
-              showListing(listing)
-            : listing.item.item_name
-                .toLowerCase()
-                .includes(searchValue?.toLowerCase()) && showListing(listing)
-        )}
-      </Grid>
-    </div>
+    <Grid
+      container
+      width='calc(100vw - 300px)'
+      height='fit-content'
+      margin={0}
+      direction='row'
+      justifyContent='center'
+      alignItems='center'
+      xl={12}
+      spacing={1}
+    >
+      {listings?.map((listing) =>
+        categoryFilter
+          ? listing.item.category === selectedCategory &&
+            listing.item.item_name
+              .toLowerCase()
+              .includes(searchValue?.toLowerCase()) &&
+            showListing(listing)
+          : listing.item.item_name
+              .toLowerCase()
+              .includes(searchValue?.toLowerCase()) && showListing(listing)
+      )}
+    </Grid>
   );
 }

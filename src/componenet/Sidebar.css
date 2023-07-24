@@ -1,25 +1,22 @@
-.sidebar {
+/* .sidebar {
     float: left;
     color: #fff;
     width: 250px;
-    /* padding-left: 20px; */
     height: 100vh;
     background-color:  #d5cbd4;
     font-family: 'Calibri'
 
-}
+} */
 
-/* Div header */
-.sidebar h2 {
+/* .sidebar h2 {
     padding: 20px 0 10px 0;
     font-size: 30px;
     cursor: pointer;
     display: flex;
     justify-content: center;
-}
+} */
 
-/* Div links */
-.sidebar a {
+/* .sidebar a {
     font-size: 20px;
     color: #fff;
     display: flex;
@@ -28,4 +25,14 @@
     padding-left: 25%;
     text-decoration: none;
     outline: none;
+} */
+
+.sidebar {
+  opacity: 0.5;
+  background-color: #b8f1f6;
+}
+
+.sidebar .sidebar-toggle-btn[aria-pressed="true"] {
+  opacity: 1;
+  background-color: #68e7f3;
 }

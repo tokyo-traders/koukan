@@ -55,19 +55,21 @@ function App() {
           >
             <Route
               path='/'
-              element={[
-                <Sidebar
-                  handleCategoryFilter={handleCategoryFilter}
-                  categoryFilter={categoryFilter}
-                  categories={categories}
-                  setCategories={setCategories}
-                />,
-                <AllListings
-                  searchValue={searchValue}
-                  categoryFilter={categoryFilter}
-                  categories={categories}
-                />,
-              ]}
+              element={
+                <div className='listing'>
+                  <Sidebar
+                    handleCategoryFilter={handleCategoryFilter}
+                    categoryFilter={categoryFilter}
+                    categories={categories}
+                    setCategories={setCategories}
+                  />
+                  <AllListings
+                    searchValue={searchValue}
+                    categoryFilter={categoryFilter}
+                    categories={categories}
+                  />
+                </div>
+              }
             />
             <Route
               path='/Login'

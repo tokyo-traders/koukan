@@ -28,6 +28,8 @@ class MultipleImageSerializer(serializers.Serializer):  # no ModelSerializer
     )
 
 class PostSerializer(serializers.ModelSerializer):
+    # item_id = ItemSerializer()
+
     class Meta:
         model = Post
         fields = "__all__"

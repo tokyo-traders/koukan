@@ -1,13 +1,13 @@
 body {
   background-image: url(../public/Koukan_background_web_opacity50.png);
-   /* background-repeat: no-repeat; */
+  /* background-repeat: no-repeat; */
   background-attachment: fixed;
   /* background-size: cover; */
-   /* font-family: sans-serif; */
+  /* font-family: sans-serif; */
   z-index: 0;
 }
 
- /* .App {
+/* .App {
   text-align: center;
 }
 
@@ -55,15 +55,11 @@ body {
 } */
 
 .listing {
-  width: 85%;
-  float: Right;
-  /* display: flex;
-  flex-flow: row wrap;
-  justify-content: space-around; */
-
+  display: flex;
+  /* flex-direction: column; */
 }
 
 .listingClass {
   width: 220px;
   flex: 0 1 20%;
-} 
+}
