@@ -27,24 +27,28 @@ from rest_framework.renderers import JSONRenderer  # delete
 @api_view(['GET'])  # to be refactored
 def homepage(request):
     if request.method == "GET":
+        # First call
         posts = Post.objects.filter(visibile=True)
-        images = Image.objects.all()
+        # second call
         data = []
         imageUrl = []
         for post in posts:
             postSerializer = PostSerializer(post)
             postID = postSerializer.data['item_id']
+            # third call
             item = Item.objects.filter(pk=postID)
             itemSeralizer = ItemSerializer(
                 item, many=True)  # we need this "many=True"!)
             itemID = itemSeralizer.data[0]['id']
             userID = postSerializer.data['user_id']
+            # forth call
             user = User.objects.filter(pk=userID)
             userSerializer = UserSerializer(user, many=True)
-            for image in images:
-                imageSerializer = ImageSerializer(image)
-                if imageSerializer.data["item_id"] == itemID:
-                    imageUrl.append(imageSerializer.data["image"])
+            # theorectal fith call
+            image = Image.objects.filter(item_id=itemID)
+            imageSerializer = ImageSerializer(image,many=True)
+            print("😂",imageSerializer.data[0]["image"], itemID)
+            imageUrl.append(imageSerializer.data[0]["image"])
             data.append({"post": postSerializer.data,
                         "item": itemSeralizer.data[0], "images": imageUrl,
                          "username": userSerializer.data[0]["username"], "phoneDetail": userSerializer.data[0]["phone_detail"]})
