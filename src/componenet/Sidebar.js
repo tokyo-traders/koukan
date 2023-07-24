@@ -34,8 +34,8 @@ function Sidebar(props) {
         flex={1}
         p={2}
         sx={{ display: { xs: "block", sm: "block" } }}
-        maxWidth='300px'
-        minWidth='300px'
+        maxWidth='250px'
+        minWidth='250px'
       >
         <Box
           // position='fixed'

@@ -83,9 +83,9 @@ export default function AllListings(props) {
   return (
     <Grid
       container
-      width='calc(100vw - 300px)'
+      width='calc(100vw - 250px)'
       height='fit-content'
-      margin={0}
+      marginRight='20px'
       direction='row'
       justifyContent='center'
       alignItems='center'
