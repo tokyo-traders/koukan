@@ -40,42 +40,31 @@ def homepage(request):
                         "item": itemSeralizer.data, "images": [imageSerializer.data[0]["image"]]})
         return Response(data, status=status.HTTP_200_OK)
     
-@api_view(['GET'])  # to be refactored
+@api_view(['GET'])
 def listingItem(request, postId):
     if request.method == "GET":
-        auth = auth_state(request)
-        if auth: 
-            data = []
-            post = Post.objects.get(pk=postId, visibile=True)
-            images = Image.objects.all()
-            imageUrl = []
-            postSerializer = PostSerializer(post)
-            postID = postSerializer.data["item_id"]
-            item = Item.objects.filter(pk=postID)
-            itemSeralizer = ItemSerializer(
-                item, many=True)  # we need this "many=True"!)
-            itemID = itemSeralizer.data[0]['id']
-            userID = postSerializer.data['user_id']
-            user = User.objects.filter(pk=userID)
-            userSerializer = UserSerializer(user, many=True)
-            categories = PostCategories.objects.filter(post_id=postId)
-            catSerializer = PostCategoriesSerializer(categories, many=True)
-            for image in images:
-                imageSerializer = ImageSerializer(image)
-                if imageSerializer.data["item_id"] == itemID:
-                    imageUrl.append(imageSerializer.data["image"])
-            data.append({"post": postSerializer.data,
-                        "item": itemSeralizer.data[0],
-                        "images": imageUrl,
-                        "username": userSerializer.data[0]["username"],
-                        "phoneDetail": userSerializer.data[0]["phone_detail"],
-                        "email": userSerializer.data[0]["email"],
-                        "rating": userSerializer.data[0]["reputation_rating"],
-                        "total_review": userSerializer.data[0]["total_review"],
-                        "categories": catSerializer.data
-                        })
-            imageUrl = []
-            return Response(data, status=status.HTTP_200_OK)
+        post = Post.objects.get(pk=postId, visibile=True)
+        postSerializer = PostSerializer(post)
+        itemID = postSerializer.data["item_id"]
+        images = Image.objects.filter(item_id=itemID)
+        imageSerializer = ImageSerializer(images, many=True)
+        item = Item.objects.get(pk=itemID)
+        itemSeralizer = ItemSerializer(item)
+        userID = postSerializer.data['user_id']
+        user = User.objects.filter(pk=userID)
+        userSerializer = UserSerializer(user, many=True)
+        categories = PostCategories.objects.filter(post_id=postId)
+        catSerializer = PostCategoriesSerializer(categories, many=True)
+        data = {"post": postSerializer.data, "item": itemSeralizer.data,
+            "images": imageSerializer.data,
+            "username": userSerializer.data[0]["username"],
+            "phoneDetail": userSerializer.data[0]["phone_detail"],
+            "email": userSerializer.data[0]["email"],
+            "rating": userSerializer.data[0]["reputation_rating"],
+            "total_review": userSerializer.data[0]["total_review"],
+            "categories": catSerializer.data
+            }
+        return Response(data, status=status.HTTP_200_OK)
     
 @ api_view(['GET'])
 def search_item(request):

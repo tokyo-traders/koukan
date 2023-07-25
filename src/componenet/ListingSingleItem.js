@@ -156,8 +156,8 @@ export default function ListingSingleItem(props) {
   useEffect(() => {
     if (listingId) {
       axios.get(`/api/listing/${listingId}`).then((response) => {
-        console.log(response.data[0]);
-        setListing(response.data[0]);
+        console.log(response.data);
+        setListing(response.data);
       });
     }
   }, []);
@@ -249,7 +249,7 @@ export default function ListingSingleItem(props) {
                       <img
                         alt='image1'
                         key={i}
-                        src={`${listing.images[i]}`}
+                        src={`${listing.images[i].image}`}
                       />
                     </div>
                   ))}
