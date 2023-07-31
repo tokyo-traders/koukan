@@ -86,11 +86,14 @@ function AddItem() {
           withCredentials: true,
         })
       )
+      .then((res) => {
+        console.log("😍", res.data);
+        setDesire("");
+        setDetails("");
+        setItemName("");
+        navigate("/MyPage/");
+      })
       .catch((error) => console.log(error));
-    setDesire("");
-    setDetails("");
-    setItemName("");
-    navigate("/MyPage/");
   };
 
   const handleChange = (e) => {

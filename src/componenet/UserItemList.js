@@ -29,11 +29,11 @@ function UserItemsList() {
   }, [navigate]);
 
   const [itemInfo, setItemInfo] = useState([
-    // {
-    //   itemName: "",
-    //   itemImages: "",
-    //   itemID: "",
-    // },
+    {
+      itemName: "",
+      itemImages: "",
+      itemID: "",
+    },
   ]);
 
   useEffect(() => {
@@ -69,7 +69,7 @@ function UserItemsList() {
           >
             <CardMedia
               component='img'
-              image={item?.itemImages[0].image}
+              image={item?.itemImages[0]?.image}
               height='150'
               sx={{ objectFit: "contain", bgcolor: "#f5f5f5" }}
             />
