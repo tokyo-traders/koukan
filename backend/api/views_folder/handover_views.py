@@ -172,28 +172,25 @@ def newall_item(request, userid):
 
     try:
         items = Item.objects.filter(user_id=userid).all()
-        images = Image.objects.all()
+        # images = Image.objects.all()
     except Item.DoesNotExist or Image.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == "GET":
         auth = auth_state(request)
         if auth:
-            imgUrl = []
             data = []
             for item in items:
                 singleItemSerializer = ItemSerializer(item)
-                for image in images:
-                    singleImageSerializer = ImageSerializer(image)
-                    if singleImageSerializer.data['item_id'] == singleItemSerializer.data['id']:
-                        imgUrl.append(singleImageSerializer.data['image'])
+                images = Image.objects.filter(item_id=singleItemSerializer.data["id"])
+                singleImageSerializer = ImageSerializer(images, many=True)
+                print("😂",singleImageSerializer.data)
                 data.append({
                     'itemID': singleItemSerializer.data['id'],
                     'itemName': singleItemSerializer.data['item_name'],
-                    'itemImages': imgUrl,
+                    'itemImages': singleImageSerializer.data,
                     'userId': singleItemSerializer.data['user_id'],
                     'category': singleItemSerializer.data['category'],
                     
                 })
-                imgUrl = []
             return Response(data)
