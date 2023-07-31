@@ -127,7 +127,7 @@ def item_handover(request):
 def all_item(request, itemid):
     try:
         item = Item.objects.get(id=itemid)
-        images = Image.objects.all()
+        images = Image.objects.filter(item_id=itemid)
     except Item.DoesNotExist or Image.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -135,7 +135,9 @@ def all_item(request, itemid):
         auth = auth_state(request)
         if auth:
             itemSerializer = ItemSerializer(item)
+            imageSerializer = ImageSerializer(images, many=True)
             try:
+                
                 getOffer = Offer.objects.get(
                     offered_item=itemSerializer.data['id'])
                 currentOffer = OfferSerializer(getOffer)
@@ -145,24 +147,23 @@ def all_item(request, itemid):
                 getUserInfo = User.objects.get(pk=itemDetail.data['user_id'])
                 userInfo = UserSerializer(getUserInfo)
                 data = []
-                imgUrl = []
-                for image in images:
-                    imageSerializer = ImageSerializer(image)
-                    if imageSerializer.data["item_id"] == itemSerializer.data["id"]:
-                        imgUrl.append(imageSerializer.data['image'])
                 data.append({'itemName': itemSerializer.data['item_name'],
-                            'images': imgUrl,
-                            'details': itemSerializer.data['details'], 'expiration': currentOffer.data['date_offered'], 'idOffer': currentOffer.data['id'], 'user_id': itemSerializer.data['user_id'], 'userName': userInfo.data['username'], 'userReputation': userInfo.data['reputation_rating'], 'userTotalReview': userInfo.data['total_review']})
+                            'images': imageSerializer.data,
+                            'details': itemSerializer.data['details'],
+                            'expiration': currentOffer.data['date_offered'],
+                            'idOffer': currentOffer.data['id'],
+                            'user_id': itemSerializer.data['user_id'],
+                            'userName': userInfo.data['username'],
+                            'userReputation': userInfo.data['reputation_rating'],
+                            'userTotalReview': userInfo.data['total_review']})
             except Offer.DoesNotExist:
                 data = []
-                imgUrl = []
-                for image in images:
-                    imageSerializer = ImageSerializer(image)
-                    if imageSerializer.data["item_id"] == itemSerializer.data["id"]:
-                        imgUrl.append(imageSerializer.data['image'])
-                data.append({'itemName': itemSerializer.data['item_name'],
-                            'images': imgUrl,
-                            'details': itemSerializer.data['details'], 'user_id': itemSerializer.data['user_id']})
+                data.append({
+                    'itemName': itemSerializer.data['item_name'],
+                    'images': imageSerializer.data,
+                    'details': itemSerializer.data['details'],
+                    'user_id': itemSerializer.data['user_id']
+                    })
             return Response(data)
 
 

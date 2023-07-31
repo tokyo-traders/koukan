@@ -144,7 +144,7 @@ export default function UserSingleItem() {
             xs={5}
             sx={{ margin: "10px" }}
           >
-            <Container sx={{ height: 350 }}>
+            <Container sx={{ height: 400 }}>
               {images && (
                 <Carousel
                   autoPlay={true}
@@ -154,7 +154,7 @@ export default function UserSingleItem() {
                     <div>
                       <img
                         alt='image1'
-                        src={x}
+                        src={x.image}
                       />
                     </div>
                   ))}
