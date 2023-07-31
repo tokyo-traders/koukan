@@ -87,7 +87,6 @@ function AddItem() {
         })
       )
       .then((res) => {
-        console.log("😍", res.data);
         setDesire("");
         setDetails("");
         setItemName("");
@@ -97,13 +96,9 @@ function AddItem() {
   };
 
   const handleChange = (e) => {
-    // console.log(e.target.files)
     _.forEach(e.target.files, (file) => {
       console.log(file);
       uploadImages.append("images", file);
-      // uploadImages.append('itemId', 85);
-
-      // uploadImages.append("item_id", 1)
     });
   };
 
