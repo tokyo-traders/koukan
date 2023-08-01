@@ -21,8 +21,9 @@ function UserPostList() {
   const [listings, setListings] = useState(null);
 
   useEffect(() => {
-    axios.get("/api/homepage").then((res) => {
-      setListings(res.data.filter((item) => item.item.user_id === user.id));
+    axios.get(`/api/homepage/${user.id}`).then((res) => {
+      console.log(user);
+      setListings(res.data);
     });
   }, []);
 

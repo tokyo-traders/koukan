@@ -4,7 +4,7 @@ from .views_folder.user_views import user_register, user_login, user_refresh, us
 from .views_folder.item_views import item_list, item_edit, image_list, multiple_upload
 from .views_folder.handover_views import all_item, newall_item, set_pending, accepted_trade, item_handover
 from .views_folder.post_views import   create_post, edit_post, create_offer, edit_offer
-from .views_folder.home_views import single_offer, items_offered, homepage, listingItem, search_item, category_list, currentUser_review, sendUserReview, send_review
+from .views_folder.home_views import single_offer, items_offered, homepage, listingItem, search_item, category_list, currentUser_review, sendUserReview, send_review, userListing
 
 from api import views
 from django.conf import settings
@@ -55,6 +55,7 @@ urlpatterns = [
 
     #home_views
     # to get all listings
+    path('homepage/<int:userid>', userListing),
     path('homepage', homepage),
     path('listing/<int:postId>', listingItem),
     # this path gives an array of item names for the search bar
