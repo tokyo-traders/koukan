@@ -63,7 +63,7 @@ export default function AllListings(props) {
             component='img'
             image={listing?.images[0]}
             height='175'
-            sx={{ bgcolor: "#f5f5f5", objectFit: "contain", marginTop: "3px" }}
+            sx={{ bgcolor: "#f5f5f5", objectFit: "contain" }}
           />
           <MyContent sx={{ background: "white", opacity: 0.75 }}>
             <Typography
