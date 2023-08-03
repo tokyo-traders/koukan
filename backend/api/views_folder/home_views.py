@@ -55,7 +55,7 @@ def userListing(request, userid):
             data.append({"post": postSerializer.data,
                         "item": itemSeralizer.data, "images": [imageSerializer.data[0]["image"]]})
         return Response(data, status=status.HTTP_200_OK)
-      
+    
 @api_view(['GET'])
 def listingItem(request, postId):
     if request.method == "GET":
@@ -81,6 +81,27 @@ def listingItem(request, postId):
             "categories": catSerializer.data
             }
         return Response(data, status=status.HTTP_200_OK)
+    
+@api_view(['GET'])
+def categoryListing(request, category):
+    if request.method == "GET": 
+        posts = Post.objects.filter(visibile=True)
+        result = Post.objects.select_related('item_id').filter(visibile=True,item_id__category=category)
+        print(result.query)
+        postSerializer = PostSerializer(result, many=True)
+        print(postSerializer.data)
+        # data = []
+        # for post in posts:
+        #     postSerializer = PostSerializer(post)
+        #     itemID = postSerializer.data['item_id']
+        #     item = Item.objects.get(pk=itemID)
+        #     image = Image.objects.filter(item_id=itemID)
+        #     itemSeralizer = ItemSerializer(item)
+        #     imageSerializer = ImageSerializer(image,many=True)
+        #     data.append({"post": postSerializer.data,
+        #                 "item": itemSeralizer.data, "images": [imageSerializer.data[0]["image"]]})
+        # return Response(data, status=status.HTTP_200_OK)
+        return Response(postSerializer.data, status=status.HTTP_200_OK)
     
 @ api_view(['GET'])
 def search_item(request):
