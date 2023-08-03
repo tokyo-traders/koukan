@@ -44,7 +44,15 @@ export default function AllListings(props) {
         <Card
           key={index}
           elevation={2}
-          sx={{ maxWidth: 200, mt: 5, marginLeft: 3 }}
+          sx={{
+            maxWidth: 200,
+            minWidth: 200,
+            maxHeight: 220,
+            minHeight: 220,
+            mt: 5,
+            marginLeft: 3,
+            background: "#def4f6",
+          }}
           onClick={() => {
             if (listing) {
               makeOffer(listing);
@@ -54,13 +62,18 @@ export default function AllListings(props) {
           <CardMedia
             component='img'
             image={listing?.images[0]}
-            height='150'
-            sx={{ bgcolor: "#f5f5f5", objectFit: "contain" }}
+            height='175'
+            sx={{ bgcolor: "#f5f5f5", objectFit: "contain", marginTop: "3px" }}
           />
-          <MyContent>
+          <MyContent sx={{ background: "white", opacity: 0.75 }}>
             <Typography
               noWrap
               variant='body2'
+              sx={{
+                fontWeight: "bold",
+                textAlign: "center",
+                padding: "0px 0px",
+              }}
             >
               {listing.item.item_name}
             </Typography>
@@ -89,8 +102,8 @@ export default function AllListings(props) {
       direction='row'
       justifyContent='center'
       alignItems='center'
-      xl={12}
-      spacing={1}
+      xl={15}
+      spacing={2}
     >
       {listings?.map((listing) =>
         categoryFilter

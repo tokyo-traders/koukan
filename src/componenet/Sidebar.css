@@ -28,8 +28,8 @@
 } */
 
 .sidebar {
-  opacity: 0.5;
-  background-color: #b8f1f6;
+  opacity: 1;
+  background: #def4f6;
 }
 
 .sidebar .sidebar-toggle-btn[aria-pressed="true"] {
