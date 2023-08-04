@@ -94,17 +94,17 @@ export default function AllListings(props) {
 
   return (
     <div>
-      <Container
+      {/* <Container
         sx={{
           backgroundColor: "white",
           minWidth: "50vw",
           height: "150px",
           marginTop: "10px",
         }}
-      ></Container>
+      ></Container> */}
       <Grid
         container
-        width='calc(100vw - 250px)'
+        width='100%'
         height='fit-content'
         marginRight='20px'
         direction='row'
