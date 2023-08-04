@@ -21,6 +21,7 @@ export default function AllListings(props) {
   const { searchValue, categoryFilter, categories } = props;
 
   const [listings, setListings] = useState([]);
+  const [catListings, setCatListings] = useState([]);
   const [diplayListing, setDuisplayListing] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState();
 
@@ -28,6 +29,14 @@ export default function AllListings(props) {
     // axios.get("http://127.0.0.1:8000/api/homepage").then((res) => {
     axios.get("/api/homepage").then((res) => {
       setListings(res.data);
+      console.log(res.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    // axios.get("http://127.0.0.1:8000/api/homepage").then((res) => {
+    axios.get(`/api/homepage/category/4`).then((res) => {
+      setCatListings(res.data);
       console.log(res.data);
     });
   }, []);
@@ -44,10 +53,10 @@ export default function AllListings(props) {
           key={index}
           elevation={2}
           sx={{
-            maxWidth: 200,
-            minWidth: 200,
-            maxHeight: 220,
-            minHeight: 220,
+            maxWidth: 250,
+            minWidth: 250,
+            maxHeight: 270,
+            minHeight: 270,
             mt: 5,
             marginLeft: 3,
             background: "#def4f6",
@@ -61,7 +70,7 @@ export default function AllListings(props) {
           <CardMedia
             component='img'
             image={listing?.images[0].image}
-            height='175'
+            height='230'
             sx={{ bgcolor: "#f5f5f5", objectFit: "contain" }}
           />
           <MyContent sx={{ background: "white", opacity: 0.75 }}>
@@ -94,14 +103,14 @@ export default function AllListings(props) {
 
   return (
     <div>
-      {/* <Container
+      <Container
         sx={{
           backgroundColor: "white",
-          minWidth: "50vw",
+          minWidth: "100%",
           height: "150px",
           marginTop: "10px",
         }}
-      ></Container> */}
+      ></Container>
       <Grid
         container
         width='100%'

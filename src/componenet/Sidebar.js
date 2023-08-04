@@ -1,13 +1,5 @@
-import { Category } from "@mui/icons-material";
 import {
   Box,
-  ButtonBase,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  ListItemIcon,
-  Switch,
   ToggleButton,
   ToggleButtonGroup,
   Typography,
@@ -19,7 +11,6 @@ import "./Sidebar.css";
 function Sidebar(props) {
   const { handleCategoryFilter, categories, setCategories } = props;
   const [selected, setSelected] = useState(null);
-  console.log(categories);
   useEffect(() => {
     const getCategories = async () => {
       const response = await axios("/api/categories-list");
@@ -63,7 +54,7 @@ function Sidebar(props) {
             }}
           >
             <Typography
-              fontSize={15}
+              fontSize={12}
               fontWeight='bold'
             >
               All Categories
@@ -84,7 +75,7 @@ function Sidebar(props) {
                 setSelected(category.category_name);
               }}
             >
-              <Typography fontSize={15}>{category.category_name}</Typography>
+              <Typography fontSize={12}>{category.category_name}</Typography>
             </ToggleButton>
           ))}
         </ToggleButtonGroup>
