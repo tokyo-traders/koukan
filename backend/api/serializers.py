@@ -6,12 +6,16 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = "__all__"
 
+class SafeUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["username", "email", "address", "phone_detail", "is_emailVerified", "reputation_rating", "total_review"] 
+
 
 class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
         fields = "__all__"
-        # fields = ["item_name",  "date_of_post", "details"]
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -30,6 +34,14 @@ class MultipleImageSerializer(serializers.Serializer):  # no ModelSerializer
 
 class PostSerializer(serializers.ModelSerializer):
     item_id = ItemSerializer()
+
+    class Meta:
+        model = Post
+        fields = "__all__"
+
+class UserPostSerializer(serializers.ModelSerializer):
+    item_id = ItemSerializer()
+    user_id = SafeUserSerializer()
 
     class Meta:
         model = Post

@@ -162,45 +162,46 @@ export default function ListingSingleItem(props) {
     }
   }, []);
 
-  useEffect(() => {
-    const getOffers = async () => {
-      let response = await axios.get(`/api/create-offer`);
-      console.log(response.data.filter((item) => item.post_id == listingId));
-      setOffersMade(response.data.filter((item) => item.post_id == listingId));
-    };
-    getOffers();
-  }, []);
+  // useEffect(() => {
+  //   const getOffers = async () => {
+  //     let response = await axios.get(`/api/create-offer`);
+  //     console.log(response.data.filter((item) => item.post_id === listingId));
+  //     setOffersMade(response.data.filter((item) => item.post_id === listingId));
+  //   };
+  //   getOffers();
+  // }, []);
 
-  useEffect(() => {
-    const getItem = async () => {
-      let responseArray = offersMade.map((offer) => {
-        return axios.get(`/api/all-item/${offer.offered_item}`);
-      });
+  // this is for offers please uncomment
+  // useEffect(() => {
+  //   const getItem = async () => {
+  //     let responseArray = offersMade.map((offer) => {
+  //       return axios.get(`/api/all-item/${offer.offered_item}`);
+  //     });
 
-      Promise.all(responseArray)
-        .then((res) => {
-          console.log(res);
-          return res.map((item) => {
-            console.log(item.data);
-            return item.data[0];
-          });
-        })
-        .then((res) => {
-          const items = res.map((item) => {
-            return { ...item, model: false };
-          });
-          console.log(items);
-          return items;
-        })
-        .then((res) => setOffersItems(res));
+  //     Promise.all(responseArray)
+  //       .then((res) => {
+  //         console.log(res);
+  //         return res.map((item) => {
+  //           console.log(item.data);
+  //           return item.data[0];
+  //         });
+  //       })
+  //       .then((res) => {
+  //         const items = res.map((item) => {
+  //           return { ...item, model: false };
+  //         });
+  //         console.log(items);
+  //         return items;
+  //       })
+  //       .then((res) => setOffersItems(res));
 
-      return responseArray;
-    };
+  //     return responseArray;
+  //   };
 
-    if (offersMade) {
-      getItem();
-    }
-  }, [offersMade]);
+  //   if (offersMade) {
+  //     getItem();
+  //   }
+  // }, [offersMade]);
 
   // console.log(listing)
   // const data = async () => {
@@ -235,22 +236,37 @@ export default function ListingSingleItem(props) {
             sx={{ margin: "10px" }}
           >
             <Container>
-              {images && (
+              {listing && (
                 <Carousel
                   // showArrows={true} onChange={onChange} onClickItem={onClickItem} onClickThumb={onClickThumb}
                   showArrows={true}
                   showThumbs={true}
                   thumbWidth={100}
-                  sx={{ objectFit: "contain", bgcolor: "#f5f5f5" }}
+                  sx={{
+                    margin: "auto",
+                  }}
                   autoPlay={false}
                 >
                   {listing?.images.map((img, i) => (
-                    <div>
+                    <div
+                      style={{
+                        backgroundColor: "#f0f0f0",
+                        opacity: 0.8,
+                        maxHeight: 320,
+                      }}
+                    >
                       <img
+                        style={{
+                          margin: "auto",
+                          maxHeight: 320,
+                          objectFit: "contain",
+                          margin: "2px",
+                        }}
                         alt='image1'
                         key={i}
                         src={`${listing.images[i].image}`}
                       />
+                      //{" "}
                     </div>
                   ))}
                 </Carousel>
@@ -290,10 +306,10 @@ export default function ListingSingleItem(props) {
                   {listing && (
                     <div margin='20px'>
                       <Typography variant='h5'>
-                        {listing.item.item_name}
+                        {listing.item_id.item_name}
                       </Typography>
 
-                      {user?.id === listing?.item.user_id && (
+                      {user?.id === listing?.user_id.id && (
                         <BrownButton
                           variant='contained'
                           sx={{ mt: 3, mb: 2 }}
@@ -304,7 +320,7 @@ export default function ListingSingleItem(props) {
                       )}
                     </div>
                   )}
-                  {user?.id !== listing?.item.user_id && (
+                  {user?.id !== listing?.user_id.id && (
                     <>
                       <BrownButton
                         variant='contained'
@@ -317,7 +333,9 @@ export default function ListingSingleItem(props) {
                       <div>
                         <Tooltip title='Send poster a message on whatspp'>
                           <IconButton>
-                            <a href={`https://wa.me/${listing?.phoneDetail}`}>
+                            <a
+                              href={`https://wa.me/${listing?.user_id.phoneDetail}`}
+                            >
                               <WhatsAppIcon
                                 sx={{ fontSize: "30px", color: "#4d3e38" }}
                               />
@@ -328,7 +346,7 @@ export default function ListingSingleItem(props) {
                         {listing && (
                           <Tooltip title='Send an email to poster'>
                             <IconButton>
-                              <a href={`mailto:${listing.email}`}>
+                              <a href={`mailto:${listing.user_id.email}`}>
                                 <EmailIcon
                                   sx={{ fontSize: "30px", color: "#4d3e38" }}
                                 />{" "}
@@ -375,7 +393,7 @@ export default function ListingSingleItem(props) {
                       gutterBottom
                       variant='body'
                     >
-                      {listing.item.details}
+                      {listing.item_id.details}
                     </Typography>
                   )}
                 </Box>
@@ -430,7 +448,7 @@ export default function ListingSingleItem(props) {
                       gutterBottom
                       variant='body'
                     >
-                      {listing.post.desire}
+                      {listing.desire}
                     </Typography>
                   )}
                 </Box>
@@ -453,7 +471,7 @@ export default function ListingSingleItem(props) {
                       gutterBottom
                       variant='body'
                     >
-                      {new Date(listing.post.expiration).toDateString()}
+                      {new Date(listing.expiration).toDateString()}
                     </Typography>
                   )}
                 </Box>
@@ -487,7 +505,7 @@ export default function ListingSingleItem(props) {
                         name='size-small'
                         readOnly
                         value={
-                          listing.rating != 0
+                          listing.rating !== 0
                             ? (
                                 Math.round(listing.rating * 10) /
                                 10 /
@@ -684,90 +702,3 @@ export default function ListingSingleItem(props) {
     </div>
   );
 }
-
-{
-  /* ____________________________________________________________________________________________________________________________       */
-}
-
-//       {offersItems && offersItems.map((items, index) => {
-//         console.log("this is" , items)
-
-//         return (
-//           <>
-//             <Box sx={{ width: '70%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column' }}>
-//               <Divider sx={{ borderBottomWidth: 1 }} variant="middle" />
-//             </Box>
-
-//             <Box sx={{ width: '70%', margin: 'auto', marginTop: 2, display: 'flex', flexDirection: 'column'}}>
-//               <Grid container spacing={2} sx={{ backgroundColor: "none", marginTop: 2 }}>
-//                 <Grid item xs={5} sx={{ margin: '10px' }}>
-//                     {listing && <Img alt="image1" src={BASE_URL + `${items?.images[0]}`} />}
-//                   </Container>
-//                 </Grid>
-//                 <Grid item xs={5} sm container>
-//                   <Grid item xs container direction="column" spacing={2}>
-//                     <Grid item xs>
-//                      <Box
-//                         sx={{
-//                           backgroundColor: "white",
-//                         }}
-
-//                       >
-//                         <Typography variant='h5'>
-//                           {items?.itemName}
-//                         </Typography>
-
-//                         {user?.id === listing?.item.user_id &&
-//                           <>
-//                             <Box sx={{ marginLeft: 50 }}><ModeEditIcon /></Box>
-//                             <BrownButton
-
-//                               variant="contained"
-//                               sx={{ mt: 3, mb: 2 }}
-//                               onClick={() => {
-//                                 acceptOffer(offersMade[index])
-//                               }}
-//                             >
-//                               ACCEPT OFFER
-//                             </BrownButton>
-//                           </>
-//                         }
-//                       </Box>
-//                       <Box
-//                         sx={{
-//                           backgroundColor: "white",
-//                           marginTop: 4,
-//                         }}
-//                       >
-//                         <Typography gutterBottom variant='h5' component='div'>
-//                           Description
-//                         </Typography>
-//                         <Typography gutterBottom variant='body'>
-//                           {items.details}
-//                         </Typography>
-//                       </Box>
-//                       <Box
-//                         sx={{
-//                           backgroundColor: "white",
-//                           marginTop: 4,
-//                         }}
-//                       >
-//                         <Typography gutterBottom variant='h5' component='div'>
-//                           Date Of Offer
-//                         </Typography>
-//                         <Typography gutterBottom variant='body'>
-//                           {new Date(items.expiration).toDateString()}
-//                         </Typography>
-//                       </Box>
-//                     </Grid>
-//                   </Grid>
-//                 </Grid>
-//               </Grid>
-//             </Box>
-//           </>
-//         )
-//       })}
-//     </div>
-//   );
-
-// }

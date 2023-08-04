@@ -61,7 +61,7 @@ export default function AllListings(props) {
         >
           <CardMedia
             component='img'
-            image={listing?.images[0]}
+            image={listing?.images[0].image}
             height='175'
             sx={{ bgcolor: "#f5f5f5", objectFit: "contain" }}
           />
@@ -75,7 +75,7 @@ export default function AllListings(props) {
                 padding: "0px 0px",
               }}
             >
-              {listing.item.item_name}
+              {listing.post.item_id.item_name}
             </Typography>
           </MyContent>
         </Card>
@@ -107,12 +107,12 @@ export default function AllListings(props) {
     >
       {listings?.map((listing) =>
         categoryFilter
-          ? listing.item.category === selectedCategory &&
-            listing.item.item_name
+          ? listing.post.item_id.category === selectedCategory &&
+            listing.post.item_id.item_name
               .toLowerCase()
               .includes(searchValue?.toLowerCase()) &&
             showListing(listing)
-          : listing.item.item_name
+          : listing.post.item_id.item_name
               .toLowerCase()
               .includes(searchValue?.toLowerCase()) && showListing(listing)
       )}
