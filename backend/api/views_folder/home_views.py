@@ -37,7 +37,7 @@ def homepage(request):
             image = Image.objects.filter(item_id=post["item_id"]["id"])
             imageSerializer = ImageSerializer(image,many=True)
             data.append({"post": post,
-                        "images": imageSerializer.data})
+                        "images": [imageSerializer.data[0]]})
         return Response(data, status=status.HTTP_200_OK)
 
 @api_view(['GET'])  # to be refactored
