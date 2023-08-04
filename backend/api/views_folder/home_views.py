@@ -76,7 +76,7 @@ def categoryListing(request, category):
         posts = postSerializer.data
         data = []
         for post in posts:
-            image = Image.objects.filter(item_id=posts["item_id"]["id"])
+            image = Image.objects.filter(item_id=post["item_id"]["id"])
             imageSerializer = ImageSerializer(image,many=True)
             data.append({"post": post,
                         "images": imageSerializer.data})
