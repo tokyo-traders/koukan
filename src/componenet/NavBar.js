@@ -139,7 +139,7 @@ function NavBar(props) {
       <CssBaseline />
       <Box
         sx={{ flexGrow: 1 }}
-        bgcolor={"blue"}
+        // bgcolor={"blue"}
       >
         <AppBar
           position='static'

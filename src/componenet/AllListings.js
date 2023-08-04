@@ -9,8 +9,7 @@ import axios from "./hooks/axios";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
-
-const BASE_URL = "http://127.0.0.1:8000/api";
+import Container from "@mui/material/Container";
 
 const MyContent = styled(CardContent)`
   &:last-child {
@@ -94,28 +93,38 @@ export default function AllListings(props) {
   }, [categoryFilter]);
 
   return (
-    <Grid
-      container
-      width='calc(100vw - 250px)'
-      height='fit-content'
-      marginRight='20px'
-      direction='row'
-      justifyContent='center'
-      alignItems='center'
-      xl={15}
-      spacing={2}
-    >
-      {listings?.map((listing) =>
-        categoryFilter
-          ? listing.post.item_id.category === selectedCategory &&
-            listing.post.item_id.item_name
-              .toLowerCase()
-              .includes(searchValue?.toLowerCase()) &&
-            showListing(listing)
-          : listing.post.item_id.item_name
-              .toLowerCase()
-              .includes(searchValue?.toLowerCase()) && showListing(listing)
-      )}
-    </Grid>
+    <div>
+      <Container
+        sx={{
+          backgroundColor: "white",
+          minWidth: "50vw",
+          height: "150px",
+          marginTop: "10px",
+        }}
+      ></Container>
+      <Grid
+        container
+        width='calc(100vw - 250px)'
+        height='fit-content'
+        marginRight='20px'
+        direction='row'
+        justifyContent='center'
+        alignItems='center'
+        xl={15}
+        spacing={2}
+      >
+        {listings?.map((listing) =>
+          categoryFilter
+            ? listing.post.item_id.category === selectedCategory &&
+              listing.post.item_id.item_name
+                .toLowerCase()
+                .includes(searchValue?.toLowerCase()) &&
+              showListing(listing)
+            : listing.post.item_id.item_name
+                .toLowerCase()
+                .includes(searchValue?.toLowerCase()) && showListing(listing)
+        )}
+      </Grid>
+    </div>
   );
 }

@@ -27,12 +27,14 @@
     outline: none;
 } */
 
-.sidebar {
+/* .sidebar {
   opacity: 1;
   background: #def4f6;
-}
+  border: black;
+} */
 
 .sidebar .sidebar-toggle-btn[aria-pressed="true"] {
   opacity: 1;
-  background-color: #68e7f3;
+  border: black;
+  /* background-color: #68e7f3; */
 }
