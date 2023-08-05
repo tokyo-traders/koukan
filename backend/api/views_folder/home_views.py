@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from django.http import JsonResponse
 from rest_framework import generics, status, viewsets
 from rest_framework.decorators import api_view, action, permission_classes
 from rest_framework.response import Response
@@ -11,27 +10,16 @@ from ..authentication import  auth_state
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from django.conf import settings
-from rest_framework.permissions import IsAuthenticated
-import json
-import base64
-import os
-from django.http import HttpResponse
 
-import jwt
-import datetime
-import io  # delete
 
-from rest_framework.parsers import JSONParser  # delete
-from rest_framework.renderers import JSONRenderer  # delete
 
 
 @api_view(['GET']) 
 def homepage(request):
-    if request.method == "GET": 
-        result = Post.objects.select_related('item_id').filter(visibile=True)
+    if request.method == "GET":
+        result = Post.objects.select_related('item_id').filter(visibile=True)[0: 20]
         postSerializer = PostSerializer(result, many=True)
         posts = postSerializer.data
-        print("😎",posts[0]["item_id"]["id"])
         data = []
         for post in posts:
             image = Image.objects.filter(item_id=post["item_id"]["id"])
