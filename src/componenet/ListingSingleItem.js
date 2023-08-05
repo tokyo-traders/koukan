@@ -253,6 +253,8 @@ export default function ListingSingleItem(props) {
                         backgroundColor: "#f0f0f0",
                         opacity: 0.8,
                         maxHeight: 320,
+                        minHeight: 320,
+                        display: "flex",
                       }}
                     >
                       <img
@@ -266,7 +268,6 @@ export default function ListingSingleItem(props) {
                         key={i}
                         src={`${listing.images[i].image}`}
                       />
-                      //{" "}
                     </div>
                   ))}
                 </Carousel>
