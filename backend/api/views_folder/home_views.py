@@ -75,12 +75,12 @@ def categoryListing(request, category):
         postSerializer = PostSerializer(result, many=True)
         posts = postSerializer.data
         data = []
-        for post in posts:
-            image = Image.objects.filter(item_id=post["item_id"]["id"])
-            imageSerializer = ImageSerializer(image,many=True)
-            data.append({"post": post,
-                        "images": imageSerializer.data})
-        return Response(data, status=status.HTTP_200_OK)
+        # for post in posts:
+        #     image = Image.objects.filter(item_id=post["item_id"]["id"])
+        #     imageSerializer = ImageSerializer(image,many=True)
+        #     data.append({"post": post,
+        #                 "images": imageSerializer.data})
+        return Response(posts, status=status.HTTP_200_OK)
     
 @ api_view(['GET'])
 def search_item(request):
