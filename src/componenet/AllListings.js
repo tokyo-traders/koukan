@@ -21,22 +21,22 @@ export default function AllListings(props) {
   const { searchValue, categoryFilter, categories } = props;
 
   const [listings, setListings] = useState([]);
+  const [totalPages, setTotalpages] = useState(4);
   const [catListings, setCatListings] = useState([]);
   const [diplayListing, setDuisplayListing] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState();
 
   useEffect(() => {
-    // axios.get("http://127.0.0.1:8000/api/homepage").then((res) => {
-    axios.get("/api/homepage").then((res) => {
-      setListings(res.data);
-      console.log(res.data);
+    axios.get(`/api/homepage/category/6`).then((res) => {
+      setCatListings(res.data.data);
+      setTotalpages(res.data.data);
+      console.log(res.data.TotalPages);
     });
   }, []);
 
   useEffect(() => {
-    // axios.get("http://127.0.0.1:8000/api/homepage").then((res) => {
-    axios.get(`/api/homepage/category/4`).then((res) => {
-      setCatListings(res.data);
+    axios.get("/api/homepage").then((res) => {
+      setListings(res.data);
       console.log(res.data);
     });
   }, []);
@@ -45,7 +45,7 @@ export default function AllListings(props) {
   const makeOffer = (obj) => {
     navigate(`/listing/${obj.post.id}`);
   };
-
+  console.log(categories);
   const showListing = (listing, index) => {
     return (
       <div key={index}>
@@ -60,6 +60,7 @@ export default function AllListings(props) {
             mt: 5,
             marginLeft: 3,
             background: "#def4f6",
+            marginTop: 3,
           }}
           onClick={() => {
             if (listing) {
@@ -103,17 +104,52 @@ export default function AllListings(props) {
 
   return (
     <div>
-      <Container
-        sx={{
-          backgroundColor: "white",
+      <div
+        style={{
+          backgroundColor: "#def4f6",
           minWidth: "100%",
-          height: "150px",
-          marginTop: "10px",
+          height: "360px",
+          margin: "10px 0px 0px 0px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "spaceBetween",
+          padding: "0px 0px 0px 0px",
+          boxShadow:
+            "0px 4px 6px rgba(0, 0, 0, 0.1), 0px 8px 24px rgba(0, 0, 0, 0.1)",
         }}
-      ></Container>
+      >
+        <Typography
+          // style={{ backgroundColor: "transparent", opacity: 0.8 }}
+          sx={{
+            fontWeight: "bold",
+            textAlign: "center",
+            padding: "0px 0px",
+            backgroundColor: "transparent",
+            opacity: 0.6,
+          }}
+          variant='h6'
+        >
+          Explore: Travel
+        </Typography>
+        <Container
+          sx={{
+            backgroundColor: "#def4f6",
+            minWidth: "100%",
+            height: "340px",
+            marginBottom: "0px",
+            display: "flex",
+            flexDirection: "row",
+            overflow: "auto",
+            paddingTop: "0px",
+          }}
+        >
+          {catListings?.map((listing) => showListing(listing))}
+        </Container>
+      </div>
       <Grid
         container
         width='100%'
+        minWidth='1600px'
         height='fit-content'
         marginRight='20px'
         direction='row'

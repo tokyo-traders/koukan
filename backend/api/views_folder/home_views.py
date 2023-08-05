@@ -10,14 +10,18 @@ from ..authentication import  auth_state
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from django.conf import settings
-
+import math
 
 
 
 @api_view(['GET']) 
 def homepage(request):
     if request.method == "GET":
-        result = Post.objects.select_related('item_id').filter(visibile=True)[0: 20]
+        page = int(request.query_params.get('page', 1))
+        pageQuery = page * 18
+        visible_posts_count = Post.objects.filter(visibile=True).count()
+        Totalpages = math.ceil(visible_posts_count/18)
+        result = Post.objects.select_related('item_id').filter(visibile=True)[(pageQuery-18): pageQuery]
         postSerializer = PostSerializer(result, many=True)
         posts = postSerializer.data
         data = []
@@ -25,8 +29,9 @@ def homepage(request):
             image = Image.objects.filter(item_id=post["item_id"]["id"])
             imageSerializer = ImageSerializer(image,many=True)
             data.append({"post": post,
-                        "images": [imageSerializer.data[0]]})
-        return Response(data, status=status.HTTP_200_OK)
+                        "images": [imageSerializer.data[0]],
+                        })
+        return Response({"data": data, "TotalPages": Totalpages}, status=status.HTTP_200_OK)
 
 @api_view(['GET'])  # to be refactored
 def userListing(request, userid):

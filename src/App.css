@@ -63,3 +63,12 @@ body {
   width: 220px;
   flex: 0 1 20%;
 }
+
+.thumb {
+  aspect-ratio: 1/1;
+  background-color: #f0f0f0;
+}
+
+.carousel img {
+  height: 100%;
+}
