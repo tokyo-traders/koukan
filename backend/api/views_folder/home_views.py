@@ -81,7 +81,7 @@ def categoryListing(request, category):
             imageData = imageSerializer.data
             data.append({"post": post,
                         "images": imageData})
-        return Response(posts, status=status.HTTP_200_OK)
+        return Response(data, status=status.HTTP_200_OK)
     
 @ api_view(['GET'])
 def search_item(request):
