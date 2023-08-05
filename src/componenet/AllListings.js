@@ -10,6 +10,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import Container from "@mui/material/Container";
+import Pagination from "@mui/material/Pagination";
 
 const MyContent = styled(CardContent)`
   &:last-child {
@@ -21,31 +22,47 @@ export default function AllListings(props) {
   const { searchValue, categoryFilter, categories } = props;
 
   const [listings, setListings] = useState([]);
-  const [totalPages, setTotalpages] = useState(4);
-  const [catListings, setCatListings] = useState([]);
-  const [diplayListing, setDuisplayListing] = useState([]);
+  const [totalPages, setTotalpages] = useState(1);
+  const [page, setPage] = useState(1);
+  const [catListings, setCatListings] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState();
+  const [loading, setLoading] = useState(true);
+  const randomNumber = Math.floor(Math.random() * 10);
 
   useEffect(() => {
-    axios.get(`/api/homepage/category/6`).then((res) => {
-      setCatListings(res.data.data);
-      setTotalpages(res.data.data);
-      console.log(res.data.TotalPages);
-    });
+    if (!catListings) {
+      axios.get(`/api/homepage/category/${randomNumber + 1}`).then((res) => {
+        setCatListings(res.data);
+      });
+    }
   }, []);
 
   useEffect(() => {
-    axios.get("/api/homepage").then((res) => {
-      setListings(res.data);
-      console.log(res.data);
-    });
-  }, []);
+    if (page !== 1) {
+      axios.get(`/api/homepage?page=${page}`).then((res) => {
+        setListings(res.data.data);
+        setTotalpages(res.data.TotalPages);
+        setLoading(false);
+      });
+    } else {
+      axios.get("/api/homepage").then((res) => {
+        setListings(res.data.data);
+        setTotalpages(res.data.TotalPages);
+        setLoading(false);
+      });
+    }
+  }, [page]);
 
   const navigate = useNavigate();
   const makeOffer = (obj) => {
     navigate(`/listing/${obj.post.id}`);
   };
-  console.log(categories);
+
+  const handlepage = (event, value) => {
+    setPage(value);
+    setLoading(true);
+  };
+
   const showListing = (listing, index) => {
     return (
       <div key={index}>
@@ -104,51 +121,68 @@ export default function AllListings(props) {
 
   return (
     <div>
-      <div
-        style={{
-          backgroundColor: "#def4f6",
-          minWidth: "100%",
-          height: "360px",
-          margin: "10px 0px 0px 0px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "spaceBetween",
-          padding: "0px 0px 0px 0px",
-          boxShadow:
-            "0px 4px 6px rgba(0, 0, 0, 0.1), 0px 8px 24px rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <Typography
-          // style={{ backgroundColor: "transparent", opacity: 0.8 }}
-          sx={{
-            fontWeight: "bold",
-            textAlign: "center",
-            padding: "0px 0px",
-            backgroundColor: "transparent",
-            opacity: 0.6,
-          }}
-          variant='h6'
-        >
-          Explore: Travel
-        </Typography>
-        <Container
-          sx={{
-            backgroundColor: "#def4f6",
+      {catListings && categories && (
+        <div
+          style={{
+            background: "#def4f6",
             minWidth: "100%",
-            height: "340px",
-            marginBottom: "0px",
+            height: "360px",
+            margin: "10px 0px 0px 0px",
             display: "flex",
-            flexDirection: "row",
-            overflow: "auto",
-            paddingTop: "0px",
+            flexDirection: "column",
+            alignItems: "spaceBetween",
+            padding: "0px 0px 0px 0px",
+            boxShadow:
+              "0px 4px 6px rgba(0, 0, 0, 0.1), 0px 8px 24px rgba(0, 0, 0, 0.1)",
           }}
         >
-          {catListings?.map((listing) => showListing(listing))}
-        </Container>
-      </div>
+          <Typography
+            sx={{
+              fontWeight: "bold",
+              textAlign: "center",
+              padding: "0px 0px",
+              background: "transparent",
+              opacity: 0.6,
+            }}
+            variant='h6'
+          >
+            Explore:{" "}
+            {
+              categories[catListings[0]?.post?.item_id?.category - 1]
+                .category_name
+            }
+          </Typography>
+          <Container
+            sx={{
+              background: "#def4f6",
+              minWidth: "100%",
+              height: "340px",
+              marginBottom: "0px",
+              display: "flex",
+              flexDirection: "row",
+              overflow: "auto",
+              paddingTop: "0px",
+            }}
+          >
+            {catListings?.map((listing) => showListing(listing))}
+          </Container>
+        </div>
+      )}
+      <Pagination
+        count={totalPages}
+        variant='outlined'
+        shape='rounded'
+        page={page}
+        onChange={handlepage}
+        style={{
+          width: "fit-content",
+          margin: "20px auto",
+        }}
+      />
       <Grid
         container
         width='100%'
+        minHeight='500px'
         minWidth='1600px'
         height='fit-content'
         marginRight='20px'
@@ -158,18 +192,48 @@ export default function AllListings(props) {
         xl={15}
         spacing={2}
       >
-        {listings?.map((listing) =>
-          categoryFilter
-            ? listing.post.item_id.category === selectedCategory &&
-              listing.post.item_id.item_name
-                .toLowerCase()
-                .includes(searchValue?.toLowerCase()) &&
-              showListing(listing)
-            : listing.post.item_id.item_name
-                .toLowerCase()
-                .includes(searchValue?.toLowerCase()) && showListing(listing)
+        {loading ? (
+          <img
+            src='loading-green-loading.gif'
+            style={{
+              height: "250px",
+              width: "250px",
+              opacity: 0.1,
+              margin: "auto",
+            }}
+          />
+        ) : (
+          listings?.map((listing) =>
+            categoryFilter
+              ? listing.post.item_id.category === selectedCategory &&
+                listing.post.item_id.item_name
+                  .toLowerCase()
+                  .includes(searchValue?.toLowerCase()) &&
+                showListing(listing)
+              : listing.post.item_id.item_name
+                  .toLowerCase()
+                  .includes(searchValue?.toLowerCase()) && showListing(listing)
+          )
         )}
       </Grid>
+      {/* <div
+        style={{
+          minWidth: "400px",
+
+          margin: "auto",
+        }}
+      > */}
+      <Pagination
+        count={totalPages}
+        variant='outlined'
+        shape='rounded'
+        page={page}
+        onChange={handlepage}
+        style={{
+          width: "fit-content",
+          margin: "20px auto",
+        }}
+      />
     </div>
   );
 }
