@@ -147,12 +147,12 @@ export default function AllListings(props) {
             variant='h6'
           >
             Explore:{" "}
-            {
+            {categories &&
               categories[catListings[0]?.post?.item_id?.category - 1]
-                .category_name
-            }
+                ?.category_name}
           </Typography>
           <Container
+            className='random'
             sx={{
               background: "#def4f6",
               minWidth: "100%",
@@ -168,7 +168,7 @@ export default function AllListings(props) {
           </Container>
         </div>
       )}
-      <Pagination
+      {/* <Pagination
         count={totalPages}
         variant='outlined'
         shape='rounded'
@@ -178,7 +178,20 @@ export default function AllListings(props) {
           width: "fit-content",
           margin: "20px auto",
         }}
-      />
+      /> */}
+      <Typography
+        variant='h4'
+        sx={{
+          fontWeight: "bold",
+          textAlign: "center",
+          padding: "0px 0px",
+          background: "transparent",
+          opacity: 0.6,
+          margin: "30px 0px 15px 0px",
+        }}
+      >
+        See What People Are Trading Today
+      </Typography>
       <Grid
         container
         width='100%'
@@ -196,9 +209,9 @@ export default function AllListings(props) {
           <img
             src='loading-green-loading.gif'
             style={{
-              height: "250px",
-              width: "250px",
-              opacity: 0.1,
+              height: "150px",
+              width: "150px",
+              opacity: 0.2,
               margin: "auto",
             }}
           />
