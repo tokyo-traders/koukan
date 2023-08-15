@@ -49,7 +49,7 @@ function Sidebar(props) {
             }}
             value={""}
             onClick={(e) => {
-              handleCategoryFilter(e);
+              handleCategoryFilter(null);
               setSelected(null);
             }}
           >
@@ -71,8 +71,7 @@ function Sidebar(props) {
               key={index}
               value={category.category_name}
               onClick={(e) => {
-                handleCategoryFilter(e);
-                console.log(e);
+                handleCategoryFilter(category);
                 setSelected(category.category_name);
               }}
             >

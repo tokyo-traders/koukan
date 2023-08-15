@@ -32,7 +32,7 @@ export default function AllListings(props) {
   useEffect(() => {
     if (!catListings) {
       axios.get(`/api/homepage/category/${randomNumber + 1}`).then((res) => {
-        setCatListings(res.data);
+        setCatListings(res.data.data);
       });
     }
   }, []);
@@ -168,17 +168,6 @@ export default function AllListings(props) {
           </Container>
         </div>
       )}
-      {/* <Pagination
-        count={totalPages}
-        variant='outlined'
-        shape='rounded'
-        page={page}
-        onChange={handlepage}
-        style={{
-          width: "fit-content",
-          margin: "20px auto",
-        }}
-      /> */}
       <Typography
         variant='h4'
         sx={{
@@ -196,7 +185,6 @@ export default function AllListings(props) {
         container
         width='100%'
         minHeight='500px'
-        minWidth='1600px'
         height='fit-content'
         marginRight='20px'
         direction='row'
@@ -216,26 +204,20 @@ export default function AllListings(props) {
             }}
           />
         ) : (
-          listings?.map((listing) =>
-            categoryFilter
-              ? listing.post.item_id.category === selectedCategory &&
-                listing.post.item_id.item_name
-                  .toLowerCase()
-                  .includes(searchValue?.toLowerCase()) &&
-                showListing(listing)
-              : listing.post.item_id.item_name
-                  .toLowerCase()
-                  .includes(searchValue?.toLowerCase()) && showListing(listing)
-          )
+          listings?.map((listing) => showListing(listing))
+          // listings?.map((listing) =>
+          //   categoryFilter
+          //     ? listing.post.item_id.category === selectedCategory &&
+          //       listing.post.item_id.item_name
+          //         .toLowerCase()
+          //         .includes(searchValue?.toLowerCase()) &&
+          //       showListing(listing)
+          //     : listing.post.item_id.item_name
+          //         .toLowerCase()
+          //         .includes(searchValue?.toLowerCase()) && showListing(listing)
+          // )
         )}
       </Grid>
-      {/* <div
-        style={{
-          minWidth: "400px",
-
-          margin: "auto",
-        }}
-      > */}
       <Pagination
         count={totalPages}
         variant='outlined'

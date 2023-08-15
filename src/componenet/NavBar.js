@@ -158,6 +158,9 @@ function NavBar(props) {
               color='#3cd64b'
               onClick={home}
               underline='none'
+              style={{
+                cursor: "pointer",
+              }}
             >
               <div>TOKYO</div>
               <div>TRADERS</div>

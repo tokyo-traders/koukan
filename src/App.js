@@ -34,9 +34,7 @@ function App() {
   };
 
   const handleCategoryFilter = (event) => {
-    event.target.innerHTML !== "All Categories"
-      ? setCategoryFilter(event.target.innerHTML)
-      : setCategoryFilter("");
+    setCategoryFilter(event);
   };
 
   return (
