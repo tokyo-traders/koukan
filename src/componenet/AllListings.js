@@ -38,20 +38,24 @@ export default function AllListings(props) {
   }, []);
 
   useEffect(() => {
-    if (page !== 1) {
+    if (categoryFilter) {
+      setLoading(true);
+      axios
+        .get(`/api/homepage/category/${categoryFilter.id}?page=${1}`)
+        .then((res) => {
+          setListings(res.data.data);
+          setTotalpages(res.data.TotalPages);
+          setLoading(false);
+        });
+    } else {
+      setLoading(true);
       axios.get(`/api/homepage?page=${page}`).then((res) => {
         setListings(res.data.data);
         setTotalpages(res.data.TotalPages);
         setLoading(false);
       });
-    } else {
-      axios.get("/api/homepage").then((res) => {
-        setListings(res.data.data);
-        setTotalpages(res.data.TotalPages);
-        setLoading(false);
-      });
     }
-  }, [page]);
+  }, [page, categoryFilter]);
 
   const navigate = useNavigate();
   const makeOffer = (obj) => {
@@ -168,19 +172,35 @@ export default function AllListings(props) {
           </Container>
         </div>
       )}
-      <Typography
-        variant='h4'
-        sx={{
-          fontWeight: "bold",
-          textAlign: "center",
-          padding: "0px 0px",
-          background: "transparent",
-          opacity: 0.6,
-          margin: "30px 0px 15px 0px",
-        }}
-      >
-        See What People Are Trading Today
-      </Typography>
+      {categoryFilter ? (
+        <Typography
+          variant='h4'
+          sx={{
+            fontWeight: "bold",
+            textAlign: "center",
+            padding: "0px 0px",
+            background: "transparent",
+            opacity: 0.6,
+            margin: "30px 0px 15px 0px",
+          }}
+        >
+          {categoryFilter.category_name}
+        </Typography>
+      ) : (
+        <Typography
+          variant='h4'
+          sx={{
+            fontWeight: "bold",
+            textAlign: "center",
+            padding: "0px 0px",
+            background: "transparent",
+            opacity: 0.6,
+            margin: "30px 0px 15px 0px",
+          }}
+        >
+          See What People Are Trading Today
+        </Typography>
+      )}
       <Grid
         container
         width='100%'
@@ -205,17 +225,6 @@ export default function AllListings(props) {
           />
         ) : (
           listings?.map((listing) => showListing(listing))
-          // listings?.map((listing) =>
-          //   categoryFilter
-          //     ? listing.post.item_id.category === selectedCategory &&
-          //       listing.post.item_id.item_name
-          //         .toLowerCase()
-          //         .includes(searchValue?.toLowerCase()) &&
-          //       showListing(listing)
-          //     : listing.post.item_id.item_name
-          //         .toLowerCase()
-          //         .includes(searchValue?.toLowerCase()) && showListing(listing)
-          // )
         )}
       </Grid>
       <Pagination

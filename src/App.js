@@ -25,7 +25,7 @@ import { Category } from "@mui/icons-material";
 import PersistLogin from "./componenet/User/PersistLogin";
 
 function App() {
-  const [categoryFilter, setCategoryFilter] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [categories, setCategories] = useState([]);
 
@@ -34,6 +34,7 @@ function App() {
   };
 
   const handleCategoryFilter = (event) => {
+    // console.log("😁", event);
     setCategoryFilter(event);
   };
 
