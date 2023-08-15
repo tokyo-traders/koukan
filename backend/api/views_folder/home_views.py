@@ -32,6 +32,26 @@ def homepage(request):
                         "images": [imageSerializer.data[0]],
                         })
         return Response({"data": data, "TotalPages": Totalpages}, status=status.HTTP_200_OK)
+    
+@api_view(['GET'])
+def categoryListing(request, category):
+    if request.method == "GET":
+        page = int(request.query_params.get('page', 1))
+        pageQuery = page * 18
+        visible_posts_count = Post.objects.filter(visibile=True,item_id__category=category).count()
+        result = Post.objects.select_related('item_id').filter(visibile=True,item_id__category=category)[(pageQuery-18): pageQuery]
+        Totalpages = math.ceil(visible_posts_count/18)
+        postSerializer = PostSerializer(result, many=True)
+        posts = postSerializer.data
+        data = []
+        for post in posts:
+            image = Image.objects.filter(item_id=post["item_id"]["id"])
+            imageSerializer = ImageSerializer(image,many=True)
+            imageData = imageSerializer.data
+            data.append({"post": post,
+                        "images": imageData})
+        return Response({"data": data, "TotalPages": Totalpages}, status=status.HTTP_200_OK)
+    
 
 @api_view(['GET'])  # to be refactored
 def userListing(request, userid):
@@ -61,21 +81,7 @@ def listingItem(request, postId):
         postData["images"] = (image)
         return Response(postData, status=status.HTTP_200_OK)
     
-@api_view(['GET'])
-def categoryListing(request, category):
-    if request.method == "GET": 
-        result = Post.objects.select_related('item_id').filter(visibile=True,item_id__category=category)
-        postSerializer = PostSerializer(result, many=True)
-        posts = postSerializer.data
-        data = []
-        for post in posts:
-            image = Image.objects.filter(item_id=post["item_id"]["id"])
-            imageSerializer = ImageSerializer(image,many=True)
-            imageData = imageSerializer.data
-            data.append({"post": post,
-                        "images": imageData})
-        return Response(data, status=status.HTTP_200_OK)
-    
+
 @ api_view(['GET'])
 def search_item(request):
     if request.method == "GET":
@@ -87,8 +93,6 @@ def search_item(request):
             item = Item.objects.get(pk=itemID)
             itemSerializer = ItemSerializer(item)
             data.append(itemSerializer.data['item_name'])
-            print("this is item serializer", itemSerializer.data)
-            print("this is the data", data)
         return Response(data, status=status.HTTP_200_OK)
 
 
