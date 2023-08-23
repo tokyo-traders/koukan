@@ -34,7 +34,6 @@ function App() {
   };
 
   const handleCategoryFilter = (event) => {
-    // console.log("😁", event);
     setCategoryFilter(event);
   };
 

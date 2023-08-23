@@ -17,6 +17,10 @@ class ItemSerializer(serializers.ModelSerializer):
         model = Item
         fields = "__all__"
 
+class SearchItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Item
+        fields = ["item_name"]
 
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -38,6 +42,14 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = "__all__"
+
+
+class SearchPostSerializer(serializers.ModelSerializer):
+    item_id = SearchItemSerializer()
+
+    class Meta:
+        model = Post
+        fields = ["id",'item_id']
 
 class UserPostSerializer(serializers.ModelSerializer):
     item_id = ItemSerializer()

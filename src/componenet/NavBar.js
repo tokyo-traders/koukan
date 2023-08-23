@@ -1,18 +1,20 @@
-import * as React from "react";
-import { useState, useEffect, useCallback, useContext } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import Link from "@mui/material/Link";
-import { createTheme, CssBaseline, IconButton, Menu } from "@mui/material";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import axios from "./hooks/axios";
+import { CssBaseline, IconButton, Menu } from "@mui/material";
 import { useNavigate, useLocation, Outlet } from "react-router-dom";
-import { ThemeProvider } from "styled-components";
-import { hover } from "@testing-library/user-event/dist/hover";
+
 import MenuItem from "@mui/material/MenuItem";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import useAuth from "./hooks/useAuth";
@@ -24,15 +26,7 @@ const GreenButton = styled(Button)(() => ({
   "&:hover": {
     background: "#32B13E",
   },
-  // padding: "15px 36px",
-  // fontSize: "14px"
 }));
-
-const customTheme = createTheme({
-  root: {
-    backgroundColor: "#def4f6",
-  },
-});
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -80,11 +74,45 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 function NavBar(props) {
-  const { setUserState, handleSearchChange } = props;
+  // const { setUserState, handleSearchChange } = props;
   const { setAuth, auth } = useAuth();
   const user = auth?.user;
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [search, setSearch] = useState("");
+  const [searchView, setSearchView] = useState(true);
+  const [searchSuccess, SetSearchSuccess] = useState(true);
+  const [searchValue, setSearchValue] = useState([]);
+
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+    setSearchView(true);
+  };
+
+  const handleView = (e) => {
+    if (e.target.value) {
+      setSearch(e.target.value);
+      setSearchView(true);
+    }
+  };
+
+  useEffect(() => {
+    if (search.length) {
+      axios
+        .get(`/api/search?search=${search}`)
+        .then((res) => {
+          console.log(res.data);
+          setSearchValue(res.data);
+        })
+        .then(() => {
+          SetSearchSuccess(false);
+        });
+    } else {
+      SetSearchSuccess(true);
+      setSearchView(false);
+    }
+  }, [search]);
+
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -107,10 +135,6 @@ function NavBar(props) {
     }
   }, [navigate]);
 
-  // const displayUser = () => {
-  //   console.log(user)
-  // }
-
   const logOut = () => {
     setAuth({});
     home();
@@ -124,23 +148,15 @@ function NavBar(props) {
     setAnchorEl(null);
   };
 
-  // const handleSearchChange = (event) => {
-  //   setSearchValue(event.target.value);
-  // }
-
-  // const handleSearchSubmit = (event) => {
-  //   event.preventDefault();
-  //   props.onSearch(searchValue);
-  // }
-
+  const handleBlur = () => {
+    setTimeout(() => {
+      setSearchView(false);
+    }, 150);
+  };
   return (
     <>
-      {/* <ThemeProvider theme={customTheme}> */}
       <CssBaseline />
-      <Box
-        sx={{ flexGrow: 1 }}
-        // bgcolor={"blue"}
-      >
+      <Box sx={{ flexGrow: 1 }}>
         <AppBar
           position='static'
           sx={{ background: "#def4f6" }}
@@ -148,6 +164,8 @@ function NavBar(props) {
           <Toolbar
             sx={{
               justifyContent: "space-between",
+              maxHeight: "90px",
+              minHeight: "90px",
             }}
           >
             <Link
@@ -172,9 +190,70 @@ function NavBar(props) {
               <StyledInputBase
                 placeholder='Looking for something?'
                 inputProps={{ "aria-label": "search" }}
-                onChange={handleSearchChange}
+                value={search}
+                onChange={handleSearch}
+                onClick={handleView}
+                onBlur={handleBlur}
               />
             </Search>
+            {searchView && (
+              <Box
+                sx={{
+                  position: "absolute",
+                  left: "50%",
+                  top: "62px",
+                  marginLeft: "-210px",
+                  color: "black",
+                  minWidth: "460px",
+                  bgcolor: "background.paper",
+                  zIndex: 9999,
+                  borderRadius: "10px",
+                }}
+              >
+                <List>
+                  {searchSuccess ? (
+                    <ListItem disablePadding>
+                      <img
+                        src='loading-green-loading.gif'
+                        style={{
+                          height: "30px",
+                          width: "30px",
+                          opacity: 0.2,
+                          margin: "auto",
+                        }}
+                      />
+                    </ListItem>
+                  ) : (
+                    <>
+                      {!searchValue.length ? (
+                        <ListItem disablePadding>
+                          <ListItemButton onClick={() => setSearch("")}>
+                            <ListItemText primary="Oop's we don't have that" />
+                          </ListItemButton>
+                        </ListItem>
+                      ) : (
+                        searchValue.map((item) => {
+                          return (
+                            <ListItem disablePadding>
+                              <ListItemButton
+                                onClick={() => {
+                                  setSearch("");
+                                  navigate(`/listing/${item.id}`);
+                                }}
+                              >
+                                <ListItemText
+                                  primary={item.item_id.item_name}
+                                />
+                              </ListItemButton>
+                            </ListItem>
+                          );
+                        })
+                      )}
+                    </>
+                  )}
+                </List>
+              </Box>
+            )}
             {!user ? (
               <GreenButton
                 variant='contained'
@@ -186,7 +265,7 @@ function NavBar(props) {
               <div>
                 <span
                   style={{
-                    color: "black",
+                    // color: "black",
                     fontFamily: "Roboto Slab",
                     color: "#332925",
                   }}
@@ -203,7 +282,6 @@ function NavBar(props) {
                 >
                   <AccountCircle sx={{ fontSize: "40px" }} />
                 </IconButton>
-
                 <Menu
                   id='menu-appbar'
                   anchorEl={anchorEl}
@@ -238,7 +316,6 @@ function NavBar(props) {
         </AppBar>
       </Box>
       <Outlet />
-      {/* </ThemeProvider> */}
     </>
   );
 }

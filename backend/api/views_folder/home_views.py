@@ -3,7 +3,7 @@ from rest_framework import generics, status, viewsets
 from rest_framework.decorators import api_view, action, permission_classes
 from rest_framework.response import Response
 from rest_framework.authentication import get_authorization_header
-from ..serializers import UserSerializer, ItemSerializer, ImageSerializer, MultipleImageSerializer,UserPostSerializer, PostSerializer, OfferSerializer, CategoriesSerializer, ReportedUserSerializer, PostCategoriesSerializer
+from ..serializers import UserSerializer, ItemSerializer, ImageSerializer, MultipleImageSerializer,SearchPostSerializer,UserPostSerializer, PostSerializer, OfferSerializer, CategoriesSerializer, ReportedUserSerializer, PostCategoriesSerializer
 from ..models import User, Item, Image, Post, Offer, Categories, ReportedUser, PostCategories
 from ..utils import Util
 from ..authentication import  auth_state
@@ -52,8 +52,16 @@ def categoryListing(request, category):
                         "images": imageData})
         return Response({"data": data, "TotalPages": Totalpages}, status=status.HTTP_200_OK)
     
+@api_view(['GET'])
+def search(request):
+    if request.method == "GET":
+        search = str(request.query_params.get('search'))
+        result = Post.objects.select_related('item_id').filter(visibile=True, item_id__item_name__icontains=search)
+        postSerializer = SearchPostSerializer(result, many=True)
+        posts = postSerializer.data
+        return Response(posts, status=status.HTTP_200_OK)
 
-@api_view(['GET'])  # to be refactored
+@api_view(['GET'])
 def userListing(request, userid):
     if request.method == "GET": 
         posts = Post.objects.filter(visibile=True, user_id=userid)

@@ -156,66 +156,13 @@ export default function ListingSingleItem(props) {
   useEffect(() => {
     if (listingId) {
       axios.get(`/api/listing/${listingId}`).then((response) => {
-        console.log(response.data);
         setListing(response.data);
       });
     }
-  }, []);
+  }, [listingId]);
 
-  // useEffect(() => {
-  //   const getOffers = async () => {
-  //     let response = await axios.get(`/api/create-offer`);
-  //     console.log(response.data.filter((item) => item.post_id === listingId));
-  //     setOffersMade(response.data.filter((item) => item.post_id === listingId));
-  //   };
-  //   getOffers();
-  // }, []);
-
-  // this is for offers please uncomment
-  // useEffect(() => {
-  //   const getItem = async () => {
-  //     let responseArray = offersMade.map((offer) => {
-  //       return axios.get(`/api/all-item/${offer.offered_item}`);
-  //     });
-
-  //     Promise.all(responseArray)
-  //       .then((res) => {
-  //         console.log(res);
-  //         return res.map((item) => {
-  //           console.log(item.data);
-  //           return item.data[0];
-  //         });
-  //       })
-  //       .then((res) => {
-  //         const items = res.map((item) => {
-  //           return { ...item, model: false };
-  //         });
-  //         console.log(items);
-  //         return items;
-  //       })
-  //       .then((res) => setOffersItems(res));
-
-  //     return responseArray;
-  //   };
-
-  //   if (offersMade) {
-  //     getItem();
-  //   }
-  // }, [offersMade]);
-
-  // console.log(listing)
-  // const data = async () => {
-  //   const arr = []
-  //   for (let i of listing.images) {
-  //     let img = { image: listing.images[i], caption: `pic N. ${i}` }
-  //     await img.json()
-  //     arr.push(img)
-  //   }
-  //   return arr
-  // }
   return (
     <div>
-      {/* <Box sx={{ width: '50%', marginLeft: '30%', marginTop: 2, display: 'flex', flexDirection: 'column' }}> */}
       <Box
         sx={{
           width: "70%",
