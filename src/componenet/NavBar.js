@@ -199,6 +199,7 @@ function NavBar(props) {
             </Search>
             {searchView && (
               <Box
+                className='scrollBar'
                 sx={{
                   position: "absolute",
                   left: "50%",
@@ -207,6 +208,9 @@ function NavBar(props) {
                   color: "black",
                   minWidth: "460px",
                   maxWidth: "460px",
+                  maxHeight: "85vh",
+                  overflowY: "scroll",
+                  overflowX: "hidden",
                   bgcolor: "background.paper",
                   zIndex: 9999,
                   borderRadius: "10px",

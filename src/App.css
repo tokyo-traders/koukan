@@ -45,3 +45,16 @@ body {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   background-color: #b3d9db;
 }
+
+.scrollBar {
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer */
+
+  /* Hide the scrollbar thumb for WebKit browsers */
+  &::-webkit-scrollbar {
+    width: 0.5em;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
+}
