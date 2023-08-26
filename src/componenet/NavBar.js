@@ -12,6 +12,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import axios from "./hooks/axios";
+import "../App.css";
 import { CssBaseline, IconButton, Menu } from "@mui/material";
 import { useNavigate, useLocation, Outlet } from "react-router-dom";
 
@@ -205,6 +206,7 @@ function NavBar(props) {
                   marginLeft: "-210px",
                   color: "black",
                   minWidth: "460px",
+                  maxWidth: "460px",
                   bgcolor: "background.paper",
                   zIndex: 9999,
                   borderRadius: "10px",
@@ -242,7 +244,11 @@ function NavBar(props) {
                                 }}
                               >
                                 <ListItemText
-                                  primary={item.item_id.item_name}
+                                  primary={
+                                    <span className='inlineList'>
+                                      {item.item_id.item_name}
+                                    </span>
+                                  }
                                 />
                               </ListItemButton>
                             </ListItem>
