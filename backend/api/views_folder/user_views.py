@@ -8,7 +8,7 @@ from rest_framework.authentication import get_authorization_header
 from rest_framework.permissions import IsAuthenticated
 from ..serializers import UserSerializer, ItemSerializer, ImageSerializer, MultipleImageSerializer, PostSerializer, OfferSerializer, CategoriesSerializer, ReportedUserSerializer, PostCategoriesSerializer
 from ..models import User, Item, Image, Post, Offer, Categories, ReportedUser, PostCategories
-from ..authentication import create_access_token, create_refresh_token, decode_access_token, decode_refresh_token, auth_state
+from ..authentication import create_access_token, create_refresh_token, decode_access_token, decode_refresh_token
 from ..utils import Util
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
@@ -88,7 +88,6 @@ def user_login(request):
     elif request.method == "POST":
         password = request.data["password"]
         email = request.data["email"]
-        print("i made it 😁", password, email)
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:

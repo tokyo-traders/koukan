@@ -37,6 +37,7 @@ def set_pending(request):
                 serializer.save()
                 return Response("saved", status=status.HTTP_200_OK)
             return Response("did not save")
+        return Response(status=status.HTTP_403_FORBIDDEN)
         
 @ api_view(['GET'])
 def accepted_trade(request, userId):
@@ -92,6 +93,7 @@ def accepted_trade(request, userId):
         auth = auth_state(request)
         if auth:
             return Response(postData, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_403_FORBIDDEN)
     
 
 @api_view(['PUT', 'POST'])
@@ -121,6 +123,7 @@ def item_handover(request):
                 listedPost.delete()
                 return Response("swapped", status=status.HTTP_200_OK)
             return Response(item_Serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_403_FORBIDDEN)
 
 
 @api_view(['GET'])
@@ -165,18 +168,16 @@ def all_item(request, itemid):
                     'user_id': itemSerializer.data['user_id']
                     })
             return Response(data)
+        return Response(status=status.HTTP_403_FORBIDDEN)
 
 
 # All items of a user
 @api_view(['GET'])
 def newall_item(request, userid):
-
     try:
         items = Item.objects.filter(user_id=userid).all()
-        # images = Image.objects.all()
     except Item.DoesNotExist or Image.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-
     if request.method == "GET":
         auth = auth_state(request)
         if auth:
@@ -195,3 +196,4 @@ def newall_item(request, userid):
                     
                 })
             return Response(data)
+        return Response(status=status.HTTP_403_FORBIDDEN)

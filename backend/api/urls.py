@@ -13,8 +13,6 @@ from django.conf.urls.static import static
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-# router.register('image', ImageView)
-# router.register('image/multiple_upload',ImageView)
 
 urlpatterns = [
     #user_views
@@ -24,7 +22,6 @@ urlpatterns = [
     path('user/refresh', user_refresh),
     path('user/logout', user_logout),
 
-
     #item_views
     # to GET and POST all the item objects
     path('item/<int:userid>', item_list),
@@ -32,7 +29,6 @@ urlpatterns = [
     path('item-edit/<int:itemId>', item_edit),
     # to get the images path with GET and DELETE method only
     path('item-image/<int:itemId>', image_list),
-
 
     # Handover_views
     path('SetPending', set_pending),
@@ -68,8 +64,6 @@ urlpatterns = [
     path('currentUserScore/<int:userId>', currentUser_review),
     path('sendUserReview/<int:userId>', sendUserReview),
     path('send-review/<int:userIdReview>', send_review)
-
-
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 #

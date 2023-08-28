@@ -281,3 +281,4 @@ def send_review(request, userIdReview):
                 return Response("review sent succesfully", status=status.HTTP_202_ACCEPTED)
             else:
                 return Response('wrong review', status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_403_FORBIDDEN)

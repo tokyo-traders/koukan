@@ -50,6 +50,7 @@ def create_post(request):
             else:
                 error = {"error": "You have failed to create a post properly"}
                 return Response(error, status=status.HTTP_406_NOT_ACCEPTABLE)
+    return Response(status=status.HTTP_403_FORBIDDEN)
             
 
 @ api_view(['GET', 'PUT', 'DELETE'])
@@ -99,6 +100,7 @@ def create_offer(request):
             else:
                 error = {"error": "You have failed to create an offer properly"}
                 return Response(error, status=status.HTTP_406_NOT_ACCEPTABLE)
+        return Response(status=status.HTTP_403_FORBIDDEN)
 
 
 @ api_view(['GET', 'PUT', 'DELETE'])

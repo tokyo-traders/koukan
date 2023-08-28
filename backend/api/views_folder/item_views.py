@@ -70,6 +70,7 @@ def item_edit(request, itemId):
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_403_FORBIDDEN)
     if request.method == 'DELETE':
         auth = auth_state(request)
         if auth:
@@ -81,6 +82,7 @@ def item_edit(request, itemId):
                 return Response(message, status=status.HTTP_204_NO_CONTENT)
             except Item.DoesNotExist:
                 return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(status=status.HTTP_403_FORBIDDEN)
 
 
 
