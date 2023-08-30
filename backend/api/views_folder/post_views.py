@@ -32,10 +32,12 @@ def create_post(request):
             serializer = PostSerializer(post, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         elif request.method == "POST":
+            print(request.data["post"])
             postSerializer = PostSerializer(data=request.data["post"])
             if postSerializer.is_valid():
                 postSerializer.save()
                 postSerializer.data["id"]
+                print(postSerializer.data["id"])
                 for key in request.data["categories"]:
                     if request.data["categories"][key]:
                         categ = {}

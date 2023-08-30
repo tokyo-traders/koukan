@@ -22,12 +22,22 @@ import UserOfferList from "./componenet/UserOffersList";
 import UserSingleOffer from "./componenet/UserSingleOffer";
 import useAuth from "./componenet/hooks/useAuth";
 import { Category } from "@mui/icons-material";
+import axios from "./componenet/hooks/axios";
 import PersistLogin from "./componenet/User/PersistLogin";
 
 function App() {
   const [categoryFilter, setCategoryFilter] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const getCategories = async () => {
+      const response = await axios("/api/categories-list");
+      setCategories(response.data);
+      console.log(response.data);
+    };
+    getCategories();
+  }, []);
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);

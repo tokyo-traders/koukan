@@ -22,7 +22,6 @@ function UserPostList() {
 
   useEffect(() => {
     axios.get(`/api/homepage/${user.id}`).then((res) => {
-      console.log(user);
       setListings(res.data);
     });
   }, []);
@@ -65,7 +64,7 @@ function UserPostList() {
             <CardMedia
               component='img'
               sx={{ objectFit: "contain", bgcolor: "#f5f5f5" }}
-              image={item.images[0]}
+              image={item?.images[0].image}
               height='150'
             />
             <CardContent>

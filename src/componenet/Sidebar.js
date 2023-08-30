@@ -4,20 +4,12 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
-import axios from "./hooks/axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./Sidebar.css";
 
 function Sidebar(props) {
-  const { handleCategoryFilter, categories, setCategories } = props;
+  const { handleCategoryFilter, categories } = props;
   const [selected, setSelected] = useState(null);
-  useEffect(() => {
-    const getCategories = async () => {
-      const response = await axios("/api/categories-list");
-      setCategories(response.data);
-    };
-    getCategories();
-  }, []);
 
   return (
     <>

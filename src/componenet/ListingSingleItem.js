@@ -156,6 +156,7 @@ export default function ListingSingleItem(props) {
   useEffect(() => {
     if (listingId) {
       axios.get(`/api/listing/${listingId}`).then((response) => {
+        console.log(response.data);
         setListing(response.data);
       });
     }
@@ -375,10 +376,8 @@ export default function ListingSingleItem(props) {
                       categories &&
                       listing?.categories?.map((category, index) => (
                         <Chip
-                          label={
-                            categories[category.categories_id - 1]
-                              ?.category_name
-                          }
+                          label={categories[category.id - 1]?.category_name}
+                          // label={categories[8]?.category_name}
                         />
                       ))}
                   </Grid>
