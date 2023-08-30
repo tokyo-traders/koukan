@@ -10,15 +10,10 @@ import { CardActionArea } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import useAuth from "./hooks/useAuth";
 import useAxiosPrivate from "./hooks/axiosPrivate";
-
 import Divider from "@mui/material/Divider";
-
 import Container from "@mui/material/Container";
 import { styled } from "@mui/material/styles";
-
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-
-const BASE_URL = "http://127.0.0.1:8000/api";
 
 const BrownButton = styled(Button)(() => ({
   backgroundColor: "#4d3e38",
@@ -27,7 +22,6 @@ const BrownButton = styled(Button)(() => ({
   "&:hover": {
     background: "#332925",
   },
-  // padding: "15px 36px",
   fontSize: "16px",
 }));
 
@@ -70,45 +64,41 @@ function OfferForm(props) {
   useEffect(() => {
     if (user) {
       axiosPrivate.get(`/api/all-info/${user.id}`).then((response) => {
+        console.log("all info", response.data);
         setItemInfo([...response.data]);
       });
     }
-    if (listingId) {
+  }, [user]);
+
+  useEffect(() => {
+    if (listingId && categories) {
       axiosPrivate
         .get(`/api/listing/${listingId}`)
         .then((response) => {
-          setListing(response.data[0]);
-          let safe = response.data[0].categories.map((category) => {
+          setListing(response.data);
+          console.log(response.data);
+          let safe = response.data.categories.map((category) => {
             return category.categories_id;
           });
           SetAccptedCat(safe);
         })
         .then(() => console.log(acceptedCat));
     }
-  }, [user]);
+  }, [listingId]);
 
-  console.log("LISTING", listing);
-  console.log("ITEM INFO", itemInfo);
   const makeOffer = async () => {
-    console.log(offer.itemID);
-    console.log(listing.post.id);
     const offerObj = {
-      post_id: listing.post.id,
+      post_id: listing.id,
       offered_item: offer.itemID,
       acceptance: false,
     };
-    console.log(offerObj);
-    const response = await axiosPrivate.post(
-      "/api/create-offer",
-      JSON.stringify(offerObj),
-      {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      }
-    );
 
-    console.log(JSON.stringify(response.data));
-    myPage();
+    const response = await axiosPrivate.post("/api/create-offer", offerObj, {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    });
+    console.log(response.data);
+    // myPage();
   };
 
   return (
@@ -190,7 +180,7 @@ function OfferForm(props) {
                       // sx={{maxWidth: 200, objectFit:"contain",  bgcolor: '#f5f5f5',}}
                       sx={{ objectFit: "contain", bgcolor: "#f5f5f5" }}
                       component='img'
-                      image={item.itemImages[0]}
+                      image={item.itemImages[0].image}
                       height='150'
                     />
                   </CardActionArea>
@@ -257,18 +247,16 @@ function OfferForm(props) {
                 <CardMedia
                   sx={{ objectFit: "contain", bgcolor: "#f5f5f5" }}
                   component='img'
-                  image={listing && listing.images[0]}
+                  image={listing?.images[0].image}
                   height='150'
                 />
                 <CardContent>
-                  <Typography nowrap>
-                    {listing && listing.item.item_name}
-                  </Typography>
+                  <Typography nowrap>{listing?.item_id.item_name}</Typography>
                   <Typography
                     variant='body2'
                     color='text.secondary'
                   >
-                    Owner : {listing && listing.username}
+                    Owner : {listing?.user_id.username}
                   </Typography>
                   {/* <Typography variant="body2" color="text.secondary">
                   {listing && listing.item.details}
@@ -314,11 +302,11 @@ function OfferForm(props) {
                   <CardMedia
                     sx={{ objectFit: "contain", bgcolor: "#f5f5f5" }}
                     component='img'
-                    image={offer?.itemImages[0]}
+                    image={offer?.itemImages[0].image}
                     height='150'
                   />
                   <CardContent>
-                    <Typography npwrap>{offer && offer.itemName}</Typography>
+                    <Typography npwrap>{offer?.itemName}</Typography>
                     <Typography
                       variant='body2'
                       color='text.secondary'

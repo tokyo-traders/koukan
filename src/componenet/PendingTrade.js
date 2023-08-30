@@ -44,7 +44,6 @@ function PendingTrade() {
     axiosPrivate
       .get(`/api/acceptedTrade/${user.id}`)
       .then((response) => {
-        console.log("TRADE", response.data);
         setTradingItems(response.data);
         setTradesDisplayed(true);
       })
@@ -56,8 +55,8 @@ function PendingTrade() {
     axiosPrivate
       .get(`/api/offered-items/${user.id}`)
       .then((res) => {
-        console.log("OFFER", res.data);
         setOfferedItems(res.data);
+        console.log(res.data);
       })
       .catch(() => console.log("no offers"))
       .then(() => console.log(offeredItems));

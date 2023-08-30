@@ -19,6 +19,8 @@ import Badge from "@mui/material/Badge";
 import Modal from "@mui/material/Modal";
 import Rating from "@mui/material/Rating";
 import useAuth from "./hooks/useAuth";
+import useAxiosPrivate from "./hooks/axiosPrivate";
+import { WindowSharp } from "@mui/icons-material";
 
 const style = {
   position: "absolute",
@@ -72,6 +74,7 @@ export default function ListingSingleItem(props) {
   const { categories } = props;
   const { auth } = useAuth();
   const user = auth?.user;
+  const axiosPrivate = useAxiosPrivate();
 
   const { listingId } = useParams();
 
@@ -126,20 +129,21 @@ export default function ListingSingleItem(props) {
       headers: { "Content-Type": "application/json" },
       withCredentials: true,
     });
-    console.log(response.data);
   };
 
   const deletePost = () => {
     if (window.confirm("are you sure?")) {
       axios
         .delete(`/api/edit-post/${listing.id}`)
-        .then(() => navigate("/MyPage/"))
-        .then((res) => console.log(res));
+        .then(() => navigate("/MyPage/"));
     }
   };
 
   const deleteOffer = (offerId) => {
-    axios.delete(`/api/edit-offer/${offerId}`).then((res) => console.log(res));
+    if (window.confirm("Are you sure you want to DELETE This this offer")) {
+      axios.delete(`/api/edit-offer/${offerId}`);
+    }
+    setTimeout(() => navigate("/MyPage/"), 300);
   };
 
   const hidAcceptedPost = async (obj) => {
@@ -152,17 +156,53 @@ export default function ListingSingleItem(props) {
         withCredentials: true,
       }
     );
-    console.log(response.data);
   };
 
   useEffect(() => {
     if (listingId) {
       axios.get(`/api/listing/${listingId}`).then((response) => {
-        console.log("😁", response.data);
         setListing(response.data);
+        console.log("😍", response.data);
       });
     }
   }, [listingId]);
+
+  useEffect(() => {
+    const getOffers = async () => {
+      let response = await axios.get(`/api/create-offer`);
+      setOffersMade(response.data.filter((item) => item.post_id == listingId));
+    };
+    getOffers();
+  }, []);
+
+  useEffect(() => {
+    const getItem = async () => {
+      let responseArray = offersMade.map((offer) => {
+        return axios.get(`/api/all-item/${offer.offered_item}`);
+      });
+
+      Promise.all(responseArray)
+        .then((res) => {
+          return res.map((item) => {
+            return item.data[0];
+          });
+        })
+        .then((res) => {
+          const items = res.map((item) => {
+            return { ...item, model: false };
+          });
+          console.log(items);
+          return items;
+        })
+        .then((res) => setOffersItems(res));
+
+      return responseArray;
+    };
+
+    if (offersMade) {
+      getItem();
+    }
+  }, [offersMade]);
 
   return (
     <div>
@@ -222,11 +262,6 @@ export default function ListingSingleItem(props) {
                   ))}
                 </Carousel>
               )}
-              <Button
-                onClick={() => {
-                  console.log(offersItems);
-                }}
-              ></Button>
             </Container>
           </Grid>
           <Grid
@@ -513,19 +548,22 @@ export default function ListingSingleItem(props) {
 
       {offersItems &&
         offersItems.map((items, index) => {
-          // console.log("this is" , items)
           return (
             <>
               <Box
                 sx={{
-                  width: "50%",
+                  width: "60%",
+                  minWidth: "450px",
                   maxHeight: "250px",
                   margin: "auto",
                   marginTop: 2,
                   paddingBottom: 3,
                   display: "flex",
+                  alignItems: "center",
                   flexDirection: "column",
                   backgroundColor: "white",
+                  borderRadius: "5px",
+                  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
                 }}
               >
                 <Grid
@@ -537,12 +575,10 @@ export default function ListingSingleItem(props) {
                     item
                     xs={4}
                   >
-                    {listing && (
-                      <PreviewImg
-                        alt='image1'
-                        src={listing.images[0]}
-                      />
-                    )}
+                    <PreviewImg
+                      alt='image1'
+                      src={items.images[0].image}
+                    />
                   </Grid>
 
                   <Grid
@@ -571,10 +607,11 @@ export default function ListingSingleItem(props) {
                   </Grid>
 
                   <Grid
-                    item
                     xs={3}
+                    display='flex'
                   >
                     <SmallButton
+                      style={{ alignSelf: "center" }}
                       onClick={() => {
                         offersItems[index].model = true;
                         setOffersItems([...offersItems]);
@@ -588,24 +625,8 @@ export default function ListingSingleItem(props) {
                         },
                       }}
                     >
-                      Check detail
+                      details
                     </SmallButton>
-
-                    {user?.id === listing?.item.user_id && (
-                      <SmallButton
-                        onClick={() => {
-                          deleteOffer(items.idOffer);
-                        }}
-                        sx={{
-                          "&:hover": {
-                            backgroundColor: "gray",
-                            opacity: [0.9, 0.8, 0.7],
-                          },
-                        }}
-                      >
-                        DELETE OFFER
-                      </SmallButton>
-                    )}
                   </Grid>
                 </Grid>
               </Box>
@@ -638,36 +659,39 @@ export default function ListingSingleItem(props) {
 
                   <Img
                     alt='image1'
-                    src={listing.images[0]}
+                    src={items.images[0].image}
                   />
 
-                  {user?.id === listing?.item.user_id && (
-                    <>
-                      <BrownButton
-                        variant='contained'
-                        sx={{ mt: 2, marginLeft: 3 }}
-                        onClick={() => {
-                          acceptOffer(offersMade[index]);
-                          hidAcceptedPost(listing.post);
-                          navigate("/MyPage/PendingTrade");
-                        }}
-                      >
-                        ACCEPT OFFER
-                      </BrownButton>
-                      {/* <Button
-										onClick={() => {
-											deleteOffer(items.idOffer);
-										}}
-									>
-										DELETE OFFER
-									</Button> */}
-                    </>
+                  {user && user?.id === listing.item_id.user_id && (
+                    <BrownButton
+                      variant='contained'
+                      sx={{ mt: 2, marginLeft: 3 }}
+                      onClick={() => {
+                        acceptOffer(offersMade[index]);
+                        hidAcceptedPost(listing.post);
+                        navigate("/MyPage/PendingTrade");
+                      }}
+                    >
+                      ACCEPT OFFER
+                    </BrownButton>
+                  )}
+                  {user && user?.id === items.user_id && (
+                    <BrownButton
+                      variant='contained'
+                      sx={{ mt: 2, marginLeft: 3 }}
+                      onClick={() => {
+                        deleteOffer(items.idOffer);
+                      }}
+                    >
+                      DELETE OFFER
+                    </BrownButton>
                   )}
                 </Box>
               </Modal>
             </>
           );
         })}
+      <div style={{ minHeight: "100px" }}></div>
     </div>
   );
 }

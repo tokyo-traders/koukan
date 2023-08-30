@@ -135,14 +135,12 @@ def all_item(request, itemid):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == "GET":
-        auth = auth_state(request)
-        if auth:
             itemSerializer = ItemSerializer(item)
             imageSerializer = ImageSerializer(images, many=True)
             try:
                 
-                getOffer = Offer.objects.get(
-                    offered_item=itemSerializer.data['id'])
+                getOffer = Offer.objects.filter(
+                    offered_item=itemSerializer.data['id']).first()
                 currentOffer = OfferSerializer(getOffer)
                 offeredItemId = currentOffer.data['offered_item']
                 getItemDetail = Item.objects.get(pk=offeredItemId)
@@ -168,7 +166,6 @@ def all_item(request, itemid):
                     'user_id': itemSerializer.data['user_id']
                     })
             return Response(data)
-        return Response(status=status.HTTP_403_FORBIDDEN)
 
 
 # All items of a user

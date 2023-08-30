@@ -34,7 +34,6 @@ function App() {
     const getCategories = async () => {
       const response = await axios("/api/categories-list");
       setCategories(response.data);
-      console.log(response.data);
     };
     getCategories();
   }, []);
