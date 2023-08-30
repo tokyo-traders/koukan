@@ -376,8 +376,8 @@ export default function ListingSingleItem(props) {
                       categories &&
                       listing?.categories?.map((category, index) => (
                         <Chip
-                          label={categories[category.id - 1]?.category_name}
-                          // label={categories[8]?.category_name}
+                          // label={categories[category.id - 1]?.category_name}
+                          label={categories[8]?.category_name}
                         />
                       ))}
                   </Grid>
