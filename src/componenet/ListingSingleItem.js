@@ -80,7 +80,7 @@ export default function ListingSingleItem(props) {
   const from = location.state?.from?.pathname || "/MyPage";
 
   const makeOffer = useCallback(
-    () => navigate(`/listing/${listingId}/offer`, { replace: true }),
+    () => navigate(`/listing/${listingId}/offer`),
     [navigate]
   );
   const login = useCallback(
@@ -88,7 +88,7 @@ export default function ListingSingleItem(props) {
     [navigate]
   );
   const goBack = useCallback(() => {
-    navigate(from, { replace: true });
+    navigate(from);
   }, [navigate]);
 
   const [expanded, setExpanded] = useState(false);
@@ -130,10 +130,12 @@ export default function ListingSingleItem(props) {
   };
 
   const deletePost = () => {
-    axios
-      .delete(`/api/edit-post/${listing.post.id}`)
-      .then(() => navigate("/MyPage/"))
-      .then((res) => console.log(res));
+    if (window.confirm("are you sure?")) {
+      axios
+        .delete(`/api/edit-post/${listing.id}`)
+        .then(() => navigate("/MyPage/"))
+        .then((res) => console.log(res));
+    }
   };
 
   const deleteOffer = (offerId) => {
@@ -143,7 +145,7 @@ export default function ListingSingleItem(props) {
   const hidAcceptedPost = async (obj) => {
     obj.visibile = false;
     const response = axios.put(
-      `/api/edit-post/${listing.post.id}`,
+      `/api/edit-post/${listing.id}`,
       JSON.stringify(obj),
       {
         headers: { "Content-Type": "application/json" },
@@ -156,7 +158,7 @@ export default function ListingSingleItem(props) {
   useEffect(() => {
     if (listingId) {
       axios.get(`/api/listing/${listingId}`).then((response) => {
-        console.log(response.data);
+        console.log("😁", response.data);
         setListing(response.data);
       });
     }
@@ -257,8 +259,11 @@ export default function ListingSingleItem(props) {
                       <Typography variant='h5'>
                         {listing.item_id.item_name}
                       </Typography>
-
-                      {user?.id === listing?.user_id.id && (
+                    </div>
+                  )}
+                  {user ? (
+                    <>
+                      {user?.id === listing?.item_id.user_id ? (
                         <BrownButton
                           variant='contained'
                           sx={{ mt: 3, mb: 2 }}
@@ -266,61 +271,75 @@ export default function ListingSingleItem(props) {
                         >
                           DELETE LISTING
                         </BrownButton>
+                      ) : (
+                        <>
+                          {listing && (
+                            <>
+                              <BrownButton
+                                variant='contained'
+                                sx={{ mt: 3, mb: 2 }}
+                                onClick={display}
+                              >
+                                MAKE OFFER
+                              </BrownButton>
+                              <div>
+                                <Tooltip title='Send poster a message on whatspp'>
+                                  <IconButton>
+                                    <a
+                                      href={`https://wa.me/${listing?.user_id.phoneDetail}`}
+                                    >
+                                      <WhatsAppIcon
+                                        sx={{
+                                          fontSize: "30px",
+                                          color: "#4d3e38",
+                                        }}
+                                      />
+                                    </a>
+                                  </IconButton>
+                                </Tooltip>
+
+                                <Tooltip title='Send an email to poster'>
+                                  <IconButton>
+                                    <a href={`mailto:${listing.user_id.email}`}>
+                                      <EmailIcon
+                                        sx={{
+                                          fontSize: "30px",
+                                          color: "#4d3e38",
+                                        }}
+                                      />{" "}
+                                    </a>
+                                  </IconButton>
+                                </Tooltip>
+
+                                {offersItems && (
+                                  <Tooltip title='Offer received'>
+                                    <Badge badgeContent={offersItems.length}>
+                                      <a>
+                                        <LocalOfferIcon
+                                          sx={{
+                                            fontSize: "30px",
+                                            color: "#4d3e38",
+                                            marginLeft: "0.5rem",
+                                          }}
+                                        />{" "}
+                                      </a>
+                                    </Badge>
+                                  </Tooltip>
+                                )}
+                              </div>
+                            </>
+                          )}
+                        </>
                       )}
-                    </div>
-                  )}
-                  {user?.id !== listing?.user_id.id && (
-                    <>
-                      <BrownButton
-                        variant='contained'
-                        sx={{ mt: 3, mb: 2 }}
-                        onClick={display}
-                      >
-                        MAKE OFFER
-                      </BrownButton>
-
-                      <div>
-                        <Tooltip title='Send poster a message on whatspp'>
-                          <IconButton>
-                            <a
-                              href={`https://wa.me/${listing?.user_id.phoneDetail}`}
-                            >
-                              <WhatsAppIcon
-                                sx={{ fontSize: "30px", color: "#4d3e38" }}
-                              />
-                            </a>
-                          </IconButton>
-                        </Tooltip>
-
-                        {listing && (
-                          <Tooltip title='Send an email to poster'>
-                            <IconButton>
-                              <a href={`mailto:${listing.user_id.email}`}>
-                                <EmailIcon
-                                  sx={{ fontSize: "30px", color: "#4d3e38" }}
-                                />{" "}
-                              </a>
-                            </IconButton>
-                          </Tooltip>
-                        )}
-
-                        {offersItems && (
-                          <Tooltip title='Offer received'>
-                            <Badge badgeContent={offersItems.length}>
-                              <a>
-                                <LocalOfferIcon
-                                  sx={{
-                                    fontSize: "30px",
-                                    color: "#4d3e38",
-                                    marginLeft: "0.5rem",
-                                  }}
-                                />{" "}
-                              </a>
-                            </Badge>
-                          </Tooltip>
-                        )}
-                      </div>
                     </>
+                  ) : (
+                    <BrownButton
+                      variant='contained'
+                      sx={{ mt: 3, mb: 2 }}
+                      onClick={login}
+                    >
+                      Log In To Bid
+                    </BrownButton>
                   )}
                 </Box>
 
