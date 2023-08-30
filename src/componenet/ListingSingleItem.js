@@ -363,12 +363,13 @@ export default function ListingSingleItem(props) {
                   <br />
                   <Grid
                     container
-                    width='100%'
+                    width='130%'
                     direction='row'
-                    justifyContent='space-around'
-                    alignItems='center'
+                    justifyContent='start'
+                    marginLeft='0px'
+                    gap={1.5}
                     xs={12}
-                    xl={4}
+                    xl={12}
                     spacing={3}
                     columnSpacing={3}
                   >
@@ -376,8 +377,10 @@ export default function ListingSingleItem(props) {
                       categories &&
                       listing?.categories?.map((category, index) => (
                         <Chip
-                          // label={categories[category.id - 1]?.category_name}
-                          label={categories[8]?.category_name}
+                          label={
+                            categories[category.categories_id - 1]
+                              ?.category_name
+                          }
                         />
                       ))}
                   </Grid>

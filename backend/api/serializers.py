@@ -80,7 +80,7 @@ class CategoriesSerializer(serializers.ModelSerializer):
 class ReportedUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReportedUser
-        field = "__all__"
+        fields = "__all__"
 
 class PostCategoriesSerializer(serializers.ModelSerializer):
     class Meta:

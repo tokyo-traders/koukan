@@ -82,7 +82,7 @@ def listingItem(request, postId):
     if request.method == "GET":
         post = Post.objects.select_related('item_id').select_related("user_id").get(pk=postId)
         categories = PostCategories.objects.filter(post_id=postId)
-        categoriesSerializer= CategoriesSerializer(categories, many=True)
+        categoriesSerializer= PostCategoriesSerializer(categories, many=True)
         postSerializer = UserPostSerializer(post)
         categoriesData = categoriesSerializer.data
         postData = postSerializer.data

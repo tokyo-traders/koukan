@@ -97,7 +97,7 @@ function AddListingForm(props) {
                     } else {
                       selectCat[category.id] = true;
                     }
-                    console.log(category);
+                    console.log(selectCat);
                   }}
                 />
               </>
