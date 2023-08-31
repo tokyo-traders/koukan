@@ -27,6 +27,7 @@ from rest_framework.renderers import JSONRenderer  # delete
 def set_pending(request):
     if request.method == "PUT":
         auth = auth_state(request)
+        print(auth)
         if auth:
             try:
                 offer = Offer.objects.filter(pk=request.data["id"]).first()
@@ -138,12 +139,10 @@ def all_item(request, itemid):
             itemSerializer = ItemSerializer(item)
             imageSerializer = ImageSerializer(images, many=True)
             try:
-                getOffer = Offer.objects.get(
-                    offered_item=itemid)
+                getOffer = Offer.objects.filter(
+                    offered_item=itemid).first()
                 currentOffer = OfferSerializer(getOffer)
                 offeredItemId = currentOffer.data['offered_item']
-
-                print("test 😍", currentOffer.data)
                 getItemDetail = Item.objects.get(pk=offeredItemId)
                 itemDetail = ItemSerializer(getItemDetail)
                 getUserInfo = User.objects.get(pk=itemDetail.data['user_id'])

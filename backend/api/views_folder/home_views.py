@@ -131,8 +131,7 @@ def items_offered(request, userId):
             allItems = Item.objects.filter(user_id=userId)
             itemSerializer = ItemSerializer(allItems, many=True).data
             data = []
-            for item in itemSerializer:
-                # print("😁", item)
+            for item in itemSerializer:  
                 try:
                     getOffer = Offer.objects.get(
                         offered_item=item['id'], acceptance=True)

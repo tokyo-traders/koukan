@@ -28,9 +28,11 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: "background.paper",
-  border: "0.5px solid #000",
+  backgroundColor: "#cee9ee",
+  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+  borderRadius: "5px",
   p: 3,
+  textAlign: "center",
 };
 
 const Img = styled("img")({
@@ -125,10 +127,14 @@ export default function ListingSingleItem(props) {
 
   const acceptOffer = async (obj) => {
     obj.acceptance = true;
-    const response = await axios.put(`/api/SetPending`, JSON.stringify(obj), {
-      headers: { "Content-Type": "application/json" },
-      withCredentials: true,
-    });
+    const response = await axiosPrivate.put(
+      `/api/SetPending`,
+      JSON.stringify(obj),
+      {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      }
+    );
   };
 
   const deletePost = () => {
@@ -146,11 +152,10 @@ export default function ListingSingleItem(props) {
     setTimeout(() => navigate("/MyPage/"), 300);
   };
 
-  const hidAcceptedPost = async (obj) => {
-    obj.visibile = false;
+  const hidAcceptedPost = async () => {
     const response = axios.put(
       `/api/edit-post/${listing.id}`,
-      JSON.stringify(obj),
+      { visibile: false },
       {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
@@ -245,6 +250,8 @@ export default function ListingSingleItem(props) {
                         maxHeight: 320,
                         minHeight: 320,
                         display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
                       }}
                     >
                       <img
@@ -525,6 +532,9 @@ export default function ListingSingleItem(props) {
             </Grid>
           </Grid>
         </Grid>
+
+        {/* ____________________________________________________________________________________________________________________________       */}
+
         <Divider
           sx={{
             borderBottomWidth: 1,
@@ -544,8 +554,6 @@ export default function ListingSingleItem(props) {
         </Typography>
       </Box>
 
-      {/* ____________________________________________________________________________________________________________________________       */}
-
       {offersItems &&
         offersItems.map((items, index) => {
           return (
@@ -561,7 +569,7 @@ export default function ListingSingleItem(props) {
                   display: "flex",
                   alignItems: "center",
                   flexDirection: "column",
-                  backgroundColor: "white",
+                  backgroundColor: "#cee9ee",
                   borderRadius: "5px",
                   boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
                 }}
@@ -586,7 +594,6 @@ export default function ListingSingleItem(props) {
                     xs={5}
                   >
                     <Typography variant='h6'>{items?.itemName}</Typography>
-
                     <Typography
                       variant='body2'
                       color='text.secondary'
@@ -643,10 +650,10 @@ export default function ListingSingleItem(props) {
                 <Box sx={style}>
                   <Typography
                     id='modal-modal-title'
-                    variant='h6'
+                    variant='h5'
                     component='h2'
                   >
-                    {items?.itemName}
+                    Offer: {items?.itemName}
                   </Typography>
 
                   <Typography
@@ -654,22 +661,38 @@ export default function ListingSingleItem(props) {
                     id='modal-modal-description'
                     sx={{ mt: 2 }}
                   >
-                    {items?.details}
+                    Details: {items?.details}
                   </Typography>
-
-                  <Img
-                    alt='image1'
-                    src={items.images[0].image}
-                  />
+                  <div
+                    style={{
+                      height: "250px",
+                      width: "250px",
+                      background: "#f0f0f0",
+                      margin: "auto",
+                      borderRadius: "5px",
+                      marginTop: "10px",
+                    }}
+                  >
+                    <Img
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "contain",
+                      }}
+                      alt='image1'
+                      src={items.images[0].image}
+                    />
+                  </div>
 
                   {user && user?.id === listing.item_id.user_id && (
                     <BrownButton
                       variant='contained'
-                      sx={{ mt: 2, marginLeft: 3 }}
+                      sx={{ mt: 2 }}
                       onClick={() => {
                         acceptOffer(offersMade[index]);
-                        hidAcceptedPost(listing.post);
-                        navigate("/MyPage/PendingTrade");
+                        console.log(offersMade[index]);
+                        hidAcceptedPost();
+                        setTimeout(() => navigate("/MyPage/PendingTrade"), 200);
                       }}
                     >
                       ACCEPT OFFER
@@ -678,7 +701,7 @@ export default function ListingSingleItem(props) {
                   {user && user?.id === items.user_id && (
                     <BrownButton
                       variant='contained'
-                      sx={{ mt: 2, marginLeft: 3 }}
+                      sx={{ mt: 2 }}
                       onClick={() => {
                         deleteOffer(items.idOffer);
                       }}
