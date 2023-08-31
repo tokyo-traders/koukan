@@ -39,8 +39,6 @@ function UserItemsList() {
   useEffect(() => {
     if (user) {
       axiosPrivate.get(`/api/all-info/${user.id}`).then((response) => {
-        console.log(response.data);
-        // setItemInfo([...response.data]);
         setItemInfo(response.data);
       });
     }
@@ -74,9 +72,7 @@ function UserItemsList() {
               sx={{ objectFit: "contain", bgcolor: "#f5f5f5" }}
             />
             <CardContent>
-              {/* <Box display="flex" justify="space-between"> */}
               <Typography noWrap>{item.itemName}</Typography>
-              {/* </Box> */}
             </CardContent>
           </Card>
         ))}
