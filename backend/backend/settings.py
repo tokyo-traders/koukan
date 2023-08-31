@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 #deployment
-# SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 
 
@@ -34,9 +34,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
 
-ALLOWED_HOSTS = ["https://tokyotraders.onrender.com/", "http://localhost:3000/","https://www.tokyotrader.store/"]
+#Production
+DEBUG = False
+
+#production
+ALLOWED_HOSTS = ["https://tokyotraders.onrender.com/", "http://localhost:300/","https://www.tokyotrader.store/"]
+
+#Development
+# ALLOWED_HOSTS = ["*"]
 
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -85,13 +92,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-ALLOWED_HOSTS = ['*']
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 
-
+## Development
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -103,6 +109,7 @@ ALLOWED_HOSTS = ['*']
 #     }
 # }
 
+## production
 DATABASE_URL = os.getenv('DATABASE_URL')
 
 DATABASES = {
@@ -113,6 +120,21 @@ DATABASES = {
     ),
 }
 
+
+redis_url = env("REDIS_URL")
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": redis_url,
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+# SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+# SESSION_CACHE_ALIAS = "default"
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -172,15 +194,6 @@ STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')  # BASE_DIR is in line 20ish
 
-# STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, "backend", 'static'),
-# )
-
-# STATIC_ROOT = ''
-
-# STATIC_URL = '/static/'
-
-# STATICFILES_DIRS = ('backend/static',)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
