@@ -128,7 +128,6 @@ def item_handover(request):
 
 @api_view(['GET'])
 def all_item(request, itemid):
-    print(itemid)
     try:
         item = Item.objects.get(pk=itemid)
         images = Image.objects.filter(item_id=itemid)
@@ -139,11 +138,12 @@ def all_item(request, itemid):
             itemSerializer = ItemSerializer(item)
             imageSerializer = ImageSerializer(images, many=True)
             try:
-                
-                getOffer = Offer.objects.filter(
-                    offered_item=itemSerializer.data['id']).first()
+                getOffer = Offer.objects.get(
+                    offered_item=itemid)
                 currentOffer = OfferSerializer(getOffer)
                 offeredItemId = currentOffer.data['offered_item']
+
+                print("test 😍", currentOffer.data)
                 getItemDetail = Item.objects.get(pk=offeredItemId)
                 itemDetail = ItemSerializer(getItemDetail)
                 getUserInfo = User.objects.get(pk=itemDetail.data['user_id'])
