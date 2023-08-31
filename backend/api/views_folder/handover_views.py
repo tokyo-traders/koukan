@@ -128,8 +128,9 @@ def item_handover(request):
 
 @api_view(['GET'])
 def all_item(request, itemid):
+    print(itemid)
     try:
-        item = Item.objects.get(id=itemid)
+        item = Item.objects.get(pk=itemid)
         images = Image.objects.filter(item_id=itemid)
     except Item.DoesNotExist or Image.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
