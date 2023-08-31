@@ -121,7 +121,7 @@ DATABASES = {
 }
 
 
-redis_url = env("REDIS_URL")
+redis_url = os.getenv("REDIS_URL")
 
 CACHES = {
     "default": {
