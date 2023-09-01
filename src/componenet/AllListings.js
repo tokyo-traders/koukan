@@ -75,7 +75,7 @@ export default function AllListings(props) {
       <div
         key={index}
         className='fade-in-card'
-        style={{ animation: `fadeIn ${0.2 * index - 0.05 * index}s linear` }}
+        style={{ animation: `fadeIn ${0.3 * index}s ease-in` }}
       >
         <Card
           key={index}

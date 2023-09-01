@@ -1,28 +1,13 @@
-from django.shortcuts import render, redirect
-from django.http import JsonResponse
-from rest_framework import generics, status, viewsets
-from rest_framework.decorators import api_view, action, permission_classes
+from rest_framework import generics, status
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password, check_password
-from rest_framework.authentication import get_authorization_header
-from rest_framework.permissions import IsAuthenticated
-from ..serializers import UserSerializer, ItemSerializer, ImageSerializer, MultipleImageSerializer, PostSerializer, OfferSerializer, CategoriesSerializer, ReportedUserSerializer, PostCategoriesSerializer
-from ..models import User, Item, Image, Post, Offer, Categories, ReportedUser, PostCategories
-from ..authentication import create_access_token, create_refresh_token, decode_access_token, decode_refresh_token
+from ..serializers import UserSerializer
+from ..authentication import create_access_token, create_refresh_token,  decode_refresh_token
 from ..utils import Util
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
-from django.conf import settings
 from rest_framework.status import HTTP_302_FOUND
-from rest_framework.permissions import IsAuthenticated
-
-import jwt
-import datetime
-import io  # delete
-
-from rest_framework.parsers import JSONParser  # delete
-from rest_framework.renderers import JSONRenderer  # delete
-
 
 @api_view(['GET', 'POST'])
 def user_register(request):
@@ -40,14 +25,9 @@ def user_register(request):
     
         serializer = UserSerializer(data=userObj)
         if serializer.is_valid():
-        # # # serializer.is_active = False # make the accounte deactivated check if this works
             serializer.save()
-            # email verification trial
-            # get the user email
             getUser = User.objects.get(email=serializer.data['email'])
             user = UserSerializer(getUser)
-            print(user.data)
-            # produce a token
             token = create_refresh_token(user.data)
 
             current_site = get_current_site(request).domain
@@ -60,10 +40,7 @@ def user_register(request):
                 'Click the link below to verify your email: \n' + abstractURL
             data = {'email_subject': 'Email Verification', 'email_to': str(
                 user.data['email']), 'email_body': email_body, }
-
-            # check util.py
             Util.send_confirmation(data)
-            # return redirect('/')
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
     else:
@@ -96,11 +73,9 @@ def user_login(request):
         user_password = serializer.data["password"]
         user_email = serializer.data["email"]
         match = check_password(request.data["password"], user_password)
-        print(match)
         if match and user_email == email:
             access_token = create_access_token(serializer.data)
             refresh_token = create_refresh_token(serializer.data)
-            print("😎", user_password, user_email)
 
             response = Response()
             response.set_cookie(key="refreshToken",
@@ -146,9 +121,7 @@ class VerifyEmail(generics.GenericAPIView):
     def get(self, request):
         activate_token = request.GET.get('token')
         try:
-            print('🤑',activate_token)
             getUser = decode_refresh_token(activate_token)
-            print('🤩',getUser)
             user = User.objects.get(pk=getUser['id'])
             if not user.is_emailVerified:
                 user.is_emailVerified = True

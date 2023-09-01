@@ -1,33 +1,15 @@
-from django.shortcuts import render, redirect
-from django.http import JsonResponse
-from rest_framework import generics, status, viewsets
-from rest_framework.decorators import api_view, action, permission_classes
+from rest_framework import  status
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from ..serializers import UserSerializer, ItemSerializer, ImageSerializer, MultipleImageSerializer, PostSerializer, OfferSerializer, CategoriesSerializer, ReportedUserSerializer, PostCategoriesSerializer
-from ..models import User, Item, Image, Post, Offer, Categories, ReportedUser, PostCategories
-from ..authentication import create_access_token, create_refresh_token, decode_access_token, decode_refresh_token
-from rest_framework_simplejwt.tokens import RefreshToken
-from ..utils import Util
+from ..serializers import UserSerializer, ItemSerializer, ImageSerializer, PostSerializer, OfferSerializer
+from ..models import User, Item, Image, Post, Offer
 from ..authentication import  auth_state
-from django.contrib.sites.shortcuts import get_current_site
-from django.urls import reverse
-from django.conf import settings
-from rest_framework.permissions import IsAuthenticated
-from django.core.files.storage import default_storage
 
-import base64
-import jwt
-import datetime
-import io  # delete
-
-from rest_framework.parsers import JSONParser  # delete
-from rest_framework.renderers import JSONRenderer  # delete
 
 @ api_view(['GET', 'PUT'])
 def set_pending(request):
     if request.method == "PUT":
         auth = auth_state(request)
-        print(auth)
         if auth:
             try:
                 offer = Offer.objects.filter(pk=request.data["id"]).first()
@@ -51,7 +33,6 @@ def accepted_trade(request, userId):
     postData = []
     for post in posts:
         postSerializer = PostSerializer(post)
-        # print("post", postSerializer.data)
         try:
             item = Item.objects.filter(
                 id=postSerializer.data["item_id"]).first()
@@ -77,7 +58,6 @@ def accepted_trade(request, userId):
             return Response(status=status.HTTP_404_NOT_FOUND)
         if Offeritem:
             itemOfferSerializer = ItemSerializer(Offeritem)
-            # print("offered item",itemOfferSerializer.data)
             offerImage_list = []
             offerImages = Image.objects.filter(
                 item_id=itemOfferSerializer.data["id"])
@@ -183,7 +163,6 @@ def newall_item(request, userid):
                 singleItemSerializer = ItemSerializer(item)
                 images = Image.objects.filter(item_id=singleItemSerializer.data["id"])
                 singleImageSerializer = ImageSerializer(images, many=True)
-                print("😂",singleImageSerializer.data)
                 data.append({
                     'itemID': singleItemSerializer.data['id'],
                     'itemName': singleItemSerializer.data['item_name'],

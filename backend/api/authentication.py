@@ -1,8 +1,6 @@
 import jwt, datetime
-from rest_framework.response import Response
-from rest_framework import  status
 from rest_framework.authentication import get_authorization_header
-from rest_framework.response import Response
+
 import environ
 env = environ.Env()
 

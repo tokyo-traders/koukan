@@ -1,15 +1,9 @@
-from django.shortcuts import render, redirect
-from rest_framework import generics, status, viewsets
-from rest_framework.decorators import api_view, action, permission_classes
+from rest_framework import status
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.authentication import get_authorization_header
-from ..serializers import UserSerializer, ItemSerializer, ImageSerializer, MultipleImageSerializer,PostItemSerializer,SearchPostSerializer,UserPostSerializer, PostSerializer, OfferSerializer, CategoriesSerializer, ReportedUserSerializer, PostCategoriesSerializer
-from ..models import User, Item, Image, Post, Offer, Categories, ReportedUser, PostCategories
-from ..utils import Util
+from ..serializers import UserSerializer, ItemSerializer, ImageSerializer,PostItemSerializer,SearchPostSerializer,UserPostSerializer, PostSerializer, OfferSerializer, CategoriesSerializer, PostCategoriesSerializer
+from ..models import User, Item, Image, Post, Offer, Categories, PostCategories
 from ..authentication import  auth_state
-from django.contrib.sites.shortcuts import get_current_site
-from django.urls import reverse
-from django.conf import settings
 from django.core.cache import cache
 import math
 import json
@@ -101,7 +95,6 @@ def listingItem(request, postId):
         image = imageSerializer.data
         postData["images"] = (image)
         postData["categories"] = (categoriesData)
-        print(categoriesSerializer.data)
         return Response(postData, status=status.HTTP_200_OK)
     
 
@@ -277,15 +270,7 @@ def sendUserReview(request, userId):
         toBeupdated = UserSerializer(test, data=newdata, partial=True)
         toBeupdated.is_valid(raise_exception=True)
         toBeupdated.save()
-        print("latest data", toBeupdated)
         return Response(toBeupdated.data, status=status.HTTP_200_OK)
-        # if serializer.is_valid(raise_exception=True):
-        #     serializer.save()
-        #     return Response(serializer.data, status=status.HTTP_200_OK)
-        # else:
-        #     error = {"the serializer to be edited is not valid in send user review"}
-        #     return Response(error, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-
 
 @api_view(['PUT'])
 def send_review(request, userIdReview):
