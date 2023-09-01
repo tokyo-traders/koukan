@@ -132,53 +132,57 @@ export default function AllListings(props) {
 
   return (
     <div>
-      {catListings && categories && (
-        <div
-          style={{
-            background: "#def4f6",
-            minWidth: "100%",
-            height: "360px",
-            margin: "10px 0px 0px 0px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "spaceBetween",
-            padding: "0px 0px 0px 0px",
-            boxShadow:
-              "0px 4px 6px rgba(0, 0, 0, 0.1), 0px 8px 24px rgba(0, 0, 0, 0.1)",
-          }}
-        >
-          <Typography
-            sx={{
-              fontWeight: "bold",
-              textAlign: "center",
-              padding: "0px 0px",
-              background: "transparent",
-              opacity: 0.6,
-            }}
-            variant='h6'
-          >
-            Explore:{" "}
-            {categories &&
-              categories[catListings[0]?.post?.item_id?.category - 1]
-                ?.category_name}
-          </Typography>
-          <Container
-            className='random'
-            sx={{
-              background: "#def4f6",
-              minWidth: "100%",
-              height: "340px",
-              marginBottom: "0px",
-              display: "flex",
-              flexDirection: "row",
-              overflow: "auto",
-              paddingTop: "0px",
-            }}
-          >
-            {catListings?.map((listing, index) => showListing(listing, index))}
-          </Container>
-        </div>
-      )}
+      <div
+        style={{
+          background: "#def4f6",
+          minWidth: "100%",
+          height: "360px",
+          margin: "10px 0px 0px 0px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "spaceBetween",
+          padding: "0px 0px 0px 0px",
+          boxShadow:
+            "0px 4px 6px rgba(0, 0, 0, 0.1), 0px 8px 24px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        {catListings && categories && (
+          <>
+            <Typography
+              sx={{
+                fontWeight: "bold",
+                textAlign: "center",
+                padding: "0px 0px",
+                background: "transparent",
+                opacity: 0.6,
+              }}
+              variant='h6'
+            >
+              Explore:{" "}
+              {categories &&
+                categories[catListings[0]?.post?.item_id?.category - 1]
+                  ?.category_name}
+            </Typography>
+            <Container
+              className='random'
+              sx={{
+                background: "#def4f6",
+                minWidth: "100%",
+                height: "340px",
+                marginBottom: "0px",
+                display: "flex",
+                flexDirection: "row",
+                overflow: "auto",
+                paddingTop: "0px",
+              }}
+            >
+              {catListings?.map((listing, index) =>
+                showListing(listing, index)
+              )}
+            </Container>
+          </>
+        )}
+      </div>
       {categoryFilter ? (
         <Typography
           variant='h4'
