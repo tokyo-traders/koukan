@@ -40,10 +40,10 @@ SECRET_KEY = env("SECRET_KEY")
 DEBUG = False
 
 #production
-ALLOWED_HOSTS = ["www.tokyotraders.onrender.com","tokyotraders.onrender.com", "www.tokyotrader.store", "tokyotrader.store"]
+# ALLOWED_HOSTS = ["www.tokyotraders.onrender.com","tokyotraders.onrender.com", "www.tokyotrader.store", "tokyotrader.store"]
 
 #Development
-# ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["*"]
 
 CORS_ORIGIN_ALLOW_ALL = True
 
