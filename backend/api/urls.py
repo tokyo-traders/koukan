@@ -5,7 +5,6 @@ from .views_folder.handover_views import all_item, newall_item, set_pending, acc
 from .views_folder.post_views import   create_post, edit_post, create_offer, edit_offer
 from .views_folder.home_views import single_offer, items_offered, homepage, listingItem, search_item, category_list, currentUser_review, sendUserReview, send_review, userListing,categoryListing,search
 
-from api import views
 from django.conf import settings
 from django.conf.urls.static import static
 
