@@ -40,10 +40,10 @@ SECRET_KEY = env("SECRET_KEY")
 DEBUG = False
 
 #production
-# ALLOWED_HOSTS = ["www.tokyotraders.onrender.com","tokyotraders.onrender.com", "www.tokyotrader.store", "tokyotrader.store"]
+ALLOWED_HOSTS = ["www.tokyotraders.onrender.com","tokyotraders.onrender.com", "www.tokyotrader.store", "tokyotrader.store"]
 
 #Development
-ALLOWED_HOSTS = ["*"]
+
 
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -121,27 +121,27 @@ DATABASES = {
 }
 
 
-# redis_url = os.getenv("REDIS_URL")
+redis_url = os.getenv("REDIS_URL")
 
-# CACHES = {
-#     "default": {
-#         "BACKEND": "django_redis.cache.RedisCache",
-#         "LOCATION": redis_url,
-#         "OPTIONS": {
-#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-#         }
-#     }
-# }
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": redis_url,
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
 
-# SESSION_ENGINE = "django.contrib.sessions.backends.cache"
-# SESSION_CACHE_ALIAS = "default"
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ) 
 }
-
+ALLOWED_HOSTS = ["*"]
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 

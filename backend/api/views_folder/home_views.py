@@ -20,9 +20,9 @@ import json
 def homepage(request):
     if request.method == "GET":
         page = int(request.query_params.get('page', 1))
-        # cache_data = cache.get(f"homepage{page}")
-        # if cache_data:
-        #     return Response(json.loads(cache_data), status=status.HTTP_200_OK)
+        cache_data = cache.get(f"homepage{page}")
+        if cache_data:
+            return Response(json.loads(cache_data), status=status.HTTP_200_OK)
         pageQuery = page * 18
         visible_posts_count = Post.objects.filter(visibile=True).count()
         Totalpages = math.ceil(visible_posts_count/18)
@@ -36,15 +36,15 @@ def homepage(request):
             data.append({"post": post,
                         "images": [imageSerializer.data[0]],
                         })
-        # cache.set(f"homepage{page}", json.dumps({"data": data, "TotalPages": Totalpages}), timeout=300)
+        cache.set(f"homepage{page}", json.dumps({"data": data, "TotalPages": Totalpages}), timeout=300)
         return Response({"data": data, "TotalPages": Totalpages}, status=status.HTTP_200_OK)
     
 @api_view(['GET'])
 def categoryListing(request, category):
     if request.method == "GET":
-        # cache_data = cache.get(f"categoryListing{category}")
-        # if cache_data:
-        #     return Response(json.loads(cache_data), status=status.HTTP_200_OK)
+        cache_data = cache.get(f"categoryListing{category}")
+        if cache_data:
+            return Response(json.loads(cache_data), status=status.HTTP_200_OK)
         page = int(request.query_params.get('page', 1))
         pageQuery = page * 18
         visible_posts_count = Post.objects.filter(visibile=True,item_id__category=category).count()
@@ -59,7 +59,7 @@ def categoryListing(request, category):
             imageData = imageSerializer.data
             data.append({"post": post,
                         "images": imageData})
-        # cache.set(f"categoryListing{category}", json.dumps({"data": data, "TotalPages": Totalpages}), timeout=300)
+        cache.set(f"categoryListing{category}", json.dumps({"data": data, "TotalPages": Totalpages}), timeout=300)
         return Response({"data": data, "TotalPages": Totalpages}, status=status.HTTP_200_OK)
     
 @api_view(['GET'])
@@ -128,11 +128,11 @@ def category_list(request):
         return Response(error, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == "GET":
-        # cache_data = cache.get("category_list")
-        # if cache_data:
-        #     return Response(json.loads(cache_data), status=status.HTTP_200_OK)
+        cache_data = cache.get("category_list")
+        if cache_data:
+            return Response(json.loads(cache_data), status=status.HTTP_200_OK)
         catergorySerializer = CategoriesSerializer(categories, many=True).data
-        # cache.set("category_list", json.dumps(catergorySerializer), timeout=10800)
+        cache.set("category_list", json.dumps(catergorySerializer), timeout=10800)
         return Response(catergorySerializer, status=status.HTTP_200_OK)
 
 
