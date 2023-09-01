@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import Container from "@mui/material/Container";
 import Pagination from "@mui/material/Pagination";
+import "../App.css";
 
 const MyContent = styled(CardContent)`
   &:last-child {
@@ -63,13 +64,19 @@ export default function AllListings(props) {
   };
 
   const handlepage = (event, value) => {
-    setPage(value);
-    setLoading(true);
+    if (page !== value) {
+      setPage(value);
+      setLoading(true);
+    }
   };
 
   const showListing = (listing, index) => {
     return (
-      <div key={index}>
+      <div
+        key={index}
+        className='fade-in-card'
+        style={{ animation: `fadeIn ${0.2 * index - 0.05 * index}s linear` }}
+      >
         <Card
           key={index}
           elevation={2}
@@ -168,7 +175,7 @@ export default function AllListings(props) {
               paddingTop: "0px",
             }}
           >
-            {catListings?.map((listing) => showListing(listing))}
+            {catListings?.map((listing, index) => showListing(listing, index))}
           </Container>
         </div>
       )}
@@ -220,11 +227,11 @@ export default function AllListings(props) {
               height: "150px",
               width: "150px",
               opacity: 0.2,
-              margin: "auto",
+              margin: "20px auto",
             }}
           />
         ) : (
-          listings?.map((listing) => showListing(listing))
+          listings?.map((listing, index) => showListing(listing, index))
         )}
       </Grid>
       <Pagination
