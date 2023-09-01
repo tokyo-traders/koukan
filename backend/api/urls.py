@@ -1,5 +1,4 @@
 from django.urls import path
-from .views import hello
 from .views_folder.user_views import user_register, user_login, user_refresh, user_logout, VerifyEmail
 from .views_folder.item_views import item_list, item_edit, image_list, multiple_upload
 from .views_folder.handover_views import all_item, newall_item, set_pending, accepted_trade, item_handover
