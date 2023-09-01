@@ -26,12 +26,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 #deployment
-SECRET_KEY = os.getenv("SECRET_KEY")
+# SECRET_KEY = os.getenv("SECRET_KEY")
 
 
 
 # #prduction
-# SECRET_KEY = env("SECRET_KEY")
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
@@ -40,7 +40,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = False
 
 #production
-ALLOWED_HOSTS = ["https://tokyotraders.onrender.com/", "http://localhost:300/","https://www.tokyotrader.store/"]
+ALLOWED_HOSTS = ["https://tokyotraders.onrender.com", "http://localhost:300","https://www.tokyotrader.store"]
 
 #Development
 # ALLOWED_HOSTS = ["*"]
@@ -121,20 +121,20 @@ DATABASES = {
 }
 
 
-redis_url = os.getenv("REDIS_URL")
+# redis_url = os.getenv("REDIS_URL")
 
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": redis_url,
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    }
-}
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": redis_url,
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         }
+#     }
+# }
 
-SESSION_ENGINE = "django.contrib.sessions.backends.cache"
-SESSION_CACHE_ALIAS = "default"
+# SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+# SESSION_CACHE_ALIAS = "default"
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
