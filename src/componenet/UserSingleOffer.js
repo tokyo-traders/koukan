@@ -87,7 +87,6 @@ export default function UserSingleOffer() {
     boxShadow: 24,
     p: 4,
   };
-  console.log(offer);
   return (
     <>
       <Grid

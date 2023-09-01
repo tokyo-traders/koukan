@@ -66,17 +66,11 @@ function AddItem() {
     uploadData.append("user_id", user.id);
     uploadData.append("desire", desire);
     uploadData.append("category", category);
-    console.log(uploadData);
 
     axiosPrivate
       .post(`/api/item/${user.id}`, uploadData)
       .then((res) => {
         uploadImages.append("itemId", Number(res.data.id));
-      })
-      .then(() => {
-        for (const value of uploadImages.values()) {
-          console.log(value);
-        }
       })
       .then(() =>
         axios.post("/api/image/multiple_upload", uploadImages, {
@@ -97,7 +91,6 @@ function AddItem() {
 
   const handleChange = (e) => {
     _.forEach(e.target.files, (file) => {
-      console.log(file);
       uploadImages.append("images", file);
     });
   };

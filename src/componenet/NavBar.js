@@ -101,7 +101,6 @@ function NavBar(props) {
       axios
         .get(`/api/search?search=${search}`)
         .then((res) => {
-          console.log(res.data);
           setSearchValue(res.data);
         })
         .then(() => {

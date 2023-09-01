@@ -67,7 +67,6 @@ function AddListingForm(props) {
           withCredentials: true,
         }
       )
-      .then((res) => console.log(res.data))
       .then(() => navigate("/MyPage/postlist/"));
   };
 
@@ -97,7 +96,6 @@ function AddListingForm(props) {
                     } else {
                       selectCat[category.id] = true;
                     }
-                    console.log(selectCat);
                   }}
                 />
               </>

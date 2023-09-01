@@ -167,7 +167,6 @@ export default function ListingSingleItem(props) {
     if (listingId) {
       axios.get(`/api/listing/${listingId}`).then((response) => {
         setListing(response.data);
-        console.log("😍", response.data);
       });
     }
   }, [listingId]);
@@ -690,7 +689,6 @@ export default function ListingSingleItem(props) {
                       sx={{ mt: 2 }}
                       onClick={() => {
                         acceptOffer(offersMade[index]);
-                        console.log(offersMade[index]);
                         hidAcceptedPost();
                         setTimeout(() => navigate("/MyPage/PendingTrade"), 200);
                       }}

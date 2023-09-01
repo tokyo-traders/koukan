@@ -90,9 +90,7 @@ export default function UserSingleItem() {
   };
 
   const deleteItem = (itemId) => {
-    axiosPrivate
-      .delete(`/api/item-edit/${itemId}`)
-      .then((res) => console.log(res));
+    axiosPrivate.delete(`/api/item-edit/${itemId}`);
   };
 
   const editData = new FormData();
@@ -112,7 +110,6 @@ export default function UserSingleItem() {
   useEffect(() => {
     if (itemId) {
       axiosPrivate.get(`/api/all-item/${itemId}`).then((response) => {
-        console.log(response.data[0]);
         return (
           setItemData(response.data[0]),
           setImages(response.data[0].images),

@@ -64,7 +64,6 @@ function OfferForm(props) {
   useEffect(() => {
     if (user) {
       axiosPrivate.get(`/api/all-info/${user.id}`).then((response) => {
-        console.log("all info", response.data);
         setItemInfo([...response.data]);
       });
     }
@@ -72,17 +71,13 @@ function OfferForm(props) {
 
   useEffect(() => {
     if (listingId && categories) {
-      axiosPrivate
-        .get(`/api/listing/${listingId}`)
-        .then((response) => {
-          setListing(response.data);
-          console.log(response.data);
-          let safe = response.data.categories.map((category) => {
-            return category.categories_id;
-          });
-          SetAccptedCat(safe);
-        })
-        .then(() => console.log(acceptedCat));
+      axiosPrivate.get(`/api/listing/${listingId}`).then((response) => {
+        setListing(response.data);
+        let safe = response.data.categories.map((category) => {
+          return category.categories_id;
+        });
+        SetAccptedCat(safe);
+      });
     }
   }, [listingId]);
 
@@ -133,7 +128,6 @@ function OfferForm(props) {
                   elevation={2}
                   sx={{ maxWidth: 200, margin: 2 }}
                   onClick={() => {
-                    console.log(item);
                     setOffer(item);
                   }}
                 >

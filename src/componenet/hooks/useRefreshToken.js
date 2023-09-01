@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 const useRefreshToken = () => {
   const { setAuth } = useAuth();
   const navigate = useNavigate();
-  // const home = useCallback(() => navigate("/", { replace: true }), [navigate]);
   const refresh = async () => {
     try {
       const response = await axios.get("/api/user/refresh", {
@@ -17,7 +16,6 @@ const useRefreshToken = () => {
       setAuth({ user: decoded.user, accessToken });
       return response.data.jwt;
     } catch (err) {
-      console.log("😎", err.response.status);
       if (err.response.status === 401) {
         setAuth({});
         navigate("/", { replace: true });

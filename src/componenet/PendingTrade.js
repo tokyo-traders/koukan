@@ -47,8 +47,7 @@ function PendingTrade() {
         setTradingItems(response.data);
         setTradesDisplayed(true);
       })
-      .catch(() => console.log("no listings"))
-      .then(() => console.log(tradingItems));
+      .catch(() => console.log("no listings"));
   }, []);
 
   useEffect(() => {
@@ -56,14 +55,11 @@ function PendingTrade() {
       .get(`/api/offered-items/${user.id}`)
       .then((res) => {
         setOfferedItems(res.data);
-        console.log(res.data);
       })
-      .catch(() => console.log("no offers"))
-      .then(() => console.log(offeredItems));
+      .catch(() => console.log("no offers"));
   }, []);
 
   const postCompleteTrade = async (offer) => {
-    console.log("offer", offer);
     if (!offer.post_confirmation && !offer.offer_confirmation) {
       offer.post_confirmation = true;
       const response = await axiosPrivate.put(
@@ -74,17 +70,11 @@ function PendingTrade() {
           withCredentials: true,
         }
       );
-      console.log(response.data);
     } else if (offer.post_confirmation || offer.offer_confirmation) {
-      console.log("handover!!!");
-
       axiosPrivate
         .put(`/api/itemHandover`, JSON.stringify(offer), {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
-        })
-        .then((response) => {
-          console.log(response.data);
         })
         .then(() => handleOpenModal())
         .then(() => myPage());
@@ -92,7 +82,6 @@ function PendingTrade() {
   };
 
   const offerCompleteTrade = async (offer) => {
-    console.log("offer", offer);
     if (!offer.offer_confirmation && !offer.post_confirmation) {
       offer.offer_confirmation = true;
       const response = await axiosPrivate.put(
@@ -103,17 +92,11 @@ function PendingTrade() {
           withCredentials: true,
         }
       );
-      // handleOpenModal()
-      console.log(response.data);
     } else if (offer.post_confirmation || offer.offer_confirmation) {
-      console.log("handover!!!");
       axiosPrivate
         .put(`/api/itemHandover`, JSON.stringify(offer), {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
-        })
-        .then((response) => {
-          console.log(response.data);
         })
         .then(() => myPage());
     }
@@ -131,12 +114,14 @@ function PendingTrade() {
     const data = {
       reputation_rating: value,
     };
-    axiosPrivate
-      .put(`/api/sendUserReview/${userIdReview}`, JSON.stringify(data), {
+    axiosPrivate.put(
+      `/api/sendUserReview/${userIdReview}`,
+      JSON.stringify(data),
+      {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
-      })
-      .then((res) => console.log(res));
+      }
+    );
   };
 
   const styleModal = {
