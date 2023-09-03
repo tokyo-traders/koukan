@@ -6,6 +6,7 @@ from ..serializers import UserSerializer
 from ..authentication import create_access_token, create_refresh_token,  decode_refresh_token
 from ..utils import Util
 from django.contrib.sites.shortcuts import get_current_site
+from ..models import User
 from django.urls import reverse
 from rest_framework.status import HTTP_302_FOUND
 
@@ -49,8 +50,6 @@ def user_register(request):
 
 @api_view(['GET', 'PUT', 'DELETE', 'POST'])
 def user_login(request):
-
-
     if request.method == "PUT":
         serializer = UserSerializer(user, data=request.data)
         if serializer.is_valid():
@@ -65,6 +64,7 @@ def user_login(request):
     elif request.method == "POST":
         password = request.data["password"]
         email = request.data["email"]
+        print(email, password)
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:

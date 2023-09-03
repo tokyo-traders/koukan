@@ -12,6 +12,7 @@ import json
 
 @api_view(['GET']) 
 def homepage(request):
+    print("ping")
     if request.method == "GET":
         page = int(request.query_params.get('page', 1))
         cache_data = cache.get(f"homepage{page}")
